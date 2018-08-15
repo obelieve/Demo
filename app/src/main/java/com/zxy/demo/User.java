@@ -6,8 +6,8 @@ package com.zxy.demo;
 
 public class User
 {
-    private String firstName;
-    private String lastName;
+    public final  String firstName;
+    public final String lastName;
 
     public User(String firstName, String lastName)
     {
@@ -15,14 +15,5 @@ public class User
         this.lastName = lastName;
     }
 
-    public String getFirstName()
-    {
-        return firstName;
-    }
-
-    public String getLastName()
-    {
-        return lastName;
-    }
 
 }
