@@ -1,11 +1,13 @@
 package com.zxy.demo;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.Observable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.zxy.demo.databinding.ActivityMainBinding;
+import com.zxy.utility.LogUtil;
 
 /**
  * Android Data Binding Library 使用
@@ -32,13 +34,23 @@ import com.zxy.demo.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity
 {
 
+    Observable.OnPropertyChangedCallback mOnPropertyChangedCallback = new Observable.OnPropertyChangedCallback()
+    {
+        @Override
+        public void onPropertyChanged(Observable observable, int i)
+        {
+            LogUtil.e("bool changed:" + observable + " i:" + i);
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         final ActivityMainBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         final User user = new User("final first","final last");
+        user.bool.addOnPropertyChangedCallback(mOnPropertyChangedCallback);
         binding.setUser(user);
+        user.bool.set(false);
         //binding.setPresenter(new Presenter());
         new Handler().postDelayed(new Runnable()
         {
@@ -47,8 +59,18 @@ public class MainActivity extends AppCompatActivity
             {
                 user.setFirstName("ok");
                 user.setLastName("sadadasda");
+                user.bool.set(true);
 
             }
         },1000);
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                user.bool.removeOnPropertyChangedCallback(mOnPropertyChangedCallback);
+                user.bool.set(false);
+            }
+        },2000);
     }
 }

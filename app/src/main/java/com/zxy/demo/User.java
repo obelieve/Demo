@@ -2,6 +2,7 @@ package com.zxy.demo;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.ObservableBoolean;
 
 /**
  * Created by zxy on 2018/8/15 10:10.
@@ -11,6 +12,7 @@ public class User extends BaseObservable
 {
     public   String firstName;
     public String lastName;
+    public ObservableBoolean bool = new ObservableBoolean();
 
     public User(String firstName, String lastName)
     {
@@ -40,4 +42,15 @@ public class User extends BaseObservable
         this.lastName = lastName;
         notifyPropertyChanged(BR.lastName);
     }
+
+    public ObservableBoolean getBool()
+    {
+        return bool;
+    }
+
+    public void setBool(ObservableBoolean bool)
+    {
+        this.bool = bool;
+    }
+
 }
