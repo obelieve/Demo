@@ -2,6 +2,7 @@ package com.zxy.demo;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.zxy.demo.databinding.ActivityMainBinding;
@@ -23,10 +24,10 @@ import com.zxy.demo.databinding.ActivityMainBinding;
  * <item quantity="one">I want to buy a Kindle</item>
  * <item quantity="other">I want to buy some Kindles</item>
  * </plurals>
- * <xliff:g></xliff:g> 表示无需翻译
+ * <xliff:g></xliff:g> 表示数据就是原本的内容
  * 3.UI随着数据更新而更新，使用的数据类型
  * 4.绑定的classes类生成
- * 5.绑定适配器1
+ * 5.绑定适配器
  */
 public class MainActivity extends AppCompatActivity
 {
@@ -35,8 +36,19 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        User user = new User("final first","final last");
+        final ActivityMainBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        final User user = new User("final first","final last");
         binding.setUser(user);
+        //binding.setPresenter(new Presenter());
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                user.setFirstName("ok");
+                user.setLastName("sadadasda");
+
+            }
+        },1000);
     }
 }

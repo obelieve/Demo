@@ -2,26 +2,31 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.zxy.demo.MainActivity">
     <data>
-        <variable name="user" type="com.zxy.demo.User"/>
+        <import type="com.zxy.demo.User" alias="ok"/>
+        <variable name="user" type="ok"/>
+        <variable name="presenter" type="com.zxy.demo.Presenter"/>
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/firstName"
+        <Button
+            android:id="@+id/btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{user.lastName}"/>
+            android:onClick="@{presenter::onSaveClick}"/>
         <TextView
             android:id="@+id/lastName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@{user.firstName}"/>
+        <include layout="@layout/mad"
+                 bind:user="@{user}"/>
     </LinearLayout>
 </layout>
