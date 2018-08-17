@@ -23,7 +23,7 @@ public class User
     private int age;
     @Ignore
     private Bitmap bitmap;
-    //内嵌对象 
+    //内嵌对象 相当于增加属性 street,state,city，如果有重名可以设置prefix前缀
     @Embedded
     private Address address;
 
@@ -65,5 +65,15 @@ public class User
     public void setBitmap(Bitmap bitmap)
     {
         this.bitmap = bitmap;
+    }
+
+    public Address getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress(Address address)
+    {
+        this.address = address;
     }
 }
