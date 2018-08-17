@@ -2,7 +2,9 @@ package com.zxy.demo;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.graphics.Bitmap;
 
 /**
  * Created by zxy on 2018/8/17 09:25.
@@ -17,6 +19,8 @@ public class User
     private String name;
     @ColumnInfo(name = "age")
     private int age;
+    @Ignore
+    private Bitmap bitmap;
 
     public int getId()
     {
@@ -46,5 +50,15 @@ public class User
     public void setAge(int age)
     {
         this.age = age;
+    }
+
+    public Bitmap getBitmap()
+    {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap)
+    {
+        this.bitmap = bitmap;
     }
 }
