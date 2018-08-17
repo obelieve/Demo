@@ -1,6 +1,7 @@
 package com.zxy.demo;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
@@ -22,6 +23,9 @@ public class User
     private int age;
     @Ignore
     private Bitmap bitmap;
+    //内嵌对象 
+    @Embedded
+    private Address address;
 
     public int getId()
     {
