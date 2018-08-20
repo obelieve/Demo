@@ -29,4 +29,13 @@ public class UserNameTuple
     {
         this.name = name;
     }
+
+    @Override
+    public String toString()
+    {
+        return "UserNameTuple{" +
+                "age=" + age +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

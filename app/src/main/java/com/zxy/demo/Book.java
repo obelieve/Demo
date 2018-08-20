@@ -3,13 +3,14 @@ package com.zxy.demo;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
  * Created by zxy on 2018/8/17 09:42.
  */
 //外键 user_id 默认支持级联删除和更新
-@Entity(foreignKeys = {@ForeignKey(entity = User.class,parentColumns = "id",childColumns = "user_id")})
+@Entity(foreignKeys = {@ForeignKey(entity = User.class,parentColumns = "_id",childColumns = "user_id")},indices = @Index("user_id"))
 public class Book
 {
     @PrimaryKey(autoGenerate = true)
@@ -60,5 +61,16 @@ public class Book
     public void setUserId(int userId)
     {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", userId=" + userId +
+                '}';
     }
 }

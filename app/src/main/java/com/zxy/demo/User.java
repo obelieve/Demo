@@ -11,7 +11,7 @@ import android.graphics.Bitmap;
 /**
  * Created by zxy on 2018/8/17 09:25.
  */
-@Entity(tableName = "table_user",indices = {@Index("name"),@Index(value = {"name","age"},unique = true)})
+@Entity(tableName = "table_user",indices = {@Index(value = {"_id"},unique = true)})
 public class User
 {
     @PrimaryKey(autoGenerate = true)
@@ -23,9 +23,16 @@ public class User
     private int age;
     @Ignore
     private Bitmap bitmap;
-    //内嵌对象 相当于增加属性 street,state,city，如果有重名可以设置prefix前缀
+    //内嵌对象 相当于增加属性 street,state,city（如果有重名属性，可以设置prefix前缀）
     @Embedded
     private Address address;
+
+
+    public User(String name, int age)
+    {
+        this.name = name;
+        this.age = age;
+    }
 
     public int getId()
     {
@@ -75,5 +82,17 @@ public class User
     public void setAddress(Address address)
     {
         this.address = address;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", bitmap=" + bitmap +
+                ", address=" + address +
+                '}';
     }
 }
