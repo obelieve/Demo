@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Demo</string>
+    <string name="qimoor_receiver_action">com.m7.imkf.KEFU_NEW_MSG</string>
+    <string name="qimoor_sdk_key">xvQ8vhyxXtMWYuPoixeJAlYvaNdtmkwlgSH4ki0tJKVJPXJb2xb+nM0iXNZJplsM</string>
 </resources>
