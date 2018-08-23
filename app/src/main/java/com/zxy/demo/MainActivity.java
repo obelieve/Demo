@@ -10,7 +10,7 @@ import android.webkit.WebViewClient;
 
 public class MainActivity extends AppCompatActivity
 {
-    public static final String URL = "https://www.baidu.com";
+    public static final String URL = "http://testo2onew.fanwe.net/wap/biz.php?ctl=shop_verify";
     WebView mWV;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity
                 return super.shouldOverrideUrlLoading(view, request);
             }
         });
+        //UserAgent 和网页显示有关系
+        String us = "Mozilla/5.0 (Linux; Android 7.0; FRD-AL10 Build/HUAWEIFRD-AL10; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/62.0.3202.84 Mobile Safari/537.36 fanwe_app_sdk sdk_type/android sdk_version_name/1.0.0 sdk_version/2018031901 sdk_guid/860596034937017 screen_width/1080 screen_height/1794";
+        mWV.getSettings().setUserAgentString(us);
         mWV.loadUrl(URL);
     }
 
