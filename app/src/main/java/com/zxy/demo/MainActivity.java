@@ -1,12 +1,15 @@
 package com.zxy.demo;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.zxy.demo.bind.Bind;
 import com.zxy.demo.bind.ViewInject;
@@ -32,10 +35,16 @@ public class MainActivity extends AppCompatActivity
         initWebViewConfig();
         String url="";
         //url = "http://www.aicchain.co/wap/index.php?";
-        url = "http://www.baidu.com";
+       // url = "http://www.baidu.com";
         //
-        mWebView.loadUrl(url);
-        //mWebView.loadDataWithBaseURL(null,"<html><body><h1>biaosda</h1><p>萨空间打开的金卡</p></body></html>","text/html",null,null);
+        //mWebView.loadUrl(url);
+
+        //js 参数没有var
+        mWebView.loadDataWithBaseURL(null,"<html><script type=\"text/javascript\">   \n" +
+                "function showToast(msg) {       \n" +
+                "    App.showToast(msg);\n" +
+                "     }\n" +
+                "</script><body><h1>biaosda</h1><p>萨空间打开的金卡</p><div><input type=\"button\" value = \"展示Toast\" onClick=\"showToast('好')\"></input></div></body></html>","text/html",null,null);
     }
 
     public class MyWebViewClient extends WebViewClient
@@ -78,6 +87,7 @@ public class MainActivity extends AppCompatActivity
     private void initWebViewConfig()
     {
         initWebViewSettings(mWebView.getSettings());
+        mWebView.addJavascriptInterface(new JsInvoke(this),"App");//addJavascriptInterface 最小支持API 17
         mWebView.setWebViewClient(new MyWebViewClient());
         mWebView.setWebChromeClient(new MyWebChromeClient());
     }
@@ -90,8 +100,8 @@ public class MainActivity extends AppCompatActivity
             databaseDir.mkdir();
         }
         //viewport 设置
-        settings.setUseWideViewPort(true);//使用html viewport提供显示区域
-        settings.setLoadWithOverviewMode(true);//默认自适应内容屏幕
+        //settings.setUseWideViewPort(true);//使用html viewport提供显示区域
+        //settings.setLoadWithOverviewMode(false);//默认自适应内容屏幕
         //设置缩放
         settings.setSupportZoom(true);//是否支持zoom
         settings.setBuiltInZoomControls(true);//手势放大/缩小 控制
@@ -130,5 +140,21 @@ public class MainActivity extends AppCompatActivity
             return;
         }
         super.onBackPressed();
+    }
+
+    class JsInvoke
+    {
+        private Context mContext;
+
+        public JsInvoke(Context con)
+        {
+            this.mContext = con;
+        }
+
+        @JavascriptInterface
+        public void showToast(String msg)
+        {
+            Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+        }
     }
 }
