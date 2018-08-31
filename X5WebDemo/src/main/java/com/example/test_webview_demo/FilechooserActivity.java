@@ -72,6 +72,11 @@ public class FilechooserActivity extends Activity {
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("*/*");
         startActivityForResult(Intent.createChooser(i, "test"), 0);
+
+        /**
+         *         Intent i = new Intent();
+         i.setAction(MediaStore.ACTION_IMAGE_CAPTURE); 调用摄像头
+         */
     }
 
     @Override
