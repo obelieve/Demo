@@ -1,0 +1,22 @@
+<html>
+<script type="text/javascript">
+    function showToast(msg) {
+     App.showToast(msg);
+      }
+  var display=function (){
+            var path=document.getElementById("file_chooser").textContent;
+            document.getElementById("filechooser_display").innerHTML("<b>"+path+"</b>");
+            showToast(path);
+        }
+</script>
+    <body>
+        <h1>biaosda</h1>
+        <p>萨空间打开的金卡</p>
+        <div>
+            <input type="button" value="展示Toast" onClick="showToast('好')">
+        </div>
+        <br>
+        <input class="filechooser" id="file_chooser" type="file" placeholder="file path" onchange="display()" oninput="display()">
+        <br>
+    </body>
+</html>

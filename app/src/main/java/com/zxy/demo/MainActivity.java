@@ -1,21 +1,39 @@
 package com.zxy.demo;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zxy.SystemInfoUtil;
 import com.zxy.demo.bind.Bind;
 import com.zxy.demo.bind.ViewInject;
 import com.zxy.utility.LogUtil;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * 1.issue:
@@ -26,6 +44,8 @@ public class MainActivity extends AppCompatActivity
     @ViewInject(R.id.wv)
     private WebView mWebView;
 
+    ValueCallback<Uri> mValueCallbackAndroid4;
+    ValueCallback<Uri[]> mValueCallbackAndroid5;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -40,11 +60,12 @@ public class MainActivity extends AppCompatActivity
         //mWebView.loadUrl(url);
 
         //js 参数没有var
-        mWebView.loadDataWithBaseURL(null,"<html><script type=\"text/javascript\">   \n" +
-                "function showToast(msg) {       \n" +
-                "    App.showToast(msg);\n" +
-                "     }\n" +
-                "</script><body><h1>biaosda</h1><p>萨空间打开的金卡</p><div><input type=\"button\" value = \"展示Toast\" onClick=\"showToast('好')\"></input></div></body></html>","text/html",null,null);
+//        mWebView.loadDataWithBaseURL(null,"<html><script type=\"text/javascript\">   \n" +
+//                "function showToast(msg) {       \n" +
+//                "    App.showToast(msg);\n" +
+//                "     }\n" +
+//                "</script><body><h1>biaosda</h1><p>萨空间打开的金卡</p><div><input type=\"button\" value = \"展示Toast\" onClick=\"showToast('好')\"></input></div></body></html>","text/html",null,null);
+        mWebView.loadUrl("file:///android_asset/text.html");
     }
 
     public class MyWebViewClient extends WebViewClient
@@ -81,8 +102,171 @@ public class MainActivity extends AppCompatActivity
             LogUtil.e(""+newProgress);
         }
 
+        // For Android  > 4.1.1
+        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture)
+        {
+            mValueCallbackAndroid4 = uploadMsg;
+            selectFile(MainActivity.this);
+        }
+
+        // For Android >5.0
+        @Override
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams)
+        {
+            mValueCallbackAndroid5 = filePathCallback;
+            selectFile(MainActivity.this);
+            return true;
+        }
+    }
+
+    private String mCameraPicturePath;//拍照图片
+
+    public void selectFile(Context context)
+    {
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .create();
+
+        TextView tvTakePicture = new TextView(context);
+        tvTakePicture.setTextSize(30);
+        tvTakePicture.setText("拍照");
+        TextView tvAlbum = new TextView(context);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 30, 0, 0);
+        tvAlbum.setLayoutParams(params);
+        tvAlbum.setTextSize(30);
+        tvAlbum.setText("相册");
+
+        tvTakePicture.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                File file = new File(getExternalCacheDir() + "/" + DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg");
+                mCameraPicturePath = file.getPath();
+                Intent intent = IntentUtil.takePicture();
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+                startActivityForResult(intent, 0);
+                dialog.dismiss();
+            }
+        });
+        tvAlbum.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                startActivityForResult(IntentUtil.selectPicture(), 1);
+                dialog.dismiss();
+            }
+        });
+        LinearLayout linearLayout = new LinearLayout(context);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.addView(tvTakePicture);
+        linearLayout.addView(tvAlbum);
+
+        dialog.setView(linearLayout);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case 0://拍照
+                if (mCameraPicturePath != null && resultCode == Activity.RESULT_OK)
+                {
+                    File file = new File(mCameraPicturePath);
+                    FileOutputStream out = null;
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeFile(mCameraPicturePath, options);
+                    if (options.outWidth > SystemInfoUtil.screenWidth(this))
+                    {
+                        options.inSampleSize = options.outWidth / SystemInfoUtil.screenWidth(this);
+                    }
+                    options.inJustDecodeBounds = false;
+
+                    Bitmap bitmap = BitmapFactory.decodeFile(mCameraPicturePath, options);
+                    try
+                    {
+                        out = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                    } catch (FileNotFoundException e)
+                    {
+                        e.printStackTrace();
+                        htmlReceiveValue(null);
+                        return;
+                    } finally
+                    {
+                        if (bitmap != null)
+                        {
+                            bitmap.recycle();
+                        }
+                        if (out != null)
+                        {
+                            try
+                            {
+                                out.close();
+                            } catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                        mCameraPicturePath = null;
+                    }
+                    htmlReceiveValue(Uri.fromFile(file));
+                } else
+                {
+                    htmlReceiveValue(null);
+                }
+                htmlValueCallbackNull();
+                break;
+            case 1://相册
+                htmlReceiveValue(data!=null?data.getData():null);
+                htmlValueCallbackNull();
+                break;
+        }
+    }
+
+    /**
+     * 网页接收数据
+     *
+     * @param uri
+     */
+    public void htmlReceiveValue(Uri uri)
+    {
+        if (mValueCallbackAndroid4 != null)
+        {
+            mValueCallbackAndroid4.onReceiveValue(uri);
+        } else if (mValueCallbackAndroid5 != null)
+        {
+            if(uri==null){
+                mValueCallbackAndroid5.onReceiveValue(new Uri[]{});
+            }else{
+                mValueCallbackAndroid5.onReceiveValue(new Uri[]{uri});
+            }
+        }
+    }
+
+    /**
+     * 清空ValueCallback
+     */
+    public void htmlValueCallbackNull()
+    {
+        if (mValueCallbackAndroid4 != null)
+        {
+            mValueCallbackAndroid4 = null;
+        } else if (mValueCallbackAndroid5 != null)
+        {
+            mValueCallbackAndroid5 = null;
+        }
+    }
+
 
     private void initWebViewConfig()
     {
@@ -117,7 +301,7 @@ public class MainActivity extends AppCompatActivity
         //设置DB
         settings.setDatabaseEnabled(true);
         settings.setDatabasePath(databaseDir.getAbsolutePath());
-        //设置地理位置DB
+        //设置地理位置DBgit
         settings.setGeolocationEnabled(true);
         settings.setGeolocationDatabasePath(databaseDir.getAbsolutePath());
         //设置APPCache
