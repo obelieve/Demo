@@ -62,8 +62,8 @@ public class FilechooserActivity extends Activity {
 
         });
 
-//        webView.loadUrl("file:///android_asset/webpage/fileChooser.html");
-        webView.loadUrl("http://www.aicchain.co/wap/index.php?");
+        webView.loadUrl("file:///android_asset/webpage/fileChooser.html");
+       // webView.loadUrl("http://www.aicchain.co/wap/index.php?");
 
     }
 
