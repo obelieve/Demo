@@ -14,7 +14,8 @@ import com.zxy.utility.LogUtil;
  * 4.通过scrollBy在基础上再进行滚动，scrollTo直接滚动；
  * 5.Scroller ->提供滚动的变化值，来调用；
  * 6.VelocityTracker 提供了速率，来进行 fling效果，也就是说事件后可以再滑动；
- * 7.ViewConfigure提供了一个Slop和Velocity的默认值来判断滚动距离和速度；
+ * 7.ViewConfigure提供了一个Slop和Velocity的默认值来判断滚动距离和速度；根据返回的速率为正数还是负数来判断滑动方向,大于0向右滑动,反之向左。
+ * 8.event.getEventTime()事件发生的时间（包括DOWN,MOVE,UP等事件），event.getDownTime()（只有点击事件）点击事件的时间，时间是系统开机到现在的毫秒事件时间
  */
 public class MainActivity extends AppCompatActivity
 {
