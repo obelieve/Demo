@@ -7,7 +7,7 @@ import android.view.View;
 import com.zxy.utility.LogUtil;
 
 /**
- * Scroll 视图的滚动
+ * Scroll 视图的滚动，滚动就是canvas的平移操作(x,y) -> (x-mScrollX,y-mScrollY)
  * 1.坐标系(0,0)，所有的滚动都相对于坐标系
  * 2.视图绘制：1.绘制背景；2.绘制内容；3.绘制子视图；4.绘制褪色效果；5.绘制额外的区域，滚动条等；
  * 3.滚动通过位移产生，canvas.translate(x-sx,y-sy);sx,sy为mScrollX,mScrollY 所以mScrollX<0向右滚，mScrollX>0向左滚；mScrollY<0向下滚，mScrollY>0向上滚
