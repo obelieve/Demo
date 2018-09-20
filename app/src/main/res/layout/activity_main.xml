@@ -5,10 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.zxy.demo.MainActivity">
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"/>
+
+    <com.zxy.demo.GestureView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#881">
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#198"/>
+    </com.zxy.demo.GestureView>
+    <com.zxy.demo.VelocityView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#381"/>
 </LinearLayout>

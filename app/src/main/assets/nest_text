@@ -1,0 +1,75 @@
+cat-file(1)
+===============
+
+NAME
+----
+git-cat-file - Provide content or type and size information for repository objects
+
+
+SYNOPSIS
+--------
+[verse]
+'git cat-file' (-t [--allow-unknown-type]| -s [--allow-unknown-type]| -e | -p | <type> | --textconv | --filters ) [--path=<path>] <object>
+'git cat-file' (--batch | --batch-check) [ --textconv | --filters ] [--follow-symlinks]
+
+DESCRIPTION
+-----------
+In its first form, the command provides the content or the type of an object in
+the repository. The type is required unless `-t` or `-p` is used to find the
+object type, or `-s` is used to find the object size, or `--textconv` or
+`--filters` is used (which imply type "blob").
+
+In the second form, a list of objects (separated by linefeeds) is provided on
+stdin, and the SHA-1, type, and size of each object is printed on stdout. The
+output format can be overridden using the optional `<format>` argument. If
+either `--textconv` or `--filters` was specified, the input is expected to
+list the object names followed by the path name, separated by a single white
+space, so that the appropriate drivers can be determined.
+
+OPTIONS
+-------
+<object>::
+	The name of the object to show.
+	For a more complete list of ways to spell object names, see
+	the "SPECIFYING REVISIONS" section in linkgit:gitrevisions[7].
+
+-t::
+	Instead of the content, show the object type identified by
+	<object>.
+
+-s::
+	Instead of the content, show the object size identified by
+	<object>.
+
+-e::
+	Exit with zero status if <object> exists and is a valid
+	object. If <object> is of an invalid format exit with non-zero and
+	emits an error on stderr.
+
+-p::
+	Pretty-print the contents of <object> based on its type.
+
+<type>::
+	Typically this matches the real type of <object> but asking
+	for a type that can trivially be dereferenced from the given
+	<object> is also permitted.  An example is to ask for a
+	"tree" with <object> being a commit object that contains it,
+	or to ask for a "blob" with <object> being a tag object that
+	points at it.
+
+--textconv::
+	Show the content as transformed by a textconv filter. In this case,
+	<object> has to be of the form <tree-ish>:<path>, or :<path> in
+	order to apply the filter to the content recorded in the index at
+	<path>.
+
+--filters::
+	Show the content as converted by the filters configured in
+	the current working tree for the given <path> (i.e. smudge filters,
+	end-of-line conversion, etc). In this case, <object> has to be of
+	the form <tree-ish>:<path>, or :<path>.
+
+--path=<path>::
+	For use with --textconv or --filters, to allow specifying an object
+	name and a path separately, e.g. when it is difficult to figure out
+	the revision from which the blob came.
