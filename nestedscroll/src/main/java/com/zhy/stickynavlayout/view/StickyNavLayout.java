@@ -65,7 +65,9 @@ public class StickyNavLayout extends LinearLayout implements NestedScrollingPare
     private int TOP_CHILD_FLING_THRESHOLD = 3;
     @Override
     public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed)
+    //子view 有一个fling，并且到达了子view的边缘位置，然后这个fling可以传递父View进行操作
     {
+        Log.e(TAG, "onNestedFling" + "target:" + target + " velocityX:" + velocityX + " velocityY:" + velocityY + " consumed:" + consumed);
         //如果是recyclerView 根据判断第一个元素是哪个位置可以判断是否消耗
         //这里判断如果第一个元素的位置是大于TOP_CHILD_FLING_THRESHOLD的
         //认为已经被消耗，在animateScroll里不会对velocityY<0时做处理
@@ -75,7 +77,8 @@ public class StickyNavLayout extends LinearLayout implements NestedScrollingPare
             final int childAdapterPosition = recyclerView.getChildAdapterPosition(firstChild);
             consumed = childAdapterPosition > TOP_CHILD_FLING_THRESHOLD;
         }
-        if (!consumed) {
+        if (!consumed)
+        {//根据速度算出需要滑动的时间，然后通过属性动画调用scrollTo进行滚动
             animateScroll(velocityY, computeDuration(0),consumed);
         } else {
             animateScroll(velocityY, computeDuration(velocityY),consumed);
@@ -105,18 +108,18 @@ public class StickyNavLayout extends LinearLayout implements NestedScrollingPare
     private int computeDuration(float velocityY) {
         final int distance;
         if (velocityY > 0) {
-            distance = Math.abs(mTop.getHeight() - getScrollY());
+            distance = Math.abs(mTop.getHeight() - getScrollY());//当前View顶部和mTop底部的距离
         } else {
-            distance = Math.abs(mTop.getHeight() - (mTop.getHeight() - getScrollY()));
+            distance = Math.abs(mTop.getHeight() - (mTop.getHeight() - getScrollY()));//当前View顶部和View消失的部分距离
         }
 
 
         final int duration;
         velocityY = Math.abs(velocityY);
         if (velocityY > 0) {
-            duration = 3 * Math.round(1000 * (distance / velocityY));
+            duration = 3 * Math.round(1000 * (distance / velocityY));//秒数*3
         } else {
-            final float distanceRatio = (float) distance / getHeight();
+            final float distanceRatio = (float) distance / getHeight();//最小150 ms，最大应该不大于300ms
             duration = (int) ((distanceRatio + 1) * 150);
         }
 
@@ -134,6 +137,7 @@ public class StickyNavLayout extends LinearLayout implements NestedScrollingPare
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     if (animation.getAnimatedValue() instanceof Integer) {
+                        Log.e(TAG, "anim:" + (Integer) animation.getAnimatedValue());
                         scrollTo(0, (Integer) animation.getAnimatedValue());
                     }
                 }
@@ -143,12 +147,15 @@ public class StickyNavLayout extends LinearLayout implements NestedScrollingPare
         }
         mOffsetAnimator.setDuration(Math.min(duration, 600));
 
-        if (velocityY >= 0) {
+        if (velocityY >= 0)
+        {//向下滚动，不管有没有消费父View都要滚动
             mOffsetAnimator.setIntValues(currentOffset, topHeight);
             mOffsetAnimator.start();
-        }else {
+        } else
+        {//向上滚动
             //如果子View没有消耗down事件 那么就让自身滑倒0位置
             if(!consumed){
+                //子View没有消费就进行滚动处理；
                 mOffsetAnimator.setIntValues(currentOffset, 0);
                 mOffsetAnimator.start();
             }
@@ -156,9 +163,9 @@ public class StickyNavLayout extends LinearLayout implements NestedScrollingPare
         }
     }
 
-    private View mTop;
-    private View mNav;
-    private ViewPager mViewPager;
+    private View mTop;//计算高度和滚动动画持续时间
+    private View mNav;//
+    private ViewPager mViewPager;//
 
     private int mTopViewHeight;
 
@@ -309,16 +316,16 @@ public class StickyNavLayout extends LinearLayout implements NestedScrollingPare
         {
             y = mTopViewHeight;
         }
-        if (y != getScrollY())
+        if (y != getScrollY())//如果y ==getScrollY() 就不用滚动了
         {
             super.scrollTo(x, y);
         }
     }
 
     @Override
-    public void computeScroll()
+    public void computeScroll()//平滑滚动
     {
-        if (mScroller.computeScrollOffset())
+        if (mScroller.computeScrollOffset())//判断scroll offset 是否计算完成，Y->调用scrollTo方法，N->表示还未计算完成距离
         {
             scrollTo(0, mScroller.getCurrY());
             invalidate();
