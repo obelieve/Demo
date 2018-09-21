@@ -7,10 +7,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zxy.demo.MainActivity">
-
+    <com.zxy.demo.StickyLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_launcher"
+            android:background="#193"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#918">
+        </android.support.v7.widget.RecyclerView>
+    </com.zxy.demo.StickyLayout>
     <com.zxy.demo.GestureView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="1dp"
         android:background="#881">
         <TextView
             android:id="@+id/tv"
@@ -20,6 +34,6 @@
     </com.zxy.demo.GestureView>
     <com.zxy.demo.VelocityView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="1dp"
         android:background="#381"/>
 </LinearLayout>
