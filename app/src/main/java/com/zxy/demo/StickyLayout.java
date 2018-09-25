@@ -1,13 +1,17 @@
 package com.zxy.demo;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.NestedScrollingChildHelper;
 import android.support.v4.view.NestedScrollingParent;
 import android.support.v4.view.NestedScrollingParentHelper;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
 import com.zxy.utility.LogUtil;
@@ -21,6 +25,7 @@ public class StickyLayout extends LinearLayout  implements NestedScrollingParent
     private int mTopHeight;
     NestedScrollingParentHelper mParentHelper;
     NestedScrollingChildHelper mChildHelper;
+    ValueAnimator mValueAnimator;
     public StickyLayout(Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
@@ -84,7 +89,10 @@ public class StickyLayout extends LinearLayout  implements NestedScrollingParent
             consumed[1] = dy;
             return;
         }
-        if (dy < 0 && getScrollY() > 0)
+        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) target;
+        RecyclerView recyclerView = (RecyclerView) swipeRefreshLayout.getChildAt(0);
+        View firstChild = recyclerView.getChildAt(0);
+        if (dy < 0 && getScrollY() > 0 && recyclerView.getChildAdapterPosition(firstChild) == 0)
         {
             if (dy < -getScrollY())
             {
@@ -101,8 +109,54 @@ public class StickyLayout extends LinearLayout  implements NestedScrollingParent
     @Override
     public boolean onNestedFling(@NonNull View target, float velocityX, float velocityY, boolean consumed)
     {
+        if (velocityY == 0)
+            return false;
+        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) target;
+        RecyclerView recyclerView = (RecyclerView) swipeRefreshLayout.getChildAt(0);
+        View firstChild = recyclerView.getChildAt(0);
+        if ((velocityY < 0 && recyclerView.getChildAdapterPosition(firstChild) <= 3) || velocityY > 0)
+        {
+            animalScroll(velocityY);
+            return true;
+        }
         return false;
     }
+
+    public void animalScroll(float velocityY)
+    {
+        if (mValueAnimator == null)
+        {
+            mValueAnimator = new ValueAnimator();
+            mValueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+            mValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
+            {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation)
+                {
+                    scrollTo(0, (Integer) animation.getAnimatedValue());
+                }
+            });
+        }
+        if (mValueAnimator.isRunning())
+        {
+            mValueAnimator.cancel();
+        }
+        float distance = 0;
+        if (velocityY > 0)
+        {
+            distance = getScrollY();
+            mValueAnimator.setIntValues(getScrollY(), mTopHeight);
+        } else
+        {
+            distance = mTopHeight - getScrollY();
+            mValueAnimator.setIntValues(getScrollY(), 0);
+        }
+        int time = (int) (5 * (1000 * Math.abs(distance) / Math.abs(velocityY)));
+        time = Math.min(time, 600);
+        mValueAnimator.setDuration(time);
+        mValueAnimator.start();
+    }
+
 
     @Override
     public boolean onNestedPreFling(@NonNull View target, float velocityX, float velocityY)

@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFl = (FrameLayout) findViewById(R.id.fl_content);
-        startFragment(new ScrollFragment());
+        startFragment(new NestedFragment());
     }
 
 
