@@ -7,11 +7,13 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.OverScroller;
@@ -76,11 +78,13 @@ public class StickyNavLayout extends LinearLayout implements NestedScrollingPare
             final View firstChild = recyclerView.getChildAt(0);
             final int childAdapterPosition = recyclerView.getChildAdapterPosition(firstChild);
             consumed = childAdapterPosition > TOP_CHILD_FLING_THRESHOLD;
+            Log.e("AAAAA","consumed:"+consumed+" childAdapterPosition:"+childAdapterPosition);
         }
         if (!consumed)
         {//根据速度算出需要滑动的时间，然后通过属性动画调用scrollTo进行滚动
             animateScroll(velocityY, computeDuration(0),consumed);
         } else {
+            Log.e("AAAAA","消费");
             animateScroll(velocityY, computeDuration(velocityY),consumed);
         }
         return true;
@@ -98,33 +102,6 @@ public class StickyNavLayout extends LinearLayout implements NestedScrollingPare
     {
         Log.e(TAG, "getNestedScrollAxes");
         return 0;
-    }
-
-    /**
-     * 根据速度计算滚动动画持续时间
-     * @param velocityY
-     * @return
-     */
-    private int computeDuration(float velocityY) {
-        final int distance;
-        if (velocityY > 0) {
-            distance = Math.abs(mTop.getHeight() - getScrollY());//当前View顶部和mTop底部的距离
-        } else {
-            distance = Math.abs(mTop.getHeight() - (mTop.getHeight() - getScrollY()));//当前View顶部和View消失的部分距离
-        }
-
-
-        final int duration;
-        velocityY = Math.abs(velocityY);
-        if (velocityY > 0) {
-            duration = 3 * Math.round(1000 * (distance / velocityY));//秒数*3
-        } else {
-            final float distanceRatio = (float) distance / getHeight();//最小150 ms，最大应该不大于300ms
-            duration = (int) ((distanceRatio + 1) * 150);
-        }
-
-        return duration;
-
     }
 
     private void animateScroll(float velocityY, final int duration,boolean consumed) {
@@ -147,13 +124,14 @@ public class StickyNavLayout extends LinearLayout implements NestedScrollingPare
         }
         mOffsetAnimator.setDuration(Math.min(duration, 600));
 
-        if (velocityY >= 0)
-        {//向下滚动，不管有没有消费父View都要滚动
+        if (velocityY >= 0) //根据属性动画，缓慢地向上滑动
+        {
+            Log.e("AAAAA","currentOffset:"+currentOffset+" topHeight:"+topHeight);
             mOffsetAnimator.setIntValues(currentOffset, topHeight);
             mOffsetAnimator.start();
         } else
-        {//向上滚动
-            //如果子View没有消耗down事件 那么就让自身滑倒0位置
+        {
+            //根据属性动画，如果没有消费，缓慢地向下滑动, consumed==false ->只有 velocityY<0,并且firstChildAdapterPosition<3,才会满足条件滑动
             if(!consumed){
                 //子View没有消费就进行滚动处理；
                 mOffsetAnimator.setIntValues(currentOffset, 0);
@@ -161,6 +139,37 @@ public class StickyNavLayout extends LinearLayout implements NestedScrollingPare
             }
 
         }
+    }
+
+    /**
+     * 根据速度和需要滑动的距离，计算滚动动画持续时间
+     * @param velocityY
+     * @return
+     */
+    private int computeDuration(float velocityY) {
+        final int distance;
+        DisplayMetrics dms = new DisplayMetrics();
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(dms);
+        //Log.e("AAAAA", "velocityY:" + velocityY + " top_h:" + mTop.getHeight() + " scrollY:" + getScrollY()+" getHeight():"+ getHeight()+" dm_H:"+dms.heightPixels+" "+dms.widthPixels+" "+dms.densityDpi+" "+dms.density);
+        if (velocityY > 0) {
+            distance = Math.abs(mTop.getHeight() - getScrollY());//当前View顶部和mTop底部的距离
+        } else {
+            distance = Math.abs(mTop.getHeight() - (mTop.getHeight() - getScrollY()));//当前View顶部和View消失的部分距离
+        }
+
+
+        final int duration;
+        velocityY = Math.abs(velocityY);
+        if (velocityY > 0) {
+            duration = 3 * Math.round(1000 * (distance / velocityY));//秒数*3     也就是向上滑动的时候，持续时间比较长
+        } else {
+            final float distanceRatio = (float) distance / getHeight();//最小150 ms，最大应该不大于300ms   也就是向下滑动的持续时间，比较短
+            duration = (int) ((distanceRatio + 1) * 150);
+        }
+
+        return duration;
+
     }
 
     private View mTop;//计算高度和滚动动画持续时间
