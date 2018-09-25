@@ -3,7 +3,9 @@ package com.zxy.demo;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.NestedScrollingChildHelper;
 import android.support.v4.view.NestedScrollingParent;
+import android.support.v4.view.NestedScrollingParentHelper;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,14 +16,17 @@ import com.zxy.utility.LogUtil;
  * Created by zxy on 2018/9/21 11:40.
  */
 
-public class StickyLayout extends LinearLayout implements NestedScrollingParent
+public class StickyLayout extends LinearLayout  implements NestedScrollingParent
 {
     private int mTopHeight;
-
+    NestedScrollingParentHelper mParentHelper;
+    NestedScrollingChildHelper mChildHelper;
     public StickyLayout(Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
         setOrientation(VERTICAL);
+        mParentHelper = new NestedScrollingParentHelper(this);
+        mChildHelper = new NestedScrollingChildHelper(this);
     }
 
     @Override
@@ -50,19 +55,18 @@ public class StickyLayout extends LinearLayout implements NestedScrollingParent
     @Override
     public void onNestedScrollAccepted(@NonNull View child, @NonNull View target, int axes)
     {
-
+        mParentHelper.onNestedScrollAccepted(child,target,axes);
     }
 
     @Override
     public void onStopNestedScroll(@NonNull View target)
     {
-
+        mParentHelper.onStopNestedScroll(target);
     }
 
     @Override
     public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed)
     {
-
     }
 
     @Override
@@ -82,9 +86,9 @@ public class StickyLayout extends LinearLayout implements NestedScrollingParent
         }
         if (dy < 0 && getScrollY() > 0)
         {
-            if (dy < -mTopHeight)
+            if (dy < -getScrollY())
             {
-                dy = -mTopHeight;
+                dy = -getScrollY();
             }
             LogUtil.e("scroll " + "dx:" + dx + " dy:" + dy);
             scrollBy(0, dy);
@@ -97,18 +101,18 @@ public class StickyLayout extends LinearLayout implements NestedScrollingParent
     @Override
     public boolean onNestedFling(@NonNull View target, float velocityX, float velocityY, boolean consumed)
     {
-        return true;
+        return false;
     }
 
     @Override
     public boolean onNestedPreFling(@NonNull View target, float velocityX, float velocityY)
     {
-        return true;
+        return false;
     }
 
     @Override
     public int getNestedScrollAxes()
     {
-        return 0;
+        return mParentHelper.getNestedScrollAxes();
     }
 }

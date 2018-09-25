@@ -2,12 +2,14 @@ package com.zxy.demo;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -44,6 +46,16 @@ public class MainActivity extends AppCompatActivity
             public int getItemCount()
             {
                 return mStrings.length;
+            }
+        });
+        final SwipeRefreshLayout srl = (SwipeRefreshLayout) findViewById(R.id.srl);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+            @Override
+            public void onRefresh()
+            {
+                Toast.makeText(MainActivity.this, "上课讲话", Toast.LENGTH_SHORT).show();
+                srl.setRefreshing(false);
             }
         });
     }
