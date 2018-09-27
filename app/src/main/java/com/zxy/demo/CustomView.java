@@ -6,9 +6,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Scroller;
+
+import com.zxy.utility.LogUtil;
 
 /**
  * Created by zxy on 2018/9/14 09:55.
@@ -21,6 +25,8 @@ public class CustomView extends View
 
     {
         mScroller = new Scroller(getContext());
+        mScroller.startScroll(0, 0, 300, 0, 9000);
+        invalidate();
     }
 
     public CustomView(Context context)
@@ -47,7 +53,10 @@ public class CustomView extends View
         mPaint.setColor(Color.RED);
         mPaint.setAntiAlias(true);
         canvas.drawColor(Color.GRAY);
-        canvas.drawCircle(0, 0, 20.f, mPaint);
+        DisplayMetrics dm = new DisplayMetrics();
+        ((WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(dm);
+        canvas.drawCircle(dm.widthPixels/2, dm.heightPixels/2, 100.f, mPaint);
+
     }
 
     private float mStartX;
@@ -59,10 +68,16 @@ public class CustomView extends View
     @Override
     public void computeScroll()
     {
+        if (mScroller.computeScrollOffset())
+        {
+            LogUtil.e("scrollOffset:StartX" + mScroller.getStartX() + " StartY:" + mScroller.getStartY()
+                    + "\n CurVelocity:" + mScroller.getCurrVelocity()
+                    + "\n CurX:" + mScroller.getCurrX() + " CurY:" + mScroller.getCurrY()
+                    + "\n FinalX:" + mScroller.getFinalX() + " FinalY:" + mScroller.getFinalY()
+                    + "\n dura:" + mScroller.getDuration());
+            scrollTo(-mScroller.getCurrX(),mScroller.getCurrY());
+        }
         super.computeScroll();
-//        if(mScroller.computeScrollOffset()){
-//
-//        }
     }
 
     @Override
@@ -71,30 +86,17 @@ public class CustomView extends View
 
         mStartX = event.getX();
         mStartY = event.getY();
-        //scrollBy((int)mStartX,(int)mStartY);
-//                invalidate();
-//                scrollTo(10,10);
-        scrollTo(-(int)mStartX,-(int)mStartY);
         switch (event.getAction())
         {
             case MotionEvent.ACTION_DOWN:
 
-//                LogUtil.e("RawX:"+event.getRawX()+" RawY:"+event.getRawY());
-//                LogUtil.e("StartX:"+mStartX+" StartY:"+mStartY);
                 break;
             case MotionEvent.ACTION_MOVE:
-//                mEndX = event.getX();
-//                mEndY = event.getY();
-//                int x = -(int) (mEndX - mStartX);
-//                int y = -(int) (mEndY - mStartY);
-//                scrollBy(x, y);
-//                LogUtil.e("x:" + x + " y:" + y);
                 break;
             case MotionEvent.ACTION_UP:
 
                 break;
         }
-//        return super.onTouchEvent(event);
         return true;
     }
 }
