@@ -1,14 +1,14 @@
 package com.zxy.demo;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.Random;
 
 /**
  * Created by zxy on 2018/10/12 09:23.
@@ -16,28 +16,33 @@ import android.widget.TextView;
 
 public class HeadLinesActivity extends Activity
 {
-    LinearLayout linear;
-    int i = 0;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_head_lines);
-        LinearLayout linear = (LinearLayout) findViewById(R.id.ll_content);
-        final TextView tv = (TextView) findViewById(R.id.tv);
-        tv.setText("ok");
-        new Handler().postDelayed(new Runnable()
+        DeviceInfoUtil.init(this);
+        FlowLayout fl = (FlowLayout) findViewById(R.id.fl);
+        for (int i = 0; i < 15; i++)
         {
-            @Override
-            public void run()
-            {
-                i++;
-                tv.setText("djkajak啊打开即可:" + i + "");
-                new Handler().postDelayed(this, 1000);
-            }
-        }, 1000);
-        View view = LayoutInflater.from(this).inflate(R.layout.replace, linear,true);
-//        linear.addView(view);
+            fl.addView(getFrameLayout());
+        }
+    }
+
+    public FrameLayout getFrameLayout()
+    {
+        FrameLayout fl = new FrameLayout(this);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        fl.setLayoutParams(params);
+        FrameLayout.LayoutParams flParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        int spacing = DeviceInfoUtil.dpToPx(5);
+        //flParams.setMargins(spacing, spacing + spacing, spacing + spacing, spacing);
+        TextView tv = new TextView(this);
+        tv.setLayoutParams(flParams);
+        tv.setPadding(spacing, spacing + spacing, spacing + spacing, spacing);
+        tv.setBackgroundColor(Color.parseColor("#A2B6CA"));
+        tv.setText(new Random().nextInt(1000) + ":其");
+        fl.addView(tv);
+        return fl;
     }
 }

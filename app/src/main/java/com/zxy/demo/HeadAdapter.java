@@ -44,7 +44,7 @@ public class HeadAdapter extends BaseAdapter
         if (convertView == null)
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_text, parent, false);
         TextView tv = (TextView) view.findViewById(R.id.tv);
-        tv.setText(mList.get(position));
+        tv.setText(mList.get(position)+(position!=0?"":"卡萨\n帝景看见企鹅及\n其阿胶起哦阿\n胶企鹅减轻饥饿前饿哦j\no前精品景区"));
         return view;
     }
 }
