@@ -17,10 +17,10 @@ public class FlowLayout extends ViewGroup
 {
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
-    private int horizontalSpacing = 0;
-    private int verticalSpacing = 0;
-    private int orientation = 0;
-    private boolean debugDraw = false;
+    private int horizontalSpacing = 0;  //如果子View没有指定，就使用该值设置水平间距
+    private int verticalSpacing = 0;    //如果子View没有指定，就使用该值设置垂直间距
+    private int orientation = 0;        //设置子View的方向
+    private boolean debugDraw = false;  //设置调试子View信息
 
     public FlowLayout(Context context)
     {
@@ -46,6 +46,34 @@ public class FlowLayout extends ViewGroup
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
+        /**
+         * 1.sizeWidth sizeHeight 获取 父View的尺寸
+         * 2.modeWidth modeHeight 获取 父View的模式  EXACTLY AT_MOST UNSPECIFIED
+         * 3.this.orientation 水平或垂直方向
+         * 4.size  根据orientation H  获取 width ->size   V 获取 height -> size
+         *   mode  根据orientation H  获取 width ->mode   V 获取 height -> mode
+         *
+         * 5.lineThicknessWithSpacing 行高+行间距
+         * 6.lineThickness 行高
+         * 7.lineLengthWithSpacing 行长度+行间距
+         * 8.lineLength 行长度
+         *
+         * 9.prevLinePosition 预先行位置
+         * 10.controlMaxLength 最大长度
+         * 12.controlMaxThickness 最大高度
+         * {子View
+         *     hSpacing获取水平的间距
+         *     vSpacing获取垂直的间距
+         *     childWidth获取宽
+         *     childHeight获取高
+         *
+         *     childLength获取子View长度
+         *     childThickness获取子View高度
+         *     spacingLength获取水平间距
+         *     spacingThickness获取垂直间距
+         * }
+         */
+
         int sizeWidth = MeasureSpec.getSize(widthMeasureSpec) - this.getPaddingRight() - this.getPaddingLeft();
         int sizeHeight = MeasureSpec.getSize(heightMeasureSpec) - this.getPaddingTop() - this.getPaddingBottom();
 
@@ -101,19 +129,20 @@ public class FlowLayout extends ViewGroup
              * 3.2 如果子View MATCH_PATCH   ->size = 0          UNSPECIFIED
              * 3.3 如果子View WRAP_CONTENT  ->size = 0          UNSPECIFIED
              */
+            //1.计算子View
             child.measure(getChildMeasureSpec(widthMeasureSpec, this.getPaddingLeft() + this.getPaddingRight(), lp.width),
                     getChildMeasureSpec(heightMeasureSpec, this.getPaddingTop() + this.getPaddingBottom(), lp.height));
-
+            //2.获取h v的边距
             int hSpacing = this.getHorizontalSpacing(lp);
             int vSpacing = this.getVerticalSpacing(lp);
-
+            //3.获取子View 宽高
             int childWidth = child.getMeasuredWidth();
             int childHeight = child.getMeasuredHeight();
 
-            int childLength;
-            int childThickness;
-            int spacingLength;
-            int spacingThickness;
+            int childLength;//子View长度
+            int childThickness;//子View 高度
+            int spacingLength;//子View 水平间距
+            int spacingThickness;//子View 垂直间距
 
             if (orientation == HORIZONTAL)
             {
@@ -128,13 +157,14 @@ public class FlowLayout extends ViewGroup
                 spacingLength = vSpacing;
                 spacingThickness = hSpacing;
             }
-
+            //当前每行的长度
             lineLength = lineLengthWithSpacing + childLength;
+            //当前每行的长度和间距
             lineLengthWithSpacing = lineLength + spacingLength;
-
+            //是否切换新行
             boolean newLine = lp.newLine || (mode != MeasureSpec.UNSPECIFIED && lineLength > size);
             if (newLine)
-            {
+            {//在新行设置时，设置行高和行间距的值
                 prevLinePosition = prevLinePosition + lineThicknessWithSpacing;
 
                 lineThickness = childThickness;
@@ -142,7 +172,7 @@ public class FlowLayout extends ViewGroup
                 lineThicknessWithSpacing = childThickness + spacingThickness;
                 lineLengthWithSpacing = lineLength + spacingLength;
             }
-
+            //设置行高，对每行中的子View 取出最高的行高和行间距
             lineThicknessWithSpacing = Math.max(lineThicknessWithSpacing, childThickness + spacingThickness);
             lineThickness = Math.max(lineThickness, childThickness);
 
@@ -157,9 +187,11 @@ public class FlowLayout extends ViewGroup
                 posX = getPaddingLeft() + prevLinePosition;
                 posY = getPaddingTop() + lineLength - childHeight;
             }
+            //设置子View当前的位置
             lp.setPosition(posX, posY);
-
+            //更新当前最大的长度
             controlMaxLength = Math.max(controlMaxLength, lineLength);
+            //更新当前最大的高度
             controlMaxThickness = prevLinePosition + lineThickness;
         }
 
@@ -225,7 +257,7 @@ public class FlowLayout extends ViewGroup
     protected boolean drawChild(Canvas canvas, View child, long drawingTime)
     {
         boolean more = super.drawChild(canvas, child, drawingTime);
-        this.drawDebugInfo(canvas, child);
+        this.drawDebugInfo(canvas, child);//调试UI使用
         return more;
     }
 
@@ -280,14 +312,14 @@ public class FlowLayout extends ViewGroup
         Paint newLinePaint = this.createPaint(0xffff0000);
 
         LayoutParams lp = (LayoutParams) child.getLayoutParams();
-
+        //用于绘制子View 间距的线,类似 “->”符号
         if (lp.horizontalSpacing > 0)
         {
             float x = child.getRight();
             float y = child.getTop() + child.getHeight() / 2.0f;
-            canvas.drawLine(x, y, x + lp.horizontalSpacing, y, childPaint);
-            canvas.drawLine(x + lp.horizontalSpacing - 4.0f, y - 4.0f, x + lp.horizontalSpacing, y, childPaint);
-            canvas.drawLine(x + lp.horizontalSpacing - 4.0f, y + 4.0f, x + lp.horizontalSpacing, y, childPaint);
+            canvas.drawLine(x, y, x + lp.horizontalSpacing, y, childPaint);//绘制线 "-"
+            canvas.drawLine(x + lp.horizontalSpacing - 4.0f, y - 4.0f, x + lp.horizontalSpacing, y, childPaint);//绘制 “\”
+            canvas.drawLine(x + lp.horizontalSpacing - 4.0f, y + 4.0f, x + lp.horizontalSpacing, y, childPaint);//绘制 "/"
         } else if (this.horizontalSpacing > 0)
         {
             float x = child.getRight();
