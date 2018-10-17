@@ -23,7 +23,7 @@ public class HeadLinesActivity extends Activity
         setContentView(R.layout.activity_head_lines);
         DeviceInfoUtil.init(this);
         FlowLayout fl = (FlowLayout) findViewById(R.id.fl);
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 20; i++)
         {
             fl.addView(getFrameLayout());
         }
@@ -43,7 +43,7 @@ public class HeadLinesActivity extends Activity
         tv.setLayoutParams(flParams);
         tv.setPadding(spacing, spacing + spacing, spacing + spacing, spacing);
         tv.setBackgroundColor(Color.parseColor("#A2B6CA"));
-        tv.setText(new Random().nextInt(1000) + ":其");
+        tv.setText(new Random().nextInt(1000) + ":驱蚊器去请问其");
         fl.addView(tv);
         return fl;
     }
