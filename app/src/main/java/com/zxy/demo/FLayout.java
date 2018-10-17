@@ -37,7 +37,6 @@ public class FLayout extends ViewGroup
 
         int parentWidthMode = MeasureSpec.getMode(widthMeasureSpec);
         int parentHeightMode = MeasureSpec.getMode(heightMeasureSpec);
-
         //最终的宽、高
         int finalWidth = 0;
         int finalHeight = 0;
@@ -47,7 +46,6 @@ public class FLayout extends ViewGroup
         //当前的位置
         int curPositionX = 0;
         int curPositionY = 0;
-
 
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++)
@@ -92,10 +90,10 @@ public class FLayout extends ViewGroup
         if (orientation == HORIZONTAL)
         {
             finalWidth = parentWidthSize;
-            finalHeight = curPositionY - hSpacing;
+            finalHeight = curPositionY + lineMaxHeight - hSpacing;
         } else
         {
-            finalWidth = curPositionX - vSpacing;
+            finalWidth = curPositionX + lineMaxWidth - vSpacing;
             finalHeight = parentHeightSize;
         }
         setMeasuredDimension(resolveSize(finalWidth, widthMeasureSpec), resolveSize(finalHeight, heightMeasureSpec));
