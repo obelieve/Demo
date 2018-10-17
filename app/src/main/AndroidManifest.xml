@@ -16,13 +16,19 @@
         <activity android:name=".MainActivity">
 
         </activity>
+
         <activity android:name=".HeadLinesActivity">
+
+        </activity>
+
+        <activity android:name="com.zxy.view_touch.TouchViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
