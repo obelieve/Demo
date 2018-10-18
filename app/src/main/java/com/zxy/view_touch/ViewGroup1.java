@@ -64,16 +64,16 @@ public class ViewGroup1 extends ViewGroup
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        LogUtil.e(MotionEventUtil.name(event));
-        if (event.getAction() == MotionEvent.ACTION_MOVE)
-        {
-            LogUtil.e("点击 move");
-            return true;
-        }
-        return false;
 //        LogUtil.e(MotionEventUtil.name(event));
-//        boolean b= super.onTouchEvent(event);
-//        LogUtil.e(b+" ==="+MotionEventUtil.name(event));
-//        return b;
+//        if (event.getAction() == MotionEvent.ACTION_DOWN)
+//        {
+//            LogUtil.e("点击 down");
+//            return true;
+//        }
+//        return false;
+        LogUtil.e(MotionEventUtil.name(event));
+        boolean b= super.onTouchEvent(event);
+        LogUtil.e(b+" ==="+MotionEventUtil.name(event));
+        return b;
     }
 }

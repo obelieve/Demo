@@ -37,15 +37,15 @@ public class View1 extends View
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-//        LogUtil.e(MotionEventUtil.name(event));
-//        if(event.getAction() == MotionEvent.ACTION_DOWN){
-//            LogUtil.e("点击");
-//            return true;
-//        }
-//        return false;
         LogUtil.e(MotionEventUtil.name(event));
-        boolean b= super.onTouchEvent(event);
-        LogUtil.e(b+" ==="+MotionEventUtil.name(event));
-        return b;
+        if(event.getAction() == MotionEvent.ACTION_DOWN){
+            LogUtil.e("点击");
+            return true;
+        }
+        return false;
+//        LogUtil.e(MotionEventUtil.name(event));
+//        boolean b= super.onTouchEvent(event);
+//        LogUtil.e(b+" ==="+MotionEventUtil.name(event));
+//        return b;
     }
 }
