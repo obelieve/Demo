@@ -47,9 +47,16 @@ public class ViewGroup1 extends ViewGroup
     public boolean onInterceptTouchEvent(MotionEvent ev)
     {
         LogUtil.e(MotionEventUtil.name(ev));
-        boolean  b = super.onInterceptTouchEvent(ev);
-        LogUtil.e(b+" ==="+MotionEventUtil.name(ev));
-        return b;
+        if (ev.getAction() == MotionEvent.ACTION_UP)
+        {
+            LogUtil.e("拦截 up");
+            return true;
+        }
+        return false;
+//        LogUtil.e(MotionEventUtil.name(ev));
+//        boolean  b = super.onInterceptTouchEvent(ev);
+//        LogUtil.e(b+" ==="+MotionEventUtil.name(ev));
+//        return b;
     }
 
     @Override
