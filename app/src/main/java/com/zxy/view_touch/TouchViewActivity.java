@@ -27,6 +27,7 @@ import com.zxy.utility.MotionEventUtil;
  * DOWN没View接收，mFirstTouchTarget ==null 说明没有View接收，后续事件不会分发，就直接调用Acitivity的onTouchEvent方法；
  * 1.DOWN到哪个子View接收，下次MOVE/UP事件就传到哪里不会继续往下个View的子View下发；
  * 2.如果DOWN之后，后续事件View不接收，直接传到Activity.onTouchEvent；
+ * 3.如果DOWN被子View接收后，其他MOVE、UP事件被它的父控件拦截，子View收到一次CANCEL事件并且后续MOVE、UP事件就不会分发到子View；
  *
  * 主页面(Activity)->分发(dispatchTouchEvent())-->窗口的分发方法(getWindow().superDispatchTouchEvent(ev))
  *                                               ->return 调用顶级View方法(mDecorView.superDispatchTouchEvent(ev)) (DecorView ->FrameLayout ->ViewGroup)
