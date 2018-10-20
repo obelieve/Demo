@@ -46,4 +46,11 @@ public class LifeStyleView extends View
         super.onDraw(canvas);
         LogUtil.e();
     }
+
+    @Override
+    public void computeScroll()
+    {
+        super.computeScroll();//onDraw(Canvas);会调用computeScroll();
+        LogUtil.e();
+    }
 }
