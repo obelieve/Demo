@@ -17,6 +17,19 @@
     <com.zxy.view_lifestyle.LifeStyleView
         android:id="@+id/v_lifeStyle"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="100dp"
         android:background="#391"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="阿德萨"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="#aa9">
+        </LinearLayout>
+    </FrameLayout>
 </com.zxy.view_lifestyle.LifeStyleViewGroup>
