@@ -26,12 +26,17 @@
         </activity>
         <activity android:name="com.zxy.view_lifestyle.LifeStyleViewActivity">
 
+
+
+        </activity>
+
+        <activity android:name="com.zxy.view_computescroll.ScrollActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
         </activity>
     </application>
 
