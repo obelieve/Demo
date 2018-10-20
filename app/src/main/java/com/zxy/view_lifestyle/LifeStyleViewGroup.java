@@ -39,15 +39,14 @@ public class LifeStyleViewGroup extends ViewGroup
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
         LogUtil.e();
+        l = 0;
         t = 0;
         b = 0;
         for (int i = 0; i < getChildCount(); i++)
         {
-            l += l;
-            t += b;
-            r = l + getChildAt(i).getMeasuredWidth();
-            b += getChildAt(i).getMeasuredHeight();
-            getChildAt(i).layout(l, t, r, b);
+            b = t + getChildAt(i).getMeasuredHeight();
+            getChildAt(i).layout(l, t, r + getChildAt(i).getMeasuredWidth(), b);
+            t = b;
             LogUtil.e("l:" + l + "t:" + t + "r:" + r + "b:" + b);
         }
     }
