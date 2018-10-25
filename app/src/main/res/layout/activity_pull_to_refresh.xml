@@ -6,15 +6,17 @@
     android:orientation="vertical"
     android:background="#ff0000">
     <com.zxy.view_pull_to_refresh.PullToRefreshView
+        android:id="@+id/ptrv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:padding="10dp"
         android:background="#ffffff">
-        <TextView
+        <ListView
+            android:id="@+id/lv_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="啊大家看到"/>
+            android:layout_height="wrap_content">
+        </ListView>
     </com.zxy.view_pull_to_refresh.PullToRefreshView>
     <TextView
         android:layout_width="match_parent"
