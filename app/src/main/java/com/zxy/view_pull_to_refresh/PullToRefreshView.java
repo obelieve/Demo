@@ -1,17 +1,20 @@
 package com.zxy.view_pull_to_refresh;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Scroller;
 import android.widget.TextView;
 
+import com.zxy.demo.R;
 import com.zxy.utility.LogUtil;
 import com.zxy.utility.MotionEventUtil;
 
@@ -337,7 +340,7 @@ public class PullToRefreshView extends ViewGroup
         mState = state;
         if (mDirection == Direction.HEADER)
         {
-            TextView tv = (TextView) mHeaderView;
+            TextView tv = (TextView) mHeaderView.findViewById(R.id.tv);
             String s = "";
             switch (state)
             {
@@ -358,27 +361,44 @@ public class PullToRefreshView extends ViewGroup
             LogUtil.e("State:" + state + " " + s);
         } else if (mDirection == Direction.FOOTER)
         {
-            TextView tv = (TextView) mFooterView;
+            ImageView iv = (ImageView) mFooterView.findViewById(R.id.iv);
             String s = "";
             switch (state)
             {
                 case PULL_TO_REFRESH:
                     s = "加载更多";
+                    iv.setImageResource(R.drawable.ic_pull_refresh_normal);
                     break;
                 case RELEASE_TO_REFRESH:
                     s = "松开加载";
+                    iv.setImageResource(R.drawable.ic_pull_refresh_ready);
                     break;
                 case REFRESHING:
                     s = "正在加载...";
+                    iv.setImageResource(R.drawable.ic_pull_refresh_refreshing);
+                    startAnimationDrawable(iv.getDrawable());
                     break;
                 case FINISH:
                     s = "加载完成";
+                    iv.setImageResource(R.drawable.ic_pull_refresh_normal);
                     break;
             }
-            tv.setText(s);
             LogUtil.e("State:" + state + " " + s);
         }
     }
+
+    public static void startAnimationDrawable(Drawable drawable)
+    {
+        if (drawable instanceof AnimationDrawable)
+        {
+            AnimationDrawable animationDrawable = (AnimationDrawable) drawable;
+            if (!animationDrawable.isRunning())
+            {
+                animationDrawable.start();
+            }
+        }
+    }
+
 
     private int mScrollLastY;
 
@@ -474,30 +494,13 @@ public class PullToRefreshView extends ViewGroup
 
     public View headerView()
     {
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, 48 * 3);
-        TextView view = new TextView(getContext());
-        view.setLayoutParams(params);
-        view.setBackgroundColor(Color.CYAN);
-        view.setGravity(Gravity.CENTER);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_text_loading, this,false);
         return view;
     }
 
     public View footerView()
     {
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, 48 * 3);
-        TextView view = new TextView(getContext());
-        view.setLayoutParams(params);
-        view.setBackgroundColor(Color.GREEN);
-        view.setGravity(Gravity.CENTER);
-        return view;
-    }
-
-    public View contentView()
-    {
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        View view = new View(getContext());
-        view.setLayoutParams(params);
-        view.setBackgroundColor(Color.WHITE);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_image_loading, this,false);
         return view;
     }
 }
