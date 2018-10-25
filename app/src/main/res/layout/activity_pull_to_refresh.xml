@@ -3,14 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#ff0000">
+    android:orientation="vertical">
     <com.zxy.view_pull_to_refresh.PullToRefreshView
         android:id="@+id/ptrv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:padding="10dp"
         android:background="#ffffff">
         <ListView
             android:id="@+id/lv_content"
