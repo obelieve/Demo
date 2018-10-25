@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.zxy.utility.LogUtil;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity
 {
     AppBarLayout mAppBar;
@@ -59,5 +61,18 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    public static class DataUtil
+    {
+        public static String getRandomContent(int count)
+        {
+            Random random = new Random();
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < count; i++)
+            {
+                builder.append((char)random.nextInt(128));
+            }
+            return builder.toString();
+        }
+    }
 
 }
