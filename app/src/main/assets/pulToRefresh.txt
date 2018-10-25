@@ -1,0 +1,162 @@
+//PullToRefreshView 库笔记
+1.刷新整个内容  
+2.内容想要加载更多
+View的显示
+
+1.默认情况下只显示内容区域；
+2.刷新的时候外加显示刷新的视图；
+3.加载的时候外加显示加载的视图；
+4.只能显示刷新/加载中其一；
+5.刷新/加载根据手势向下(相对的内容区域上滑)手势向上(相对的内容区域下滑)来判断；
+
+View的临界点判断
+1.刷新和加载需要判断一个临界值高度，判断是否固定显示和隐藏视图；
+1.1.刷新和加载的时候，松开时，没到达这个高度就直接隐藏视图，只显示内容区域；
+1.2.刷新和加载的时候，松开手，到达这个高度就和内容区域一起显示出来；
+1.3.刷新和加载的时候，显示出来时，有一个停止刷新的开关，就隐藏刷新和加载的视图；
+---------------
+1.上/下拉刷新
+2.嵌套滚动
+---------------
+
+定义的常量：
+
+Direction分为
+{
+NONE,(没有方向)
+FROM_HEADER,(上拉刷新)
+FROM_FOOTER(下拉刷新)
+}
+
+Mode 支持的刷新
+{
+PULL_BOTH,(支持上下拉)
+PULL_FROM_HEADER,(支持上拉)
+PULL_FROM_FOOTER,(支持下拉)
+PULL_DISABLE(都不支持)
+}
+
+State 视图当前的状态
+{
+RESET 重置
+PULL_TO_REFRESH 下/上拉刷新
+RELEASE_TO_REFRESH 松开刷新
+REFRESHING 刷新中
+REFRESHING_SUCCESS 刷新成功
+REFRESHING_FAILURE 刷新失败
+FINISH 刷新完成
+}
+
+TagHolder
+{
+1.boolean mTagIntercept;是否拦截
+2.boolean mTagConsume;是否消费
+}
+
+canPull()判断条件需同时满足：
+1.当前事件和Down事件在Y方向上的角度<30；
+2.当前事件和Down事件在Y方向上偏移值(delta)>mTouchSlop;//mTouchSlop标识为滑动的偏移临界值
+3.检查是否 State == RESET;
+4.检查是否未开始嵌套滚动；//!mIsNestedScrollStarted ==true
+5.(检查delta>0 && 模式是BOTH/HEADER && RefreshView滚到顶部了)
+||(检查delta<0 && 模式是BOTH/FOOTER && RefreshView滚到底部了)
+
+
+PullToRefreshView
+
+0.主要的默认参数 mMode = Mode.PULL_BOTH; mState = State.RESET; mDirection = Direction.NONE;
+1.拦截判断
+return shouldInterceptEvent()->return canPull();
+2.onTouchEvent判断
+
+ACTION_MOVE:
+------
+2.1.是否消费事件判断
+return shouldConsumeEvent()->return canPull();
+2.2.消费事件处理
+onEventConsume();
+	->
+	1.设置 Direction：上拉(header)/下拉(footer)，设置最大滚动距离mMaxScrollDistance
+	2.根据偏移量(delta 当前事件和上一次事件Y坐标差值)移动视图：moveViews(delta,isDrag)isDrag = true
+	moveViews()->
+		1.delta减半
+		2.再检查Direction是否正确
+		3.根据Direction获取LoadingView(上拉/下拉视图)
+		4.获取LoadingView的当前top值
+		5.获取LoadingView默认情况下的top值(topReset 控件布局时的位置)
+		6.根据top和topReset,再重新设置合理的delta
+		(有可能delta会大于两者top的差值,有边界min,max,
+		如果偏移量比min还小需要增加delta，如果比max还大需要减少delta)
+		delta = 0 方法结束，否则继续；
+		7.利用ViewCompat.offsetTopAndBottom()偏移LoadingView
+		8.调用回调LoadingView.onViewPositionChanged()
+		9.根据LoadingView在屏幕中显示的模式进行选择其中一种：
+		覆盖模式、拽拖模式
+		9.1.覆盖模式：ViewCompat.setZ
+		设置LoadingView在RefreshView前面的重叠效果
+		9.2.拽拖模式：ViewCompat.offsetTopAndBottom
+		设置RefreshView偏移delta
+		10.如果有设置PullToRefreshView的回调方法，调用
+		mOnViewPositionChangeCallback.onViewPositionChanged();
+		11.如果isDrag =true,
+		更新状态:调用updateStateByMoveDistance();
+			->updateStateByMoveDistance()	
+			1.根据Direction获取LoadingView
+			2.根据LoadingView的当前top值和初始值topReset差值的绝对值，
+			获取滚动距离 scrollDistance
+			3.根据scrollDistance >= LoadingView控件高度 判断设置刷新状态
+			3.1. true，State = RELEASE_TO_REFRESH
+			3.2.false，State = PULL_TO_REFRESH
+------
+ACTION_UP/ACTION_CANCEL
+1.设置mTagHolder状态：未拦截、未消费
+2.调用 onEventFinish()
+	->1.如果是 State == RELEASE_TO_REFRESH
+	  需要设置State = REFRESHING;
+	  2.调用smoothSlideViewByState();【根据当前状态滑动view到某个位置】
+	  ->1.根据方向获取到LoadingView
+		2.定义两个top值：当前的top(startTop)、要移到的top值(endTop)
+		2.获取当前LoadingView的top值 【startTop】
+		3.根据状态State判断
+		3.1.RESET、PULL_TO_REFRESH、FINISH：
+		获取到LoadingView初始时的top值；【endTop】
+		3.2.RELEASE_TO_REFRESH、REFRESHING:
+		获取到LoadingView需要显示出来时的top值;【endTop】
+		4.增加一个布尔值slide = 调用onSmoothSlide(startY, endY);
+					->根据startTop和endTop差值是否判断为0;
+					  1.是 0,返回 false;
+					  2.调用Scroller.startScroll()
+					  【调用invalidate()的时候,会调用PullToRefreshView.computeScroll()】
+					   返回 true;
+		4.1.slide返回true，执行 invalidate();
+		4.2.slide返回false，执行 dealViewIdle()
+							->1.调用 isViewIdle()
+								   ->1.判断条件同时满足：
+									 1.1.滚动完成；
+									 1.2.事件未消费；
+									 1.3.嵌套滚动未开始；
+									 返回 true;
+									 2.否则返回 false;
+							  2.如果 isViewIdle() == true
+								->1.获取状态State值分别判断
+								  2.State == REFRESHING时，
+								  执行requestLayoutIfNeed();
+									->1.根据State的值判断:
+									  1.1.如果State == REFRESHING，但是当前位置和这个状态真正的位置不一致，
+									  调用requestLayout();
+									  1.2.如果State == RESET，但是当前位置和这个状态真正的位置不一致，
+									  调用requestLayout();
+								  执行notifyRefreshCallback();
+									  ->1.根据Direction方向回调：
+										1.1.header时，回调 PullToRefreshView.onRefreshingFromHeader();
+										1.2.footer时，回调 PullToRefreshView.onRefreshingFromFooter();
+								  返回;
+								  3.State == PULL_TO_REFRESH/FINISH时，【当下拉时不放手，又移动到初始的位置时放手触发】
+								  设置状态State = RESET;
+								  返回;
+								  4.State == RESET时，
+								  执行resetIfNeed();
+									  ->如果 State ==RESET 执行
+										1.requestLayoutIfNeed();
+										2.设置Direction == NONE;
+								  返回;
