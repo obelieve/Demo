@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.zxy.demo.R;
 import com.zxy.utility.LogUtil;
-import com.zxy.utility.MotionEventUtil;
 
 /**
  * Created by zxy on 2018/10/23 15:52.
@@ -34,50 +33,69 @@ public class PullToRefreshView extends ViewGroup
     private View mContentView;
     private View mFooterView;
 
+    private ViewState mHeaderViewState;
+    private ViewState mFooterViewState;
+
 
     //Scroller
     private Scroller mScroller;
+    private int mScrollLastY;
 
     //初始值
-    private int mHeaderDefaultTop;
-    private int mFooterDefaultTop;
+    private int mHeaderDefTop;
+    private int mFooterDefTop;
 
     //拦截消费
     private boolean mIsInterrupt;
     private boolean mIsConsume;
 
-    //判断
+    //X,Y坐标
     private float mDownX, mDownY;
     private float mLastX, mLastY;
     private float mCurrentX, mCurrentY;
 
     private int mTouchSlop;
 
-    private RefreshListener mRefreshListener;
-
-    {
-        mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
-        mScroller = new Scroller(getContext());
-    }
-
-    public PullToRefreshView(Context context)
-    {
-        super(context);
-    }
-
-    public PullToRefreshView(Context context, AttributeSet attrs)
-    {
-        super(context, attrs);
-    }
+    private OnRefreshListener mOnRefreshListener;
 
     public void setMode(Mode mode)
     {
         mMode = mode;
     }
 
-    public void setRefreshListener(RefreshListener refreshListener)
+    public void setOnRefreshListener(OnRefreshListener onRefreshListener)
     {
-        mRefreshListener = refreshListener;
+        mOnRefreshListener = onRefreshListener;
+    }
+
+    public PullToRefreshView(Context context)
+    {
+        this(context, null);
+    }
+
+    public PullToRefreshView(Context context, AttributeSet attrs)
+    {
+        super(context, attrs);
+        mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+        mScroller = new Scroller(getContext());
+    }
+
+    @Override
+    protected void onFinishInflate()
+    {
+        super.onFinishInflate();
+        if (getChildCount() != 1)
+        {
+            throw new RuntimeException("child view count of XML is only one !");
+        }
+        setDefHeaderView();
+        setDefFooterView();
+        addView(mHeaderView, 0);
+        addView(mFooterView, 2);
+
+        mHeaderView = getChildAt(0);
+        mContentView = getChildAt(1);
+        mFooterView = getChildAt(2);
     }
 
     @Override
@@ -85,14 +103,15 @@ public class PullToRefreshView extends ViewGroup
     {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int maxWidth = 0;
-        int maxHeight = getPaddingTop() + getPaddingBottom();
+        int maxHeight = 0;
 
         for (int i = 0; i < getChildCount(); i++)
         {
             measureChild(getChildAt(i), widthMeasureSpec, heightMeasureSpec);
             maxWidth = Math.max(maxWidth, getChildAt(i).getMeasuredWidth());
         }
-        maxHeight += getChildAt(1).getMeasuredHeight();
+        maxWidth += getPaddingLeft() + getPaddingRight();
+        maxHeight = getPaddingTop() + getPaddingBottom() + getChildAt(1).getMeasuredHeight();
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -128,41 +147,42 @@ public class PullToRefreshView extends ViewGroup
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
-        l = getPaddingLeft();
-        r = getPaddingRight();
-        t = getPaddingTop();
-        b = getPaddingBottom();
+        int left = getPaddingLeft();
+        int right = getPaddingRight();
+        int top = getPaddingTop();
 
         View headerView = getChildAt(0);
         View contentView = getChildAt(1);
         View footerView = getChildAt(2);
 
-        mHeaderDefaultTop = t - headerView.getMeasuredHeight();
-        LogUtil.e("headerView.layout:" + "l：" + l + " t:" + (t - headerView.getMeasuredHeight()) + " r:" + (r + headerView.getMeasuredWidth()) + " b:" + t);
-        headerView.layout(l, t - headerView.getMeasuredHeight(), r + headerView.getMeasuredWidth(), t);
-        LogUtil.e("contentView.layout:" + "l：" + l + " t:" + t + " r:" + (r + contentView.getMeasuredWidth()) + " b:" + (b + contentView.getMeasuredHeight()));
-        contentView.layout(l, t, r + contentView.getMeasuredWidth(), b + contentView.getMeasuredHeight());
-        t = getHeight() - getPaddingBottom();
-        mFooterDefaultTop = t;
-        LogUtil.e("footerView.layout:" + "l：" + l + " t:" + t + " r:" + (r + footerView.getMeasuredWidth()) + " b:" + (b + footerView.getMeasuredHeight()));
-        footerView.layout(l, t, r + footerView.getMeasuredWidth(), t + footerView.getMeasuredHeight());
+        /**但ListView 测试相同
+         * getHeight() 和getMeasureHeight() 区别：
+         * getHeight()获取屏幕中显示的高度，如果View高度大于屏幕剩下的就没显示。getMeasureHeight()获取View原始高度
+         */
+        final int headerTop = top - headerView.getMeasuredHeight();
+        final int contentTop = top;
+        final int footerTop = getHeight() - getPaddingBottom();
 
-
+        headerView.layout(left, headerTop, right + headerView.getMeasuredWidth(), headerTop + headerView.getMeasuredHeight());
+        contentView.layout(left, contentTop, right + contentView.getMeasuredWidth(), contentTop + contentView.getMeasuredHeight());
+        footerView.layout(left, footerTop, right + footerView.getMeasuredWidth(), footerTop + footerView.getMeasuredHeight());
+        mFooterDefTop = footerTop;
+        mHeaderDefTop = headerTop;
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
     {
-        mLastX = mCurrentX;
-        mLastY = mCurrentY;
-
-        mCurrentX = ev.getRawX();
-        mCurrentY = ev.getRawY();
-        if (ev.getActionMasked() == MotionEvent.ACTION_DOWN)
+        if (ev.getAction() == MotionEvent.ACTION_DOWN)
         {
             mDownX = ev.getRawX();
             mDownY = ev.getRawY();
         }
+        mLastX = mCurrentX;
+        mLastY = mCurrentY;
+        mCurrentX = ev.getRawX();
+        mCurrentY = ev.getRawY();
+
         mIsInterrupt = canPull();
         return mIsInterrupt;
     }
@@ -170,24 +190,21 @@ public class PullToRefreshView extends ViewGroup
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        LogUtil.e("MotionEvent:" + MotionEventUtil.name(event));
-        switch (event.getActionMasked())
+        mLastX = mCurrentX;
+        mLastY = mCurrentY;
+        mCurrentX = event.getRawX();
+        mCurrentY = event.getRawY();
+
+        switch (event.getAction())
         {
             case MotionEvent.ACTION_DOWN:
                 mDownX = event.getRawX();
                 mDownY = event.getRawY();
-                mCurrentX = mDownX;
-                mCurrentY = mDownY;
                 return true;
             case MotionEvent.ACTION_MOVE:
-                mLastX = mCurrentX;
-                mLastY = mCurrentY;
-                mCurrentX = event.getRawX();
-                mCurrentY = event.getRawY();
-
                 if (mIsConsume)
                 {
-                    execConsume();
+                    canConsume();
                 } else
                 {
                     mIsConsume = canPull();
@@ -195,14 +212,22 @@ public class PullToRefreshView extends ViewGroup
                 return mIsConsume;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                mLastX = mCurrentX;
-                mLastY = mCurrentY;
-                mCurrentX = event.getRawX();
-                mCurrentY = event.getRawY();
                 //reset touch state
                 if (mIsConsume)
                 {
-                    pullFinish();
+                    if (mState == State.RELEASE_TO_REFRESH)
+                    {
+                        mState = State.REFRESHING;
+                    }
+                    switch (mDirection)
+                    {
+                        case HEADER:
+                            releasePull(Direction.HEADER, mHeaderDefTop, mHeaderView.getTop(), mHeaderDefTop + mHeaderView.getMeasuredHeight());
+                            break;
+                        case FOOTER:
+                            releasePull(Direction.FOOTER, mFooterDefTop, mFooterView.getTop(), mFooterDefTop - mFooterView.getMeasuredHeight());
+                            break;
+                    }
                 }
                 mIsConsume = false;
                 mIsInterrupt = false;
@@ -212,23 +237,6 @@ public class PullToRefreshView extends ViewGroup
         }
         return false;
     }
-
-    @Override
-    protected void onFinishInflate()
-    {
-        super.onFinishInflate();
-        if (getChildCount() != 1)
-        {
-            throw new RuntimeException("child view count of XML is only one !");
-        }
-        addView(headerView(), 0);
-        addView(footerView(), 2);
-
-        mHeaderView = getChildAt(0);
-        mContentView = getChildAt(1);
-        mFooterView = getChildAt(2);
-    }
-
 
     private boolean canPull()
     {
@@ -250,7 +258,7 @@ public class PullToRefreshView extends ViewGroup
         return angle && isScroll && direction && state;
     }
 
-    private void execConsume()
+    private void canConsume()
     {
         int eventDelta = (int) ((mCurrentY - mLastY) * DELTA_SCALE_VALUE);
         if (eventDelta == 0)
@@ -260,8 +268,7 @@ public class PullToRefreshView extends ViewGroup
         if (mDirection == Direction.HEADER)
         {
             ViewCompat.offsetTopAndBottom(mHeaderView, eventDelta);
-            LogUtil.e("eventDelta:" + eventDelta + " headerHeight:" + mHeaderView.getMeasuredHeight() + " top:" + mHeaderView.getTop());
-            if (mHeaderView.getTop() >= mHeaderDefaultTop + mHeaderView.getMeasuredHeight())
+            if (mHeaderView.getTop() >= mHeaderDefTop + mHeaderView.getMeasuredHeight())
             {
                 setState(State.RELEASE_TO_REFRESH);
             } else
@@ -271,8 +278,7 @@ public class PullToRefreshView extends ViewGroup
         } else
         {
             ViewCompat.offsetTopAndBottom(mFooterView, eventDelta);
-
-            if (mFooterView.getTop() < mFooterDefaultTop - mFooterView.getMeasuredHeight())
+            if (mFooterView.getTop() < mFooterDefTop - mFooterView.getMeasuredHeight())
             {
                 setState(State.RELEASE_TO_REFRESH);
             } else
@@ -283,55 +289,45 @@ public class PullToRefreshView extends ViewGroup
         ViewCompat.offsetTopAndBottom(mContentView, eventDelta);
     }
 
-    private void pullFinish()
+    private void releasePull(Direction direction, int defTop, int curTop, int refreshingTop)
     {
-        if (mState == State.RELEASE_TO_REFRESH)
+        switch (direction)
         {
-            mState = State.REFRESHING;
+            case HEADER:
+                if (curTop < refreshingTop)
+                {
+                    setState(State.FINISH);
+                    startYOffsetScroll(curTop - defTop);
+                } else if (curTop > refreshingTop)
+                {
+                    setState(State.REFRESHING);
+                    startYOffsetScroll(curTop - refreshingTop);
+                } else
+                {
+                    setState(State.REFRESHING);
+                }
+                break;
+            case FOOTER:
+                if (curTop > refreshingTop)
+                {
+                    setState(State.FINISH);
+                    startYOffsetScroll(curTop - defTop);//小于临界值
+                } else if (curTop < refreshingTop)
+                {
+                    setState(State.REFRESHING);
+                    startYOffsetScroll(curTop - refreshingTop);//大于临界值
+                } else
+                {
+                    setState(State.REFRESHING);//到达临界值
+                }
+                break;
         }
-        if (mDirection == Direction.HEADER)
-        {
-            int curTop = mHeaderView.getTop();
-            int refreshingTop = mHeaderDefaultTop + mHeaderView.getMeasuredHeight();
+    }
 
-            if (curTop < refreshingTop)
-            {
-                LogUtil.e("HEADER->RESET" + "curTop:" + curTop + "dy:" + (curTop - mHeaderDefaultTop));
-                setState(State.FINISH);
-                mScroller.startScroll(0, 0, 0, curTop - mHeaderDefaultTop, 500);
-                invalidateRefreshView();
-            } else if (curTop > refreshingTop)
-            {
-                setState(State.REFRESHING);
-                LogUtil.e("HEADER->REFRESHING" + "curTop:" + curTop + "dy:" + (curTop - refreshingTop));
-                mScroller.startScroll(0, 0, 0, curTop - refreshingTop, 500);
-                invalidateRefreshView();
-            } else
-            {
-                setState(State.REFRESHING);
-            }
-        } else
-        {
-            int curTop = mFooterView.getTop();
-            int refreshingTop = mFooterDefaultTop - mFooterView.getMeasuredHeight();
-
-            if (curTop > refreshingTop)
-            {
-                LogUtil.e("FOOTER->RESET" + "curTop:" + curTop + "dy:" + (curTop - mFooterDefaultTop));
-                setState(State.FINISH);
-                mScroller.startScroll(0, 0, 0, curTop - mFooterDefaultTop, 500);
-                invalidateRefreshView();
-            } else if (curTop < refreshingTop)
-            {
-                LogUtil.e("FOOTER->REFRESHING" + "curTop:" + curTop + "dy:" + (curTop - refreshingTop));
-                setState(State.REFRESHING);
-                mScroller.startScroll(0, 0, 0, curTop - refreshingTop, 500);
-                invalidateRefreshView();
-            } else
-            {
-                setState(State.REFRESHING);
-            }
-        }
+    private void startYOffsetScroll(int dy)
+    {
+        mScroller.startScroll(0, 0, 0, dy, 500);
+        invalidateRefreshView();
     }
 
     public void setState(State state)
@@ -340,50 +336,12 @@ public class PullToRefreshView extends ViewGroup
         mState = state;
         if (mDirection == Direction.HEADER)
         {
-            TextView tv = (TextView) mHeaderView.findViewById(R.id.tv);
-            String s = "";
-            switch (state)
-            {
-                case PULL_TO_REFRESH:
-                    s = "下拉刷新";
-                    break;
-                case RELEASE_TO_REFRESH:
-                    s = "松开刷新";
-                    break;
-                case REFRESHING:
-                    s = "刷新中...";
-                    break;
-                case FINISH:
-                    s = "刷新完成";
-                    break;
-            }
-            tv.setText(s);
-            LogUtil.e("State:" + state + " " + s);
+            if (mHeaderViewState != null)
+                mHeaderViewState.showViewState(state);
         } else if (mDirection == Direction.FOOTER)
         {
-            ImageView iv = (ImageView) mFooterView.findViewById(R.id.iv);
-            String s = "";
-            switch (state)
-            {
-                case PULL_TO_REFRESH:
-                    s = "加载更多";
-                    iv.setImageResource(R.drawable.ic_pull_refresh_normal);
-                    break;
-                case RELEASE_TO_REFRESH:
-                    s = "松开加载";
-                    iv.setImageResource(R.drawable.ic_pull_refresh_ready);
-                    break;
-                case REFRESHING:
-                    s = "正在加载...";
-                    iv.setImageResource(R.drawable.ic_pull_refresh_refreshing);
-                    startAnimationDrawable(iv.getDrawable());
-                    break;
-                case FINISH:
-                    s = "加载完成";
-                    iv.setImageResource(R.drawable.ic_pull_refresh_normal);
-                    break;
-            }
-            LogUtil.e("State:" + state + " " + s);
+            if (mFooterViewState != null)
+                mFooterViewState.showViewState(state);
         }
     }
 
@@ -399,9 +357,6 @@ public class PullToRefreshView extends ViewGroup
         }
     }
 
-
-    private int mScrollLastY;
-
     @Override
     public void computeScroll()
     {
@@ -410,27 +365,25 @@ public class PullToRefreshView extends ViewGroup
 
             if (mDirection == Direction.HEADER)
             {
-                LogUtil.e("mHeaderView.getTop():" + mHeaderView.getTop() + " mScroller.getCurrY():" + mScroller.getCurrY() + " dy:" + (mHeaderView.getTop() - mScroller.getCurrY()));
                 ViewCompat.offsetTopAndBottom(mHeaderView, mScrollLastY - mScroller.getCurrY());
                 ViewCompat.offsetTopAndBottom(mContentView, mScrollLastY - mScroller.getCurrY());
             } else if (mDirection == Direction.FOOTER)
             {
-                LogUtil.e("mFooterView.getTop():" + mFooterView.getTop() + " mScroller.getCurrY():" + mScroller.getCurrY() + " dy:" + (mFooterView.getTop() - mScroller.getCurrY()));
                 ViewCompat.offsetTopAndBottom(mFooterView, mScrollLastY - mScroller.getCurrY());
                 ViewCompat.offsetTopAndBottom(mContentView, mScrollLastY - mScroller.getCurrY());
             }
             mScrollLastY = mScroller.getCurrY();
-            if (mScroller.isFinished() && mRefreshListener != null)
+            if (mScroller.isFinished() && mOnRefreshListener != null)
             {
                 mScrollLastY = 0;
                 if (mState == State.REFRESHING)
                 {
                     if (mDirection == Direction.HEADER)
                     {
-                        mRefreshListener.headerRefreshCompleted();
+                        mOnRefreshListener.onRefreshFinish();
                     } else
                     {
-                        mRefreshListener.footerRefreshCompleted();
+                        mOnRefreshListener.onLoadMoreFinish();
                     }
                 } else
                 {
@@ -449,24 +402,21 @@ public class PullToRefreshView extends ViewGroup
 
     public void stopRefreshing()
     {
-        int hTop = mHeaderDefaultTop - mHeaderView.getTop();
-        int cTop = mHeaderDefaultTop + mHeaderView.getMeasuredHeight() - mContentView.getTop();
-        int fTop = mFooterDefaultTop - mFooterView.getTop();
+        int hTop = mHeaderDefTop - mHeaderView.getTop();
+        int cTop = mHeaderDefTop + mHeaderView.getMeasuredHeight() - mContentView.getTop();
+        int fTop = mFooterDefTop - mFooterView.getTop();
         ViewCompat.offsetTopAndBottom(mHeaderView, hTop);
         ViewCompat.offsetTopAndBottom(mContentView, cTop);
         ViewCompat.offsetTopAndBottom(mFooterView, fTop);
-        // LogUtil.e("hTop:" + hTop + " cTop:" + cTop + " fTop：" + fTop);
-        LogUtil.e("top==hTop:" + mHeaderView.getTop() + " cTop:" + mContentView.getTop() + " fTop：" + mFooterView.getTop());
         mState = State.RESET;
         mDirection = Direction.NONE;
-
     }
 
-    interface RefreshListener
+    interface OnRefreshListener
     {
-        void headerRefreshCompleted();
+        void onRefreshFinish();
 
-        void footerRefreshCompleted();
+        void onLoadMoreFinish();
     }
 
     public enum Mode
@@ -492,15 +442,115 @@ public class PullToRefreshView extends ViewGroup
         FOOTER
     }
 
-    public View headerView()
+    /**
+     * 显示视图状态
+     */
+    public interface ViewState
     {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_text_loading, this,false);
+        void showViewState(State state);
+    }
+
+
+    public void setHeaderView(View view, ViewState state)
+    {
+        if (view != null)
+        {
+            if (mHeaderView != null)
+            {
+                removeView(mHeaderView);
+                addView(view, 0);
+            }
+            mHeaderView = view;
+            mHeaderViewState = state;
+        }
+    }
+
+    public void setFooterView(View view, ViewState state)
+    {
+        if (view != null)
+        {
+            if (mFooterView != null)
+            {
+                removeView(mFooterView);
+                addView(view, 2);
+            }
+            mFooterView = view;
+            mFooterViewState = state;
+        }
+    }
+
+    private View headerView()
+    {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_text_loading, this, false);
         return view;
     }
 
-    public View footerView()
+    private View footerView()
     {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_image_loading, this,false);
         return view;
+    }
+
+    private void setDefHeaderView()
+    {
+        setHeaderView(headerView(), new ViewState()
+        {
+            @Override
+            public void showViewState(State state)
+            {
+                TextView tv = (TextView) mHeaderView.findViewById(R.id.tv);
+                String s = "";
+                switch (state)
+                {
+                    case PULL_TO_REFRESH:
+                        s = "下拉刷新";
+                        break;
+                    case RELEASE_TO_REFRESH:
+                        s = "松开刷新";
+                        break;
+                    case REFRESHING:
+                        s = "刷新中...";
+                        break;
+                    case FINISH:
+                        s = "刷新完成";
+                        break;
+                }
+                LogUtil.e("State:" + state + " " + s);
+                tv.setText(s);
+            }
+        });
+    }
+
+    private void setDefFooterView()
+    {
+        setFooterView(footerView(), new ViewState()
+        {
+            @Override
+            public void showViewState(State state)
+            {
+                ImageView iv = (ImageView) mFooterView.findViewById(R.id.iv);
+                String s = "";
+                switch (state)
+                {
+                    case PULL_TO_REFRESH:
+                        s = "加载更多";
+                        iv.setImageResource(R.drawable.ic_pull_refresh_normal);
+                        break;
+                    case RELEASE_TO_REFRESH:
+                        s = "松开加载";
+                        iv.setImageResource(R.drawable.ic_pull_refresh_ready);
+                        break;
+                    case REFRESHING:
+                        s = "正在加载...";
+                        iv.setImageResource(R.drawable.ic_pull_refresh_refreshing);
+                        startAnimationDrawable(iv.getDrawable());
+                        break;
+                    case FINISH:
+                        s = "加载完成";
+                        iv.setImageResource(R.drawable.ic_pull_refresh_normal);
+                        break;
+                }
+            }
+        });
     }
 }
