@@ -7,10 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zxy.demo.R;
+import com.zxy.utility.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +32,49 @@ public class PullToRefreshActivity extends Activity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        LogUtil.e();
         setContentView(R.layout.activity_pull_to_refresh);
+        LogUtil.e();
         lv_content = (ListView) findViewById(R.id.lv_content);
         lv_content.setAdapter(new Adapter());
         final PullToRefreshView ptrv = (PullToRefreshView) findViewById(R.id.ptrv);
         ptrv.setMode(PullToRefreshView.Mode.BOTH);
-        ptrv.setRefreshListener(new PullToRefreshView.RefreshListener()
+        final View headerView = LayoutInflater.from(getBaseContext()).inflate(R.layout.view_image_loading, null);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 48 * 3);
+        headerView.setLayoutParams(lp);
+        ptrv.setHeaderView(headerView, new PullToRefreshView.ViewState()
         {
             @Override
-            public void headerRefreshCompleted()
+            public void showViewState(PullToRefreshView.State state)
+            {
+                ImageView iv = (ImageView) headerView.findViewById(R.id.iv);
+                String s = "";
+                switch (state)
+                {
+                    case PULL_TO_REFRESH:
+                        s = "加载更多";
+                        iv.setImageResource(R.drawable.ic_pull_refresh_normal);
+                        break;
+                    case RELEASE_TO_REFRESH:
+                        s = "松开加载";
+                        iv.setImageResource(R.drawable.ic_pull_refresh_ready);
+                        break;
+                    case REFRESHING:
+                        s = "正在加载...";
+                        iv.setImageResource(R.drawable.ic_pull_refresh_refreshing);
+                        PullToRefreshView.startAnimationDrawable(iv.getDrawable());
+                        break;
+                    case FINISH:
+                        s = "加载完成";
+                        iv.setImageResource(R.drawable.ic_pull_refresh_normal);
+                        break;
+                }
+            }
+        });
+        ptrv.setOnRefreshListener(new PullToRefreshView.OnRefreshListener()
+        {
+            @Override
+            public void onRefreshFinish()
             {
 
                 lv_content.postDelayed(new Runnable()
@@ -60,7 +97,7 @@ public class PullToRefreshActivity extends Activity
             }
 
             @Override
-            public void footerRefreshCompleted()
+            public void onLoadMoreFinish()
             {
                 lv_content.postDelayed(new Runnable()
                 {
