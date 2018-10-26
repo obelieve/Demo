@@ -34,7 +34,7 @@ public class PullToRefreshView extends ViewGroup
     private View mHeaderView;
     private View mContentView;
     private View mFooterView;
-
+    //加载View状态变化
     private ViewState mHeaderViewState;
     private ViewState mFooterViewState;
 
@@ -55,9 +55,9 @@ public class PullToRefreshView extends ViewGroup
     private float mDownX, mDownY;
     private float mLastX, mLastY;
     private float mCurrentX, mCurrentY;
-
+    //滚动临界值判断
     private int mTouchSlop;
-
+    //刷新回调
     private OnRefreshListener mOnRefreshListener;
 
     public void setMode(Mode mode)
@@ -206,7 +206,7 @@ public class PullToRefreshView extends ViewGroup
             case MotionEvent.ACTION_MOVE:
                 if (mIsConsume)
                 {
-                    canConsume();
+                    consumeEventHandler();
                 } else
                 {
                     mIsConsume = canPull();
@@ -240,6 +240,11 @@ public class PullToRefreshView extends ViewGroup
         return false;
     }
 
+    /**
+     * 判断是否上/下拉操作
+     *
+     * @return
+     */
     private boolean canPull()
     {
         boolean angle = Math.toDegrees(Math.atan(Math.abs(mCurrentX - mDownX) / Math.abs(mCurrentY - mDownY))) < 30;
@@ -260,7 +265,10 @@ public class PullToRefreshView extends ViewGroup
         return angle && isScroll && direction && state;
     }
 
-    private void canConsume()
+    /**
+     * 消费事件操作
+     */
+    private void consumeEventHandler()
     {
         int eventDelta = (int) ((mCurrentY - mLastY) * DELTA_SCALE_VALUE);
         if (eventDelta == 0)
@@ -291,6 +299,13 @@ public class PullToRefreshView extends ViewGroup
         ViewCompat.offsetTopAndBottom(mContentView, eventDelta);
     }
 
+    /**
+     * 手势拉起后，根据top当前位置进行视图操作
+     * @param direction
+     * @param defTop
+     * @param curTop
+     * @param refreshingTop
+     */
     private void releasePull(Direction direction, int defTop, int curTop, int refreshingTop)
     {
         switch (direction)
@@ -326,12 +341,20 @@ public class PullToRefreshView extends ViewGroup
         }
     }
 
+    /**
+     * 设置进行Y坐标的偏移滚动
+     * @param dy
+     */
     private void startYOffsetScroll(int dy)
     {
         mScroller.startScroll(0, 0, 0, dy, 500);
         invalidateRefreshView();
     }
 
+    /**
+     * 设置状态并且对加载View的显示回调
+     * @param state
+     */
     public void setState(State state)
     {
 
@@ -397,11 +420,17 @@ public class PullToRefreshView extends ViewGroup
 
     }
 
+    /**
+     * 调用重绘View
+     */
     private void invalidateRefreshView()
     {
         postInvalidate();
     }
 
+    /**
+     * 停止刷新,状态重置
+     */
     public void stopRefreshing()
     {
         int hTop = mHeaderDefTop - mHeaderView.getTop();
@@ -414,6 +443,9 @@ public class PullToRefreshView extends ViewGroup
         mDirection = Direction.NONE;
     }
 
+    /**
+     * 刷新后回调
+     */
     interface OnRefreshListener
     {
         void onRefreshFinish();
@@ -421,6 +453,9 @@ public class PullToRefreshView extends ViewGroup
         void onLoadMoreFinish();
     }
 
+    /**
+     * View 的模式
+     */
     public enum Mode
     {
         BOTH,
@@ -428,6 +463,9 @@ public class PullToRefreshView extends ViewGroup
         FROM_FOOTER
     }
 
+    /**
+     * View的状态
+     */
     public enum State
     {
         RESET,
@@ -437,6 +475,9 @@ public class PullToRefreshView extends ViewGroup
         FINISH
     }
 
+    /**
+     * 标记当前的手势朝的方向
+     */
     public enum Direction
     {
         NONE,
@@ -452,6 +493,9 @@ public class PullToRefreshView extends ViewGroup
         void showViewState(State state);
     }
 
+    /**
+     * 加载的View
+     */
     public static abstract class LoadingView extends FrameLayout implements PullToRefreshView.ViewState
     {
         public LoadingView(Context context)
@@ -465,11 +509,21 @@ public class PullToRefreshView extends ViewGroup
         }
     }
 
+    /**
+     * 设置顶部View
+     *
+     * @param view
+     */
     public void setHeaderView(LoadingView view){
         setHeaderView(view,view);
     }
 
 
+    /**
+     * 设置顶部View和状态
+     * @param view
+     * @param state View变化状态设置
+     */
     public void setHeaderView(View view, ViewState state)
     {
         if (view != null)
@@ -484,11 +538,20 @@ public class PullToRefreshView extends ViewGroup
         }
     }
 
+    /**
+     * 设置底部View
+     * @param view
+     */
     public void setFooterView(LoadingView view)
     {
         setFooterView(view,view);
     }
 
+    /**
+     * 设置底部View和状态
+     * @param view
+     * @param state View变化状态设置
+     */
     public void setFooterView(View view, ViewState state)
     {
         if (view != null)
@@ -503,18 +566,29 @@ public class PullToRefreshView extends ViewGroup
         }
     }
 
+    /**
+     * 获取顶部View
+     * @return
+     */
     private View headerView()
     {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_text_loading, this, false);
         return view;
     }
 
+    /**
+     * 获取底部View
+     * @return
+     */
     private View footerView()
     {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_image_loading, this,false);
         return view;
     }
 
+    /**
+     * 设置默认的顶部加载View
+     */
     private void setDefHeaderView()
     {
         setHeaderView(headerView(), new ViewState()
@@ -545,6 +619,9 @@ public class PullToRefreshView extends ViewGroup
         });
     }
 
+    /**
+     * 设置默认底部加载View
+     */
     private void setDefFooterView()
     {
         setFooterView(footerView(), new ViewState()
