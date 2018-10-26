@@ -3,6 +3,7 @@ package com.zxy.view_pull_to_refresh;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Scroller;
 import android.widget.TextView;
@@ -450,6 +452,23 @@ public class PullToRefreshView extends ViewGroup
         void showViewState(State state);
     }
 
+    public static abstract class LoadingView extends FrameLayout implements PullToRefreshView.ViewState
+    {
+        public LoadingView(Context context)
+        {
+            super(context);
+        }
+
+        public LoadingView(Context context, @Nullable AttributeSet attrs)
+        {
+            super(context, attrs);
+        }
+    }
+
+    public void setHeaderView(LoadingView view){
+        setHeaderView(view,view);
+    }
+
 
     public void setHeaderView(View view, ViewState state)
     {
@@ -463,6 +482,11 @@ public class PullToRefreshView extends ViewGroup
             mHeaderView = view;
             mHeaderViewState = state;
         }
+    }
+
+    public void setFooterView(LoadingView view)
+    {
+        setFooterView(view,view);
     }
 
     public void setFooterView(View view, ViewState state)
