@@ -35,6 +35,10 @@
         </activity>
 
         <activity android:name="com.zxy.view_pull_to_refresh.PullToRefreshActivity">
+
+        </activity>
+
+        <activity android:name="com.zxy.view_one.OneActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
