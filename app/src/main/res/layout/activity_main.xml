@@ -13,9 +13,18 @@
         android:layout_height="0dp"
         android:layout_weight="1">
     </android.support.v4.view.ViewPager>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line_gray"/>
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bnv_bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="48dp"
+        android:layout_gravity="start"
+        app:itemIconTint="@drawable/sel_bottom_navigation_icon"
+        app:itemTextColor="@drawable/sel_bottom_navigation_text"
+        app:menu="@menu/navigation">
+
     </android.support.design.widget.BottomNavigationView>
 </LinearLayout>

@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     
-    <color name="tab_checked">#1ACE9A</color>
-    <color name="tab_unchecked">#555555</color>
+    <color name="line_gray">#aaa</color>
+    <color name="nav_icon_checked">#1ACE9A</color>
+    <color name="nav_icon_unchecked">#555555</color>
+    <color name="nav_text_checked">#1ACE9A</color>
+    <color name="nav_text_unchecked">#777777</color>
 </resources>
