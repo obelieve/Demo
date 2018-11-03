@@ -6,4 +6,12 @@
     <string name="nav_discover">发现</string>
     <string name="nav_news">咨询</string>
     <string name="nav_me">我的</string>
+
+    <!--我的-->
+    <string name="me_manage_wallet">管理钱包</string>
+    <string name="me_business_record">交易记录</string>
+    <string name="me_node_select">节点选择</string>
+    <string name="me_recommend">推荐给好友</string>
+    <string name="me_safety">安全</string>
+    <string name="me_exit">退出登录</string>
 </resources>

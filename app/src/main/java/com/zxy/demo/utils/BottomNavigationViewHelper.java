@@ -1,4 +1,4 @@
-package com.zxy.demo;
+package com.zxy.demo.utils;
 
 import android.annotation.SuppressLint;
 import android.support.design.internal.BottomNavigationItemView;

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CommonRowView">
+        <attr name="ivResource" format="reference"/>
+        <attr name="tvTitleText" format="string|reference"/>
+        <attr name="tvContentText" format="string|reference"/>
+
+        <attr name="ivVisibility">
+            <enum name="VISIBLE" value="0"/>
+            <enum name="INVISIBLE" value="4"/>
+            <enum name="GONE" value="8"/>
+        </attr>
+        <attr name="tvTitleVisibility">
+            <enum name="VISIBLE" value="0"/>
+            <enum name="INVISIBLE" value="4"/>
+            <enum name="GONE" value="8"/>
+        </attr>
+        <attr name="tvContentVisibility">
+            <enum name="VISIBLE" value="0"/>
+            <enum name="INVISIBLE" value="4"/>
+            <enum name="GONE" value="8"/>
+        </attr>
+    </declare-styleable>
+</resources>

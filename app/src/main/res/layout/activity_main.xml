@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.zxy.demo.MainActivity">
+    tools:context="com.zxy.demo.activity.MainActivity">
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_content"
         android:layout_width="match_parent"
@@ -20,10 +20,10 @@
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bnv_bottom"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="46dp"
         android:layout_gravity="start"
-        app:itemIconTint="@drawable/sel_bottom_navigation_icon"
-        app:itemTextColor="@drawable/sel_bottom_navigation_text"
+        app:itemIconTint="@drawable/sel_bottom_nav_icon"
+        app:itemTextColor="@drawable/sel_bottom_nav_text"
         app:menu="@menu/navigation">
 
     </android.support.design.widget.BottomNavigationView>

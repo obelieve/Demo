@@ -7,7 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import com.zxy.demo.R;
 
 /**
  * Created by zxy on 2018/10/30 10:38.
@@ -19,8 +20,7 @@ public class MeFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        TextView view = new TextView(getContext());
-        view.setText("我的");
+        View view = inflater.inflate(R.layout.fragment_me,container,false);
         return view;
     }
 }
