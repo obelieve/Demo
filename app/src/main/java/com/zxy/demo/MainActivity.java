@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
 
         {
 
-            for (int i = 0; i < 9; i++) {
-                ImageView view4 = new ImageView(getBaseContext());
-                view4.setImageResource(mInts[(i % mInts.length)]);
-                view4.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                mList.add(view4);
+            for (int i = 0; i < 4; i++) {
+                ImageView view = new ImageView(getBaseContext());
+                view.setImageResource(mInts[(i % mInts.length)]);
+                view.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mList.add(view);
             }
         }
 

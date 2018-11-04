@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import com.zxy.demo.R;
 
 /**
+ * 自带指示下标ViewPager
  * Created by admin on 2018/11/a1.
  */
 
