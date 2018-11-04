@@ -22,25 +22,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ivp_content = findViewById(R.id.ivp_content);
         ivp_content.setAdapter(new PagerAdapter());
+        ivp_content.setCurrentItem(0);
     }
 
     public class PagerAdapter extends android.support.v4.view.PagerAdapter {
         List<View> mList = new ArrayList<>();
+        int[] mInts = new int[]{R.drawable.a1, R.drawable.a2, R.drawable.a3, R.drawable.a4};
 
         {
-            ImageView view1 = new ImageView(getBaseContext());
-            view1.setImageResource(R.drawable.a1);
-            ImageView view2 = new ImageView(getBaseContext());
-            view2.setImageResource(R.drawable.a2);
-            ImageView view3 = new ImageView(getBaseContext());
-            view3.setImageResource(R.drawable.a3);
-            ImageView view4 = new ImageView(getBaseContext());
-            view4.setImageResource(R.drawable.a4);
 
-            mList.add(view1);
-            mList.add(view2);
-            mList.add(view3);
-            mList.add(view4);
+            for (int i = 0; i < 9; i++) {
+                ImageView view4 = new ImageView(getBaseContext());
+                view4.setImageResource(mInts[(i % mInts.length)]);
+                view4.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mList.add(view4);
+            }
         }
 
         @Override

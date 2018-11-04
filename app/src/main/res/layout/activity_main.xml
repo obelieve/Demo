@@ -9,7 +9,12 @@
 
     <com.zxy.demo.viewpager.IndicatorViewPager
         android:id="@+id/ivp_content"
-        android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_indicatorMarginBottom="10dp"
+        app:layout_indicatorMarginRight="10dp"
+        app:indicator_drawable_selected="@drawable/shape_circle_blue"
+        app:indicator_drawable_no_selected="@drawable/shape_circle_stroke_blue">
+
     </com.zxy.demo.viewpager.IndicatorViewPager>
 </LinearLayout>

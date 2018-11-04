@@ -1,9 +1,10 @@
 package com.zxy.demo.viewpager;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.IdRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -24,19 +25,24 @@ import com.zxy.demo.R;
  */
 
 public class IndicatorViewPager extends FrameLayout {
-
+    /**
+     * 指示器最大数量
+     */
     private final int MAX_COUNT = 9;
-
+    //视图
     private ViewPager mVpContent;
     private LinearLayout mLlIndicator;
-
-    private int mNoSelectedId = R.drawable.shape_circle_stroke_white;
-    private int mSelectedId = R.drawable.shape_circle_white;
-
-    private int mCurrentIndex = 0;
+    //标识
+    private int mCurrentIndex = -1;
     private int mAdapterCount = 0;
-    private boolean mObservable = false;
+    private boolean mObservable = false;//监听ViewPager数据变化
     private DataSetObserver mDataSetObserver;
+    //属性
+    private int mIndicatorMarginRight;
+    private int mIndicatorMarginBottom;
+    private Drawable mSelectedDrawable;
+    private Drawable mNoSelectedDrawable;
+
 
     public IndicatorViewPager(@NonNull Context context) {
         this(context, null, 0);
@@ -49,6 +55,20 @@ public class IndicatorViewPager extends FrameLayout {
     public IndicatorViewPager(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+        TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.IndicatorViewPager, defStyleAttr, 0);
+        mSelectedDrawable = t.getDrawable(R.styleable.IndicatorViewPager_indicator_drawable_selected);
+        mNoSelectedDrawable = t.getDrawable(R.styleable.IndicatorViewPager_indicator_drawable_no_selected);
+        mIndicatorMarginRight = (int) t.getDimension(R.styleable.IndicatorViewPager_layout_indicatorMarginRight, pdToPx(20));
+        mIndicatorMarginBottom = (int) t.getDimension(R.styleable.IndicatorViewPager_layout_indicatorMarginBottom, pdToPx(20));
+
+        ((FrameLayout.LayoutParams) mLlIndicator.getLayoutParams()).setMargins(0, 0, mIndicatorMarginRight, mIndicatorMarginBottom);
+        if (mSelectedDrawable == null) {
+            mSelectedDrawable = context.getResources().getDrawable(R.drawable.shape_circle_white);
+        }
+        if (mNoSelectedDrawable == null) {
+            mNoSelectedDrawable = context.getResources().getDrawable(R.drawable.shape_circle_stroke_white);
+        }
+        t.recycle();
     }
 
     private void init() {
@@ -79,11 +99,7 @@ public class IndicatorViewPager extends FrameLayout {
 
             @Override
             public void onPageSelected(int position) {
-                ImageView iv = (ImageView) mLlIndicator.getChildAt(mCurrentIndex);
-                iv.setImageResource(mNoSelectedId);
-                ImageView selectedIv = (ImageView) mLlIndicator.getChildAt(position);
-                selectedIv.setImageResource(mSelectedId);
-                mCurrentIndex = position;
+                setCurrentIndicator(position);
 
             }
 
@@ -92,6 +108,16 @@ public class IndicatorViewPager extends FrameLayout {
 
             }
         });
+    }
+
+    private void setCurrentIndicator(int position) {
+        if (mCurrentIndex != -1) {
+            ImageView iv = (ImageView) mLlIndicator.getChildAt(mCurrentIndex);
+            iv.setImageDrawable(mNoSelectedDrawable);
+        }
+        ImageView selectedIv = (ImageView) mLlIndicator.getChildAt(position);
+        selectedIv.setImageDrawable(mSelectedDrawable);
+        mCurrentIndex = position;
     }
 
     @Override
@@ -105,35 +131,57 @@ public class IndicatorViewPager extends FrameLayout {
 
     public void setCurrentItem(int item) {
         mVpContent.setCurrentItem(item);
+        setCurrentIndicator(item);
     }
 
     public void setAdapter(PagerAdapter adapter) {
+        if (adapter == null) return;
+        if (adapter.getCount() > MAX_COUNT) {
+            throw new RuntimeException("IndicatorViewPager adapter max count is 9 !");
+        }
         mVpContent.setAdapter(adapter);
-        if (mVpContent.getAdapter() != null) {
-            mAdapterCount = mVpContent.getAdapter().getCount();
-            initIndicator(mAdapterCount);
-            if (mObservable == false) {
-                mObservable = true;
-                mVpContent.getAdapter().registerDataSetObserver(mDataSetObserver);
-            }
+        mAdapterCount = adapter.getCount();
+        initIndicator(mAdapterCount);
+        if (mObservable == false) {
+            mObservable = true;
+            mVpContent.getAdapter().registerDataSetObserver(mDataSetObserver);
         }
     }
 
-    public void setIndicatorDrawable(@IdRes int noSelectedId, @IdRes int selectedId) {
-        mNoSelectedId = noSelectedId;
-        mSelectedId = selectedId;
+    public void setIndicatorNoSelectedDrawable(@DrawableRes int noSelectedId) {
+        mNoSelectedDrawable = getContext().getResources().getDrawable(noSelectedId);
+        initIndicator(mAdapterCount);
+    }
+
+    public void setIndicatorSelectedDrawable(@DrawableRes int selectedId) {
+        mSelectedDrawable = getContext().getResources().getDrawable(selectedId);
+        initIndicator(mAdapterCount);
+    }
+
+    public void setIndicatorMarginRight(int marginRight) {
+        mIndicatorMarginRight = marginRight;
+        ((FrameLayout.LayoutParams) mLlIndicator.getLayoutParams()).setMargins(0, 0, mIndicatorMarginRight, mIndicatorMarginBottom);
+    }
+
+    public void setIndicatorMarginBottom(int marginBottom) {
+        mIndicatorMarginBottom = marginBottom;
+        ((FrameLayout.LayoutParams) mLlIndicator.getLayoutParams()).setMargins(0, 0, mIndicatorMarginRight, mIndicatorMarginBottom);
     }
 
     private void initIndicator(int count) {
         if (count == 0) return;
-        removeAllViews();
+        mLlIndicator.removeAllViews();
         for (int i = 0; i < count; i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
                     (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.setMargins(pdToPx(12), 0, 0, 0);
             ImageView iv = new ImageView(getContext());
             iv.setLayoutParams(params);
-            iv.setImageResource(mNoSelectedId);
+            if (mCurrentIndex == i) {
+                iv.setImageDrawable(mSelectedDrawable);
+            } else {
+                iv.setImageDrawable(mNoSelectedDrawable);
+            }
             mLlIndicator.addView(iv);
         }
     }

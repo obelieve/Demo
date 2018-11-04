@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IndicatorViewPager">
+        <attr name="indicator_drawable_no_selected" format="reference" />
+        <attr name="indicator_drawable_selected" format="reference" />
+        <attr name="layout_indicatorMarginRight" format="dimension|reference" />
+        <attr name="layout_indicatorMarginBottom" format="dimension|reference" />
+    </declare-styleable>
+</resources>
