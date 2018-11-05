@@ -9,9 +9,10 @@
     <com.zxy.demo.viewpager.IndicatorViewPager
         android:id="@+id/ivp_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="50dp"
+        android:fitsSystemWindows="true"
         app:layout_indicatorMarginBottom="10dp"
-        app:layout_indicatorMarginRight="10dp">
-    </com.zxy.demo.viewpager.IndicatorViewPager>
+        app:layout_indicatorMarginRight="10dp"></com.zxy.demo.viewpager.IndicatorViewPager>
 
 </FrameLayout>

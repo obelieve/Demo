@@ -3,7 +3,9 @@ package com.zxy.demo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,14 +17,44 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     IndicatorViewPager ivp_content;
+    PagerAdapter mPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mPagerAdapter = new PagerAdapter();
         ivp_content = findViewById(R.id.ivp_content);
-        ivp_content.setAdapter(new PagerAdapter());
-        ivp_content.setCurrentItem(0);
+        ivp_content.setAdapter(mPagerAdapter);
+        ivp_content.setOffscreenPageLimit(3);
+        ivp_content.setPageSpan(30);
+        ivp_content.setCurrentItem(1);
+        ivp_content.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    ivp_content.setCurrentItem(mPagerAdapter.getCount() - 1 - 1, false);
+                } else if (position == mPagerAdapter.getCount() - 1) {
+                    ivp_content.setCurrentItem(0 + 1, false);
+//                    ivp_content.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                        }
+//                    },200);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     public class PagerAdapter extends android.support.v4.view.PagerAdapter {
@@ -31,12 +63,20 @@ public class MainActivity extends AppCompatActivity {
 
         {
 
+            View sview = LayoutInflater.from(getBaseContext()).inflate(R.layout.adapter_item, null);
+            ImageView siv = (ImageView) sview.findViewById(R.id.iv);
+            siv.setImageResource(mInts[mInts.length - 1]);
+            mList.add(sview);
             for (int i = 0; i < 4; i++) {
-                ImageView view = new ImageView(getBaseContext());
-                view.setImageResource(mInts[(i % mInts.length)]);
-                view.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.adapter_item, null);
+                ImageView iv = (ImageView) view.findViewById(R.id.iv);
+                iv.setImageResource(mInts[(i % mInts.length)]);
                 mList.add(view);
             }
+            View eview = LayoutInflater.from(getBaseContext()).inflate(R.layout.adapter_item, null);
+            ImageView eiv = (ImageView) eview.findViewById(R.id.iv);
+            eiv.setImageResource(mInts[0]);
+            mList.add(eview);
         }
 
         @Override
