@@ -111,6 +111,31 @@ public class IndicatorViewPager extends FrameLayout {
         });
     }
 
+    /**
+     * 设置页面缓存
+     *
+     * @param limit
+     */
+    public void setViewPagerOffscreenPageLimit(int limit)
+    {
+        mVpContent.setOffscreenPageLimit(limit);
+    }
+
+    /**
+     * 设置屏幕显示多页效果
+     *
+     * @param pageMargin 页面间距
+     */
+    public void setPageSpan(int pageMargin)
+    {
+        setClipChildren(false);
+        mVpContent.setClipChildren(false);
+        mVpContent.setPageMargin(pageMargin);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mVpContent.getLayoutParams();
+        params.setMargins(pageMargin * 2, 0, pageMargin * 2, 0);
+        mVpContent.setLayoutParams(params);
+    }
+
     private void setCurrentIndicator(int position) {
         if (mCurrentIndex != -1) {
             ImageView iv = (ImageView) mLlIndicator.getChildAt(mCurrentIndex);
