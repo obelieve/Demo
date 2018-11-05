@@ -116,7 +116,7 @@ public class IndicatorViewPager extends FrameLayout {
      *
      * @param limit
      */
-    public void setViewPagerOffscreenPageLimit(int limit)
+    public void setOffscreenPageLimit(int limit)
     {
         mVpContent.setOffscreenPageLimit(limit);
     }
@@ -134,6 +134,11 @@ public class IndicatorViewPager extends FrameLayout {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mVpContent.getLayoutParams();
         params.setMargins(pageMargin * 2, 0, pageMargin * 2, 0);
         mVpContent.setLayoutParams(params);
+    }
+
+    public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener)
+    {
+        mVpContent.addOnPageChangeListener(listener);
     }
 
     private void setCurrentIndicator(int position) {
@@ -157,6 +162,12 @@ public class IndicatorViewPager extends FrameLayout {
 
     public void setCurrentItem(int item) {
         mVpContent.setCurrentItem(item);
+        setCurrentIndicator(item);
+    }
+
+    public void setCurrentItem(int item, boolean smoothScroll)
+    {
+        mVpContent.setCurrentItem(item, smoothScroll);
         setCurrentIndicator(item);
     }
 
