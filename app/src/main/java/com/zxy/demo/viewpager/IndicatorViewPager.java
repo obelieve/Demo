@@ -171,6 +171,11 @@ public class IndicatorViewPager extends FrameLayout {
         setCurrentIndicator(item);
     }
 
+    public int getCurrentItem()
+    {
+        return mVpContent.getCurrentItem();
+    }
+
     public void setAdapter(PagerAdapter adapter) {
         if (adapter == null) return;
         if (adapter.getCount() > MAX_COUNT) {
