@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -19,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.zxy.demo.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 自带指示下标ViewPager
@@ -38,6 +42,7 @@ public class IndicatorViewPager extends FrameLayout {
     private int mAdapterCount = 0;
     private boolean mObservable = false;//监听ViewPager数据变化
     private DataSetObserver mDataSetObserver;
+    private IndicatorViewPagerAdapter mViewPagerAdapter;
     //属性
     private int mIndicatorMarginRight;
     private int mIndicatorMarginBottom;
@@ -85,7 +90,7 @@ public class IndicatorViewPager extends FrameLayout {
             @Override
             public void onChanged() {
                 super.onChanged();
-                int count = mVpContent.getAdapter().getCount();
+                int count = mViewPagerAdapter.getOriginalCount();
                 if (mAdapterCount != count) {
                     mAdapterCount = count;
                     initIndicator(mAdapterCount);
@@ -100,13 +105,12 @@ public class IndicatorViewPager extends FrameLayout {
 
             @Override
             public void onPageSelected(int position) {
-                setCurrentIndicator(position);
+                setCurrentIndicator(position % mViewPagerAdapter.getOriginalCount());
 
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
@@ -161,14 +165,14 @@ public class IndicatorViewPager extends FrameLayout {
     }
 
     public void setCurrentItem(int item) {
-        mVpContent.setCurrentItem(item);
-        setCurrentIndicator(item);
+        mVpContent.setCurrentItem(item % mViewPagerAdapter.getOriginalCount() + mViewPagerAdapter.getOriginalCount() * 3 * mViewPagerAdapter.getOffscreenPageLimit() * 1000);
+        setCurrentIndicator(item % mViewPagerAdapter.getOriginalCount());
     }
 
     public void setCurrentItem(int item, boolean smoothScroll)
     {
-        mVpContent.setCurrentItem(item, smoothScroll);
-        setCurrentIndicator(item);
+        mVpContent.setCurrentItem(item % mViewPagerAdapter.getOriginalCount() + mViewPagerAdapter.getOriginalCount() * 3 * mViewPagerAdapter.getOffscreenPageLimit() * 1000, smoothScroll);
+        setCurrentIndicator(item % mViewPagerAdapter.getOriginalCount());
     }
 
     public int getCurrentItem()
@@ -176,13 +180,16 @@ public class IndicatorViewPager extends FrameLayout {
         return mVpContent.getCurrentItem();
     }
 
-    public void setAdapter(PagerAdapter adapter) {
+    public void setAdapter(IndicatorViewPagerAdapter adapter)
+    {
         if (adapter == null) return;
-        if (adapter.getCount() > MAX_COUNT) {
+        if (adapter.getOriginalCount() > MAX_COUNT)
+        {
             throw new RuntimeException("IndicatorViewPager adapter max count is 9 !");
         }
-        mVpContent.setAdapter(adapter);
-        mAdapterCount = adapter.getCount();
+        mViewPagerAdapter = adapter;
+        mVpContent.setAdapter(mViewPagerAdapter);
+        mAdapterCount = adapter.getOriginalCount();
         initIndicator(mAdapterCount);
         if (mObservable == false) {
             mObservable = true;
@@ -233,5 +240,67 @@ public class IndicatorViewPager extends FrameLayout {
         DisplayMetrics dm = new DisplayMetrics();
         manager.getDefaultDisplay().getMetrics(dm);
         return (int) (dp * dm.density);
+    }
+
+    public static abstract class IndicatorViewPagerAdapter<T> extends PagerAdapter
+    {
+        private List<T> mList;
+        private List<View> mViews;
+
+        public abstract View getNewInstance(T t);
+
+        public abstract int getOffscreenPageLimit();
+
+        public IndicatorViewPagerAdapter(List<T> list)
+        {
+            this.mList = list;
+            mViews = new ArrayList<>();
+            if (mList != null)
+            {
+                for (int i = 0; i < mList.size() * 3 * getOffscreenPageLimit(); i++)
+                {
+                    mViews.add(getNewInstance(mList.get(i % mList.size())));
+                }
+            }
+        }
+
+        @Override
+        public int getCount()
+        {
+            return Integer.MAX_VALUE;
+        }
+
+        @Override
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object)
+        {
+
+            return view == object;
+        }
+
+        @NonNull
+        @Override
+        public Object instantiateItem(@NonNull ViewGroup container, int position)
+        {
+            View view = mViews.get(position % mViews.size());
+            container.addView(view);
+            return view;
+        }
+
+        @Override
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object)
+        {
+            View view = mViews.get(position % mViews.size());
+            container.removeView(view);
+        }
+
+
+        public int getOriginalCount()
+        {
+            if (mList != null)
+            {
+                return mList.size();
+            }
+            return 0;
+        }
     }
 }
