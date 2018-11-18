@@ -5,8 +5,10 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="line_gray">#aaa</color>
-    <color name="nav_icon_checked">#1ACE9A</color>
-    <color name="nav_icon_unchecked">#555555</color>
+    <color name="base_bg_gray">#c3c3c3</color>
+    <color name="base_text_gray">#666</color>
+    <color name="base_text_black">#231727</color>
     <color name="nav_text_selected">#1ACE9A</color>
     <color name="nav_text_unselected">#777777</color>
+
 </resources>

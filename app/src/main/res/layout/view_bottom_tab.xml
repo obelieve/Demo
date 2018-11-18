@@ -11,7 +11,7 @@
 
         <ImageView
             style="@style/bottom_nav_iv_style"
-            android:src="@drawable/sel_src_imgs_tabbar_btn_wallet" />
+            android:src="@drawable/sel_nav_wallet" />
 
         <TextView
             style="@style/bottom_nav_tv_style"
@@ -24,7 +24,7 @@
 
         <ImageView
             style="@style/bottom_nav_iv_style"
-            android:src="@drawable/sel_src_imgs_tabbar_btn_discover" />
+            android:src="@drawable/sel_nav_discovery" />
 
         <TextView
             style="@style/bottom_nav_tv_style"
@@ -37,7 +37,7 @@
 
         <ImageView
             style="@style/bottom_nav_iv_style"
-            android:src="@drawable/sel_src_imgs_tabbar_btn_news" />
+            android:src="@drawable/sel_nav_news" />
 
         <TextView
             style="@style/bottom_nav_tv_style"
@@ -50,7 +50,7 @@
 
         <ImageView
             style="@style/bottom_nav_iv_style"
-            android:src="@drawable/sel_src_imgs_tabbar_btn_me" />
+            android:src="@drawable/sel_nav_me" />
 
         <TextView
             style="@style/bottom_nav_tv_style"
