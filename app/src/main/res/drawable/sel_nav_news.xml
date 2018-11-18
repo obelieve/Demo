@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+<<<<<<< HEAD:app/src/main/res/drawable/sel_src_imgs_tabbar_btn_wallet.xml
     <item android:state_selected="true" android:drawable="@drawable/src_imgs_tabbar_btn_wallet_active"/>
     <item android:state_pressed="true" android:drawable="@drawable/src_imgs_tabbar_btn_wallet_active"/>
     <item android:drawable="@drawable/src_imgs_tabbar_btn_wallet"/>
 </selector>
+=======
+    <item android:state_checked="true" android:drawable="@drawable/ic_nav_news_active"/>
+    <item android:state_checked="false" android:drawable="@drawable/ic_nav_news"/>
+</selector>
+>>>>>>> 2cfcf7e970bc3806c08516003cada4e980ed797e:app/src/main/res/drawable/sel_nav_news.xml
