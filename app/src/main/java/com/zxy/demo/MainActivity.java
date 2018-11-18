@@ -16,96 +16,55 @@ import com.zxy.demo.fragment.DiscoverFragment;
 import com.zxy.demo.fragment.MeFragment;
 import com.zxy.demo.fragment.NewsFragment;
 import com.zxy.demo.fragment.WalletFragment;
+import com.zxy.demo.view.BottomTabView;
+import com.zxy.utility.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
 
     ViewPager vp_content;
-    MenuItem menuItem;
-    BottomNavigationView bnv_bottom;
+    BottomTabView view_bottom_tab;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         vp_content = findViewById(R.id.vp_content);
-        bnv_bottom = findViewById(R.id.bnv_bottom);
-        BottomNavigationViewHelper.disableShiftMode(bnv_bottom);
-        bnv_bottom.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener()
-        {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item)
-            {
-                switch (item.getItemId())
-                {
-                    case R.id.nav_wallet:
-                        vp_content.setCurrentItem(0);
-                        break;
-                    case R.id.nav_discover:
-                        vp_content.setCurrentItem(1);
-                        break;
-                    case R.id.nav_news:
-                        vp_content.setCurrentItem(2);
-                        break;
-                    case R.id.nav_me:
-                        vp_content.setCurrentItem(3);
-                        break;
-                }
-                return false;
-            }
-        });
-        vp_content.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                return true;
-            }
-        });
-        vp_content.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
-        {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-            {
-
-            }
-
-            @Override
-            public void onPageSelected(int position)
-            {
-                if (menuItem != null)
-                {
-                    menuItem.setChecked(false);
-                } else
-                {
-                    bnv_bottom.getMenu().getItem(0).setChecked(false);
-                }
-                menuItem = bnv_bottom.getMenu().getItem(position);
-                menuItem.setChecked(true);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state)
-            {
-
-            }
-        });
-
+        view_bottom_tab = findViewById(R.id.view_bottom_tab);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vp_content.setAdapter(adapter);
+        view_bottom_tab.setCallback(new BottomTabView.Callback() {
+            @Override
+            public void onSelected(int index, View view) {
+                LogUtil.e(index+"");
+                vp_content.setCurrentItem(index);
+            }
+        });
+        vp_content.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                view_bottom_tab.setCurrentItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
-    public static class ViewPagerAdapter extends FragmentPagerAdapter
-    {
+    public static class ViewPagerAdapter extends FragmentPagerAdapter {
 
         List<Fragment> mList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager fm)
-        {
+        public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
             mList.add(new WalletFragment());
             mList.add(new DiscoverFragment());
@@ -114,14 +73,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        public Fragment getItem(int position)
-        {
+        public Fragment getItem(int position) {
             return mList.get(position);
         }
 
         @Override
-        public int getCount()
-        {
+        public int getCount() {
             return mList.size();
         }
     }

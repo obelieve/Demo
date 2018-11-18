@@ -1,30 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zxy.demo.MainActivity">
+
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-    </android.support.v4.view.ViewPager>
+        android:layout_weight="1"></android.support.v4.view.ViewPager>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/line_gray"/>
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bnv_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="start"
-        app:itemIconTint="@drawable/sel_bottom_navigation_icon"
-        app:itemTextColor="@drawable/sel_bottom_navigation_text"
-        app:menu="@menu/navigation">
+        android:background="@color/line_gray" />
 
-    </android.support.design.widget.BottomNavigationView>
+    <com.zxy.demo.view.BottomTabView
+        android:id="@+id/view_bottom_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.zxy.demo.view.BottomTabView>
 </LinearLayout>
