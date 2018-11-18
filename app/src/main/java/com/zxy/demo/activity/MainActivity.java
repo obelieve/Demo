@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.zxy.demo.utils.BottomNavigationViewHelper;
 import com.zxy.demo.R;
 import com.zxy.demo.fragment.DiscoverFragment;
 import com.zxy.demo.fragment.MeFragment;
