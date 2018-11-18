@@ -59,8 +59,9 @@ public class BottomTabView extends FrameLayout implements View.OnClickListener {
         mSelectionManage.setCurrentItem(0);
         mSelectionManage.setOnSelectChangeListener(new SelectionManage.OnSelectChangeListener() {
 
+
             @Override
-            public void onSelected(int index, View view) {
+            public void onSelected(int index, View view, boolean select) {
                 if (mCallback != null)
                     mCallback.onSelected(index, view);
             }

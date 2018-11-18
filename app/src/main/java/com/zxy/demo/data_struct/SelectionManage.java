@@ -70,7 +70,7 @@ public class SelectionManage {
                 break;
         }
         if (mOnSelectChangeListener != null) {
-            mOnSelectChangeListener.onSelected(index, mViews.get(index));
+            mOnSelectChangeListener.onSelected(index, mViews.get(index), select);
         }
     }
 
@@ -89,7 +89,7 @@ public class SelectionManage {
 
     public interface OnSelectChangeListener {
 
-        void onSelected(int index, View view);
+        void onSelected(int index, View view, boolean select);
     }
 
     public enum Mode {
