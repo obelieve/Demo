@@ -38,7 +38,7 @@ public class MultiSelectionManage {
                     if (mCurrentIndexes.contains(index)) {
                         mBooleans.set(index, false);
                         mViews.get(index).setSelected(false);
-                        mCurrentIndexes.remove(index);
+                        mCurrentIndexes.remove((Integer) index);
                         if (mOnSelectChangeListener != null) {
                             mOnSelectChangeListener.onSelected(index, mViews.get(index), false);
                         }
@@ -73,7 +73,7 @@ public class MultiSelectionManage {
                             } else {
                                 mBooleans.set(index, false);
                                 mViews.get(index).setSelected(false);
-                                mCurrentIndexes.remove(index);
+                                mCurrentIndexes.remove((Integer)index);
                                 if (mOnSelectChangeListener != null) {
                                     mOnSelectChangeListener.onSelected(index, mViews.get(index), false);
                                 }
