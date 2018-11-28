@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,4 +13,28 @@
         android:layout_margin="20dp">
     </com.zxy.view_one.PKProgressBar>
 
+    <!--对战时间-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="对战时间"/>
+        <com.bigkoo.pickerview.lib.WheelView
+            android:id="@+id/wheelview"
+            android:layout_width="80dp"
+            android:layout_height="80dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="分钟"/>
+    </LinearLayout>
+    <com.zxy.view_one.WheelSelectListView
+        android:id="@+id/wheelSelect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.zxy.view_one.WheelSelectListView>
 </LinearLayout>
