@@ -1,14 +1,18 @@
 package com.zxy.view_one;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.bigkoo.pickerview.adapter.ArrayWheelAdapter;
-import com.bigkoo.pickerview.lib.WheelView;
-import com.bigkoo.pickerview.listener.OnItemSelectedListener;
+import com.contrarywind.listener.OnItemSelectedListener;
+import com.contrarywind.view.WheelView;
 import com.zxy.demo.R;
 
 import java.util.ArrayList;
@@ -45,7 +49,10 @@ public class OneActivity extends Activity
     {
         WheelView wheelView = findViewById(R.id.wheelview);
         wheelView.setCyclic(false);
-
+        wheelView.setDividerColor(getResources().getColor(android.R.color.transparent));
+        wheelView.setTextColorCenter(Color.parseColor("#fee204"));
+        wheelView.setTextColorOut(Color.parseColor("#8F7213"));
+        wheelView.setTextSize(24);
         final ArrayList<String> mOptionsItems = new ArrayList<>();
         mOptionsItems.add("1");
         mOptionsItems.add("2");
@@ -64,5 +71,18 @@ public class OneActivity extends Activity
                 Toast.makeText(OneActivity.this, "" + mOptionsItems.get(index), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private int dp2px(int dp)
+    {
+        return (int) (dp * density());
+    }
+
+    private float density()
+    {
+        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        return dm.density;
     }
 }

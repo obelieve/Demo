@@ -26,7 +26,9 @@ repositories {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compile(name: 'pickerview-release', ext: 'aar')
+//    compile(name: 'Android-PickerView-4.1.6', ext: 'aar')
+    compile 'com.contrarywind:Android-PickerView:4.1.6'
+//    compile(name: 'pickerview-release', ext: 'aar')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'

@@ -15,10 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.zxy.demo.R;
+
 
 /**
  * Created by zxy on 2018/11/28 09:37.
@@ -28,10 +30,17 @@ public class PKProgressBar extends FrameLayout
 {
     private static final int DEF_RADIUS = 10;
     private static final String WHITE_COLOR = "#FFFFFF";
-    private static final String YELLOW_COLOR = "#FFFF00";
+    private static final String YELLOW_COLOR = "#FEE204";
 
-    ProgressBar mProgressBar;
-    TextView mTvLeft, mTvRight;
+    private ProgressBar mProgressBar;
+    private TextView mTvLeft, mTvRight;
+    private ImageView mIvLeft, mIvRight;
+
+    private int mProgressRadius_dp;
+    private int mLeftColor;
+    private int mRightColor;
+
+    GradientDrawable mLeftGradientDrawable, mRightGradientDrawable;
 
     public PKProgressBar(@NonNull Context context)
     {
@@ -53,11 +62,16 @@ public class PKProgressBar extends FrameLayout
     {
         removeAllViews();
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_pk_progress, this, true);
-        mProgressBar = view.findViewById(R.id.progress);
-        mTvLeft = view.findViewById(R.id.tv_left);
-        mTvRight = view.findViewById(R.id.tv_right);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
+        mTvLeft = (TextView) view.findViewById(R.id.tv_left);
+        mTvRight = (TextView) view.findViewById(R.id.tv_right);
+        mIvLeft = (ImageView) view.findViewById(R.id.iv_left);
+        mIvRight = (ImageView) view.findViewById(R.id.iv_right);
 
-        LayerDrawable layerDrawable = getLayerDrawable(dp2px(DEF_RADIUS));
+        mProgressRadius_dp = dp2px(DEF_RADIUS);
+        mLeftColor = Color.parseColor(YELLOW_COLOR);
+        mRightColor = Color.parseColor(WHITE_COLOR);
+        LayerDrawable layerDrawable = getLayerDrawable(mProgressRadius_dp, mLeftColor, mRightColor);
         mProgressBar.setProgressDrawable(layerDrawable);
         mProgressBar.setMax(2);
         mProgressBar.setProgress(1);
@@ -81,20 +95,58 @@ public class PKProgressBar extends FrameLayout
         mTvRight.setText(String.valueOf(rightValue));
     }
 
-    @NonNull
-    private LayerDrawable getLayerDrawable(int radius)
+    public void setProgressRadius_dp(int radius)
     {
-        GradientDrawable whiteDrawable = new GradientDrawable();
-        whiteDrawable.setColor(Color.parseColor(WHITE_COLOR));
-        whiteDrawable.setCornerRadius(radius);
+        mLeftGradientDrawable.setCornerRadius(dp2px(radius));
+        mRightGradientDrawable.setCornerRadius(dp2px(radius));
+    }
 
-        GradientDrawable yellowDrawable = new GradientDrawable();
-        yellowDrawable.setColor(Color.parseColor(YELLOW_COLOR));
-        yellowDrawable.setCornerRadius(radius);
+    public void setLeftColor(int color)
+    {
+        mLeftGradientDrawable.setColor(color);
+    }
 
-        ClipDrawable clipYellowDrawable = new ClipDrawable(yellowDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
+    public void setRightColor(int color)
+    {
+        mRightGradientDrawable.setColor(color);
+    }
 
-        LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{whiteDrawable, clipYellowDrawable, clipYellowDrawable});
+    public TextView getTvLeft()
+    {
+        return mTvLeft;
+    }
+
+    public TextView getTvRight()
+    {
+        return mTvRight;
+    }
+
+    public ImageView getIvLeft()
+    {
+        return mIvLeft;
+    }
+
+    public ImageView getIvRight()
+    {
+        return mIvRight;
+    }
+
+    @NonNull
+    private LayerDrawable getLayerDrawable(int radius, int leftColor, int rightColor)
+    {
+        GradientDrawable leftDrawable = new GradientDrawable();
+        leftDrawable.setColor(leftColor);
+        leftDrawable.setCornerRadius(radius);
+        mLeftGradientDrawable = leftDrawable;
+
+        GradientDrawable rightDrawable = new GradientDrawable();
+        rightDrawable.setColor(rightColor);
+        rightDrawable.setCornerRadius(radius);
+        mRightGradientDrawable = rightDrawable;
+
+        ClipDrawable clipLeftDrawable = new ClipDrawable(leftDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
+
+        LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{rightDrawable, clipLeftDrawable, clipLeftDrawable});
         layerDrawable.setId(0, android.R.id.background);
         layerDrawable.setId(1, android.R.id.secondaryProgress);
         layerDrawable.setId(2, android.R.id.progress);
@@ -114,3 +166,4 @@ public class PKProgressBar extends FrameLayout
         return dm.density;
     }
 }
+
