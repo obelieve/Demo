@@ -25,10 +25,14 @@
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
             android:text="对战时间"/>
-        <com.contrarywind.view.WheelView
+        <com.zxy.view_one.WheelView2
             android:id="@+id/wheelview"
             android:layout_width="80dp"
-            android:layout_height="80dp"/>
+            android:layout_height="80dp"
+            app:dividerColor="@android:color/transparent"
+            app:textColorCenter="#FEE204"
+            app:textColorOut="#8F7213"
+            app:textSize="24sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

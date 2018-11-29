@@ -2,7 +2,6 @@ package com.zxy.view_one;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -11,8 +10,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.bigkoo.pickerview.adapter.ArrayWheelAdapter;
-import com.contrarywind.listener.OnItemSelectedListener;
-import com.contrarywind.view.WheelView;
+import com.bigkoo.pickerview.listener.OnItemSelectedListener;
 import com.zxy.demo.R;
 
 import java.util.ArrayList;
@@ -47,11 +45,11 @@ public class OneActivity extends Activity
 
     private void initWheelView()
     {
-        WheelView wheelView = findViewById(R.id.wheelview);
+        WheelView2 wheelView = findViewById(R.id.wheelview);
         wheelView.setCyclic(false);
-        wheelView.setDividerColor(getResources().getColor(android.R.color.transparent));
-        wheelView.setTextColorCenter(Color.parseColor("#fee204"));
-        wheelView.setTextColorOut(Color.parseColor("#8F7213"));
+//        wheelView.setDividerColor(getResources().getColor(android.R.color.transparent));
+//        wheelView.setTextColorCenter(Color.parseColor("#fee204"));
+//        wheelView.setTextColorOut(Color.parseColor("#8F7213"));
         wheelView.setTextSize(24);
         final ArrayList<String> mOptionsItems = new ArrayList<>();
         mOptionsItems.add("1");
