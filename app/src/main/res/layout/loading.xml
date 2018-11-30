@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
+    android:background="#b3000000">
+    <ImageView
+        android:id="@+id/iv_point0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="8dp"
+        android:visibility="visible"
+        android:src="@drawable/shape_yellow_circle"/>
+    <ImageView
+        android:id="@+id/iv_point1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="24dp"
+        android:visibility="gone"
+        android:src="@drawable/shape_yellow_circle"/>
+    <ImageView
+        android:id="@+id/iv_point2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="40dp"
+        android:visibility="gone"
+        android:src="@drawable/shape_yellow_circle"/>
+    <ImageView
+        android:id="@+id/iv_point3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="56dp"
+        android:visibility="gone"
+        android:src="@drawable/shape_yellow_circle"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/shape_light_yellow_circle"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/shape_light_yellow_circle"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/shape_light_yellow_circle"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/shape_light_yellow_circle"/>
+    </LinearLayout>
+</FrameLayout>

@@ -12,7 +12,15 @@
         android:layout_height="20dp"
         android:layout_margin="20dp">
     </com.zxy.view_one.PKProgressBar>
-
+    <!--<com.zxy.view_one.LoadingView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content">-->
+    <!--</com.zxy.view_one.LoadingView>-->
+    <com.zxy.view_one.LoadingView2
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#333"/>
     <!--对战时间-->
     <LinearLayout
         android:layout_width="match_parent"
