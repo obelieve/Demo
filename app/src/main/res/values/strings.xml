@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Demo</string>
+
+    <!--导航栏-->
+    <string name="nav_wallet">资产</string>
+    <string name="nav_discover">发现</string>
+    <string name="nav_news">资讯</string>
+    <string name="nav_me">我的</string>
 </resources>

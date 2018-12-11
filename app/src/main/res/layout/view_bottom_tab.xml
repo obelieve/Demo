@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/bar_height"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll_wallet"
+        style="@style/bottom_nav_ll_style">
+
+        <ImageView
+            style="@style/bottom_nav_iv_style"
+            android:src="@drawable/sel_nav_wallet" />
+
+        <TextView
+            style="@style/bottom_nav_tv_style"
+            android:text="@string/nav_wallet" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_discover"
+        style="@style/bottom_nav_ll_style">
+
+        <ImageView
+            style="@style/bottom_nav_iv_style"
+            android:src="@drawable/sel_nav_discovery" />
+
+        <TextView
+            style="@style/bottom_nav_tv_style"
+            android:text="@string/nav_discover" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_news"
+        style="@style/bottom_nav_ll_style">
+
+        <ImageView
+            style="@style/bottom_nav_iv_style"
+            android:src="@drawable/sel_nav_news" />
+
+        <TextView
+            style="@style/bottom_nav_tv_style"
+            android:text="@string/nav_news" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_me"
+        style="@style/bottom_nav_ll_style">
+
+        <ImageView
+            style="@style/bottom_nav_iv_style"
+            android:src="@drawable/sel_nav_me" />
+
+        <TextView
+            style="@style/bottom_nav_tv_style"
+            android:text="@string/nav_me" />
+    </LinearLayout>
+
+
+</LinearLayout>
