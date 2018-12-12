@@ -20,6 +20,17 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!--通过Intent 访问Uri-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.zxy.im.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android:support.FILEPROVIDER_PATHS"
+                android:value="@xml/file_paths">
+            </meta-data>
+        </provider>
     </application>
 
 </manifest>

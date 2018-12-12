@@ -1,0 +1,21 @@
+1.Error:(45, 0) Could not find method apt() for arguments [com.jakewharton:butterknife-compiler:8.0.1]
+on object of type org.gradle.api.internal.artifacts.dsl.dependencies.DefaultDependencyHandler.
+
+apt 'com.jakewharton:butterknife-compiler:8.0.1'
+改为
+annotationProcessor 'com.jakewharton:butterknife-compiler:8.0.1'
+//apply plugin: 'com.neenbedankt.android-apt'
+//classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+
+2.
+Error:A problem occurred configuring project ':app'.
+> Failed to notify project evaluation listener.
+   > com.android.build.gradle.api.BaseVariant.getOutputs()Ljava/util/List;
+版本 8.8.1 ->8.4.0
+classpath 'com.jakewharton:butterknife-gradle-plugin:8.4.0'
+
+3.Alt +Insert 插件冲突一直打不开
+
+ButterKnifeZe.. 和ButterKnifePlus冲突
+
+4.Alt + Insert 无法出现ButterKnife生成需要放置在布局文件的引用上
