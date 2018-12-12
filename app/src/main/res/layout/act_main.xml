@@ -5,7 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.zxy.im.activity.MainActivity">
-
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
     <com.zxy.im.view.BottomTabView
         android:id="@+id/view_bottom_tab"
         android:layout_width="match_parent"

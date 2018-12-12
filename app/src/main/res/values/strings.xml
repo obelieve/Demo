@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Demo</string>
 
+    <string name="app_key">n19jmcy59f1q9</string><!--官方的key-->
     <!--导航栏-->
     <string name="nav_1">会话</string>
     <string name="nav_2">通讯录</string>
