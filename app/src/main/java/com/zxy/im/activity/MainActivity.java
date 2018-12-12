@@ -1,7 +1,9 @@
-package com.zxy.demo;
+package com.zxy.im.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.zxy.im.R;
 
 public class MainActivity extends AppCompatActivity
 {

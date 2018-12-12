@@ -1,14 +1,16 @@
-package com.zxy.demo;
+package com.zxy.im.view;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.telecom.Call;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import com.zxy.im.R;
+import com.zxy.im.utils.SelectionManage;
 
 
 /**
@@ -42,10 +44,10 @@ public class BottomTabView extends FrameLayout implements View.OnClickListener {
     private void init() {
         removeAllViews();
         LayoutInflater.from(getContext()).inflate(R.layout.view_bottom_tab, this, true);
-        ll_wallet = findViewById(R.id.ll_wallet);
-        ll_discover = findViewById(R.id.ll_discover);
-        ll_news = findViewById(R.id.ll_news);
-        ll_me = findViewById(R.id.ll_me);
+        ll_wallet = findViewById(R.id.ll_1);
+        ll_discover = findViewById(R.id.ll_2);
+        ll_news = findViewById(R.id.ll_3);
+        ll_me = findViewById(R.id.ll_4);
         ll_wallet.setOnClickListener(this);
         ll_discover.setOnClickListener(this);
         ll_news.setOnClickListener(this);
@@ -67,16 +69,16 @@ public class BottomTabView extends FrameLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_wallet:
+            case R.id.ll_1:
                 mSelectionManage.setCurrentItem(0);
                 break;
-            case R.id.ll_discover:
+            case R.id.ll_2:
                 mSelectionManage.setCurrentItem(1);
                 break;
-            case R.id.ll_news:
+            case R.id.ll_3:
                 mSelectionManage.setCurrentItem(2);
                 break;
-            case R.id.ll_me:
+            case R.id.ll_4:
                 mSelectionManage.setCurrentItem(3);
                 break;
         }

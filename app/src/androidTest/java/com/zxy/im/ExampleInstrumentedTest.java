@@ -1,4 +1,4 @@
-package com.zxy.demo;
+package com.zxy.im;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
