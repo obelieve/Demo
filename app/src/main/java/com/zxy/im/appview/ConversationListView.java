@@ -1,4 +1,4 @@
-package com.zxy.im.fragment;
+package com.zxy.im.appview;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

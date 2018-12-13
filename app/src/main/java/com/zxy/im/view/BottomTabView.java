@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.zxy.im.R;
-import com.zxy.im.utils.SelectionManage;
+import com.zxy.frame.utility.SelectionManage;
 
 
 /**

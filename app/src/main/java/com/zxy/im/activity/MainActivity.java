@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 
 import com.zxy.im.R;
 import com.zxy.im.base.BaseActivity;
-import com.zxy.im.fragment.ContactsView;
-import com.zxy.im.fragment.ConversationListView;
-import com.zxy.im.fragment.DiscoveryView;
-import com.zxy.im.fragment.MyView;
+import com.zxy.im.appview.ContactsView;
+import com.zxy.im.appview.ConversationListView;
+import com.zxy.im.appview.DiscoveryView;
+import com.zxy.im.appview.MyView;
 import com.zxy.im.view.BottomTabView;
 import com.zxy.utility.LogUtil;
 import com.zxy.utility.SPUtil;

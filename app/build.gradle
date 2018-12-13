@@ -34,10 +34,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(':CallKit')
     implementation project(':IMKit')
-    //library
-    implementation 'com.github.obelieve:utility:0.0.2'
-    implementation 'com.github.obelieve:http:0.0.5'
-    implementation 'com.github.obelieve:json:0.0.1'
     //rxjava
     implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'

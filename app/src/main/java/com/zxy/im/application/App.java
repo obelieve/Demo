@@ -4,9 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.zxy.http.OkHttpUtil;
-import com.zxy.http.UIThreadCallbackHandlerImpl;
-import com.zxy.utility.SPUtil;
+import com.zxy.frame.http.OkHttpUtil;
+import com.zxy.frame.utility.SPUtil;
+
+import java.util.concurrent.TimeUnit;
 
 import io.rong.imkit.RongIM;
 
@@ -23,9 +24,7 @@ public class App extends Application
         super.onCreate();
         mAppContext = this;
         RongIM.init(this);
-        OkHttpUtil.Builder builder =new OkHttpUtil.Builder()
-                .uiThreadCallbackHandler(new UIThreadCallbackHandlerImpl());
-        OkHttpUtil.init(builder);
+        OkHttpUtil.init().connectTimeout(10, TimeUnit.SECONDS);
         SPUtil.init(this,"im");
     }
 
