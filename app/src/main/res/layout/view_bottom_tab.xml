@@ -8,11 +8,12 @@
     <LinearLayout
         android:id="@+id/ll_1"
         style="@style/bottom_nav_ll_style">
-
         <ImageView
             style="@style/bottom_nav_iv_style"
             android:src="@drawable/sel_nav_1" />
-
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="2dp"/>
         <TextView
             style="@style/bottom_nav_tv_style"
             android:text="@string/nav_1" />
@@ -21,11 +22,12 @@
     <LinearLayout
         android:id="@+id/ll_2"
         style="@style/bottom_nav_ll_style">
-
         <ImageView
             style="@style/bottom_nav_iv_style"
             android:src="@drawable/sel_nav_2" />
-
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="2dp"/>
         <TextView
             style="@style/bottom_nav_tv_style"
             android:text="@string/nav_2" />
@@ -34,11 +36,12 @@
     <LinearLayout
         android:id="@+id/ll_3"
         style="@style/bottom_nav_ll_style">
-
         <ImageView
             style="@style/bottom_nav_iv_style"
             android:src="@drawable/sel_nav_3" />
-
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="2dp"/>
         <TextView
             style="@style/bottom_nav_tv_style"
             android:text="@string/nav_3" />
@@ -47,11 +50,12 @@
     <LinearLayout
         android:id="@+id/ll_4"
         style="@style/bottom_nav_ll_style">
-
         <ImageView
             style="@style/bottom_nav_iv_style"
             android:src="@drawable/sel_nav_4" />
-
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="2dp"/>
         <TextView
             style="@style/bottom_nav_tv_style"
             android:text="@string/nav_4" />

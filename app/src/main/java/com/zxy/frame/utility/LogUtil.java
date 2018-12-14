@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -52,22 +53,29 @@ public final class LogUtil {
      */
     public static class Builder {
 
-        private boolean bDebug;
-        private boolean bBroadcast;
+        private boolean mDebug;
+        private boolean mSendBroadcast;
+        private String mLogTag;
         private Context context;
 
         private Builder() {
-            this.bDebug = true;
+            this.mDebug = true;
         }
 
         public Builder setDebug(boolean debug) {
-            this.bDebug = debug;
+            this.mDebug = debug;
             return this;
         }
 
         public Builder setBroadcast(Context context, boolean broadcast) {
             this.context = context;
-            this.bBroadcast = broadcast;
+            this.mSendBroadcast = broadcast;
+            return this;
+        }
+
+        public Builder setLogTag(String logTag)
+        {
+            this.mLogTag = logTag;
             return this;
         }
     }
@@ -182,10 +190,17 @@ public final class LogUtil {
         String methodName = traceElement.getMethodName();
 
         int lineNum = traceElement.getLineNumber();
+        String formatStr = null;
+        if (TextUtils.isEmpty(BUILDER.mLogTag))
+        {
+            formatStr = "[%s %s:%d ]";
+            return String.format(formatStr, className, methodName, lineNum);
+        } else
+        {
+            formatStr = "%s - [%s %s:%d ]";
+            return String.format(BUILDER.mLogTag, formatStr, className, methodName, lineNum);
+        }
 
-        String formatStr = "[%s %s:%d ]";
-
-        return String.format(formatStr, className, methodName, lineNum);
     }
 
     /**
@@ -214,9 +229,9 @@ public final class LogUtil {
     }
 
     private static void println(int priority, String tag, String msg) {
-        if (BUILDER.bBroadcast == true && BUILDER.context != null)
+        if (BUILDER.mSendBroadcast == true && BUILDER.context != null)
             sendBroadcastLog(priority, tag, msg);
-        if (BUILDER.bDebug)
+        if (BUILDER.mDebug)
             Log.println(priority, tag, msg);
     }
 

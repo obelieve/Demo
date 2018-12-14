@@ -6,11 +6,10 @@
     android:orientation="vertical">
     <include
         android:id="@+id/layout_top"
-        layout="@layout/layout_top"/>
-    <fragment
-        android:id="@+id/conversation_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="io.rong.imkit.fragment.ConversationListFragment">
-    </fragment>
+        layout="@layout/conversation_list_top"/>
+        <FrameLayout
+            android:id="@+id/fl_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </FrameLayout>
 </LinearLayout>

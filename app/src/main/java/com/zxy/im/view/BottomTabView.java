@@ -21,7 +21,7 @@ public class BottomTabView extends FrameLayout implements View.OnClickListener {
 
     SelectionManage mSelectionManage = new SelectionManage();
 
-    private LinearLayout ll_wallet, ll_discover, ll_news, ll_me;
+    private LinearLayout ll_1, ll_2, ll_3, ll_4;
     private Callback mCallback;
 
     public void setCallback(Callback callback) {
@@ -44,16 +44,16 @@ public class BottomTabView extends FrameLayout implements View.OnClickListener {
     private void init() {
         removeAllViews();
         LayoutInflater.from(getContext()).inflate(R.layout.view_bottom_tab, this, true);
-        ll_wallet = findViewById(R.id.ll_1);
-        ll_discover = findViewById(R.id.ll_2);
-        ll_news = findViewById(R.id.ll_3);
-        ll_me = findViewById(R.id.ll_4);
-        ll_wallet.setOnClickListener(this);
-        ll_discover.setOnClickListener(this);
-        ll_news.setOnClickListener(this);
-        ll_me.setOnClickListener(this);
+        ll_1 = findViewById(R.id.ll_1);
+        ll_2 = findViewById(R.id.ll_2);
+        ll_3 = findViewById(R.id.ll_3);
+        ll_4 = findViewById(R.id.ll_4);
+        ll_1.setOnClickListener(this);
+        ll_2.setOnClickListener(this);
+        ll_3.setOnClickListener(this);
+        ll_4.setOnClickListener(this);
         mSelectionManage.setMode(SelectionManage.Mode.SINGLE_MUST_ONE);
-        mSelectionManage.setItems(ll_wallet, ll_discover, ll_news, ll_me);
+        mSelectionManage.setItems(ll_1, ll_2, ll_3, ll_4);
         mSelectionManage.setCurrentItem(0);
         mSelectionManage.setOnSelectChangeListener(new SelectionManage.OnSelectChangeListener() {
 

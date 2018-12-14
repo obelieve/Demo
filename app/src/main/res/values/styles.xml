@@ -9,11 +9,17 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppBgTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
     <!--bottom nav view style-->
     <style name="bottom_nav_ll_style">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">2dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">center</item>
     </style>
@@ -25,7 +31,7 @@
     </style>
 
     <style name="bottom_nav_iv_style">
-        <item name="android:layout_width">24dp</item>
-        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_width">22dp</item>
+        <item name="android:layout_height">22dp</item>
     </style>
 </resources>

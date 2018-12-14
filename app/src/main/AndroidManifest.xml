@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:name=".application.App"
@@ -17,7 +19,8 @@
         <activity android:name="com.zxy.im.activity.MainActivity">
 
         </activity>
-        <activity android:name=".activity.WelActivity">
+        <activity android:name=".activity.SplashActivity"
+                  android:theme="@style/AppBgTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -25,6 +28,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity"/>
+
+        <!--会话详情-->
+        <activity android:name=".activity.ConversationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                    android:host="${applicationId}"
+                    android:pathPrefix="/conversation/"
+                    android:scheme="rong"/>
+            </intent-filter>
+        </activity>
         <!--通过Intent 访问Uri-->
         <provider
             android:name="android.support.v4.content.FileProvider"

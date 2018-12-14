@@ -4,8 +4,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.zxy.frame.json.JsonUtil;
+
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
@@ -47,16 +51,12 @@ public class OkHttpUtil
             switch (msg.what)
             {
                 case ON_FAILURE:
-                    callback.onFailure(callback.getIOException());
+                    callback.onFailure(callback.mException);
+                    callback.onFinish();
                     break;
                 case ON_RESPONSE:
-                    try
-                    {
-                        callback.onResponse(callback.getResponseString());
-                    } catch (Exception e)
-                    {
-                        callback.onFailure(e);
-                    }
+                    callback.onResponse(callback.mModel);
+                    callback.onFinish();
                     break;
                 default:
                     break;
@@ -118,7 +118,7 @@ public class OkHttpUtil
     {
         Request request = new Request.Builder().url(url)
                 .get().build();
-        requestHttp(callback, request);
+        requestHttp(request, callback);
     }
 
     public void postJson(String url, String json, Callback callback)
@@ -126,7 +126,7 @@ public class OkHttpUtil
         RequestBody body = RequestBody.create(JSON_MEDIA_TYPE, json);
         Request request = new Request.Builder().url(url)
                 .post(body).build();
-        requestHttp(callback, request);
+        requestHttp(request, callback);
     }
 
     public void postFile(String url, Callback callback, File file)
@@ -140,7 +140,7 @@ public class OkHttpUtil
                 .url(url)
                 .post(requestBody)
                 .build();
-        requestHttp(callback, request);
+        requestHttp(request, callback);
     }
 
 
@@ -149,7 +149,6 @@ public class OkHttpUtil
      * @param map
      * @param callback
      */
-    @Deprecated
     public void postForm(String url, Map<String, Object> map,
                          Callback callback)
     {
@@ -177,10 +176,10 @@ public class OkHttpUtil
         }
         Request request = new Request.Builder().url(url)
                 .post(bodyBuilder.build()).build();
-        requestHttp(callback, request);
+        requestHttp(request, callback);
     }
 
-    private void requestHttp(Callback callback, Request request)
+    public void requestHttp(Request request, Callback callback)
     {
         if (callback instanceof MainCallback)
         {
@@ -194,11 +193,13 @@ public class OkHttpUtil
     private void mainThreadHandle(MainCallback callback, Request request)
     {
         final MainCallback mainCallback = callback;
+        callback.onStart();
         mOkHttpClient.newCall(request).enqueue(new Callback()
         {
             @Override
             public void onFailure(Call call, IOException e)
             {
+                mainCallback.onFailure(call, e);
                 Message msg = sHandler.obtainMessage();
                 msg.what = OkHttpUtil.ON_FAILURE;
                 msg.obj = mainCallback;
@@ -206,12 +207,24 @@ public class OkHttpUtil
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException
+            public void onResponse(Call call, Response response)
             {
-                Message msg = sHandler.obtainMessage();
-                msg.what = OkHttpUtil.ON_RESPONSE;
-                msg.obj = mainCallback;
-                sHandler.sendMessage(msg);
+                int what = 0;
+                try
+                {
+                    mainCallback.onResponse(call, response);
+                    what = OkHttpUtil.ON_RESPONSE;
+                } catch (Exception e)
+                {
+                    mainCallback.mException = new Exception(e);
+                    what = OkHttpUtil.ON_FAILURE;
+                } finally
+                {
+                    Message msg = sHandler.obtainMessage();
+                    msg.what = what;
+                    msg.obj = mainCallback;
+                    sHandler.sendMessage(msg);
+                }
             }
         });
     }
@@ -219,19 +232,20 @@ public class OkHttpUtil
     /**
      * UI Thread Callback
      */
-    public abstract class MainCallback implements Callback
+    public static abstract class MainCallback<T> implements Callback
     {
-        private IOException mIOException;
+        private T mModel;
+        private Exception mException;
         private String mResponseString;
 
-        public IOException getIOException()
+        public T getModel()
         {
-            return mIOException;
+            return mModel;
         }
 
-        public void setIOException(IOException IOException)
+        public Exception getException()
         {
-            mIOException = IOException;
+            return mException;
         }
 
         public String getResponseString()
@@ -239,34 +253,45 @@ public class OkHttpUtil
             return mResponseString;
         }
 
-        public void setResponseString(String responseString)
+        public void onStart()
         {
-            mResponseString = responseString;
+
         }
 
         public abstract void onFailure(Exception error);
 
-        public abstract void onResponse(String response);
+        public abstract void onResponse(T model);
+
+        public void onFinish()
+        {
+
+        }
 
         @Override
         public void onFailure(Call call, IOException ioexception)
         {
-            mIOException = ioexception;
+            mException = ioexception;
         }
 
         @Override
-        public void onResponse(Call call, Response response)
+        public void onResponse(Call call, Response response) throws IOException
         {
-            try
-            {
-                mResponseString = response.body().string();
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-                onFailure(e);
-            }
+            mResponseString = response.body().string();
+            mModel = JsonUtil.parseJson(mResponseString, getModelClass());
         }
 
+        protected Class<T> getModelClass()
+        {
+            final ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
+            final Type[] types = parameterizedType.getActualTypeArguments();
+            if (types != null && types.length > 0)
+            {
+                return (Class<T>) types[0];
+            } else
+            {
+                throw new RuntimeException("generic type not found");
+            }
+        }
     }
 
 }

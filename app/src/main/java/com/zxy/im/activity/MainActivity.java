@@ -8,22 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zxy.im.R;
-import com.zxy.im.base.BaseActivity;
 import com.zxy.im.appview.ContactsView;
 import com.zxy.im.appview.ConversationListView;
 import com.zxy.im.appview.DiscoveryView;
 import com.zxy.im.appview.MyView;
+import com.zxy.im.base.BaseActivity;
 import com.zxy.im.view.BottomTabView;
-import com.zxy.utility.LogUtil;
-import com.zxy.utility.SPUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
 
 public class MainActivity extends BaseActivity
 {
@@ -35,38 +31,10 @@ public class MainActivity extends BaseActivity
     PagerAdapter mPagerAdapter;
     List<View> mViews = new ArrayList<>();
 
-    /**
-     * 连接融云IM
-     */
-    public void connectRongIM()
-    {
-        RongIM.connect(SPUtil.getInstance().getSP().getString("token",""), new RongIMClient.ConnectCallback()
-        {
-            @Override
-            public void onTokenIncorrect()
-            {
-                LogUtil.e();
-            }
-
-            @Override
-            public void onSuccess(String s)
-            {
-                LogUtil.e(s);
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode)
-            {
-                LogUtil.e(errorCode.getMessage());
-            }
-        });
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        connectRongIM();
         setContentView(R.layout.act_main);
         ButterKnife.bind(this);
         mVpContent.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
