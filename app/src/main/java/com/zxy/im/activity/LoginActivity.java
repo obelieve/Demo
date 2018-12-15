@@ -69,12 +69,6 @@ public class LoginActivity extends BaseActivity
                 }
 
                 @Override
-                public void onFailure(Exception error)
-                {
-                    ToastUtil.show(error.getMessage());
-                }
-
-                @Override
                 public void onResponse(LoginResponse model)
                 {
                     String token = model.getResult().getToken();

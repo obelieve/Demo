@@ -34,6 +34,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(':CallKit')
     implementation project(':IMKit')
+
+    implementation 'org.greenrobot:eventbus:3.1.1'
     //rxjava
     implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'

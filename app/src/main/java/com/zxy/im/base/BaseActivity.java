@@ -1,5 +1,6 @@
 package com.zxy.im.base;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 
@@ -27,5 +28,9 @@ public class BaseActivity extends AppCompatActivity
         {
             mProgressDialog.dismiss();
         }
+    }
+
+    public Activity getActivity(){
+        return this;
     }
 }

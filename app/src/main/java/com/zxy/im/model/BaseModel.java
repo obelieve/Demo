@@ -28,4 +28,9 @@ public class BaseModel
     {
         this.errmsg = errmsg;
     }
+
+    public boolean isSuccess()
+    {
+        return errcode == 0;
+    }
 }

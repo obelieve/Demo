@@ -27,7 +27,7 @@ import okhttp3.Request;
 
 public class HttpInterface
 {
-    private static final String URL_INDEX = "http://api.im.fanwe.cn";
+    private static final String SERVER_URL = "http://api.im.fanwe.cn";
 
     public static void requestGetToken(String userId, String name, String portraitUri, OkHttpUtil.MainCallback<GetTokenResponse> callback)
     {
@@ -68,7 +68,7 @@ public class HttpInterface
 
     public static void requestInit(OkHttpUtil.MainCallback<InitModel> callback)
     {
-        OkHttpUtil.getInstance().get(URL_INDEX + "/system/get_config", callback);
+        OkHttpUtil.getInstance().get(SERVER_URL + "/system/get_config", callback);
     }
 
     /**
@@ -79,7 +79,7 @@ public class HttpInterface
         Map<String, Object> map = new HashMap<>();
         map.put("mobile", mobile);
         map.put("password", password);
-        OkHttpUtil.getInstance().postForm(URL_INDEX + "/login", map, callback);
+        OkHttpUtil.getInstance().postForm(SERVER_URL + "/login", map, callback);
     }
 
     /**
@@ -100,6 +100,6 @@ public class HttpInterface
             map.put("country_code", country_code);
         if (!TextUtils.isEmpty(scene))
             map.put("scene", scene);
-        OkHttpUtil.getInstance().postForm(URL_INDEX + "/send_sms_verify", map, callback);
+        OkHttpUtil.getInstance().postForm(SERVER_URL + "/send_sms_verify", map, callback);
     }
 }

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.zxy.frame.http.OkHttpUtil;
 import com.zxy.frame.utility.LogUtil;
 import com.zxy.frame.utility.SPUtil;
 import com.zxy.frame.utility.UContext;
@@ -22,6 +23,7 @@ public class App extends Application
         super.onCreate();
         UContext.init(this);
         SPUtil.init(this);
+        OkHttpUtil.init().showErrorToast(true);
         LogUtil.builder().setLogTag("Demo");
 
         APPIMContext.init(this);

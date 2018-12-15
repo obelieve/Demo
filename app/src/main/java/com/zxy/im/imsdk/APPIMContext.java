@@ -41,6 +41,11 @@ public class APPIMContext
         return mConnectCallback;
     }
 
+    public RongIMClient.ConnectionStatusListener getConnectionStatusListener()
+    {
+        return mConnectionStatusListener;
+    }
+
     /**
      * 监听连接状态
      */

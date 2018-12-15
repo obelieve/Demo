@@ -19,3 +19,22 @@ classpath 'com.jakewharton:butterknife-gradle-plugin:8.4.0'
 ButterKnifeZe.. 和ButterKnifePlus冲突
 
 4.Alt + Insert 无法出现ButterKnife生成需要放置在布局文件的引用上
+===========================================================
+EventBus
+1.public static class MessageEvent { /* Additional fields if needed */ }
+2.@Subscribe(threadMode = ThreadMode.MAIN)
+  public void onMessageEvent(MessageEvent event) {/* Do something */};
+3.
+ @Override
+ public void onStart() {
+     super.onStart();
+     EventBus.getDefault().register(this);
+ }
+
+ @Override
+ public void onStop() {
+     super.onStop();
+     EventBus.getDefault().unregister(this);
+ }
+ 4.
+  EventBus.getDefault().post(new MessageEvent());

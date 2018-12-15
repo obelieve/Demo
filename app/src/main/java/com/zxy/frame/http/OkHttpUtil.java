@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.zxy.frame.json.JsonUtil;
+import com.zxy.frame.utility.ToastUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class OkHttpUtil
     private static final MediaType JSON_MEDIA_TYPE = MediaType.parse("application/json; charset=utf-8");
 
     private static OkHttpUtil sOkHttpUtil;
-    private static OkHttpClient.Builder sBuilder;
+    private static Configuration sConfiguration;
     private OkHttpClient mOkHttpClient;
 
     private static Handler sHandler = new Handler(Looper.getMainLooper())
@@ -51,6 +52,9 @@ public class OkHttpUtil
             switch (msg.what)
             {
                 case ON_FAILURE:
+                    if(sConfiguration.mShowErrorToast){
+                        ToastUtil.show(callback.mException.getMessage());
+                    }
                     callback.onFailure(callback.mException);
                     callback.onFinish();
                     break;
@@ -64,11 +68,27 @@ public class OkHttpUtil
         }
     };
 
+    public static class Configuration
+    {
+        private OkHttpClient.Builder mBuilder = new OkHttpClient.Builder();
+        private boolean mShowErrorToast;
+
+        public OkHttpClient.Builder builder()
+        {
+            return mBuilder;
+        }
+
+        public Configuration showErrorToast(boolean showErrorToast){
+            mShowErrorToast = showErrorToast;
+            return this;
+        }
+    }
+
     private OkHttpUtil()
     {
-        if (sBuilder != null)
+        if (sConfiguration != null)
         {
-            mOkHttpClient = sBuilder.build();
+            mOkHttpClient = sConfiguration.builder().build();
         } else
         {
             mOkHttpClient = new OkHttpClient.Builder()
@@ -83,10 +103,10 @@ public class OkHttpUtil
      * 初始化配置
      * @return
      */
-    public static OkHttpClient.Builder init()
+    public static Configuration init()
     {
-        sBuilder = new OkHttpClient.Builder();
-        return sBuilder;
+        sConfiguration = new Configuration();
+        return sConfiguration;
     }
 
     public static OkHttpUtil getInstance()
@@ -258,7 +278,10 @@ public class OkHttpUtil
 
         }
 
-        public abstract void onFailure(Exception error);
+        public void onFailure(Exception error)
+        {
+
+        }
 
         public abstract void onResponse(T model);
 
