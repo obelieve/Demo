@@ -6,6 +6,14 @@ import com.zxy.frame.utility.LogUtil;
 import com.zxy.frame.utility.SPUtil;
 import com.zxy.im.cache.SPConstant;
 
+import java.util.List;
+
+import io.rong.imkit.DefExtensionModule;
+import io.rong.imkit.DefTextMessageProvider;
+import io.rong.imkit.DefVoiceMessageProvider;
+import io.rong.imkit.DefaultExtensionModule;
+import io.rong.imkit.IExtensionModule;
+import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
@@ -34,6 +42,36 @@ public class APPIMContext
     {
         RongIM.init(context);
         RongIM.setConnectionStatusListener(sAPPIMContext.mConnectionStatusListener);
+        initRongConversation();
+    }
+    /**
+     * 自定义会话页面配置
+     */
+    private static void initRongConversation()
+    {
+        //RongIM.registerMessageType(TextMessage.class);
+        //RongIM.getInstance().registerMessageTemplate()
+        RongIM.registerMessageTemplate(new DefTextMessageProvider());
+        RongIM.registerMessageTemplate(new DefVoiceMessageProvider());
+        //会话+号 插件
+        List<IExtensionModule> moduleList = RongExtensionManager.getInstance().getExtensionModules();
+        IExtensionModule defaultModule = null;
+        if (moduleList != null)
+        {
+            for (IExtensionModule module : moduleList)
+            {
+                if (module instanceof DefaultExtensionModule)
+                {
+                    defaultModule = module;
+                    break;
+                }
+            }
+            if (defaultModule != null)
+            {
+                RongExtensionManager.getInstance().unregisterExtensionModule(defaultModule);
+                RongExtensionManager.getInstance().registerExtensionModule(new DefExtensionModule());
+            }
+        }
     }
 
     public RongIMClient.ConnectCallback getConnectCallback()
