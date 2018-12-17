@@ -21,6 +21,7 @@
         android:maxLines="1"
         android:singleLine="true"
         android:ellipsize="end"
+        android:layout_marginTop="8dp"
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp"/>
 </LinearLayout>

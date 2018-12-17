@@ -15,8 +15,8 @@
     <!-- PicturePreviewActivity -->
     <color name="rc_picprev_toolbar_transparent">@color/rc_picsel_toolbar_transparent</color>
 
-    <color name="rc_extension_normal">#f4f4f6</color>
-    <color name="rc_divider_line">#ababad</color>
+    <color name="rc_extension_normal">#F7F7F7</color>
+    <color name="rc_divider_line">#E5E5EA</color>
 
     <!-- Extension -->
     <color name="rc_divider_color">#d9d9d9</color>

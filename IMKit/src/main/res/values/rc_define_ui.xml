@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="text_main_color">#111111</color>
+    <color name="main_color">#2783f4</color>
+    <!--会话 背景-->
+    <color name="conversation_bg">@android:color/white</color>
+    <!--会话 时间-文本颜色-->
+    <color name="conversation_time_text_color">#83838b</color>
+    <color name="conversation_time_bg_color">@android:color/transparent</color>
+    <!--会话 输入语音框-->
+    <drawable name="conversation_voice_btn_press">#F7F7F7</drawable>
+    <drawable name="conversation_voice_btn_nor">#ffffff</drawable>
+
+    <!--字符串资源-->
+    <string name="picture_plugin">照片</string>
+    <string name="camera_plugin">拍摄</string>
+    <string name="location_plugin">位置</string>
+    <string name="file_plugin">文件</string>
+    <string name="red_packet_plugin">红包</string>
+    <string name="transfer_accounts_plugin">转账</string>
+    <string name="voice_input_plugin">语音输入</string>
+    <string name="personal_card_plugin">个人名片</string>
+    <string name="voice_call_plugin">语音通话</string>
+    <string name="video_call_plugin">视频通话</string>
+</resources>

@@ -16,23 +16,26 @@
 
         <EditText
             android:id="@+id/rc_edit_text"
+            android:textColor="@android:color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="bottom"
-            android:background="@drawable/rc_edit_text_background_selector"
+            android:minHeight="31dp"
+            android:paddingLeft="3dp"
             android:paddingTop="3dp"
+            android:background="@drawable/shape_rec_white"
             android:maxLines="4"
             android:textSize="16sp"/>
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/rc_emoticon_toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="12dp"
         android:src="@drawable/rc_emotion_toggle_selector"/>
 
     <FrameLayout

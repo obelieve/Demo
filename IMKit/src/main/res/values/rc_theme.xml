@@ -65,11 +65,11 @@
     </style>
 
     <style name="RCTheme.MessageTime" parent="RCTheme.TextView">
-        <item name="android:background">@drawable/rc_corner_style</item>
+        <item name="android:background">@color/conversation_time_bg_color</item>
         <item name="android:textSize">12sp</item>
         <item name="android:paddingLeft">6dp</item>
         <item name="android:paddingRight">6dp</item>>
-        <item name="android:textColor">@color/rc_text_color_primary_inverse</item>
+        <item name="android:textColor">@color/conversation_time_text_color</item>
     </style>
     <!--
     size:32px color:#353535
