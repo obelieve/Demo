@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
         return (int) (dm.density * size);
     }
 
+    public interface ItemTagCallback {
+        String getTag(int position);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +47,35 @@ public class MainActivity extends AppCompatActivity {
         rv_content = (RecyclerView) findViewById(R.id.rv_content);
         rv_content.setLayoutManager(new LinearLayoutManager(this));
         rv_content.addItemDecoration(new RecyclerView.ItemDecoration() {
+            ItemTagCallback callback;
             Paint mPaint = new Paint();
 
             {
                 mPaint.setColor(Color.DKGRAY);
                 mPaint.setStrokeWidth(30.0f);
+                callback = new ItemTagCallback() {
+                    @Override
+                    public String getTag(int position) {
+                        if (position >= 0 && position < 5)
+                            return "A";
+                        else if (position >= 5 && position < 15) {
+                            return "B";
+                        } else
+                            return "C";
+                    }
+                };
+            }
+
+            public boolean isDrawGroupItem(int position) {
+                if (position == 0) {
+                    return true;
+                } else {
+                    if (callback.getTag(position).equals(callback.getTag(position - 1))) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
             }
 
             @Override
@@ -56,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
                 super.onDraw(c, parent, state);
                 for (int i = 0; i < parent.getChildCount(); i++) {
                     //dp2px(46)
-                    c.drawRect(0, parent.getChildAt(i).getTop() - 90, parent.getChildAt(i).getRight(), parent.getChildAt(i).getTop(), mPaint);
+                    View view = parent.getChildAt(i);
+                    if (isDrawGroupItem(parent.getChildAdapterPosition(view)))
+                        c.drawRect(0, parent.getChildAt(i).getTop() - 90, parent.getChildAt(i).getRight(), parent.getChildAt(i).getTop(), mPaint);
                 }
             }
 
@@ -66,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 Paint paint = new Paint();
                 paint.setColor(Color.parseColor("#aaaa0000"));
                 View view = parent.getChildAt(0);
-                if (view.getBottom() <= 90) {
+                if (view.getBottom() <= 90 && isDrawGroupItem(parent.getChildAdapterPosition(view) + 1)) {
                     c.drawRect(0, 0, view.getRight(), view.getBottom(), paint);
                 } else {
                     c.drawRect(0, 0, view.getRight(), 90, paint);
@@ -76,7 +105,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                outRect.top = 90;
+                if (isDrawGroupItem(parent.getChildAdapterPosition(view)))
+                    outRect.top = 90;
             }
         });
         mAdapter = new OKRecycleAdapter();
