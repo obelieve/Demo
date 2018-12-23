@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zxy.utility.LogUtil;
 import com.zxy.utility.SystemInfoUtil;
 
 import java.util.ArrayList;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < parent.getChildCount(); i++) {
                     //dp2px(46)
                     View view = parent.getChildAt(i);
+                    LogUtil.d("TAG",view+"");
                     if (isDrawGroupItem(parent.getChildAdapterPosition(view)))
                         c.drawRect(0, parent.getChildAt(i).getTop() - 90, parent.getChildAt(i).getRight(), parent.getChildAt(i).getTop(), mPaint);
                 }
@@ -93,7 +95,8 @@ public class MainActivity extends AppCompatActivity {
             public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
                 super.onDrawOver(c, parent, state);
                 Paint paint = new Paint();
-                paint.setColor(Color.parseColor("#aaaa0000"));
+//                paint.setColor(Color.parseColor("#aaaa0000"));
+                paint.setColor(Color.DKGRAY);
                 View view = parent.getChildAt(0);
                 if (view.getBottom() <= 90 && isDrawGroupItem(parent.getChildAdapterPosition(view) + 1)) {
                     c.drawRect(0, 0, view.getRight(), view.getBottom(), paint);
