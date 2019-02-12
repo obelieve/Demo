@@ -1,4 +1,4 @@
-package com.zxy.im.database;
+package com.zxy.demo.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;

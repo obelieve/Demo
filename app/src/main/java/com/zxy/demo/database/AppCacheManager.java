@@ -1,5 +1,6 @@
-package com.zxy.im.database;
+package com.zxy.demo.database;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -67,6 +68,25 @@ public class AppCacheManager
             }
         }
         return instance;
+    }
+
+    /**
+     * Test
+     * @param activity
+     */
+    private static void testRx(Activity activity)
+    {
+        AppCacheManager.init(activity.getApplicationContext());
+        AppCacheManager.getInstance().getUserInfo("1");
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                UserInfo userInfo = AppCacheManager.getInstance().getUserInfo("1");
+                LogUtil.e(userInfo + "");
+            }
+        }, 1000);
     }
 
     public void executeThread(Runnable runnable)
