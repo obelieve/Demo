@@ -33,9 +33,9 @@ public class AutoFixWidthLayoutManager extends RecyclerView.LayoutManager
     {
         detachAndScrapAttachedViews(recycler);
         int parentWidth = getWidth();
-        int curWidth = 0;
-        int curHeight = 0;
-        int lastHeight = 0;
+        int curWidth = 0;//当前行，已经填充的宽度
+        int curHeight = 0;//当前容易，已经填充的高度
+        int lastHeight = 0;//最后的高度
         for (int i = 0; i < getItemCount(); i++)
         {
             View view = recycler.getViewForPosition(i);
@@ -45,7 +45,7 @@ public class AutoFixWidthLayoutManager extends RecyclerView.LayoutManager
             int viewHeight = getDecoratedMeasuredHeight(view);
             curWidth += viewWidth;
             if (curWidth <= parentWidth)
-            {
+            {//当前行
                 int l = view.getPaddingLeft() + curWidth - viewWidth;
                 int t = view.getPaddingTop() + curHeight;
                 int r = view.getPaddingRight() + curWidth;
@@ -53,7 +53,7 @@ public class AutoFixWidthLayoutManager extends RecyclerView.LayoutManager
                 layoutDecorated(view, l, t, r, b);
                 lastHeight = curHeight + viewHeight;
             } else
-            {
+            {//新行
                 int l = view.getPaddingLeft();
                 int t = view.getPaddingTop() + lastHeight;
                 int r = view.getPaddingRight() + viewWidth;
