@@ -3,16 +3,18 @@ package com.zxy.demo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.zxy.utility.LogUtil;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.functions.Function;
 
+/**
+ * RxJava是什么？Rx是一个使用可观察数据流进行异步编程的编程接口；
+ * http://introtorx.com/Content/v1.0.10621.0/00_Foreword.html
+ * Map操作：Observable<> ->转为另一种类型的Observable<>
+ */
 public class MainActivity extends AppCompatActivity {
     TextView tv;
 
@@ -21,37 +23,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.tv);
-        Observable.create(new ObservableOnSubscribe<String>() {
+        Observable.just(1, 2, 3, 4).map(new Function<Integer, Integer>()
+        {
             @Override
-            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
-                emitter.onNext("on");
-                Thread.sleep(1000);
-                emitter.onNext("tw");
-                Thread.sleep(1000);
-                int i = 0;
-                int b = 100 / i;
-                emitter.onNext("th");
-                emitter.onComplete();
+            public Integer apply(Integer i) throws Exception
+            {
+                return i * i;
             }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        tv.setText(s);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(MainActivity.this, "onError()", Toast.LENGTH_SHORT).show();
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        Toast.makeText(MainActivity.this, "onComplete()", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        }).subscribe(new Consumer<Integer>()
+        {
+            @Override
+            public void accept(Integer i) throws Exception
+            {
+                LogUtil.e(String.valueOf(i));
+            }
+        });
 
     }
 
