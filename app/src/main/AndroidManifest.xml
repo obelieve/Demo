@@ -45,6 +45,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".test_view_lifecycle.TestViewLifeCycleActivity">
+
+        </activity>
     </application>
 
 </manifest>
