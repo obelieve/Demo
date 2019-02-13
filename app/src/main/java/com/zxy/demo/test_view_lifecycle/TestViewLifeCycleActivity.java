@@ -1,12 +1,20 @@
 package com.zxy.demo.test_view_lifecycle;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.ViewGroup;
 
 import com.zxy.demo.R;
 import com.zxy.utility.LogUtil;
 
 public class TestViewLifeCycleActivity extends BaseActivity
 {
+
+    public static void start(Activity activity)
+    {
+        activity.startActivity(new Intent(activity,TestViewLifeCycleActivity.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -20,6 +28,9 @@ public class TestViewLifeCycleActivity extends BaseActivity
     protected void init(Bundle savedInstanceState)
     {
         setContentView(R.layout.activity_test_view_life_cycle);
+        ViewGroup fl_container = findViewById(R.id.fl_container);
+        MyAppView appView = new MyAppView(getActivity(), null);
+        ViewUtil.toggleView(fl_container, appView);
     }
 
     @Override
