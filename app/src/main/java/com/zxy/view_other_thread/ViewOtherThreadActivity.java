@@ -1,16 +1,9 @@
 package com.zxy.view_other_thread;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.zxy.demo.R;
 
@@ -43,50 +36,21 @@ import com.zxy.demo.R;
 public class ViewOtherThreadActivity extends Activity
 {
 
+    TextView tv;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_other_thread);
-
-        new Handler().postDelayed(new Runnable()
+        tv = findViewById(R.id.tv);
+        new Thread(new Runnable()
         {
             @Override
             public void run()
             {
-                new Thread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        /**
-                         * 需要添加Looper :
-                         java.lang.RuntimeException: Can't create handler inside thread that has not called Looper.prepare()
-                         ViewRootImpl 类内部会新建一个 ViewRootHandler 类型的 mHandler 用来处理相关消息，所以如果线程没有 Looper 是会报错的，添加 Looper
-                         **/
-                        Looper.prepare();
-                        showWindow();
-                        Looper.loop();
-                    }
-                }).start();
+                tv.setText("aa");
             }
-        }, 2000);
+        }).start();
     }
 
-
-    private void showWindow()
-    {
-        WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.MATCH_PARENT;
-        params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
-        params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
-        params.format = PixelFormat.TRANSPARENT;
-        params.gravity = Gravity.CENTER;
-        params.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View v = inflater.inflate(R.layout.window_other_thread, null);
-        windowManager.addView(v, params);
-    }
 }
