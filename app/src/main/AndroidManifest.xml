@@ -47,6 +47,10 @@
         </activity>
 
         <activity android:name="com.zxy.view_other_thread.ViewOtherThreadActivity">
+
+        </activity>
+
+        <activity android:name="com.zxy.view_gradient.GradientActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
