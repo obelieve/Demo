@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setTextContent() {
         et_src.setText(SPUtil.getInstance().getSP().getString("src", Environment.getExternalStorageDirectory() + "/Download"));
-        et_des.setText(SPUtil.getInstance().getSP().getString("des", Environment.getExternalStorageDirectory() + "/Android/data/com.amazon.kindlefc"));
+        et_des.setText(SPUtil.getInstance().getSP().getString("des", Environment.getExternalStorageDirectory() + "/Android/data/com.amazon.kindlefc/files"));
         et_file.setText(SPUtil.getInstance().getSP().getString("file", ".mobi"));
     }
 
