@@ -16,8 +16,10 @@ import android.view.View;
 
 public class GradientView extends View {
 
-    public static final int START_COLOR = Color.parseColor("#274A8E");
-    public static final int END_COLOR = Color.parseColor("#F3497C");
+    public static final int LEFT_START_COLOR = Color.parseColor("#5458AE");
+    public static final int LEFT_END_COLOR = Color.parseColor("#4E82F0");
+    public static final int RIGHT_START_COLOR = Color.parseColor("#F34173");
+    public static final int RIGHT_END_COLOR = Color.parseColor("FE6F9C");
 
     private Paint mPaint;
     private LinearGradient mGradient;
@@ -38,7 +40,7 @@ public class GradientView extends View {
     {
         mPaint = new Paint();
         mGradient = new LinearGradient(0, 0, getMeasuredWidth(), 0,
-                new int[]{START_COLOR, END_COLOR},
+                new int[]{LEFT_START_COLOR, RIGHT_END_COLOR},
                 new float[]{0.0f, 1.0f}, Shader.TileMode.CLAMP);
     }
 
@@ -54,19 +56,30 @@ public class GradientView extends View {
     {
         float start;
         float end;
-        //按照gradient分割线的位置进行平分
-        if (left <= 0.5f)
+        //gradient中间位置划分
+        if (left == 0.5f)
+        {
+            start = 0.0f;
+            end = 1.0f;
+            mGradient = new LinearGradient(0, 0, getMeasuredWidth(), 0,
+                    new int[]{LEFT_START_COLOR, RIGHT_END_COLOR},
+                    new float[]{start, end}, Shader.TileMode.CLAMP);
+        } else if (left < 0.5f)
         {
             start = 0.0f;
             end = left * 2;
+            mGradient = new LinearGradient(0, 0, getMeasuredWidth(), 0,
+                    new int[]{LEFT_START_COLOR, RIGHT_START_COLOR, RIGHT_END_COLOR},
+                    new float[]{start, end, 1}, Shader.TileMode.CLAMP);
         } else
         {
             start = left * 2 - 1;//left-(1-left)
             end = 1;
+            mGradient = new LinearGradient(0, 0, getMeasuredWidth(), 0,
+                    new int[]{LEFT_START_COLOR, LEFT_END_COLOR, RIGHT_END_COLOR},
+                    new float[]{0, start, end}, Shader.TileMode.CLAMP);
         }
-        mGradient = new LinearGradient(0, 0, getMeasuredWidth(), 0,
-                new int[]{START_COLOR, END_COLOR},
-                new float[]{start, end}, Shader.TileMode.CLAMP);
+
         invalidate();
     }
 
