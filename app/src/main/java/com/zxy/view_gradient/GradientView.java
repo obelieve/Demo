@@ -19,7 +19,7 @@ public class GradientView extends View {
     public static final int LEFT_START_COLOR = Color.parseColor("#5458AE");
     public static final int LEFT_END_COLOR = Color.parseColor("#4E82F0");
     public static final int RIGHT_START_COLOR = Color.parseColor("#F34173");
-    public static final int RIGHT_END_COLOR = Color.parseColor("FE6F9C");
+    public static final int RIGHT_END_COLOR = Color.parseColor("#FE6F9C");
 
     private Paint mPaint;
     private LinearGradient mGradient;
