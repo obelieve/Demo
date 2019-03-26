@@ -16,4 +16,12 @@ public class ExampleUnitTest
     {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void test()
+    {
+        HttpRequest request = HttpRequest.get("http://www.baidu.com");
+        String body = request.body();
+        System.out.println(body);
+    }
 }
