@@ -51,11 +51,22 @@
         </activity>
 
         <activity android:name="com.zxy.view_gradient.GradientActivity">
+
+        </activity>
+
+        <activity android:name="com.zxy.view_lifestyle.AActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name="com.zxy.view_lifestyle.BActivity"
+                android:launchMode="singleInstance">
+
+        </activity>
+        <activity android:name="com.zxy.view_lifestyle.CActivity">
+
         </activity>
     </application>
 
