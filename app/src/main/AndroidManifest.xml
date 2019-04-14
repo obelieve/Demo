@@ -28,6 +28,13 @@
             android:name=".ExportedService"
             android:exported="true">
             <!--
+            运行在新的进程中配置
+            android:process=":remote"
+            :开头的进程是当前进程私有不允许进程共享，
+            如果是小写字符开头允许多个App共享这个进程->android:SharedUserId方式
+            -->
+
+            <!--
             实现<intent-filter>标签默认有 android:exported="true"
             -->
             <intent-filter>
