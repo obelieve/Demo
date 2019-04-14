@@ -25,7 +25,8 @@
         </activity>
 
         <service
-            android:name=".ExportedService">
+            android:name=".ExportedService"
+            android:exported="true">
             <!--
             实现<intent-filter>标签默认有 android:exported="true"
             -->
