@@ -15,6 +15,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
+                <!--
+                 隐式(implicit)intent，android默认给加上一个CATEGORY_DEFAULT,所以要加个CATEGORY_DEFAULT才能匹配，显式就不用
+                -->
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -22,8 +25,14 @@
         </activity>
 
         <service
-            android:name=".ExportedService"
-            android:exported="true"/>
+            android:name=".ExportedService">
+            <!--
+            实现<intent-filter>标签默认有 android:exported="true"
+            -->
+            <intent-filter>
+                <action android:name="com.zxy.demo.ExportedService"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
