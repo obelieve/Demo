@@ -1,11 +1,17 @@
 package com.zxy.demo;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 
 import com.zxy.utility.LogUtil;
+
+import java.lang.ref.WeakReference;
 
 /**
  lifecycle:
@@ -48,18 +54,40 @@ import com.zxy.utility.LogUtil;
  onAttach()->onCreate()->onCreateView()->onActivityCreated()
  ->onStart()->onResume()->onPause()->onStop()->onDestroyView()
  ->onDestroy()->onDetach()
-
+ <p>
  5.当FragmentTransaction#add(0,fragment,"Tag")不添加containerViewId，只使用tag标记时，
  只是Fragment的View没有插入到Activity容器中。
+
  Fragment(调用没变)：
  onAttach()->onCreate()->onCreateView()->onViewCreated()->onActivityCreated()
  ->onViewStateRestored()->onStart()->onResume()->onPause()->onStop()
  ->onDestroyView()->onDestroy()->onDetach()
  View:<init>
+
+ 6.当FragmentTransaction#show()和FragmentTransaction#hide()时，
+
+ (正常)Fragment：
+ onAttach()->onCreate()->onCreateView()->onViewCreated()
+ ->onActivityCreated()->onViewStateRestored()->onStart()
+ ->onResume()->onPause()->onStop()->onDestroyView()
+ ->onDestroy()->onDetach()
+ View:
+ 1.当FragmentTransaction#add()时，
+ <init> ->onAttachedToWindow()->onMeasure(),1~n->onLayout()->onDraw()
+ 2.当FragmentTransaction#hide()时，
+ 没有相关调用
+ 3.当又执行FragmentTransaction#show()时，
+ ->onMeasure(),1~n->onLayout()->onDraw()
+ 4.当FragmentTransaction#hide()时，
+  没有相关调用
+ 5.Activity#Destroy()时，
+  onDetachedFromWindow()
  */
 public class MainActivity extends BaseActivity {
 
     FrameLayout fl_container;
+
+    Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +98,51 @@ public class MainActivity extends BaseActivity {
             BaseFragment fragment = new BaseFragment();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(fragment,"BaseFragment")
+                    .add(R.id.fl_container, fragment)
                     .commit();
         }
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Fragment fragment = getSupportFragmentManager()
+                        .findFragmentById(R.id.fl_container);
+                LogUtil.e("1. HideHandler#Callback" + fragment);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .hide(fragment)
+                        .commit();
+            }
+        }, 1000);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Fragment fragment = getSupportFragmentManager()
+                        .findFragmentById(R.id.fl_container);
+                LogUtil.e("2.Show Handler#Callback" + fragment);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .show(fragment)
+                        .commit();
+            }
+        }, 2000);
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Fragment fragment = getSupportFragmentManager()
+                        .findFragmentById(R.id.fl_container);
+                LogUtil.e("3.Hide Handler#Callback" + fragment);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .hide(fragment)
+                        .commit();
+            }
+        }, 3000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mHandler.removeCallbacksAndMessages(null);
     }
 }
