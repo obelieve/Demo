@@ -23,14 +23,13 @@ public class BaseFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
          LogUtil.e(this+"");
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
          LogUtil.e(this+"");
-        return new BaseView(getContext());
+        return null;//new BaseView(getContext())
     }
 
     @Override
