@@ -48,6 +48,14 @@ import com.zxy.utility.LogUtil;
  onAttach()->onCreate()->onCreateView()->onActivityCreated()
  ->onStart()->onResume()->onPause()->onStop()->onDestroyView()
  ->onDestroy()->onDetach()
+
+ 5.当FragmentTransaction#add(0,fragment,"Tag")不添加containerViewId，只使用tag标记时，
+ 只是Fragment的View没有插入到Activity容器中。
+ Fragment(调用没变)：
+ onAttach()->onCreate()->onCreateView()->onViewCreated()->onActivityCreated()
+ ->onViewStateRestored()->onStart()->onResume()->onPause()->onStop()
+ ->onDestroyView()->onDestroy()->onDetach()
+ View:<init>
  */
 public class MainActivity extends BaseActivity {
 
@@ -62,7 +70,7 @@ public class MainActivity extends BaseActivity {
             BaseFragment fragment = new BaseFragment();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fl_container, fragment)
+                    .add(fragment,"BaseFragment")
                     .commit();
         }
     }

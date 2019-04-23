@@ -29,7 +29,7 @@ public class BaseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
          LogUtil.e(this+"");
-        return null;//new BaseView(getContext())
+        return new BaseView(getContext());
     }
 
     @Override
