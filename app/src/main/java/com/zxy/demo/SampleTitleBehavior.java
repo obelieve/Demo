@@ -9,8 +9,8 @@ import android.view.View;
 import com.zxy.utility.LogUtil;
 
 public class SampleTitleBehavior extends CoordinatorLayout.Behavior<View> {
-    // 列表顶部和title底部重合时，列表的滑动距离。
-    private float deltaY;
+
+    private float mInitialParentY = 0;
 
     public SampleTitleBehavior() {
     }
@@ -26,15 +26,21 @@ public class SampleTitleBehavior extends CoordinatorLayout.Behavior<View> {
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
-        if (deltaY == 0) {
-            deltaY = dependency.getY() - child.getHeight();
+        if (mInitialParentY == 0) {
+            mInitialParentY = dependency.getY();
         }
-
-        float dy = dependency.getY() - child.getHeight();
-        dy = dy < 0 ? 0 : dy;
-        float y = -(dy / deltaY) * child.getHeight();
-        child.setTranslationY(y);
-
+        float translationY = 0;
+        float curDependencyY = dependency.getY();
+        int childHeight = child.getHeight();
+        if (curDependencyY >= childHeight) {
+            float a = (childHeight * (dependency.getY() - childHeight));
+            float b = (childHeight - mInitialParentY);
+            LogUtil.e(a + "," + b);
+            translationY = a / b;
+        }
+        LogUtil.e(translationY + "," + curDependencyY + "," + mInitialParentY + "," + childHeight);
+        child.setTranslationY(translationY);
+        // LogUtil.e("dependency.getY()=" + dependency.getY() + " child.getHeight()=" + child.getHeight() + " deltaY:" + deltaY + " dy:" + dy + " y:" + y);
         return true;
     }
 }
