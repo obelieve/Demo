@@ -35,7 +35,7 @@ public class SampleTitleBehavior extends CoordinatorLayout.Behavior<View> {
         if (curDependencyY >= childHeight) {
             float a = (childHeight * (dependency.getY() - childHeight));
             float b = (childHeight - mInitialParentY);
-            LogUtil.e(a + "," + b);
+            LogUtil.e(a + "," + b);//0.0/0.0=Nan
             translationY = a / b;
         }
         LogUtil.e(translationY + "," + curDependencyY + "," + mInitialParentY + "," + childHeight);
