@@ -32,12 +32,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-//        mVpContent = findViewById(R.id.vp_content);
-//        mFlHeadHide = findViewById(R.id.fl_head_hide);
-//        mTvHeadSearch = findViewById(R.id.tv_head_search);
-//        mTlHeadTab = findViewById(R.id.tl_head_tab);
-//        mLlHead = findViewById(R.id.ll_head);
+        setContentView(R.layout.activity_main2);
+//        mVpContent = findViewById(RecyclerViewBehavior.id.vp_content);
+//        mFlHeadHide = findViewById(RecyclerViewBehavior.id.fl_head_hide);
+//        mTvHeadSearch = findViewById(RecyclerViewBehavior.id.tv_head_search);
+//        mTlHeadTab = findViewById(RecyclerViewBehavior.id.tl_head_tab);
+//        mLlHead = findViewById(RecyclerViewBehavior.id.ll_head);
         mMyList = findViewById(R.id.my_list);
         mMyList.setLayoutManager(new LinearLayoutManager(this));
         mMyList.setAdapter(new RecyclerView.Adapter() {
