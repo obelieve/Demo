@@ -10,7 +10,7 @@ import com.zxy.utility.LogUtil;
 
 public class SampleTitleBehavior extends CoordinatorLayout.Behavior<View> {
 
-    private float mInitialParentY = 0;
+    private float mInitDeltaY = 0;
 
     public SampleTitleBehavior() {
     }
@@ -26,19 +26,12 @@ public class SampleTitleBehavior extends CoordinatorLayout.Behavior<View> {
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
-        if (mInitialParentY == 0) {
-            mInitialParentY = dependency.getY();
+        if (mInitDeltaY == 0) {
+            mInitDeltaY = dependency.getY() - child.getHeight();
         }
-        float translationY = 0;
-        float curDependencyY = dependency.getY();
-        int childHeight = child.getHeight();
-        if (curDependencyY >= childHeight) {
-            float a = (childHeight * (dependency.getY() - childHeight));
-            float b = (childHeight - mInitialParentY);
-            LogUtil.e(a + "," + b);//0.0/0.0=Nan
-            translationY = a / b;
-        }
-        LogUtil.e(translationY + "," + curDependencyY + "," + mInitialParentY + "," + childHeight);
+        float dy = dependency.getY() - child.getHeight();
+        dy = dy < 0 ? 0 : dy;
+        float translationY = -(dy / mInitDeltaY) * child.getHeight();
         child.setTranslationY(translationY);
         // LogUtil.e("dependency.getY()=" + dependency.getY() + " child.getHeight()=" + child.getHeight() + " deltaY:" + deltaY + " dy:" + dy + " y:" + y);
         return true;
