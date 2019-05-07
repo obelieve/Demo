@@ -2,6 +2,6 @@
     <string name="app_name">Demo</string>
     <!--Behavior demo 2-->
     <!--实现Tv随着Rv嵌套滚动效果-->
-    <string name="behavior_sample_header">com.zxy.demo.behavior_2.SampleHeaderBehavior</string>
-    <string name="behavior_recyclerview">com.zxy.demo.behavior_2.RecyclerViewBehavior</string>
+    <string name="behavior_sample_header">com.zxy.demo.behavior_2.SampleHeader2Behavior</string>
+    <string name="behavior_recyclerview">com.zxy.demo.behavior_2.RecyclerView2Behavior</string>
 </resources>

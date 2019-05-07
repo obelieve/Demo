@@ -11,6 +11,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.zxy.utility.LogUtil;
+
 public class SampleHeaderBehavior extends CoordinatorLayout.Behavior<TextView> {
 
     // 界面整体向上滑动，达到列表可滑动的临界点
@@ -54,6 +56,7 @@ public class SampleHeaderBehavior extends CoordinatorLayout.Behavior<TextView> {
                 downReach = true;
             }
             // 整体可以滑动，否则RecyclerView消费滑动事件
+            LogUtil.e("pos:"+pos+" dy:"+dy+" getTranslationY:"+child.getTranslationY());
             if (canScroll(child, dy) && pos == 0) {
                 float finalY = child.getTranslationY() - dy;
                 if (finalY < -child.getHeight()) {
