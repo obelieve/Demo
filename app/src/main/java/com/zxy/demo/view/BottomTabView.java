@@ -55,7 +55,7 @@ public class BottomTabView extends FrameLayout implements View.OnClickListener {
         ll_discover.setOnClickListener(this);
         ll_news.setOnClickListener(this);
         ll_me.setOnClickListener(this);
-        mSelectionManage.setMode(SelectionManage.Mode.MULTI_MUST_ONE);
+        mSelectionManage.setMode(SelectionManage.Mode.SINGLE_MUST_ONE);
         mSelectionManage.setItems(ll_wallet, ll_discover, ll_news, ll_me);
         mSelectionManage.setCurrentItem(0);
         mSelectionManage.setOnSelectChangeListener(new SelectionManage.OnSelectChangeListener() {
