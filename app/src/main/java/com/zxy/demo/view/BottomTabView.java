@@ -3,7 +3,6 @@ package com.zxy.demo.view;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.telecom.Call;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.zxy.demo.R;
-import com.zxy.demo.data_struct.SelectionManage;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.zxy.demo.utils.SelectionManage;
 
 /**
  * Created by admin on 2018/11/18.
@@ -24,7 +20,7 @@ public class BottomTabView extends FrameLayout implements View.OnClickListener {
 
     SelectionManage mSelectionManage = new SelectionManage();
 
-    private LinearLayout ll_wallet, ll_discover, ll_news, ll_me;
+    private LinearLayout ll_home, ll_category, ll_discovery, ll_shoppingcart, ll_me;
     private Callback mCallback;
 
     public void setCallback(Callback callback) {
@@ -47,16 +43,18 @@ public class BottomTabView extends FrameLayout implements View.OnClickListener {
     private void init() {
         removeAllViews();
         LayoutInflater.from(getContext()).inflate(R.layout.view_bottom_tab, this, true);
-        ll_wallet = findViewById(R.id.ll_wallet);
-        ll_discover = findViewById(R.id.ll_discover);
-        ll_news = findViewById(R.id.ll_news);
+        ll_home = findViewById(R.id.ll_home);
+        ll_category = findViewById(R.id.ll_category);
+        ll_discovery = findViewById(R.id.ll_discovery);
+        ll_shoppingcart = findViewById(R.id.ll_shoppingcart);
         ll_me = findViewById(R.id.ll_me);
-        ll_wallet.setOnClickListener(this);
-        ll_discover.setOnClickListener(this);
-        ll_news.setOnClickListener(this);
+        ll_home.setOnClickListener(this);
+        ll_category.setOnClickListener(this);
+        ll_discovery.setOnClickListener(this);
+        ll_shoppingcart.setOnClickListener(this);
         ll_me.setOnClickListener(this);
         mSelectionManage.setMode(SelectionManage.Mode.SINGLE_MUST_ONE);
-        mSelectionManage.setItems(ll_wallet, ll_discover, ll_news, ll_me);
+        mSelectionManage.setItems(ll_home, ll_category, ll_discovery, ll_shoppingcart, ll_me);
         mSelectionManage.setCurrentItem(0);
         mSelectionManage.setOnSelectChangeListener(new SelectionManage.OnSelectChangeListener() {
 
@@ -72,17 +70,20 @@ public class BottomTabView extends FrameLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_wallet:
+            case R.id.ll_home:
                 mSelectionManage.setCurrentItem(0);
                 break;
-            case R.id.ll_discover:
+            case R.id.ll_category:
                 mSelectionManage.setCurrentItem(1);
                 break;
-            case R.id.ll_news:
+            case R.id.ll_discovery:
                 mSelectionManage.setCurrentItem(2);
                 break;
-            case R.id.ll_me:
+            case R.id.ll_shoppingcart:
                 mSelectionManage.setCurrentItem(3);
+                break;
+            case R.id.ll_me:
+                mSelectionManage.setCurrentItem(4);
                 break;
         }
     }

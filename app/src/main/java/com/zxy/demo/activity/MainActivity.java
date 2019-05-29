@@ -1,33 +1,26 @@
 package com.zxy.demo.activity;
 
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.zxy.demo.R;
-import com.zxy.demo.fragment.DiscoverFragment;
+import com.zxy.demo.base.BaseActivity;
+import com.zxy.demo.fragment.CategoryFragment;
 import com.zxy.demo.fragment.MeFragment;
-import com.zxy.demo.fragment.NewsFragment;
-import com.zxy.demo.fragment.WalletFragment;
+import com.zxy.demo.fragment.ShoppingCartFragment;
+import com.zxy.demo.fragment.DiscoveryFragment;
+import com.zxy.demo.fragment.HomeFragment;
 import com.zxy.demo.view.BottomTabView;
 import com.zxy.utility.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     ViewPager vp_content;
     BottomTabView view_bottom_tab;
@@ -71,9 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
-            mList.add(new WalletFragment());
-            mList.add(new DiscoverFragment());
-            mList.add(new NewsFragment());
+            mList.add(new HomeFragment());
+            mList.add(new CategoryFragment());
+            mList.add(new DiscoveryFragment());
+            mList.add(new ShoppingCartFragment());
             mList.add(new MeFragment());
         }
 

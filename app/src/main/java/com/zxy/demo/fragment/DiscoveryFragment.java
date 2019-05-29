@@ -13,7 +13,7 @@ import android.widget.TextView;
  * Created by zxy on 2018/10/30 10:37.
  */
 
-public class NewsFragment extends Fragment
+public class DiscoveryFragment extends Fragment
 {
     @Nullable
     @Override

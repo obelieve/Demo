@@ -6,20 +6,33 @@
     android:orientation="horizontal">
 
     <LinearLayout
-        android:id="@+id/ll_wallet"
+        android:id="@+id/ll_home"
         style="@style/bottom_nav_ll_style">
 
         <ImageView
             style="@style/bottom_nav_iv_style"
-            android:src="@drawable/sel_nav_wallet" />
+            android:src="@drawable/sel_nav_home" />
 
         <TextView
             style="@style/bottom_nav_tv_style"
-            android:text="@string/nav_wallet" />
+            android:text="@string/nav_home" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_discover"
+        android:id="@+id/ll_category"
+        style="@style/bottom_nav_ll_style">
+
+        <ImageView
+            style="@style/bottom_nav_iv_style"
+            android:src="@drawable/sel_nav_category" />
+
+        <TextView
+            style="@style/bottom_nav_tv_style"
+            android:text="@string/nav_category" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_discovery"
         style="@style/bottom_nav_ll_style">
 
         <ImageView
@@ -28,21 +41,23 @@
 
         <TextView
             style="@style/bottom_nav_tv_style"
-            android:text="@string/nav_discover" />
+            android:text="@string/nav_discovery" />
     </LinearLayout>
 
+
     <LinearLayout
-        android:id="@+id/ll_news"
+        android:id="@+id/ll_shoppingcart"
         style="@style/bottom_nav_ll_style">
 
         <ImageView
             style="@style/bottom_nav_iv_style"
-            android:src="@drawable/sel_nav_news" />
+            android:src="@drawable/sel_nav_shopping_cart" />
 
         <TextView
             style="@style/bottom_nav_tv_style"
-            android:text="@string/nav_news" />
+            android:text="@string/nav_shoppingcart" />
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/ll_me"

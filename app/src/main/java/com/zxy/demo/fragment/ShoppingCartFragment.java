@@ -7,21 +7,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import com.zxy.demo.R;
 
 /**
- * Created by zxy on 2018/10/30 10:35.
+ * Created by zxy on 2018/10/30 10:38.
  */
 
-public class WalletFragment extends Fragment
+public class ShoppingCartFragment extends Fragment
 {
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        TextView view = new TextView(getContext());
-        view.setText("资产");
+        View view = inflater.inflate(R.layout.fragment_shopping_cart,container,false);
         return view;
     }
 }
