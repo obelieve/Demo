@@ -143,6 +143,18 @@ public class GoodsData {
             }
             return new String(bytes, Charset.forName("utf-8"));
         }
+
+        public static List<String> getRandomList(){
+            return getRandomList(100);
+        }
+
+        public static List<String> getRandomList(int size){
+            List<String> list = new ArrayList<>();
+            for(int i=0;i<size;i++){
+                list.add(getName());
+            }
+            return list;
+        }
     }
 
     public enum LabelEnum {
