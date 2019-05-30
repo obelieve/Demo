@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout
+        android:id="@+id/fl_top"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#123" />
     <LinearLayout
-        android:id="@+id/ll_header"
+        android:id="@+id/ll_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <FrameLayout
-            android:id="@+id/fl_top"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp"
+        app:layout_behavior="com.zxy.demo.behavior.HomeTabBehavior">
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="#123"/>
-        <LinearLayout
-            android:id="@+id/ll_tab"
+            android:text="卡卡卡卡卡卡卡卡卡卡卡卡卡卡"
+            android:background="#fff"
+            android:gravity="center"/>
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="卡卡卡卡卡卡卡卡卡卡卡卡卡卡"
-                android:gravity="center"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="#11ff99"/>
-        </LinearLayout>
+            android:layout_height="30dp"
+            android:background="#11ff99"/>
     </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:layout_behavior="com.zxy.demo.behavior.HomeContentBehavior"/>
 </android.support.design.widget.CoordinatorLayout>
