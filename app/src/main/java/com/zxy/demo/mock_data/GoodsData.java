@@ -1,8 +1,11 @@
 package com.zxy.demo.mock_data;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class GoodsData {
 
@@ -27,8 +30,16 @@ public class GoodsData {
         Random random = new Random();
         for (int i = 0; i < size; i++) {
             GoodsData data = new GoodsData();
+            data.setId(UUID.randomUUID().hashCode());
+            data.setName(RandomString.getName());
+            data.setContent(RandomString.getContent());
             data.setCategory(CategoryEnum.values()[random.nextInt(CategoryEnum.values().length)].toString());
-
+            data.setOrigin_price(random.nextFloat());
+            data.setDiscount_price(random.nextFloat());
+            data.setGoods_labels(Arrays.asList(RandomString.getName(),RandomString.getName(),RandomString.getName()));
+            data.setDate_label(DateLebelEnum.values()[random.nextInt(DateLebelEnum.values().length)].toString());
+            data.setInventory(2);
+            data.setGoods_brand(BrandEnum.values()[random.nextInt(BrandEnum.values().length)].toString());
         }
         return list;
     }
@@ -113,6 +124,27 @@ public class GoodsData {
         this.goods_brand = goods_brand;
     }
 
+    public static class RandomString {
+
+        static Random random = new Random();
+
+        public static String getName() {
+            return getString(10);
+        }
+
+        public static String getContent() {
+            return getString(30);
+        }
+
+        private static String getString(int size) {
+            byte[] bytes = new byte[size];
+            for(int i=0;i<size;i++){
+                bytes[i]=(byte)random.nextInt(128);
+            }
+            return new String(bytes, Charset.forName("utf-8"));
+        }
+    }
+
     public enum LabelEnum {
         NULL("", ""), DISCOUNT("折扣", "#E94659"), NEW_PRODUCT("新品", "#49A7C9");
 
@@ -163,13 +195,13 @@ public class GoodsData {
         }
     }
 
-    public enum DateIdentityEnum {
+    public enum DateLebelEnum {
 
         TODAY("今日上市"), YESTERDAY("昨天上市");
 
         private String name;
 
-        DateIdentityEnum(String name) {
+        DateLebelEnum(String name) {
             this.name = name;
         }
 
@@ -179,13 +211,13 @@ public class GoodsData {
 
         @Override
         public String toString() {
-            return "DateIdentityEnum{" +
+            return "DateLebelEnum{" +
                     "name='" + name + '\'' +
                     '}';
         }
     }
 
-    public enum BrandEnum{
+    public enum BrandEnum {
 
     }
 
