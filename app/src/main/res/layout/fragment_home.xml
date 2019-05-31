@@ -1,35 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
+
     <FrameLayout
         android:id="@+id/fl_top"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#123" />
-    <LinearLayout
-        android:id="@+id/ll_tab"
+        android:background="@color/base_text_gray"
+        android:layout_height="40dp">
+        <TextView
+            android:id="@+id/tv_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:drawablePadding="3dp"
+            android:drawableLeft="@drawable/sel_ic_place"
+            android:drawableRight="@drawable/sel_ic_arrow_right"
+            android:drawableStart="@drawable/sel_ic_place"
+            android:drawableEnd="@drawable/sel_ic_arrow_right"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="5dp"
+            android:text="半岛国际2号楼"
+            android:textColor="@color/sel_color_ffffff_333333"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:src="@drawable/sel_ic_msg"
+            app:layout_constraintBottom_toBottomOf="@id/tv_place"
+            android:layout_gravity="center_vertical|end"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_place" />
+    </FrameLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="40dp"
-        app:layout_behavior="com.zxy.demo.behavior.HomeTabBehavior">
+        android:orientation="vertical"
+        app:layout_behavior="com.zxy.demo.behavior.HomeTopBehavior">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/round_2_rec_white_stroke_white_bg"
+            android:gravity="center"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tl_tab"/>
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search"
+            app:layout_constraintBottom_toTopOf="@+id/tl_tab"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_search"
+            app:layout_constraintTop_toTopOf="@+id/view" />
+
         <TextView
+            android:id="@+id/tv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="1元起送，30分钟达"
+            android:textColor="#aaaaaa"
+            android:textSize="14sp"
+            android:includeFontPadding="false"
+            app:layout_constraintBottom_toTopOf="@+id/tl_tab"
+            app:layout_constraintLeft_toRightOf="@id/iv_search"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tl_tab"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="卡卡卡卡卡卡卡卡卡卡卡卡卡卡"
-            android:background="#fff"
-            android:gravity="center"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="#11ff99"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view"
+            app:tabIndicatorColor="@color/nav_text_selected"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="scrollable"
+            app:tabTextColor="#333333"
+            app:tabSelectedTextColor="@color/nav_text_selected"
+            app:tabPaddingEnd="15dp"
+            app:tabPaddingStart="15dp"
+            app:tabMinWidth="48dp"
+            app:tabTextAppearance="@style/TabLayoutTextStyle"
+            app:tabMaxWidth="144dp"/>
+
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="com.zxy.demo.behavior.HomeContentBehavior"/>
+        app:layout_behavior="com.zxy.demo.behavior.HomeContentBehavior" />
 </android.support.design.widget.CoordinatorLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.animation.DynamicAnimation;
 import android.support.animation.FlingAnimation;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.ViewCompat;
@@ -15,23 +16,23 @@ import android.widget.LinearLayout;
 
 import com.zxy.utility.LogUtil;
 
-public class HomeTabBehavior extends CoordinatorLayout.Behavior<LinearLayout> {
+public class HomeTopBehavior extends CoordinatorLayout.Behavior<ConstraintLayout> {
 
-    public HomeTabBehavior() {
+    public HomeTopBehavior() {
     }
 
-    public HomeTabBehavior(Context context, AttributeSet attrs) {
+    public HomeTopBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
 
     @Override
-    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull LinearLayout child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
+    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull ConstraintLayout child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
         return (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
     }
 
     @Override
-    public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull LinearLayout child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
+    public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull ConstraintLayout child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
         super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type);
         if (target instanceof RecyclerView) {
             LogUtil.e("child:Y=" + child.getY());
@@ -59,7 +60,7 @@ public class HomeTabBehavior extends CoordinatorLayout.Behavior<LinearLayout> {
     }
 
     @Override
-    public boolean onNestedPreFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull LinearLayout child, @NonNull View target, final float velocityX, final float velocityY) {
+    public boolean onNestedPreFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull ConstraintLayout child, @NonNull View target, final float velocityX, final float velocityY) {
         boolean isFling = child.getTranslationY() == -child.getTop() && velocityY < 0;
         if (isFling) {
             FlingAnimation animation = new FlingAnimation(child, DynamicAnimation.TRANSLATION_Y);
@@ -72,7 +73,7 @@ public class HomeTabBehavior extends CoordinatorLayout.Behavior<LinearLayout> {
     }
 
     @Override
-    public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull LinearLayout child, @NonNull View target, int type) {
+    public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull ConstraintLayout child, @NonNull View target, int type) {
         super.onStopNestedScroll(coordinatorLayout, child, target, type);
         //当嵌套滚动后，还未到达top高度一半自动设置还原或超过高度一半后自动设置置顶
         if (child.getY() > 0 && child.getY() <= child.getTop() / 2) {

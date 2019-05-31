@@ -10,4 +10,7 @@
     <color name="nav_text_selected">#029C45</color>
     <color name="nav_text_unselected">#AAAAAA</color>
 
+
+    <!--base color-->
+    <color name="white">#ffffff</color>
 </resources>
