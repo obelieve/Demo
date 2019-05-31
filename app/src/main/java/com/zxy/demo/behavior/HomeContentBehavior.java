@@ -23,6 +23,9 @@ public class HomeContentBehavior extends CoordinatorLayout.Behavior<RecyclerView
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, RecyclerView child, View dependency) {
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)child.getLayoutParams();
+        params.height = parent.getHeight()-dependency.getHeight();
+        child.setLayoutParams(params);
         child.setY(dependency.getHeight()+dependency.getY());
         return true;
     }

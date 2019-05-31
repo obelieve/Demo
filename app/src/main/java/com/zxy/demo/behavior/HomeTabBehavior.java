@@ -1,6 +1,8 @@
 package com.zxy.demo.behavior;
 
 import android.content.Context;
+import android.support.animation.DynamicAnimation;
+import android.support.animation.FlingAnimation;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.NestedScrollingChild;
@@ -44,7 +46,7 @@ public class HomeTabBehavior extends CoordinatorLayout.Behavior<LinearLayout> {
                     child.setTranslationY(child.getTranslationY() - consumedY);
                 }
             } else {//向上滑
-                if (pos == 0 && child.getTranslationY() > -child.getTop()) {
+                if (child.getTranslationY() > -child.getTop()) {
                     float consumedY = dy;
                     if (child.getTranslationY() - consumedY < -child.getTop()) {
                         consumedY = child.getTop() + child.getTranslationY();
@@ -54,6 +56,19 @@ public class HomeTabBehavior extends CoordinatorLayout.Behavior<LinearLayout> {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onNestedPreFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull LinearLayout child, @NonNull View target, final float velocityX, final float velocityY) {
+        boolean isFling = child.getTranslationY() == -child.getTop() && velocityY < 0;
+        if (isFling) {
+            FlingAnimation animation = new FlingAnimation(child, DynamicAnimation.TRANSLATION_Y);
+            animation.setStartVelocity(-velocityY)
+                    .setMinValue(-child.getTop())
+                    .setMaxValue(0)
+                    .start();
+        }
+        return false;
     }
 
     @Override
