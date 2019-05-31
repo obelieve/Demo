@@ -36,7 +36,7 @@ public class GoodsData {
             data.setCategory(CategoryEnum.values()[random.nextInt(CategoryEnum.values().length)].toString());
             data.setOrigin_price(random.nextFloat());
             data.setDiscount_price(random.nextFloat());
-            data.setGoods_labels(Arrays.asList(RandomString.getName(),RandomString.getName(),RandomString.getName()));
+            data.setGoods_labels(Arrays.asList(RandomString.getName(), RandomString.getName(), RandomString.getName()));
             data.setDate_label(DateLebelEnum.values()[random.nextInt(DateLebelEnum.values().length)].toString());
             data.setInventory(2);
             data.setGoods_brand(BrandEnum.values()[random.nextInt(BrandEnum.values().length)].toString());
@@ -138,20 +138,20 @@ public class GoodsData {
 
         private static String getString(int size) {
             byte[] bytes = new byte[size];
-            for(int i=0;i<size;i++){
-                bytes[i]=(byte)random.nextInt(128);
+            for (int i = 0; i < size; i++) {
+                bytes[i] = (byte) random.nextInt(128);
             }
             return new String(bytes, Charset.forName("utf-8"));
         }
 
-        public static List<String> getRandomList(){
+        public static List<String> getRandomList() {
             return getRandomList(100);
         }
 
-        public static List<String> getRandomList(int size){
+        public static List<String> getRandomList(int size) {
             List<String> list = new ArrayList<>();
-            for(int i=0;i<size;i++){
-                list.add(getName());
+            for (int i = 0; i < size; i++) {
+                list.add(getName() + " i=" + i);
             }
             return list;
         }
