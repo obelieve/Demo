@@ -55,4 +55,17 @@ public class HomeTabBehavior extends CoordinatorLayout.Behavior<LinearLayout> {
             }
         }
     }
+
+    @Override
+    public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull LinearLayout child, @NonNull View target, int type) {
+        super.onStopNestedScroll(coordinatorLayout, child, target, type);
+        //当嵌套滚动后，还未到达top高度一半自动设置还原或超过高度一半后自动设置置顶
+        if (child.getY() > 0 && child.getY() <= child.getTop() / 2) {
+            child.setTranslationY(-child.getTop());
+            target.setY(child.getY() + child.getHeight());
+        } else if (child.getY() > child.getTop() / 2 && child.getY() < child.getTop()) {
+            child.setTranslationY(0);
+            target.setY(child.getY() + child.getHeight());
+        }
+    }
 }
