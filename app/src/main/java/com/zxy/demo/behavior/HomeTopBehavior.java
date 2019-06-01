@@ -8,6 +8,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -34,34 +35,38 @@ public class HomeTopBehavior extends CoordinatorLayout.Behavior<ConstraintLayout
     @Override
     public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull ConstraintLayout child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
         super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type);
+        boolean isDown = true;
         if (target instanceof RecyclerView) {
-            LogUtil.e("child:Y=" + child.getY());
             int pos = ((LinearLayoutManager) ((RecyclerView) target).getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-            if (dy < 0) {//向下滑
-                if (pos == 0 && child.getTranslationY() < 0) {
-                    float consumedY = dy;
-                    if (child.getTranslationY() - consumedY > 0) {
-                        consumedY = child.getTranslationY();
-                    }
-                    consumed[1] = (int) consumedY;
-                    child.setTranslationY(child.getTranslationY() - consumedY);
+            isDown = pos == 0;
+        } else if (target instanceof SwipeRefreshLayout) {
+            isDown = !((SwipeRefreshLayout)target).canChildScrollUp();
+        }
+        if (dy < 0) {//向下滑
+            if (isDown && child.getTranslationY() < 0) {
+                float consumedY = dy;
+                if (child.getTranslationY() - consumedY > 0) {
+                    consumedY = child.getTranslationY();
                 }
-            } else {//向上滑
-                if (child.getTranslationY() > -child.getTop()) {
-                    float consumedY = dy;
-                    if (child.getTranslationY() - consumedY < -child.getTop()) {
-                        consumedY = child.getTop() + child.getTranslationY();
-                    }
-                    consumed[1] = (int) consumedY;
-                    child.setTranslationY(child.getTranslationY() - consumedY);
+                consumed[1] = (int) consumedY;
+                child.setTranslationY(child.getTranslationY() - consumedY);
+            }
+        } else {//向上滑
+            if (child.getTranslationY() > -child.getTop()) {
+                float consumedY = dy;
+                if (child.getTranslationY() - consumedY < -child.getTop()) {
+                    consumedY = child.getTop() + child.getTranslationY();
                 }
+                consumed[1] = (int) consumedY;
+                child.setTranslationY(child.getTranslationY() - consumedY);
             }
         }
+
     }
 
     @Override
     public boolean onNestedPreFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull ConstraintLayout child, @NonNull View target, final float velocityX, final float velocityY) {
-        boolean isFling = child.getTranslationY() == -child.getTop() && velocityY < 0;
+        boolean isFling = child.getTranslationY() == -child.getTop() && velocityY < -4096;
         if (isFling) {
             FlingAnimation animation = new FlingAnimation(child, DynamicAnimation.TRANSLATION_Y);
             animation.setStartVelocity(-velocityY)
@@ -76,12 +81,37 @@ public class HomeTopBehavior extends CoordinatorLayout.Behavior<ConstraintLayout
     public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull ConstraintLayout child, @NonNull View target, int type) {
         super.onStopNestedScroll(coordinatorLayout, child, target, type);
         //当嵌套滚动后，还未到达top高度一半自动设置还原或超过高度一半后自动设置置顶
-        if (child.getY() > 0 && child.getY() <= child.getTop() / 2) {
-            child.setTranslationY(-child.getTop());
-            target.setY(child.getY() + child.getHeight());
-        } else if (child.getY() > child.getTop() / 2 && child.getY() < child.getTop()) {
-            child.setTranslationY(0);
-            target.setY(child.getY() + child.getHeight());
+        View directChildView = getDirectChild(coordinatorLayout, target);
+        if (directChildView != null) {
+            if (child.getY() > 0 && child.getY() <= child.getTop() / 2) {
+                child.setTranslationY(-child.getTop());
+                directChildView.setY(child.getY() + child.getHeight());
+            } else if (child.getY() > child.getTop() / 2 && child.getY() < child.getTop()) {
+                child.setTranslationY(0);
+                directChildView.setY(child.getY() + child.getHeight());
+            }
         }
+    }
+
+    /**
+     * 根据indirect找到parent的直接子View
+     *
+     * @param parent
+     * @param indirect
+     * @return direct view or null
+     */
+    private View getDirectChild(CoordinatorLayout parent, View indirect) {
+        View tempParent = (indirect.getParent() instanceof View) ? (View) indirect.getParent() : null;
+        View tempChild = indirect;
+        View child = null;
+        while (tempParent != null) {
+            if (tempParent == parent) {
+                child = tempChild;
+                break;
+            }
+            tempChild = tempParent;
+            tempParent = (tempParent.getParent() instanceof View) ? (View) tempParent.getParent() : null;
+        }
+        return child;
     }
 }

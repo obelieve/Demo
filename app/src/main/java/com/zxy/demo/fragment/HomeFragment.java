@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.widget.TableLayout;
 
 import com.zxy.demo.R;
 import com.zxy.demo.adapter.TextRecyclerViewAdapter;
+import com.zxy.demo.fragment.home.HomeType1Fragment;
 import com.zxy.demo.mock_data.GoodsData;
 
 /**
@@ -33,7 +36,7 @@ public class HomeFragment extends Fragment {
     private FrameLayout mFlTop;
     private ConstraintLayout mClTop;
     private TabLayout mTlTab;
-    private RecyclerView mRvContent;
+    private ViewPager mVpContent;
 
     @Nullable
     @Override
@@ -42,14 +45,28 @@ public class HomeFragment extends Fragment {
         mFlTop = view.findViewById(R.id.fl_top);
         mClTop = view.findViewById(R.id.cl_top);
         mTlTab = view.findViewById(R.id.tl_tab);
-        mRvContent = view.findViewById(R.id.rv_content);
-        mRvContent.setLayoutManager(new LinearLayoutManager(getContext()));
-        TextRecyclerViewAdapter adapter = new TextRecyclerViewAdapter();
-        adapter.setList(GoodsData.RandomString.getRandomList());
-        mRvContent.setAdapter(adapter);
-        for (int i = 0; i < mStrings.length; i++) {
-            mTlTab.addTab(mTlTab.newTab().setText(mStrings[i]));
-        }
+        mVpContent = view.findViewById(R.id.vp_content);
+        mVpContent.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return new HomeType1Fragment();
+            }
+
+            @Override
+            public int getCount() {
+                return 10;
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mStrings[position];
+            }
+        });
+//        for (int i = 0; i < mStrings.length; i++) {
+//            mTlTab.addTab(mTlTab.newTab().setText(mStrings[i]));
+//        }
+        mTlTab.setupWithViewPager(mVpContent);
         return view;
     }
 }

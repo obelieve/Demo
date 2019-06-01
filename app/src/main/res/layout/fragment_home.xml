@@ -125,8 +125,8 @@
             android:background="@drawable/shape_gradient_00000000_aaffffff"/>
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_content"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.zxy.demo.behavior.HomeContentBehavior" />
