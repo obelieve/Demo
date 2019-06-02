@@ -8,18 +8,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TableLayout;
 
 import com.zxy.demo.R;
-import com.zxy.demo.adapter.TextRecyclerViewAdapter;
-import com.zxy.demo.fragment.home.HomeType1Fragment;
-import com.zxy.demo.mock_data.GoodsData;
+import com.zxy.demo.fragment.home.HomeCategory1Fragment;
 
 /**
  * Created by zxy on 2018/10/30 10:35.
@@ -49,7 +44,7 @@ public class HomeFragment extends Fragment {
         mVpContent.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return new HomeType1Fragment();
+                return new HomeCategory1Fragment();
             }
 
             @Override
