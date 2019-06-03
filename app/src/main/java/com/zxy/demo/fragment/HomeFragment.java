@@ -15,6 +15,8 @@ import android.widget.FrameLayout;
 
 import com.zxy.demo.R;
 import com.zxy.demo.fragment.home.HomeCategory1Fragment;
+import com.zxy.demo.fragment.home.HomeCategory2Fragment;
+import com.zxy.demo.fragment.home.HomeCategory3Fragment;
 
 /**
  * Created by zxy on 2018/10/30 10:35.
@@ -44,12 +46,28 @@ public class HomeFragment extends Fragment {
         mVpContent.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return new HomeCategory1Fragment();
+                Fragment fragment;
+                switch (position) {
+                    case 0:
+                        fragment = new HomeCategory1Fragment();
+                        break;
+                    case 1:
+                        fragment = new HomeCategory2Fragment();
+                        break;
+                    case 2:
+                        fragment = new HomeCategory3Fragment();
+                        break;
+                    default:
+                        fragment = new HomeCategory3Fragment();
+                        break;
+
+                }
+                return fragment;
             }
 
             @Override
             public int getCount() {
-                return 10;
+                return 5;
             }
 
             @Nullable

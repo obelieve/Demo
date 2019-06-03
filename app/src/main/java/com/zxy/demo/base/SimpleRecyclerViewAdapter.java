@@ -9,24 +9,24 @@ import android.widget.TextView;
 
 import com.zxy.demo.R;
 
-public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
+public abstract class SimpleRecyclerViewAdapter extends RecyclerView.Adapter {
 
 
-    public abstract int getBaseLayoutId();
+    public abstract int getSimpleLayoutId();
 
-    public abstract RecyclerView.ViewHolder getBaseViewHolder(View view);
+    public abstract RecyclerView.ViewHolder getSimpleViewHolder(View view);
 
-    public abstract void onBaseBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position);
+    public abstract void onSimpleBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position);
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(getBaseLayoutId(), parent, false);
-        return getBaseViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(getSimpleLayoutId(), parent, false);
+        return getSimpleViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        onBaseBindViewHolder(holder,position);
+        onSimpleBindViewHolder(holder,position);
     }
 }
