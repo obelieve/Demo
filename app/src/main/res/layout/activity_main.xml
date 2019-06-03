@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="com.zxy.demo.MainActivity">
 
-    <android.support.v4.view.ViewPager
+    <com.zxy.demo.view.MViewPager
         android:id="@+id/vp_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"

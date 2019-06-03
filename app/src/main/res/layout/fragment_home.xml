@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zxy.demo.view.MCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -125,9 +125,9 @@
             android:background="@drawable/shape_gradient_00000000_aaffffff"/>
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.v4.view.ViewPager
+    <com.zxy.demo.view.MViewPager
         android:id="@+id/vp_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.zxy.demo.behavior.HomeContentBehavior" />
-</android.support.design.widget.CoordinatorLayout>
+</com.zxy.demo.view.MCoordinatorLayout>
