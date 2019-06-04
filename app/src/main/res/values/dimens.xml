@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="bar_height">48dp</dimen>
+    <dimen name="home_top_height">120dp</dimen>
+    <dimen name="home_top_drag_height">40dp</dimen>
+
 </resources>

@@ -3,7 +3,6 @@ package com.zxy.demo.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -11,12 +10,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.zxy.demo.R;
 import com.zxy.demo.fragment.home.HomeCategory1Fragment;
 import com.zxy.demo.fragment.home.HomeCategory2Fragment;
 import com.zxy.demo.fragment.home.HomeCategory3Fragment;
+import com.zxy.demo.view.HomeTopView;
 
 /**
  * Created by zxy on 2018/10/30 10:35.
@@ -30,8 +29,8 @@ public class HomeFragment extends Fragment {
             "熟食卤味", "面点冰品", "牛奶面包", "酒水冲饮", "休闲零食",
             "日用清洁", "护理美妆", "进口商品", "鲜花礼品", "地方特产",
             "母婴", "宠物"};
-    private FrameLayout mFlTop;
-    private ConstraintLayout mClTop;
+
+    private HomeTopView mClTop;
     private TabLayout mTlTab;
     private ViewPager mVpContent;
 
@@ -39,7 +38,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        mFlTop = view.findViewById(R.id.fl_top);
         mClTop = view.findViewById(R.id.cl_top);
         mTlTab = view.findViewById(R.id.tl_tab);
         mVpContent = view.findViewById(R.id.vp_content);
