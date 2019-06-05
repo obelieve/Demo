@@ -2,15 +2,12 @@ package com.zxy.demo.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.annotation.ColorInt;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.graphics.ColorUtils;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,7 +16,6 @@ import android.widget.TextView;
 import com.zxy.demo.R;
 import com.zxy.demo.base.App;
 import com.zxy.demo.utils.StatusBarUtil;
-import com.zxy.utility.LogUtil;
 
 public class HomeTopView extends ConstraintLayout {
 
@@ -87,12 +83,56 @@ public class HomeTopView extends ConstraintLayout {
         iv_search = findViewById(R.id.iv_search);
         tv_search = findViewById(R.id.tv_search);
         tl_tab = findViewById(R.id.tl_tab);
+        tl_tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                //updateViewStatus(tab.getPosition(), getTranslationY());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
+    }
+
+    public void updateViewStatus(int tabPosition) {
+        updateViewStatus(tabPosition,getTranslationY());
+    }
+
+    public void updateViewStatus(int tabPosition, float translationY) {
+        if (tabPosition == 0) {
+            updateViewStatus0(translationY);
+        } else {
+            updateViewStatus1();
+        }
+    }
+
+    private void updateViewStatus1() {
+        tv_place.setSelected(true);
+        iv_msg.setSelected(true);
+        view_search.setSelected(true);
+        setBackgroundColor(Color.WHITE);
+        tl_tab.setTabTextColors(getResources().getColor(R.color.base_text_black), getResources().getColor(R.color.nav_text_selected));
+        tl_tab.setSelectedTabIndicatorColor(getResources().getColor(R.color.nav_text_selected));
+        tl_tab.setBackgroundColor(getResources().getColor(R.color.white));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            StatusBarUtil.setStatusBarColor((Activity) getContext(), Color.WHITE);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//状态栏字体色
+            StatusBarUtil.setWindowLightStatusBar((Activity) getContext(), true);
+        }
     }
 
     @Override
@@ -111,18 +151,25 @@ public class HomeTopView extends ConstraintLayout {
         super.setTranslationY(translationY);
         tv_place.setTranslationY(-translationY);
         iv_msg.setTranslationY(-translationY);
+        updateViewStatus(tl_tab.getSelectedTabPosition(), translationY);
+
+    }
+
+    private void updateViewStatus0(float translationY) {
+        tv_place.setSelected(false);
+        iv_msg.setSelected(false);
         if (translationY == getMinTranslationY()) {
             int color = ColorUtils.setAlphaComponent(Color.WHITE, 255);
             setBackgroundColor(color);
             view_search.setSelected(true);
-            tl_tab.setTabTextColors(getResources().getColor(R.color.base_text_black),getResources().getColor(R.color.nav_text_selected));
+            tl_tab.setTabTextColors(getResources().getColor(R.color.base_text_black), getResources().getColor(R.color.nav_text_selected));
             tl_tab.setSelectedTabIndicatorColor(getResources().getColor(R.color.nav_text_selected));
             tl_tab.setBackgroundColor(getResources().getColor(R.color.white));
         } else if (translationY == getMaxTranslationY()) {
             int color = ColorUtils.setAlphaComponent(Color.WHITE, 0);
             setBackgroundColor(color);
             view_search.setSelected(false);
-            tl_tab.setTabTextColors(getResources().getColor(R.color.white),getResources().getColor(R.color.white));
+            tl_tab.setTabTextColors(getResources().getColor(R.color.white), getResources().getColor(R.color.white));
             tl_tab.setSelectedTabIndicatorColor(getResources().getColor(R.color.white));
             tl_tab.setBackgroundColor(getResources().getColor(R.color.transparent));
         } else {
@@ -130,9 +177,12 @@ public class HomeTopView extends ConstraintLayout {
             int color = ColorUtils.setAlphaComponent(Color.WHITE, alpha);
             setBackgroundColor(color);
             view_search.setSelected(false);
-            tl_tab.setTabTextColors(getResources().getColor(R.color.base_text_black),getResources().getColor(R.color.nav_text_selected));
+            tl_tab.setTabTextColors(getResources().getColor(R.color.base_text_black), getResources().getColor(R.color.nav_text_selected));
             tl_tab.setSelectedTabIndicatorColor(getResources().getColor(R.color.nav_text_selected));
             tl_tab.setBackgroundColor(getResources().getColor(R.color.transparent));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//状态栏背景色
+            StatusBarUtil.setStatusBarColor((Activity) getContext(), Color.TRANSPARENT);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//状态栏字体色
             if (translationY != 0) {
@@ -141,6 +191,5 @@ public class HomeTopView extends ConstraintLayout {
                 StatusBarUtil.setWindowLightStatusBar((Activity) getContext(), false);
             }
         }
-
     }
 }

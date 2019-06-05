@@ -8,6 +8,10 @@
     <string name="nav_shoppingcart">购物车</string>
     <string name="nav_me">我的</string>
 
+    <string name="home_recommend">推荐</string>
+    <string name="home_own_recommend">掌柜推荐</string>
+    <string name="more">更多</string>
+
     <!--我的-->
     <string name="me_manage_wallet">管理钱包</string>
     <string name="me_business_record">交易记录</string>
@@ -15,4 +19,5 @@
     <string name="me_recommend">推荐给好友</string>
     <string name="me_safety">安全</string>
     <string name="me_exit">退出登录</string>
+    <string name="goods_label_1">特惠</string>
 </resources>

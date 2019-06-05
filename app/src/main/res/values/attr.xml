@@ -21,4 +21,8 @@
             <enum name="GONE" value="8"/>
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="HomeSwipeRefreshLayout">
+        <attr name="needTopPadding" format="boolean" />
+    </declare-styleable>
 </resources>

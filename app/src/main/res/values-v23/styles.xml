@@ -10,5 +10,6 @@
         <item name="windowActionBar">false</item>
         <item name="android:statusBarColor">#fffafafa</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 </resources>

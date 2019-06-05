@@ -10,6 +10,13 @@
     <color name="nav_text_selected">#029C45</color>
     <color name="nav_text_unselected">#AAAAAA</color>
 
+    <!--price-->
+    <color name="color_cur_price">#FF9000</color>
+    <color name="color_ori_price">#C8C8C8</color>
+    <!--goods labels-->
+    <color name="color_bg_label_1">#F8D6D5</color>
+    <color name="color_text_label_1">#CF5354</color>
+
 
     <!--base color-->
     <color name="white">#ffffff</color>
