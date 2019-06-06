@@ -39,7 +39,7 @@
         android:layout_height="1dp"
         android:background="@color/gray"
         app:layout_constraintTop_toBottomOf="@id/tv_own_recommend"/>
-    <android.support.v7.widget.RecyclerView
+    <com.zxy.demo.view.HomeItemRv
         android:id="@+id/rv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zxy.demo.view.HomeCl xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -125,4 +125,4 @@
 
     </com.zxy.demo.view.HomeTopView>
 
-</android.support.design.widget.CoordinatorLayout>
+</com.zxy.demo.view.HomeCl>

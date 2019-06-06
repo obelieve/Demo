@@ -1,109 +1,86 @@
 package com.zxy.demo.view;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.NestedScrollingParent2;
 import android.util.AttributeSet;
-import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.zxy.demo.R;
 import com.zxy.utility.LogUtil;
 import com.zxy.utility.MotionEventUtil;
 
-public class HomeSwipeRefreshLayout extends SwipeRefreshLayout {
-
-    public HomeSwipeRefreshLayout(@NonNull Context context) {
-        this(context,null);
+public class HomeCl extends CoordinatorLayout {
+    public HomeCl(Context context) {
+        super(context);
     }
 
-    public HomeSwipeRefreshLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public HomeCl(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setProgressViewOffset(false, HomeTopView.getRealHeight(),HomeTopView.getRealHeight()+getProgressViewEndOffset());
-        final TypedArray a = context.obtainStyledAttributes(
-                attrs, R.styleable.HomeSwipeRefreshLayout);
-        boolean bool  = a.getBoolean(R.styleable.HomeSwipeRefreshLayout_needTopPadding,false);
-        if(bool)
-            setPadding(0,HomeTopView.getRealHeight(),0,0);
+    }
+
+    public HomeCl(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         LogUtil.e(MotionEventUtil.name(ev));
-        boolean b=super.dispatchTouchEvent(ev);
-        LogUtil.e(MotionEventUtil.name(ev)+" "+b);
+        boolean b = super.dispatchTouchEvent(ev);
+        LogUtil.e(MotionEventUtil.name(ev) + " " + b);
         return b;
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
         LogUtil.e(MotionEventUtil.name(e));
-        boolean b=super.onInterceptTouchEvent(e);
-        LogUtil.e(MotionEventUtil.name(e)+" "+b);
+        boolean b = super.onInterceptTouchEvent(e);
+        LogUtil.e(MotionEventUtil.name(e) + " " + b);
         return b;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         LogUtil.e(MotionEventUtil.name(e));
-        boolean b=super.onTouchEvent(e);
-        LogUtil.e(MotionEventUtil.name(e)+" "+b);
+        boolean b = super.onTouchEvent(e);
+        LogUtil.e(MotionEventUtil.name(e) + " " + b);
         return b;
     }
 
-    //Nested child
+    //Nested
 
     @Override
-    public boolean startNestedScroll(int axes) {
-        LogUtil.e("axes="+axes);
-        boolean b=super.startNestedScroll(axes);
-        LogUtil.e(" return="+b);
-        return b;
-    }
-
-    @Override
-    public void stopNestedScroll() {
-        LogUtil.e();
-        super.stopNestedScroll();
-    }
-
-    @Override
-    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int[] offsetInWindow) {
-        LogUtil.e("dxConsumed="+dxConsumed+" dyConsumed="+dyConsumed+" dxUnconsumed="+dxUnconsumed+" dyUnconsumed="+dyUnconsumed+" offsetInWindow="+offsetInWindow);
-        boolean b=super.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow);
-        LogUtil.e(" return="+b);
+    public boolean onStartNestedScroll(@NonNull View child, @NonNull View target, int axes, int type) {
+        LogUtil.e("child=" + child + " target=" + target + " axes=" + axes + " type=" + type);
+        boolean b = super.onStartNestedScroll(child, target, axes, type);
+        LogUtil.e("return = " + b);
         return b;
     }
 
     @Override
-    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow) {
-        LogUtil.e("dx="+dx+" dy="+dy+" consumed="+consumed+" offsetInWindow="+offsetInWindow);
-        boolean b=super.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
-        LogUtil.e(" return="+b);
-        return b;
+    public void onNestedScrollAccepted(@NonNull View child, @NonNull View target, int axes, int type) {
+        LogUtil.e("child=" + child + " target=" + target + " axes=" + axes + " type=" + type);
+        super.onNestedScrollAccepted(child, target, axes, type);
     }
 
     @Override
-    public boolean dispatchNestedFling(float velocityX, float velocityY, boolean consumed) {
-        LogUtil.e("velocityX="+velocityX+" velocityY="+velocityY+" consumed="+consumed);
-        boolean b=super.dispatchNestedFling(velocityX, velocityY, consumed);
-        LogUtil.e(" return="+b);
-        return b;
+    public void onStopNestedScroll(@NonNull View target, int type) {
+        LogUtil.e(" target=" + target + " type=" + type);
+        super.onStopNestedScroll(target, type);
     }
 
     @Override
-    public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
-        LogUtil.e("velocityX="+velocityX+" velocityY="+velocityY);
-        boolean b=super.dispatchNestedPreFling(velocityX, velocityY);
-        LogUtil.e(" return="+b);
-        return b;
+    public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
+        LogUtil.e("target=" + target + " type=" + type);
+        super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type);
     }
 
-    //nested parent
+    @Override
+    public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
+        LogUtil.e("target=" + target + " dx=" + dx + " dy=" + dy + " consumed=" + consumed + " type=" + type);
+        super.onNestedPreScroll(target, dx, dy, consumed, type);
+    }
 
     @Override
     public boolean onStartNestedScroll(@NonNull View child, @NonNull View target, int axes) {
