@@ -8,6 +8,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.graphics.ColorUtils;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.zxy.demo.R;
 import com.zxy.demo.base.App;
 import com.zxy.demo.utils.StatusBarUtil;
+import com.zxy.utility.LogUtil;
 
 public class HomeTopView extends ConstraintLayout {
 
@@ -43,6 +45,8 @@ public class HomeTopView extends ConstraintLayout {
     private TextView tv_search;
     private TabLayout tl_tab;
 
+    private ViewPager mVpContent;
+
 
     public HomeTopView(Context context) {
         this(context, null, 0);
@@ -55,6 +59,11 @@ public class HomeTopView extends ConstraintLayout {
     public HomeTopView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
+    public void setHomeContentView(ViewPager vp) {
+        mVpContent = vp;
+    }
+
 
     public static int getRealHeight() {
         return sRealHeight;
@@ -108,7 +117,7 @@ public class HomeTopView extends ConstraintLayout {
     }
 
     public void updateViewStatus(int tabPosition) {
-        updateViewStatus(tabPosition,getTranslationY());
+        updateViewStatus(tabPosition, getTranslationY());
     }
 
     public void updateViewStatus(int tabPosition, float translationY) {
@@ -149,6 +158,7 @@ public class HomeTopView extends ConstraintLayout {
     @Override
     public void setTranslationY(float translationY) {
         super.setTranslationY(translationY);
+        mVpContent.setTranslationY(translationY);
         tv_place.setTranslationY(-translationY);
         iv_msg.setTranslationY(-translationY);
         updateViewStatus(tl_tab.getSelectedTabPosition(), translationY);

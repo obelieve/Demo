@@ -74,6 +74,7 @@ public class HomeCategory2Adapter extends RecyclerView.Adapter {
             super(itemView);
             tv_more = itemView.findViewById(R.id.tv_more);
             rv_content = itemView.findViewById(R.id.rv_content);
+            rv_content.setNestedScrollingEnabled(false);
             rv_content.setLayoutManager(new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
             rv_content.addItemDecoration(new HorizontalItemDivider(itemView.getContext().getResources().getColor(R.color.gray)));
             mType1Adapter = new Type1Adapter();

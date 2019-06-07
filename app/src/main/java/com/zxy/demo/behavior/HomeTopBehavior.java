@@ -70,7 +70,7 @@ public class HomeTopBehavior extends CoordinatorLayout.Behavior<HomeTopView> {
         boolean isFling = child.getTranslationY() == mChildMinTranslationY && velocityY < -4096;
         if (isFling) {
             FlingAnimation animation = new FlingAnimation(child, DynamicAnimation.TRANSLATION_Y);
-            animation.setStartVelocity(-velocityY)
+            animation.setStartVelocity(-velocityY*0.3f)
                     .setMinValue(mChildMinTranslationY)
                     .setMaxValue(mChildMaxTranslationY)
                     .start();
