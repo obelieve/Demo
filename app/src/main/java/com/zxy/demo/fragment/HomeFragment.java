@@ -42,22 +42,6 @@ public class HomeFragment extends Fragment {
         mTlTab = view.findViewById(R.id.tl_tab);
         mVpContent = view.findViewById(R.id.vp_content);
         mClTop.setHomeContentView(mVpContent);
-        mVpContent.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                mClTop.updateViewStatus(positionOffsetPixels==0?position:position+1);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         mVpContent.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {

@@ -9,9 +9,14 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zxy.demo.R;
@@ -46,6 +51,9 @@ public class HomeTopView extends ConstraintLayout {
     private TabLayout tl_tab;
 
     private ViewPager mVpContent;
+    private RecyclerView mScrollTargetView;
+    private ViewPager.OnPageChangeListener mPageChangeListener;
+    private RecyclerView.OnScrollListener mOnScrollListener;
 
 
     public HomeTopView(Context context) {
@@ -62,8 +70,34 @@ public class HomeTopView extends ConstraintLayout {
 
     public void setHomeContentView(ViewPager vp) {
         mVpContent = vp;
+        if (mPageChangeListener == null) {
+            mPageChangeListener = new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    updateViewStatus(positionOffsetPixels == 0 ? position : position + 1);
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            };
+        }
+        mVpContent.removeOnPageChangeListener(mPageChangeListener);
+        mVpContent.addOnPageChangeListener(mPageChangeListener);
     }
 
+    public void setScrollTargetView(View view) {
+        if(view instanceof SwipeRefreshLayout&&((SwipeRefreshLayout) view).getChildCount()!=0){
+            if(((SwipeRefreshLayout) view).getChildAt(0) instanceof RecyclerView)
+                mScrollTargetView = (RecyclerView) ((SwipeRefreshLayout) view).getChildAt(0);
+        }
+    }
 
     public static int getRealHeight() {
         return sRealHeight;
@@ -122,6 +156,34 @@ public class HomeTopView extends ConstraintLayout {
 
     public void updateViewStatus(int tabPosition, float translationY) {
         if (tabPosition == 0) {
+            if (mScrollTargetView != null){
+                if(mOnScrollListener==null){
+                    mOnScrollListener = new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                            super.onScrollStateChanged(recyclerView, newState);
+                        }
+
+                        @Override
+                        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                            super.onScrolled(recyclerView, dx, dy);
+                            LogUtil.e("onScrolled  itemPosition="+((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition());
+                            if(((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition()!=0) {
+                                updateViewStatus1();
+                            }else{
+                                updateViewStatus0(getTranslationY());
+                            }
+                        }
+                    };
+                }
+                mScrollTargetView.removeOnScrollListener(mOnScrollListener);
+                mScrollTargetView.addOnScrollListener(mOnScrollListener);
+                LogUtil.e("translationY="+translationY+" itemPosition="+((LinearLayoutManager)mScrollTargetView.getLayoutManager()).findFirstVisibleItemPosition());
+                if(((LinearLayoutManager)mScrollTargetView.getLayoutManager()).findFirstCompletelyVisibleItemPosition()!=0){
+                    updateViewStatus1();
+                    return;
+                }
+            }
             updateViewStatus0(translationY);
         } else {
             updateViewStatus1();
