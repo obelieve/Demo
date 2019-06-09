@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -74,7 +76,18 @@ public class HomeTopView extends ConstraintLayout {
             mPageChangeListener = new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    updateViewStatus(positionOffsetPixels == 0 ? position : position + 1);
+                    int pos = positionOffsetPixels == 0 ? position : position + 1;
+                    if (mVpContent.getAdapter() != null) {
+                        Object object = mVpContent.getAdapter().getItemPosition(pos);
+                        if (object instanceof Fragment) {
+                            Fragment fragment = (Fragment) object;
+                            if (fragment.getView() instanceof ViewGroup && ((ViewGroup) fragment.getView()).getChildCount() != 0
+                            &&((ViewGroup) fragment.getView()).getChildAt(0) instanceof RecyclerView) {
+                                mScrollTargetView =(RecyclerView)(((ViewGroup)fragment.getView()).getChildAt(0));
+                            }
+                        }
+                    }
+                    updateViewStatus(pos);
                 }
 
                 @Override
@@ -93,8 +106,8 @@ public class HomeTopView extends ConstraintLayout {
     }
 
     public void setScrollTargetView(View view) {
-        if(view instanceof SwipeRefreshLayout&&((SwipeRefreshLayout) view).getChildCount()!=0){
-            if(((SwipeRefreshLayout) view).getChildAt(0) instanceof RecyclerView)
+        if (view instanceof SwipeRefreshLayout && ((SwipeRefreshLayout) view).getChildCount() != 0) {
+            if (((SwipeRefreshLayout) view).getChildAt(0) instanceof RecyclerView)
                 mScrollTargetView = (RecyclerView) ((SwipeRefreshLayout) view).getChildAt(0);
         }
     }
@@ -156,8 +169,8 @@ public class HomeTopView extends ConstraintLayout {
 
     public void updateViewStatus(int tabPosition, float translationY) {
         if (tabPosition == 0) {
-            if (mScrollTargetView != null){
-                if(mOnScrollListener==null){
+            if (mScrollTargetView != null) {
+                if (mOnScrollListener == null) {
                     mOnScrollListener = new RecyclerView.OnScrollListener() {
                         @Override
                         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -167,10 +180,10 @@ public class HomeTopView extends ConstraintLayout {
                         @Override
                         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                             super.onScrolled(recyclerView, dx, dy);
-                            LogUtil.e("onScrolled  itemPosition="+((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition());
-                            if(((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition()!=0) {
+                            LogUtil.e("onScrolled  itemPosition=" + ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition());
+                            if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() != 0) {
                                 updateViewStatus1();
-                            }else{
+                            } else {
                                 updateViewStatus0(getTranslationY());
                             }
                         }
@@ -178,8 +191,8 @@ public class HomeTopView extends ConstraintLayout {
                 }
                 mScrollTargetView.removeOnScrollListener(mOnScrollListener);
                 mScrollTargetView.addOnScrollListener(mOnScrollListener);
-                LogUtil.e("translationY="+translationY+" itemPosition="+((LinearLayoutManager)mScrollTargetView.getLayoutManager()).findFirstVisibleItemPosition());
-                if(((LinearLayoutManager)mScrollTargetView.getLayoutManager()).findFirstCompletelyVisibleItemPosition()!=0){
+                LogUtil.e("translationY=" + translationY + " itemPosition=" + ((LinearLayoutManager) mScrollTargetView.getLayoutManager()).findFirstVisibleItemPosition());
+                if (((LinearLayoutManager) mScrollTargetView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() != 0) {
                     updateViewStatus1();
                     return;
                 }
