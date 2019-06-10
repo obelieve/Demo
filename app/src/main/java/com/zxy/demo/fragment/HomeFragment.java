@@ -54,8 +54,13 @@ public class HomeFragment extends Fragment {
             @Override
             public RecyclerView getContentView(int position) {
                 View view = getItem(position).getView();
-                if (view instanceof ViewGroup && ((ViewGroup) view).getChildAt(0) instanceof RecyclerView) {
-                    return (RecyclerView) ((ViewGroup) view).getChildAt(0);
+                if (view instanceof ViewGroup) {
+                    ViewGroup vp = ((ViewGroup) view);
+                    for (int i = 0; i < vp.getChildCount(); i++) {
+                        if (vp.getChildAt(i) instanceof RecyclerView) {
+                            return (RecyclerView) vp.getChildAt(i);
+                        }
+                    }
                 }
                 return null;
             }
