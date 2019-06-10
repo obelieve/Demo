@@ -43,16 +43,12 @@ public class HomeFragment extends Fragment {
     private HomeTopView mClTop;
     private TabLayout mTlTab;
     private HomeViewPager mVpContent;
+    private HomeAdapter mHomeAdapter;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        mClTop = view.findViewById(R.id.cl_top);
-        mTlTab = view.findViewById(R.id.tl_tab);
-        mVpContent = view.findViewById(R.id.vp_content);
-        mClTop.setHomeContentView(mVpContent);
-        mVpContent.setAdapter(new HomeAdapter(getChildFragmentManager()) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mHomeAdapter = new HomeAdapter(getChildFragmentManager()) {
             SparseArray<Fragment> mFragmentSparseArray = new SparseArray<>();
 
             @Override
@@ -108,7 +104,18 @@ public class HomeFragment extends Fragment {
             public CharSequence getPageTitle(int position) {
                 return mStrings[position];
             }
-        });
+        };
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        mClTop = view.findViewById(R.id.cl_top);
+        mTlTab = view.findViewById(R.id.tl_tab);
+        mVpContent = view.findViewById(R.id.vp_content);
+        mClTop.setHomeContentView(mVpContent);
+        mVpContent.setAdapter(mHomeAdapter);
 //        for (int i = 0; i < mStrings.length; i++) {
 //            mTlTab.addTab(mTlTab.newTab().setText(mStrings[i]));
 //        }
