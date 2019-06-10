@@ -81,12 +81,18 @@ public class HomeFragment extends Fragment {
                         }
                         break;
                     case 2:
-                    default:
                         if (mFragmentSparseArray.get(2) == null) {
                             fragment = new HomeCategory3Fragment();
                             mFragmentSparseArray.put(2, fragment);
                         } else {
                             fragment = mFragmentSparseArray.get(2);
+                        }
+                    default:
+                        if (mFragmentSparseArray.get(position) == null) {
+                            fragment = new HomeCategory3Fragment();
+                            mFragmentSparseArray.put(position, fragment);
+                        } else {
+                            fragment = mFragmentSparseArray.get(position);
                         }
                         break;
 
