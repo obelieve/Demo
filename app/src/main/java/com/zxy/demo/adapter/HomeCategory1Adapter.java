@@ -129,11 +129,11 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
     public static class Home1Type0ViewHolder extends RecyclerView.ViewHolder {
 
         private static String[] images = {
-                "http://img2.3lian.com/2014/f2/37/d/40.jpg",
-                "http://img2.3lian.com/2014/f2/37/d/39.jpg",
-                "http://www.8kmm.com/UploadFiles/2012/8/201208140920132659.jpg",
-                "http://f.hiphotos.baidu.com/image/h%3D200/sign=1478eb74d5a20cf45990f9df460b4b0c/d058ccbf6c81800a5422e5fdb43533fa838b4779.jpg",
-                "http://f.hiphotos.baidu.com/image/pic/item/09fa513d269759ee50f1971ab6fb43166c22dfba.jpg"
+                "https://imgs.pupuapi.com/BANNER/2019/06/06/060610124935850306.png",
+                "https://imgs.pupuapi.com/BANNER/2019/06/06/060615462457420031.png",
+                "https://imgs.pupuapi.com/BANNER/2019/06/06/060615515102165585.png",
+                "https://imgs.pupuapi.com/BANNER/2019/06/06/060618061564120610.png",
+                "https://imgs.pupuapi.com/BANNER/2019/06/06/060615313653148911.png"
         };
         ConvenientBanner<String> banner_content;
 

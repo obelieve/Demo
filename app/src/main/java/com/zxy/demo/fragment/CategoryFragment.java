@@ -1,5 +1,6 @@
 package com.zxy.demo.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ public class CategoryFragment extends Fragment
     {
         TextView view = new TextView(getContext());
         view.setText("发现");
+        view.setTextColor(Color.WHITE);
         return view;
     }
 }
