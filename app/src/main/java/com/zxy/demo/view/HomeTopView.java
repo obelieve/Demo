@@ -7,24 +7,18 @@ import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zxy.demo.R;
 import com.zxy.demo.base.App;
 import com.zxy.demo.utils.StatusBarUtil;
-import com.zxy.utility.LogUtil;
 
 public class HomeTopView extends ConstraintLayout {
 
@@ -52,8 +46,7 @@ public class HomeTopView extends ConstraintLayout {
     private TextView tv_search;
     private TabLayout tl_tab;
 
-    private ViewPager mVpContent;
-    private RecyclerView mScrollTargetView;
+    private HomeViewPager mVpContent;
     private ViewPager.OnPageChangeListener mPageChangeListener;
     private RecyclerView.OnScrollListener mOnScrollListener;
 
@@ -70,23 +63,13 @@ public class HomeTopView extends ConstraintLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setHomeContentView(ViewPager vp) {
+    public void setHomeContentView(HomeViewPager vp) {
         mVpContent = vp;
         if (mPageChangeListener == null) {
             mPageChangeListener = new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                     int pos = positionOffsetPixels == 0 ? position : position + 1;
-                    if (mVpContent.getAdapter() != null) {
-                        Object object = mVpContent.getAdapter().getItemPosition(pos);
-                        if (object instanceof Fragment) {
-                            Fragment fragment = (Fragment) object;
-                            if (fragment.getView() instanceof ViewGroup && ((ViewGroup) fragment.getView()).getChildCount() != 0
-                            &&((ViewGroup) fragment.getView()).getChildAt(0) instanceof RecyclerView) {
-                                mScrollTargetView =(RecyclerView)(((ViewGroup)fragment.getView()).getChildAt(0));
-                            }
-                        }
-                    }
                     updateViewStatus(pos);
                 }
 
@@ -103,13 +86,6 @@ public class HomeTopView extends ConstraintLayout {
         }
         mVpContent.removeOnPageChangeListener(mPageChangeListener);
         mVpContent.addOnPageChangeListener(mPageChangeListener);
-    }
-
-    public void setScrollTargetView(View view) {
-        if (view instanceof SwipeRefreshLayout && ((SwipeRefreshLayout) view).getChildCount() != 0) {
-            if (((SwipeRefreshLayout) view).getChildAt(0) instanceof RecyclerView)
-                mScrollTargetView = (RecyclerView) ((SwipeRefreshLayout) view).getChildAt(0);
-        }
     }
 
     public static int getRealHeight() {
@@ -139,22 +115,6 @@ public class HomeTopView extends ConstraintLayout {
         iv_search = findViewById(R.id.iv_search);
         tv_search = findViewById(R.id.tv_search);
         tl_tab = findViewById(R.id.tl_tab);
-        tl_tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                //updateViewStatus(tab.getPosition(), getTranslationY());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,7 +129,8 @@ public class HomeTopView extends ConstraintLayout {
 
     public void updateViewStatus(int tabPosition, float translationY) {
         if (tabPosition == 0) {
-            if (mScrollTargetView != null) {
+            RecyclerView rv = mVpContent.getAdapter() != null ? mVpContent.getAdapter().getContentView(tabPosition) : null;
+            if (rv != null) {//判断滚动视图是否存在，不存在使用默认view Status
                 if (mOnScrollListener == null) {
                     mOnScrollListener = new RecyclerView.OnScrollListener() {
                         @Override
@@ -180,30 +141,28 @@ public class HomeTopView extends ConstraintLayout {
                         @Override
                         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                             super.onScrolled(recyclerView, dx, dy);
-                            LogUtil.e("onScrolled  itemPosition=" + ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition());
                             if (((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() != 0) {
-                                updateViewStatus1();
+                                updateDefViewStatus();
                             } else {
-                                updateViewStatus0(getTranslationY());
+                                updateAlphaViewStatus(getTranslationY());
                             }
                         }
                     };
                 }
-                mScrollTargetView.removeOnScrollListener(mOnScrollListener);
-                mScrollTargetView.addOnScrollListener(mOnScrollListener);
-                LogUtil.e("translationY=" + translationY + " itemPosition=" + ((LinearLayoutManager) mScrollTargetView.getLayoutManager()).findFirstVisibleItemPosition());
-                if (((LinearLayoutManager) mScrollTargetView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() != 0) {
-                    updateViewStatus1();
+                rv.removeOnScrollListener(mOnScrollListener);
+                rv.addOnScrollListener(mOnScrollListener);
+                if (((LinearLayoutManager) rv.getLayoutManager()).findFirstCompletelyVisibleItemPosition() != 0) {
+                    updateDefViewStatus();
                     return;
                 }
             }
-            updateViewStatus0(translationY);
+            updateAlphaViewStatus(translationY);
         } else {
-            updateViewStatus1();
+            updateDefViewStatus();
         }
     }
 
-    private void updateViewStatus1() {
+    private void updateDefViewStatus() {
         tv_place.setSelected(true);
         iv_msg.setSelected(true);
         view_search.setSelected(true);
@@ -240,7 +199,7 @@ public class HomeTopView extends ConstraintLayout {
 
     }
 
-    private void updateViewStatus0(float translationY) {
+    private void updateAlphaViewStatus(float translationY) {
         tv_place.setSelected(false);
         iv_msg.setSelected(false);
         if (translationY == getMinTranslationY()) {
