@@ -9,6 +9,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.View;
 
 
 public class HomeViewPager extends ViewPager {
@@ -38,5 +39,15 @@ public class HomeViewPager extends ViewPager {
     public HomeAdapter getAdapter() {
         PagerAdapter adapter = super.getAdapter();
         return adapter instanceof HomeAdapter ? (HomeAdapter) adapter : null;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        try{
+            heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(View.MeasureSpec.getSize(heightMeasureSpec)+HomeTopView.getDragHeight(),MeasureSpec.EXACTLY);
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }catch (Exception e){
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
     }
 }
