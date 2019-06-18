@@ -44,10 +44,8 @@ public class HomeTopBehavior extends CoordinatorLayout.Behavior<HomeTopView> {
         } else if (target instanceof SwipeRefreshLayout) {
             isDown = !((SwipeRefreshLayout) target).canChildScrollUp();
         }
-        LogUtil.e("onNestedPreScroll dy=" + dy + " consumed=" + consumed[1] + " isDown=" + isDown);
         if (dy < 0) {//向下滑
             if (isDown && child.getTranslationY() < mChildMaxTranslationY) {
-                LogUtil.e("向下滑 target=" + target + " dy=" + dy);
                 float consumedY = dy;
                 if (child.getTranslationY() - consumedY > mChildMaxTranslationY) {
                     consumedY = child.getTranslationY();
@@ -72,7 +70,6 @@ public class HomeTopBehavior extends CoordinatorLayout.Behavior<HomeTopView> {
     public boolean onNestedPreFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull HomeTopView child, @NonNull View target, final float velocityX, final float velocityY) {
         boolean isFling = child.getTranslationY() == mChildMinTranslationY && velocityY < -4096;
         if (isFling) {
-            LogUtil.e("velocityY=" + velocityY);
             FlingAnimation animation = new FlingAnimation(child, DynamicAnimation.TRANSLATION_Y);
             animation.setStartVelocity(-mChildMinTranslationY * 5)
                     .setMinValue(mChildMinTranslationY)
@@ -85,7 +82,6 @@ public class HomeTopBehavior extends CoordinatorLayout.Behavior<HomeTopView> {
     @Override
     public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull HomeTopView child, @NonNull View target, int type) {
         super.onStopNestedScroll(coordinatorLayout, child, target, type);
-        LogUtil.e();
         //当嵌套滚动后，还未到达top高度一半自动设置还原或超过高度一半后自动设置置顶
         if (child.getY() <= mChildMinTranslationY / 2 && child.getY() > mChildMinTranslationY) {
             child.setTranslationY(mChildMinTranslationY);

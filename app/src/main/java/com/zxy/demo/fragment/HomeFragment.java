@@ -22,6 +22,7 @@ import com.zxy.demo.view.HomeTopView;
 import com.zxy.demo.view.HomeViewPager;
 import com.zxy.demo.view.HomeViewPager.HomeAdapter;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,11 +49,19 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /**
+         * 放在onCreate(...)进行初始化PagerAdapter。为了在切换时重新onCreateView(...)。
+         * 会发生View.onSaveInstanceState和View.onRestoreInstanceState发生。
+         * ViewPager的onSaveInstanceState和onRestoreInstanceState会对FragmentManager的Fragment实例进行恢复，所以会导致
+         * setAdapter(...)是新的Adapter和新的Fragment。但是显示是旧的Fragment(getItem(...)会直接返回之前恢复的Fragment)。
+         */
         mHomeAdapter = new HomeAdapter(getChildFragmentManager()) {
             SparseArray<Fragment> mFragmentSparseArray = new SparseArray<>();
 
             @Override
             public RecyclerView getContentView(int position) {
+                ArrayList<Fragment> list=getFragments();//避免onRestoreInstanceState时，Fragment是之前的。
+//                View view = list!=null?list.get(position).getView():null;
                 View view = getItem(position).getView();
                 if (view instanceof ViewGroup) {
                     ViewGroup vp = ((ViewGroup) view);

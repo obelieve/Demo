@@ -36,7 +36,6 @@ public class MainActivity extends BaseActivity {
         view_bottom_tab.setCallback(new BottomTabView.Callback() {
             @Override
             public void onSelected(int index, View view) {
-                LogUtil.e(index+"");
                 vp_content.setCurrentItem(index);
             }
         });
