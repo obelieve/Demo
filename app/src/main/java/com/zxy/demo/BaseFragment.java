@@ -15,86 +15,86 @@ public class BaseFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onAttach(context);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-         LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-         LogUtil.e(this+"");
-        return new BaseView(getContext());
+        LogUtil.e(this + "");
+        return LayoutInflater.from(container.getContext()).inflate(R.layout.fragment_base, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-         LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-         LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-         LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onViewStateRestored(savedInstanceState);
     }
 
     @Override
     public void onStart() {
-         LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onStart();
     }
 
     @Override
     public void onResume() {
-         LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onResume();
     }
 
     @Override
     public void onPause() {
-         LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onPause();
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-         LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onStop() {
-         LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onStop();
     }
 
     @Override
     public void onDestroyView() {
-         LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
-         LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onDestroy();
     }
 
     @Override
     public void onDetach() {
-         LogUtil.e(this+"");
+        LogUtil.e(this + "");
         super.onDetach();
     }
 }

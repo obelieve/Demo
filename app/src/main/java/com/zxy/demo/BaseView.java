@@ -2,6 +2,7 @@ package com.zxy.demo;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -47,5 +48,26 @@ public class BaseView extends View {
     protected void onDetachedFromWindow() {
         LogUtil.e();
         super.onDetachedFromWindow();
+    }
+
+    /**
+     * 由Activity.onSaveInstanceState(...)View层级分发被调用，需要设置View的id才会调用
+     * @return
+     */
+    @Nullable
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        LogUtil.e();
+        return super.onSaveInstanceState();
+    }
+
+    /**
+     * 由Activity.onRestoreInstanceState(...)View层级分发被调用，需要设置View的id才会调用
+     * @param state
+     */
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(state);
+        LogUtil.e();
     }
 }
