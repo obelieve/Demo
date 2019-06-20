@@ -52,8 +52,6 @@ public class HomeViewPager extends ViewPager {
                     Object obj = temp.get(i);
                     if (obj instanceof Fragment) {
                         list.add((Fragment) obj);
-                    } else {
-                        return null;
                     }
                 }
             }
