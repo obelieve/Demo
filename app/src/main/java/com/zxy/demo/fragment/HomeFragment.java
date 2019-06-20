@@ -61,8 +61,7 @@ public class HomeFragment extends Fragment {
             @Override
             public RecyclerView getContentView(int position) {
                 ArrayList<Fragment> list=getFragments();//避免onRestoreInstanceState时，Fragment是之前的。
-//                View view = list!=null?list.get(position).getView():null;
-                View view = getItem(position).getView();
+                View view = list!=null?list.get(position).getView():null;
                 if (view instanceof ViewGroup) {
                     ViewGroup vp = ((ViewGroup) view);
                     for (int i = 0; i < vp.getChildCount(); i++) {

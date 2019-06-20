@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
@@ -121,6 +123,39 @@ public class HomeTopView extends ConstraintLayout {
 
             }
         });
+    }
+
+    public static class SaveState extends BaseSavedState{
+
+        private float mTranslationY;
+
+        SaveState(Parcelable superState) {
+            super(superState);
+        }
+
+        void setTranslationY(float translationY) {
+            mTranslationY = translationY;
+        }
+
+        float getTranslationY() {
+            return mTranslationY;
+        }
+    }
+
+    @Nullable
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable parcelable = super.onSaveInstanceState();
+        SaveState saveState = new SaveState(parcelable);
+        saveState.setTranslationY(getTranslationY());
+        return saveState;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        SaveState saveState = (SaveState) state;
+        super.onRestoreInstanceState(((SaveState) state).getSuperState());
+        setTranslationY(saveState.getTranslationY());
     }
 
     public void updateViewStatus(int tabPosition) {
