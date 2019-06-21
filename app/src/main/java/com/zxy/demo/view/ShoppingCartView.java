@@ -32,7 +32,7 @@ public class ShoppingCartView extends FrameLayout implements View.OnClickListene
     private ConstraintLayout mClContent;
     private FrameLayout mFlAdd;
 
-    private int mMaxNum = 20;
+    private int mMaxNum = 1;
     private boolean mAnimating;
     private AnimatorSet mAnimatorSet;
 
@@ -95,6 +95,9 @@ public class ShoppingCartView extends FrameLayout implements View.OnClickListene
                 break;
             case R.id.iv_sub:
                 if (!TextUtils.isEmpty(mTvNum.getText().toString())) {
+                    if (Integer.valueOf(mTvNum.getText().toString()) == getMaxNum()) {
+                        setState(State.ADD_GOODS);
+                    }
                     if (Integer.valueOf(mTvNum.getText().toString()) == 1) {
                         setState(State.INITIAL);
                     } else {
