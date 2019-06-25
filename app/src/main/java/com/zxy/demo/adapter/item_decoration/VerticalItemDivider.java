@@ -48,7 +48,7 @@ public class VerticalItemDivider extends RecyclerView.ItemDecoration {
         int childCount = parent.getChildCount();
         int left = parent.getPaddingLeft();
         int right = parent.getWidth() - parent.getPaddingRight();
-        for (int i = 0; i < childCount - 1; i++) {
+        for (int i = 0; i < childCount; i++) {
             View view = parent.getChildAt(i);
             int top = view.getBottom();
             int bottom = top + mDividerWidth;

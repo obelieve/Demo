@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.zxy.demo.R;
 import com.zxy.demo.adapter.item_decoration.HorizontalItemDivider;
+import com.zxy.demo.adapter.item_decoration.VerticalItemDivider;
 import com.zxy.demo.utils.GlideUtil;
 import com.zxy.demo.view.ShoppingCartView;
 
@@ -115,9 +117,11 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         int type=0;
         if(position!=0)
-            type=1;
+            type = 3;
         if(position==1)
             type = 2;
+        if(position==2)
+            type=1;
         return type;
     }
 
@@ -247,8 +251,78 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
 
     private static class Home1Type3ViewHolder extends RecyclerView.ViewHolder {
 
+        ImageView iv_content;
+        RecyclerView rv_content;
+        FrameLayout fl_content;
+        Home1Type3ViewHolder.Type3Adapter mType3Adapter;
+
         private Home1Type3ViewHolder(View itemView) {
             super(itemView);
+            iv_content = itemView.findViewById(R.id.iv_content);
+            rv_content = itemView.findViewById(R.id.rv_content);
+            fl_content = itemView.findViewById(R.id.fl_content);
+            rv_content.setNestedScrollingEnabled(false);
+            rv_content.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+            rv_content.addItemDecoration(new VerticalItemDivider(false,1,itemView.getContext().getResources().getColor(R.color.gray)));
+            mType3Adapter = new Home1Type3ViewHolder.Type3Adapter();
+            List<String> list = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                list.add("有野上海青_" + i);
+            }
+            mType3Adapter.setList(list);
+            rv_content.setAdapter(mType3Adapter);
+        }
+
+        public static class Type3Adapter extends RecyclerView.Adapter {
+
+            List<String> mList;
+
+            @NonNull
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_home1_type3_child, parent, false);
+                return new Home1Type3ViewHolder.Type3ViewHolder(view);
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+            }
+
+            public void setList(List<String> list) {
+                mList = list;
+            }
+
+            @Override
+            public int getItemCount() {
+                if (mList != null)
+                    return mList.size();
+                return 0;
+            }
+        }
+
+        public static class Type3ViewHolder extends RecyclerView.ViewHolder {
+
+            private TextView mTvLabel;
+            private ImageView mIvImg;
+            private TextView mTvTitle;
+            private TextView mTvContent;
+            private TextView mTvWeight;
+            private TextView mTvCurPrice;
+            private TextView mTvOriPrice;
+            private ShoppingCartView mViewShopping;
+
+            public Type3ViewHolder(View itemView) {
+                super(itemView);
+                mTvLabel = itemView.findViewById(R.id.tv_label);
+                mIvImg = itemView.findViewById(R.id.iv_img);
+                mTvTitle = itemView.findViewById(R.id.tv_title);
+                mTvContent = itemView.findViewById(R.id.tv_content);
+                mTvWeight = itemView.findViewById(R.id.tv_weight);
+                mTvCurPrice = itemView.findViewById(R.id.tv_cur_price);
+                mTvOriPrice = itemView.findViewById(R.id.tv_ori_price);
+                mViewShopping = itemView.findViewById(R.id.view_shopping);
+            }
         }
     }
 
