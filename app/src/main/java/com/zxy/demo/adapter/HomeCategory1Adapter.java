@@ -116,6 +116,8 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
         int type=0;
         if(position!=0)
             type=1;
+        if(position==1)
+            type = 2;
         return type;
     }
 
