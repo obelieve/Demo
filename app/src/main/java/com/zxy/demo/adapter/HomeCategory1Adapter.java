@@ -170,7 +170,7 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
         }
     }
 
-    private static class Home1Type1ViewHolder extends RecyclerView.ViewHolder {
+    public static class Home1Type1ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_more;
         RecyclerView rv_content;
@@ -242,28 +242,30 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
     }
 
 
-    private static class Home1Type2ViewHolder extends RecyclerView.ViewHolder {
+    public static class Home1Type2ViewHolder extends RecyclerView.ViewHolder {
 
         private Home1Type2ViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-    private static class Home1Type3ViewHolder extends RecyclerView.ViewHolder {
+    public static class Home1Type3ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView iv_content;
         RecyclerView rv_content;
         FrameLayout fl_content;
         Home1Type3ViewHolder.Type3Adapter mType3Adapter;
 
-        private Home1Type3ViewHolder(View itemView) {
+        public Home1Type3ViewHolder(View itemView) {
             super(itemView);
             iv_content = itemView.findViewById(R.id.iv_content);
             rv_content = itemView.findViewById(R.id.rv_content);
             fl_content = itemView.findViewById(R.id.fl_content);
             rv_content.setNestedScrollingEnabled(false);
             rv_content.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
-            rv_content.addItemDecoration(new VerticalItemDivider(itemView.getContext().getResources().getColor(R.color.line_gray2)));
+            VerticalItemDivider divider = new VerticalItemDivider(itemView.getContext().getResources().getColor(R.color.line_gray2));
+            divider.setMarginLR(true,10,10);
+            rv_content.addItemDecoration(divider);
             mType3Adapter = new Home1Type3ViewHolder.Type3Adapter();
             List<String> list = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
@@ -326,14 +328,14 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
         }
     }
 
-    private static class Home1Type4ViewHolder extends RecyclerView.ViewHolder {
+    public static class Home1Type4ViewHolder extends RecyclerView.ViewHolder {
 
         private Home1Type4ViewHolder(View view) {
             super(view);
         }
     }
 
-    private static class Home1Type5ViewHolder extends RecyclerView.ViewHolder {
+    public static class Home1Type5ViewHolder extends RecyclerView.ViewHolder {
 
         private Home1Type5ViewHolder(View view) {
             super(view);

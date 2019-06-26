@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.zxy.demo.R;
 import com.zxy.demo.adapter.HomeCategory2Adapter;
+import com.zxy.demo.adapter.item_decoration.VerticalItemDivider;
 import com.zxy.demo.base.BaseFragment;
 import com.zxy.demo.view.HomeSwipeRefreshLayout;
 import com.zxy.demo.view.HomeTopView;
@@ -24,13 +25,16 @@ public class HomeCategory2Fragment extends BaseFragment {
     private HomeSwipeRefreshLayout mSrlContent;
     private RecyclerView mRvContent;
 
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_category2, container, false);
         mRvContent = view.findViewById(R.id.rv_content);
         mSrlContent = view.findViewById(R.id.srl_content);
         mRvContent.setLayoutManager(new LinearLayoutManager(getContext()));
+        VerticalItemDivider divider = new VerticalItemDivider(getContext().getResources().getColor(R.color.line_gray2));
+        divider.setNoDividerItem(true, true);
+        divider.setMarginLR(true, 10, 10);
+        mRvContent.addItemDecoration(divider);
         mRvContent.setAdapter(new HomeCategory2Adapter());
         mSrlContent.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -40,7 +44,7 @@ public class HomeCategory2Fragment extends BaseFragment {
                     public void run() {
                         mSrlContent.setRefreshing(false);
                     }
-                },1000);
+                }, 1000);
             }
         });
         return view;
