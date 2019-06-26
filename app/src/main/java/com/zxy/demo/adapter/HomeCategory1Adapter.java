@@ -115,13 +115,13 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        int type=0;
-        if(position!=0)
+        int type = 0;
+        if (position != 0)
             type = 3;
-        if(position==1)
+        if (position == 1)
             type = 2;
-        if(position==2)
-            type=1;
+        if (position == 2)
+            type = 1;
         return type;
     }
 
@@ -147,7 +147,7 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
             super(itemView);
             banner_content = itemView.findViewById(R.id.banner_content);
             banner_content.setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
-            RecyclerView rv= banner_content.findViewById(R.id.cbLoopViewPager);
+            RecyclerView rv = banner_content.findViewById(R.id.cbLoopViewPager);
             rv.setNestedScrollingEnabled(false);
         }
 
@@ -181,8 +181,8 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
             tv_more = itemView.findViewById(R.id.tv_more);
             rv_content = itemView.findViewById(R.id.rv_content);
             rv_content.setNestedScrollingEnabled(false);
-            rv_content.setLayoutManager(new LinearLayoutManager(itemView.getContext(),LinearLayoutManager.HORIZONTAL,false));
-            rv_content.addItemDecoration(new HorizontalItemDivider(itemView.getContext().getResources().getColor(R.color.gray)));
+            rv_content.setLayoutManager(new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
+            rv_content.addItemDecoration(new HorizontalItemDivider(itemView.getContext().getResources().getColor(R.color.line_gray2)));
             mType1Adapter = new Type1Adapter();
             List<String> list = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
@@ -263,7 +263,7 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
             fl_content = itemView.findViewById(R.id.fl_content);
             rv_content.setNestedScrollingEnabled(false);
             rv_content.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
-            rv_content.addItemDecoration(new VerticalItemDivider(false,1,itemView.getContext().getResources().getColor(R.color.gray)));
+            rv_content.addItemDecoration(new VerticalItemDivider(itemView.getContext().getResources().getColor(R.color.line_gray2)));
             mType3Adapter = new Home1Type3ViewHolder.Type3Adapter();
             List<String> list = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
