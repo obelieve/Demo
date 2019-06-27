@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.zxy.demo.base.BaseFragment;
@@ -28,9 +29,11 @@ public class DiscoveryFragment extends BaseFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        TextView view = new TextView(getContext());
-        view.setText("咨询");
-        view.setTextColor(Color.WHITE);
+        ScrollView view = new ScrollView(getContext());
+        TextView tv = new TextView(getContext());
+        tv.setText("咨询");
+        tv.setTextColor(Color.WHITE);
+        view.addView(tv);
         return view;
     }
 }
