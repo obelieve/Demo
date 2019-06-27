@@ -11,13 +11,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zxy.demo.R;
+import com.zxy.demo.base.BaseFragment;
 
 /**
  * Created by zxy on 2018/10/30 10:38.
  */
 
-public class ShoppingCartFragment extends Fragment
+public class ShoppingCartFragment extends BaseFragment
 {
+    @Override
+    public boolean openSettingStatusBar() {
+        return true;
+    }
+
+    @Override
+    public boolean settingStatusBarLight() {
+        return false;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)

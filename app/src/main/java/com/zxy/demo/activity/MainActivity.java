@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.zxy.demo.R;
 import com.zxy.demo.base.BaseActivity;
+import com.zxy.demo.base.BaseFragment;
 import com.zxy.demo.fragment.CategoryFragment;
 import com.zxy.demo.fragment.MeFragment;
 import com.zxy.demo.fragment.ShoppingCartFragment;
@@ -24,6 +25,7 @@ public class MainActivity extends BaseActivity {
 
     ViewPager vp_content;
     BottomTabView view_bottom_tab;
+    ViewPagerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +33,8 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         vp_content = findViewById(R.id.vp_content);
         view_bottom_tab = findViewById(R.id.view_bottom_tab);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        vp_content.setAdapter(adapter);
+        mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        vp_content.setAdapter(mAdapter);
         view_bottom_tab.setCallback(new BottomTabView.Callback() {
             @Override
             public void onSelected(int index, View view) {
@@ -48,6 +50,11 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 view_bottom_tab.setCurrentItem(position);
+                Fragment fragment = mAdapter.getItem(position);
+                if (fragment instanceof BaseFragment) {
+                    BaseFragment fragment1 = (BaseFragment) fragment;
+                    configStatusBar(fragment1.settingStatusBarLight(), fragment1.settingStatusBarColor());
+                }
             }
 
             @Override

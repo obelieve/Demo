@@ -10,18 +10,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.zxy.demo.base.BaseFragment;
+
 /**
  * Created by zxy on 2018/10/30 10:37.
  */
 
-public class CategoryFragment extends Fragment
+public class CategoryFragment extends BaseFragment
 {
+    @Override
+    public boolean openSettingStatusBar() {
+        return true;
+    }
+
+    @Override
+    public boolean settingStatusBarLight() {
+        return false;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         TextView view = new TextView(getContext());
-        view.setText("发现");
+        view.setText("分类");
         view.setTextColor(Color.WHITE);
         return view;
     }

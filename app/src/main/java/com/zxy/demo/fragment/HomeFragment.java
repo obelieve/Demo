@@ -1,5 +1,6 @@
 package com.zxy.demo.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zxy.demo.R;
+import com.zxy.demo.base.BaseFragment;
 import com.zxy.demo.fragment.home.HomeCategory1Fragment;
 import com.zxy.demo.fragment.home.HomeCategory2Fragment;
 import com.zxy.demo.fragment.home.HomeCategory3Fragment;
@@ -32,7 +34,7 @@ import java.util.Map;
  * Created by zxy on 2018/10/30 10:35.
  */
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
 
     private final String[] mStrings = new String[]{
             "推荐", "掌柜推荐", "限时抢购", "特价专区", "人气热卖",
@@ -45,6 +47,21 @@ public class HomeFragment extends Fragment {
     private TabLayout mTlTab;
     private HomeViewPager mVpContent;
     private HomeAdapter mHomeAdapter;
+
+    @Override
+    public boolean openSettingStatusBar() {
+        return true;
+    }
+
+    @Override
+    public boolean settingStatusBarLight() {
+        return mClTop == null || mClTop.isStatusBarLight();
+    }
+
+    @Override
+    public int settingStatusBarColor() {
+        return mClTop == null ? Color.TRANSPARENT : mClTop.getStatusBarColor();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,8 +77,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public RecyclerView getContentView(int position) {
-                ArrayList<Fragment> list=getFragments();//避免onRestoreInstanceState时，Fragment是之前的。
-                View view = list!=null?list.get(position).getView():null;
+                ArrayList<Fragment> list = getFragments();//避免onRestoreInstanceState时，Fragment是之前的。
+                View view = list != null ? list.get(position).getView() : null;
                 if (view instanceof ViewGroup) {
                     ViewGroup vp = ((ViewGroup) view);
                     for (int i = 0; i < vp.getChildCount(); i++) {
@@ -135,9 +152,6 @@ public class HomeFragment extends Fragment {
         mVpContent = view.findViewById(R.id.vp_content);
         mClTop.setHomeContentView(mVpContent);
         mVpContent.setAdapter(mHomeAdapter);
-//        for (int i = 0; i < mStrings.length; i++) {
-//            mTlTab.addTab(mTlTab.newTab().setText(mStrings[i]));
-//        }
         mTlTab.setupWithViewPager(mVpContent);
         return view;
     }

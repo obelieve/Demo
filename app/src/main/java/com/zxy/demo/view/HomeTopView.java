@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.zxy.demo.R;
 import com.zxy.demo.base.App;
+import com.zxy.demo.base.BaseActivity;
 import com.zxy.demo.utils.StatusBarUtil;
 
 public class HomeTopView extends ConstraintLayout {
@@ -47,6 +48,9 @@ public class HomeTopView extends ConstraintLayout {
     private ImageView iv_search;
     private TextView tv_search;
     private TabLayout tl_tab;
+
+    private int mStatusBarColor = Color.TRANSPARENT;
+    private boolean mStatusBarLight = true;
 
     private HomeViewPager mVpContent;
     private ViewPager.OnPageChangeListener mPageChangeListener;
@@ -106,6 +110,14 @@ public class HomeTopView extends ConstraintLayout {
         return sMaxTranslationY;
     }
 
+    public int getStatusBarColor() {
+        return mStatusBarColor;
+    }
+
+    public boolean isStatusBarLight() {
+        return mStatusBarLight;
+    }
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -125,7 +137,7 @@ public class HomeTopView extends ConstraintLayout {
         });
     }
 
-    public static class SaveState extends BaseSavedState{
+    public static class SaveState extends BaseSavedState {
 
         private float mTranslationY;
 
@@ -205,11 +217,12 @@ public class HomeTopView extends ConstraintLayout {
         tl_tab.setTabTextColors(getResources().getColor(R.color.base_text_black), getResources().getColor(R.color.nav_text_selected));
         tl_tab.setSelectedTabIndicatorColor(getResources().getColor(R.color.nav_text_selected));
         tl_tab.setBackgroundColor(getResources().getColor(R.color.white));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            StatusBarUtil.setStatusBarColor((Activity) getContext(), Color.WHITE);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//状态栏字体色
-            StatusBarUtil.setWindowLightStatusBar((Activity) getContext(), true);
+
+        if (getContext() instanceof BaseActivity) {
+            mStatusBarLight = false;
+            mStatusBarColor = Color.WHITE;
+            BaseActivity activity = (BaseActivity) getContext();
+            activity.configStatusBar(false, Color.WHITE);
         }
     }
 
@@ -260,15 +273,11 @@ public class HomeTopView extends ConstraintLayout {
             tl_tab.setSelectedTabIndicatorColor(getResources().getColor(R.color.nav_text_selected));
             tl_tab.setBackgroundColor(getResources().getColor(R.color.transparent));
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//状态栏背景色
-            StatusBarUtil.setStatusBarColor((Activity) getContext(), Color.TRANSPARENT);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//状态栏字体色
-            if (translationY != 0) {
-                StatusBarUtil.setWindowLightStatusBar((Activity) getContext(), true);
-            } else {
-                StatusBarUtil.setWindowLightStatusBar((Activity) getContext(), false);
-            }
+        if (getContext() instanceof BaseActivity) {
+            mStatusBarLight = translationY == 0;
+            mStatusBarColor = Color.TRANSPARENT;
+            BaseActivity activity = (BaseActivity) getContext();
+            activity.configStatusBar(translationY == 0,Color.TRANSPARENT);
         }
     }
 }
