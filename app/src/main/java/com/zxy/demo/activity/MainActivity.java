@@ -44,17 +44,16 @@ public class MainActivity extends BaseActivity {
         vp_content.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                view_bottom_tab.setCurrentItem(position);
                 Fragment fragment = mAdapter.getItem(position);
                 if (fragment instanceof BaseFragment) {
                     BaseFragment fragment1 = (BaseFragment) fragment;
                     configStatusBar(fragment1.settingStatusBarLight(), fragment1.settingStatusBarColor());
                 }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                view_bottom_tab.setCurrentItem(position);
             }
 
             @Override
