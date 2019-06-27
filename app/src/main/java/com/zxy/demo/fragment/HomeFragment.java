@@ -49,11 +49,6 @@ public class HomeFragment extends BaseFragment {
     private HomeAdapter mHomeAdapter;
 
     @Override
-    public boolean openSettingStatusBar() {
-        return true;
-    }
-
-    @Override
     public boolean settingStatusBarLight() {
         return mClTop == null || mClTop.isStatusBarLight();
     }

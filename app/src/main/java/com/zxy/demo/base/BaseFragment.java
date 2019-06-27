@@ -22,7 +22,4 @@ public class BaseFragment extends Fragment {
         return false;
     }
 
-    public boolean openSettingStatusBar() {
-        return false;
-    }
 }

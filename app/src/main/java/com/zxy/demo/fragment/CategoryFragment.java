@@ -18,10 +18,6 @@ import com.zxy.demo.base.BaseFragment;
 
 public class CategoryFragment extends BaseFragment
 {
-    @Override
-    public boolean openSettingStatusBar() {
-        return true;
-    }
 
     @Override
     public boolean settingStatusBarLight() {
