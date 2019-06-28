@@ -57,7 +57,7 @@ public class CategoryFragment extends BaseFragment {
         mAdapter = new CategoryAdapter();
         mRvTitle.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvTitle.setAdapter(mAdapter);
-        mVvpContent.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
+        mVvpContent.setAdapter(new ViewPagerAdapter(getChildFragmentManager(),mVvpContent));
         mVvpContent.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -81,11 +81,11 @@ public class CategoryFragment extends BaseFragment {
 
         List<Fragment> mList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager fm) {
+        public ViewPagerAdapter(FragmentManager fm,VerticalViewPager viewPager) {
             super(fm);
             int i=15;
             while (i>0){
-                mList.add(new DiscoveryFragment());
+                mList.add(CategoryPagerFragment.getInstance(viewPager));
                 i--;
             }
         }

@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class VerticalViewPager extends ViewPager {
+import java.io.Serializable;
+
+public class VerticalViewPager extends ViewPager implements Serializable {
 
     private int baseScrollX;
     private int currentScrollState;
