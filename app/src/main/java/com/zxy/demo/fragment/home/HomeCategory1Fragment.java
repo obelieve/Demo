@@ -13,10 +13,7 @@ import android.view.ViewGroup;
 
 import com.zxy.demo.R;
 import com.zxy.demo.adapter.HomeCategory1Adapter;
-import com.zxy.demo.adapter.TextRecyclerViewAdapter;
 import com.zxy.demo.base.BaseFragment;
-import com.zxy.demo.mock_data.GoodsData;
-import com.zxy.utility.LogUtil;
 
 public class HomeCategory1Fragment extends BaseFragment {
 
