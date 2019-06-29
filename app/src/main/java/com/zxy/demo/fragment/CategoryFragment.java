@@ -20,7 +20,9 @@ import android.widget.TextView;
 import com.zxy.demo.R;
 import com.zxy.demo.adapter.HomeCategory2Adapter;
 import com.zxy.demo.adapter.item_decoration.VerticalItemDivider;
+import com.zxy.demo.adapter.viewholder.CategoryViewHolder;
 import com.zxy.demo.base.BaseFragment;
+import com.zxy.demo.base.BaseRecyclerViewAdapter;
 import com.zxy.demo.utils.StatusBarUtil;
 import com.zxy.demo.view.VerticalViewPager;
 
@@ -55,6 +57,12 @@ public class CategoryFragment extends BaseFragment {
         mVvpContent = view.findViewById(R.id.vvp_content);
         StatusBarUtil.fitsSystemWindows(mFlTitle);
         mAdapter = new CategoryAdapter();
+        mAdapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<Boolean>() {
+            @Override
+            public void onItemClick(View view, Boolean aBoolean, int position) {
+                mVvpContent.setCurrentItem(position);
+            }
+        });
         mRvTitle.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvTitle.setAdapter(mAdapter);
         mVvpContent.setAdapter(new ViewPagerAdapter(getChildFragmentManager(),mVvpContent));
@@ -101,7 +109,7 @@ public class CategoryFragment extends BaseFragment {
         }
     }
 
-    public static class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
+    public static class CategoryAdapter extends BaseRecyclerViewAdapter<Boolean, CategoryViewHolder> {
 
         private List<Boolean> mBooleanList = new ArrayList<>();
         private int mLastSelectedPosition=0;
@@ -110,47 +118,27 @@ public class CategoryFragment extends BaseFragment {
                 mBooleanList.add(false);
             }
             mBooleanList.set(0,true);
+            getDataHolder().setList(mBooleanList);
         }
 
         public void setSelectedItem(int item){
-            mBooleanList.set(mLastSelectedPosition,false);
-            mBooleanList.set(item,true);
+            getDataHolder().getList().set(mLastSelectedPosition,false);
+            getDataHolder().getList().set(item,true);
             mLastSelectedPosition = item;
-            notifyDataSetChanged();
-        }
-
-        @NonNull
-        @Override
-        public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_category, parent, false);
-            return new CategoryViewHolder(view);
-
+            getDataHolder().notifyDataSetChanged();
         }
 
         @Override
-        public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-            holder.mClContent.setSelected(mBooleanList.get(position));
-            holder.mViewSelected.setSelected(mBooleanList.get(position));
+        public CategoryViewHolder getViewHolder(ViewGroup parent, int viewType) {
+            return new CategoryViewHolder(parent);
         }
 
         @Override
-        public int getItemCount() {
-            return 15;
+        public void loadViewHolder(CategoryViewHolder holder, int position) {
+            holder.clContent.setSelected(mBooleanList.get(position));
+            holder.viewSelected.setSelected(mBooleanList.get(position));
         }
 
-        public static class CategoryViewHolder extends RecyclerView.ViewHolder {
-
-            private ConstraintLayout mClContent;
-            private View mViewSelected;
-            private TextView mTvTitle;
-
-            private CategoryViewHolder(View itemView) {
-                super(itemView);
-                mClContent = itemView.findViewById(R.id.cl_content);
-                mViewSelected = itemView.findViewById(R.id.view_selected);
-                mTvTitle = itemView.findViewById(R.id.tv_title);
-            }
-        }
     }
 
 
