@@ -33,7 +33,7 @@ public class HomeCategory2Fragment extends BaseFragment {
         mRvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         VerticalItemDivider divider = new VerticalItemDivider(getContext().getResources().getColor(R.color.line_gray2));
         divider.setNoDividerItem(true, true);
-        divider.setMarginLR(true, 10, 10);
+        divider.setMarginLR( 10, 10);
         mRvContent.addItemDecoration(divider);
         mRvContent.setAdapter(new HomeCategory2Adapter());
         mSrlContent.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

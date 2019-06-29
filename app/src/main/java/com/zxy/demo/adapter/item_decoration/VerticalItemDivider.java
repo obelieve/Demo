@@ -25,7 +25,6 @@ public class VerticalItemDivider extends RecyclerView.ItemDecoration {
     private boolean mHeaderNoDivider = false;
     private boolean mFooterNoDivider = false;
     private List<Integer> mNoDividers = new ArrayList<>();
-    private boolean mMarginDP;
     private int mMarginLeft;
     private int mMarginRight;
 
@@ -61,8 +60,7 @@ public class VerticalItemDivider extends RecyclerView.ItemDecoration {
         }
     }
 
-    public void setMarginLR(boolean isDP, int left, int right) {
-        mMarginDP = isDP;
+    public void setMarginLR(int left, int right) {
         mMarginLeft = left;
         mMarginRight = right;
     }
@@ -82,8 +80,8 @@ public class VerticalItemDivider extends RecyclerView.ItemDecoration {
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDraw(c, parent, state);
         int childCount = parent.getChildCount();
-        int left = parent.getPaddingLeft()+(int)(mMarginDP?mDensity*mMarginLeft:mMarginLeft);
-        int right = parent.getWidth() - parent.getPaddingRight()-(int)(mMarginDP?mDensity*mMarginRight:mMarginRight);
+        int left = parent.getPaddingLeft() + (int) (mIsDP ? mDensity * mMarginLeft : mMarginLeft);
+        int right = parent.getWidth() - parent.getPaddingRight() - (int) (mIsDP ? mDensity * mMarginRight : mMarginRight);
         for (int i = 0; i < childCount; i++) {
             Paint paint = mPaint;
             View view = parent.getChildAt(i);

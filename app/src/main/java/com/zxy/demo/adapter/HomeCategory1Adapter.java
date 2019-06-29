@@ -264,7 +264,7 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
             rv_content.setNestedScrollingEnabled(false);
             rv_content.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
             VerticalItemDivider divider = new VerticalItemDivider(itemView.getContext().getResources().getColor(R.color.line_gray2));
-            divider.setMarginLR(true,10,10);
+            divider.setMarginLR(10,10);
             rv_content.addItemDecoration(divider);
             mType3Adapter = new Home1Type3ViewHolder.Type3Adapter();
             List<String> list = new ArrayList<>();
