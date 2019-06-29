@@ -24,7 +24,7 @@ public abstract class BaseRecyclerViewAdapter<T, VH extends BaseRecyclerViewAdap
         return mDataHolder;
     }
 
-    public abstract VH getViewHolder(int viewType);
+    public abstract VH getViewHolder(ViewGroup parent, int viewType);
 
     public abstract void loadViewHolder(VH holder, int position);
 
@@ -39,7 +39,7 @@ public abstract class BaseRecyclerViewAdapter<T, VH extends BaseRecyclerViewAdap
     @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return getViewHolder(viewType);
+        return getViewHolder(parent, viewType);
     }
 
     @Override
