@@ -4,10 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.View;
+
+import com.zxy.utility.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ public class VerticalItemDivider extends RecyclerView.ItemDecoration {
 
     private boolean mIsFirst = true;
     private boolean mIsDP;
+    private boolean mDividerToTop;
     private int mDividerWidth;
     private int mColor;
     private Paint mPaint;
@@ -47,22 +48,29 @@ public class VerticalItemDivider extends RecyclerView.ItemDecoration {
         mNoPaint.setColor(Color.TRANSPARENT);
     }
 
-    public void setNoDividerItem(int... args) {
-        setNoDividerItem(false, false, args);
+    public VerticalItemDivider dividerToTop(boolean dividerToTop) {
+        mDividerToTop = dividerToTop;
+        return this;
     }
 
-    public void setNoDividerItem(boolean headerNoDivider, boolean footerNoDivider, int... position) {
+    public VerticalItemDivider noDividerItem(int... args) {
+        return noDividerItem(false, false, args);
+    }
+
+    public VerticalItemDivider noDividerItem(boolean headerNoDivider, boolean footerNoDivider, int... position) {
         mHeaderNoDivider = headerNoDivider;
         mFooterNoDivider = footerNoDivider;
         if (position != null && position.length > 0) {
             for (int i = 0; i < position.length; i++)
                 mNoDividers.add(position[i]);
         }
+        return this;
     }
 
-    public void setMarginLR(int left, int right) {
+    public VerticalItemDivider marginLR(int left, int right) {
         mMarginLeft = left;
         mMarginRight = right;
+        return this;
     }
 
     @Override
@@ -73,7 +81,10 @@ public class VerticalItemDivider extends RecyclerView.ItemDecoration {
             mDividerWidth = (int) (mDividerWidth * mDensity);
             mIsFirst = false;
         }
-        outRect.bottom = mDividerWidth;
+        if (mDividerToTop)
+            outRect.top = mDividerWidth;
+        else
+            outRect.bottom = mDividerWidth;
     }
 
     @Override
@@ -90,8 +101,15 @@ public class VerticalItemDivider extends RecyclerView.ItemDecoration {
                     mNoDividers.size() > 0 && mNoDividers.contains(position)) {
                 paint = mNoPaint;
             }
-            int top = view.getBottom();
-            int bottom = top + mDividerWidth;
+            int top;
+            int bottom;
+            if (mDividerToTop) {
+                top = view.getTop()-mDividerWidth;
+                bottom = view.getTop();
+            } else {
+                top = view.getBottom();
+                bottom = top + mDividerWidth;
+            }
             c.drawRect(left, top, right, bottom, paint);
         }
     }

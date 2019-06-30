@@ -1,7 +1,6 @@
 package com.zxy.demo.adapter;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -264,7 +263,7 @@ public class HomeCategory1Adapter extends RecyclerView.Adapter {
             rv_content.setNestedScrollingEnabled(false);
             rv_content.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
             VerticalItemDivider divider = new VerticalItemDivider(itemView.getContext().getResources().getColor(R.color.line_gray2));
-            divider.setMarginLR(10,10);
+            divider.marginLR(10,10);
             rv_content.addItemDecoration(divider);
             mType3Adapter = new Home1Type3ViewHolder.Type3Adapter();
             List<String> list = new ArrayList<>();

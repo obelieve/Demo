@@ -10,15 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.zxy.demo.R;
 import com.zxy.demo.adapter.HomeCategory2Adapter;
 import com.zxy.demo.adapter.item_decoration.VerticalItemDivider;
 import com.zxy.demo.base.BaseFragment;
 import com.zxy.demo.view.HomeSwipeRefreshLayout;
-import com.zxy.demo.view.HomeTopView;
-import com.zxy.utility.LogUtil;
 
 public class HomeCategory2Fragment extends BaseFragment {
 
@@ -32,8 +29,8 @@ public class HomeCategory2Fragment extends BaseFragment {
         mSrlContent = view.findViewById(R.id.srl_content);
         mRvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         VerticalItemDivider divider = new VerticalItemDivider(getContext().getResources().getColor(R.color.line_gray2));
-        divider.setNoDividerItem(true, true);
-        divider.setMarginLR( 10, 10);
+        divider.noDividerItem(true, true);
+        divider.marginLR( 10, 10);
         mRvContent.addItemDecoration(divider);
         mRvContent.setAdapter(new HomeCategory2Adapter());
         mSrlContent.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
