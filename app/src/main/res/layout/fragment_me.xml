@@ -1,7 +1,337 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scrollbars="none">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/nav_text_selected">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/transparent"
+                app:cardCornerRadius="32dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_setting">
+
+                <ImageView
+                    android:id="@+id/iv_head"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/default_avatar" />
+            </android.support.v7.widget.CardView>
+
+            <ImageView
+                android:id="@+id/iv_qr_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:src="@drawable/ic_qr_code_white"
+                app:layout_constraintBottom_toBottomOf="@id/cv_head"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/cv_head" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="数据库"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_phone_num"
+                app:layout_constraintLeft_toRightOf="@id/cv_head"
+                app:layout_constraintTop_toTopOf="@id/cv_head"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/tv_phone_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="100000000000"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/cv_head"
+                app:layout_constraintLeft_toRightOf="@id/cv_head"
+                app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+            <ImageView
+                android:id="@+id/iv_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:src="@drawable/ic_setting"
+                app:layout_constraintRight_toLeftOf="@id/iv_msg"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:src="@drawable/ic_msg"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:background="@drawable/ic_me_bg"
+                app:layout_constraintBottom_toTopOf="@id/ll_order"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/ll_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cv_head">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_order_un_pay" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="待付款"
+                        android:textColor="@color/base_text_black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_order_un_receive" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="待收货"
+                        android:textColor="@color/base_text_black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_order_un_rate" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="待评价"
+                        android:textColor="@color/base_text_black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_order_all_order" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="全部订单"
+                        android:textColor="@color/base_text_black" />
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/line_gray2" />
+
+        <com.zxy.demo.view.CommonRowView
+            android:id="@+id/crv_address"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:ivResource="@drawable/ic_me_address"
+            app:tvTitleText="收货地址"
+            app:tvTitleTextColor="@color/base_text_black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line_gray" />
+
+        <com.zxy.demo.view.CommonRowView
+            android:id="@+id/crv_coupon"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:ivResource="@drawable/ic_me_coupon"
+            app:tvTitleText="优惠劵"
+            app:tvTitleTextColor="@color/base_text_black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line_gray" />
+
+        <com.zxy.demo.view.CommonRowView
+            android:id="@+id/crv_receipt"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:ivResource="@drawable/ic_me_receipt"
+            app:tvTitleText="发票与报销"
+            app:tvTitleTextColor="@color/base_text_black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line_gray" />
+
+        <com.zxy.demo.view.CommonRowView
+            android:id="@+id/crv_service"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:ivResource="@drawable/ic_me_service"
+            app:tvTitleText="在线客服"
+            app:tvTitleTextColor="@color/base_text_black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/line_gray2" />
+
+        <com.zxy.demo.view.CommonRowView
+            android:id="@+id/crv_recommend"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:ivResource="@drawable/ic_me_invite_friend"
+            app:tvTitleText="邀请有礼"
+            app:tvTitleTextColor="@color/base_text_black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/line_gray2" />
+
+        <com.zxy.demo.view.CommonRowView
+            android:id="@+id/crv_safety"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:ivResource="@drawable/ic_me_collection"
+            app:tvTitleText="收藏/经常买"
+            app:tvTitleTextColor="@color/base_text_black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line_gray" />
+
+        <com.zxy.demo.view.CommonRowView
+            android:id="@+id/crv_deliver_time"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:ivResource="@drawable/ic_me_deliver_time"
+            app:tvTitleText="配送时间"
+            app:tvTitleTextColor="@color/base_text_black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line_gray" />
+
+        <com.zxy.demo.view.CommonRowView
+            android:id="@+id/crv_help"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:ivResource="@drawable/ic_me_help"
+            app:tvTitleText="帮助与反馈"
+            app:tvTitleTextColor="@color/base_text_black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line_gray" />
+
+        <com.zxy.demo.view.CommonRowView
+            android:id="@+id/crv_recruit"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:ivResource="@drawable/ic_me_recruit"
+            app:tvTitleText="招募"
+            app:tvTitleTextColor="@color/base_text_black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line_gray" />
+
+        <com.zxy.demo.view.CommonRowView
+            android:id="@+id/crv_about"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:ivResource="@drawable/ic_me_about"
+            app:tvTitleText="关于"
+            app:tvTitleTextColor="@color/base_text_black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/line_gray2" />
+    </LinearLayout>
+</ScrollView>

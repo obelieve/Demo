@@ -2,6 +2,7 @@ package com.zxy.demo.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -25,6 +26,7 @@ public class CommonRowView extends FrameLayout
     private String mTvTitleText, mTvContentText;
 
     private int mIvVisibility,mTvTitleVisibility,mTvContentVisibility;
+    private int mTvTitleTextColor,mTvContentTextColor;
     public CommonRowView(Context context)
     {
         this(context, null);
@@ -46,6 +48,8 @@ public class CommonRowView extends FrameLayout
         mIvVisibility = a.getInt(R.styleable.CommonRowView_ivVisibility,-1);
         mTvTitleVisibility = a.getInt(R.styleable.CommonRowView_tvTitleVisibility,-1);
         mTvContentVisibility = a.getInt(R.styleable.CommonRowView_tvContentVisibility,-1);
+        mTvTitleTextColor = a.getInt(R.styleable.CommonRowView_tvTitleTextColor, -1);
+        mTvContentTextColor = a.getInt(R.styleable.CommonRowView_tvContentTextColor,-1);
         a.recycle();
 
         if(mIvResId!=0){
@@ -65,6 +69,12 @@ public class CommonRowView extends FrameLayout
         }
         if(mTvContentVisibility!=-1){
             tvContent.setVisibility(mTvContentVisibility);
+        }
+        if(mTvTitleTextColor!=-1){
+            tvTitle.setTextColor(mTvTitleTextColor);
+        }
+        if(mTvContentTextColor!=-1){
+            tvContent.setTextColor(mTvContentTextColor);
         }
     }
 }

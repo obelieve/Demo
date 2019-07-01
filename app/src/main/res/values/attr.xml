@@ -4,6 +4,8 @@
         <attr name="ivResource" format="reference"/>
         <attr name="tvTitleText" format="string|reference"/>
         <attr name="tvContentText" format="string|reference"/>
+        <attr name="tvTitleTextColor" format="color|reference"/>
+        <attr name="tvContentTextColor" format="color|reference"/>
 
         <attr name="ivVisibility">
             <enum name="VISIBLE" value="0"/>
