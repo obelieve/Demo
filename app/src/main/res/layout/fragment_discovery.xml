@@ -20,7 +20,6 @@
                 android:gravity="center_vertical"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/base_text_black"
-                android:textStyle="bold"
                 android:text="发现"/>
             <ImageView
                 android:layout_width="wrap_content"
