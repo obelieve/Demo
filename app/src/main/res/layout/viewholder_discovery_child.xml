@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/iv_img"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/temp_product_1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="优野上海青"
+        app:layout_constraintTop_toBottomOf="@id/iv_img"
+        app:layout_constraintRight_toRightOf="@id/iv_img"
+        app:layout_constraintLeft_toLeftOf="@id/iv_img"
+        app:layout_constrainedWidth="true"
+        android:textSize="14sp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/base_text_black" />
+
+    <TextView
+        android:id="@+id/tv_cur_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¥3.99"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintLeft_toLeftOf="@id/tv_title"
+        app:layout_constraintRight_toRightOf="@id/tv_title"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:textSize="14sp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:textColor="@color/color_cur_price" />
+</android.support.constraint.ConstraintLayout>
