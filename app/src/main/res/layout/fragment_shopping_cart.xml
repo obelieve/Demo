@@ -5,98 +5,129 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <FrameLayout
+        android:id="@+id/fl_title"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:gravity="center"
-        android:text="我的"
-        android:textColor="@color/base_text_black"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/line_gray" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_place_dark"
+            android:drawableRight="@drawable/ic_arrow_right_dark"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="朝阳区"
+            android:textColor="@color/base_text_black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <com.zxy.demo.view.CommonRowView
-        android:id="@+id/crv_manage_wallet"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        app:ivResource="@drawable/ic_manage_wallet"
-        app:tvTitleText="@string/me_manage_wallet"></com.zxy.demo.view.CommonRowView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:src="@drawable/ic_search_black_bold"
+            android:text="清空"
+            android:textColor="@color/base_text_black" />
+    </FrameLayout>
 
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/line_gray" />
+        android:layout_height="match_parent">
 
-    <com.zxy.demo.view.CommonRowView
-        android:id="@+id/crv_business_record"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        app:ivResource="@drawable/ic_business_record"
-        app:tvTitleText="@string/me_business_record"></com.zxy.demo.view.CommonRowView>
+        <LinearLayout
+            android:id="@+id/ll_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/line_gray" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_empty" />
 
-    <com.zxy.demo.view.CommonRowView
-        android:id="@+id/crv_node_select"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        app:ivResource="@drawable/ic_node_select"
-        app:tvTitleText="@string/me_node_select"></com.zxy.demo.view.CommonRowView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="您还没有添加商品~"
+                android:textColor="@color/base_text_gray2"
+                android:textSize="12sp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/line_gray" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_green_shadow"
+                android:gravity="center"
+                android:text="去逛逛"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/line_gray" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-    <com.zxy.demo.view.CommonRowView
-        android:id="@+id/crv_recommend"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        app:ivResource="@drawable/ic_recommend"
-        app:tvTitleText="@string/me_recommend"></com.zxy.demo.view.CommonRowView>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/line_gray" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/white"
+                android:orientation="horizontal">
 
-    <com.zxy.demo.view.CommonRowView
-        android:id="@+id/crv_safety"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        app:ivResource="@drawable/ic_safety"
-        app:tvTitleText="@string/me_safety"></com.zxy.demo.view.CommonRowView>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/sel_checkbox"
+                    android:layout_marginLeft="10dp"
+                    android:padding="10dp"
+                    android:checked="true" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/line_gray" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="已选（1）"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/base_text_black"
+                    android:textSize="14sp" />
 
-    <com.zxy.demo.view.CommonRowView
-        android:id="@+id/crv_exit"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        app:ivResource="@drawable/ic_exit"
-        app:tvTitleText="@string/me_exit"></com.zxy.demo.view.CommonRowView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="¥6.80"
+                    android:textColor="@color/color_cur_price"
+                    android:textSize="18sp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/line_gray" />
+                <TextView
+                    android:layout_width="96dp"
+                    android:layout_height="48dp"
+                    android:background="@color/nav_text_selected"
+                    android:gravity="center"
+                    android:text="去结算"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </FrameLayout>
+    </FrameLayout>
+
 </LinearLayout>
