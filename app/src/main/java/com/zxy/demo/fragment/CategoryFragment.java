@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,6 +42,7 @@ public class CategoryFragment extends BaseFragment {
     private FrameLayout mFlTitle;
 
     private CategoryAdapter mAdapter;
+    private ViewPagerAdapter mViewPagerAdapter;
 
     @Override
     public boolean settingStatusBarLight() {
@@ -65,7 +67,11 @@ public class CategoryFragment extends BaseFragment {
         });
         mRvTitle.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvTitle.setAdapter(mAdapter);
-        mVvpContent.setAdapter(new ViewPagerAdapter(getChildFragmentManager(),mVvpContent));
+        if(mViewPagerAdapter!=null){
+            mViewPagerAdapter.clearFragmentCache(getChildFragmentManager(),mVvpContent);
+        }
+        mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), mVvpContent);
+        mVvpContent.setAdapter(mViewPagerAdapter);
         mVvpContent.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -88,11 +94,10 @@ public class CategoryFragment extends BaseFragment {
     public static class ViewPagerAdapter extends FragmentPagerAdapter {
 
         List<Fragment> mList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager fm,VerticalViewPager viewPager) {
+        public ViewPagerAdapter(FragmentManager fm, VerticalViewPager viewPager) {
             super(fm);
-            int i=15;
-            while (i>0){
+            int i = 15;
+            while (i > 0) {
                 mList.add(CategoryPagerFragment.getInstance(viewPager));
                 i--;
             }
@@ -107,23 +112,40 @@ public class CategoryFragment extends BaseFragment {
         public int getCount() {
             return mList.size();
         }
+
+        private void clearFragmentCache(FragmentManager mFragmentManager,ViewGroup container) {
+            try {
+                int size = getCount();
+                FragmentTransaction mCurTransaction = mFragmentManager.beginTransaction();
+                for (int i = 0; i < size; i++) {
+                    String name = "android:switcher:" + container.getId() + ":" + i;
+                    Fragment fragment = mFragmentManager.findFragmentByTag(name);
+                    if (fragment != null) {
+                        mCurTransaction.remove(fragment);
+                    }
+                } mCurTransaction.commitNowAllowingStateLoss();} catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public static class CategoryAdapter extends BaseRecyclerViewAdapter<Boolean, CategoryViewHolder> {
 
         private List<Boolean> mBooleanList = new ArrayList<>();
-        private int mLastSelectedPosition=0;
+        private int mLastSelectedPosition = 0;
+
         {
-            for(int i=0;i<15;i++){
+            for (int i = 0; i < 15; i++) {
                 mBooleanList.add(false);
             }
-            mBooleanList.set(0,true);
+            mBooleanList.set(0, true);
             getDataHolder().setList(mBooleanList);
         }
 
-        public void setSelectedItem(int item){
-            getDataHolder().getList().set(mLastSelectedPosition,false);
-            getDataHolder().getList().set(item,true);
+        public void setSelectedItem(int item) {
+            getDataHolder().getList().set(mLastSelectedPosition, false);
+            getDataHolder().getList().set(item, true);
             mLastSelectedPosition = item;
             getDataHolder().notifyDataSetChanged();
         }
