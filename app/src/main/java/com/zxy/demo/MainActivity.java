@@ -32,66 +32,52 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.tv);
-        tv.setOnClickListener(new View.OnClickListener()
-        {
+        tv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 tv.setText("ad卡戴珊来得快洒落都是坑");
             }
         });
         LogUtil.e("猪：" + Thread.currentThread());
 
-        new Handler().postDelayed(new Runnable()
-        {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void run()
-            {
-                Completable.create(new CompletableOnSubscribe()
-                {
+            public void run() {
+                Completable.create(new CompletableOnSubscribe() {
                     @Override
-                    public void subscribe(@NonNull CompletableEmitter emitter) throws Exception
-                    {
+                    public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
 
-                        try
-                        {
+                        try {
                             TimeUnit.SECONDS.sleep(1);
                             int i = 1;
-                            if (i == 1)
-                            {
+                            if (i == 1) {
                                 throw new InterruptedException("aa");
                             }
                             emitter.onComplete();
                             LogUtil.e();
-                        } catch (InterruptedException e)
-                        {
-                            LogUtil.e(1+"");
+                        } catch (InterruptedException e) {
+                            LogUtil.e(1 + "");
                             emitter.onError(e);
 
                         }
                     }
                 }).andThen(Observable.range(1, 10))
-                        .subscribe(new Consumer<Integer>()
-                        {
+                        .subscribe(new Consumer<Integer>() {
                             @Override
-                            public void accept(@NonNull Integer integer) throws Exception
-                            {
+                            public void accept(@NonNull Integer integer) throws Exception {
                                 LogUtil.e("" + integer);
                             }
-                        }, new Consumer<Throwable>()
-                        {
+                        }, new Consumer<Throwable>() {
                             @Override
-                            public void accept(Throwable throwable) throws Exception
-                            {
-                                LogUtil.e(""+throwable.getLocalizedMessage());
+                            public void accept(Throwable throwable) throws Exception {
+                                LogUtil.e("" + throwable.getLocalizedMessage());
                             }
                         });
             }
         }, 1000);
     }
 
-    private void testFlatMap_concatMap_concatMapEager()
-    {
+    private void testFlatMap_concatMap_concatMapEager() {
         //                Flowable.range(1, 10)
 //                        .observeOn(Schedulers.io())
 //                        .map(v ->
@@ -116,8 +102,7 @@ public class MainActivity extends AppCompatActivity {
 //                                                        if(w==6){
 //                                                            Thread.sleep(3000);
 //                                                        }
-                                                if (w == 5)
-                                                {
+                                                if (w == 5) {
                                                     Thread.sleep(5000);
                                                 }
                                                 LogUtil.e(Thread.currentThread() + " map:" + w);
