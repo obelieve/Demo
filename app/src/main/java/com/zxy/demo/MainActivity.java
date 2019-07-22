@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity
             databaseDir.mkdir();
         }
         //viewport 设置
-        //settings.setUseWideViewPort(true);//使用html viewport提供显示区域
+        //settings.setUseWideViewPort(true);//使用html viewport提供显示区域,支持使用<meta name="viewport">标签限制显示区域
         //settings.setLoadWithOverviewMode(false);//默认自适应内容屏幕
         //设置缩放
         settings.setSupportZoom(true);//是否支持zoom
