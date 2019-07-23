@@ -49,12 +49,13 @@ public class AppWebView extends WebView {
     private ExecutorService mExecutors;
 
     public AppWebView(Context context) {
-        this(context, null, 0);
-
+        super(context);
+        init();
     }
 
     public AppWebView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init();
     }
 
     public AppWebView(Context context, AttributeSet attrs, int defStyleAttr) {
