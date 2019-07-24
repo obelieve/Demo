@@ -24,8 +24,6 @@ import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.zxy.utility.LogUtil;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -125,21 +123,7 @@ public class AppWebView extends WebView {
         tvTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File file = new File(activity.getExternalCacheDir() + "/" + DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg");
-                mCameraPicturePath = file.getPath();
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                Uri uri;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    try {
-                        uri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".FileProvider", file);
-                    } catch (Exception e) {
-                        throw new RuntimeException("Please check Manifest FileProvider config.");
-                    }
-                } else {
-                    uri = Uri.fromFile(file);
-                }
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                activity.startActivityForResult(intent, REQUEST_CODE_TAKE_PICTURE);
+                takePicture(activity);
                 dialog.dismiss();
             }
         });
@@ -162,6 +146,24 @@ public class AppWebView extends WebView {
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
+    }
+
+    private void takePicture(Activity activity) {
+        File file = new File(activity.getExternalCacheDir() + "/" + DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg");
+        mCameraPicturePath = file.getPath();
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            try {
+                uri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".FileProvider", file);
+            } catch (Exception e) {
+                throw new RuntimeException("Please check Manifest FileProvider config.");
+            }
+        } else {
+            uri = Uri.fromFile(file);
+        }
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        activity.startActivityForResult(intent, REQUEST_CODE_TAKE_PICTURE);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -236,17 +238,6 @@ public class AppWebView extends WebView {
         }
     }
 
-    /**
-     * 清空ValueCallback
-     */
-    private void htmlValueCallbackNull() {
-        if (mValueCallbackAndroid4 != null) {
-            mValueCallbackAndroid4 = null;
-        } else if (mValueCallbackAndroid5 != null) {
-            mValueCallbackAndroid5 = null;
-        }
-    }
-
     private int screenWidth(Context context) {
         DisplayMetrics ds = context.getResources().getDisplayMetrics();
         return ds.widthPixels;
@@ -256,7 +247,6 @@ public class AppWebView extends WebView {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            LogUtil.e("" + newProgress);
         }
 
         // For Android  > 4.1.1
