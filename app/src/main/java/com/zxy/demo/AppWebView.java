@@ -86,7 +86,7 @@ public class AppWebView extends WebView {
         //Dom Storage
         settings.setDomStorageEnabled(true);//开启Dom Storage API 功能
         //Cache Mode
-        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);//缓存模式 LOAD_DEFAULT（默认是有缓存数据并且不过期就使用缓存，否则从网络中拉取）
+        //settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);//缓存模式 LOAD_DEFAULT（默认是有缓存数据并且不过期就使用缓存，否则从网络中拉取）
 
         //密码保存
         settings.setSavePassword(false);//不保存密码
