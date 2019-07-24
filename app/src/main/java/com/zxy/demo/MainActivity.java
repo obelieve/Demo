@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity
         mWebView.addJavascriptInterface(new JsInvoke(this),"App");
         String url="";
         //url = "http://www.aicchain.co/wap/index.php?";
-//        url = "http://www.baidu.com";
+        url = "http://www.baidu.com";
         //
-//        mWebView.loadUrl(url);
+        mWebView.loadUrl(url);
 
         //js 参数没有var
 //        mWebView.loadDataWithBaseURL(null,"<html><script type=\"text/javascript\">   \n" +
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
 //                "    App.showToast(msg);\n" +
 //                "     }\n" +
 //                "</script><body><h1>biaosda</h1><p>萨空间打开的金卡</p><div><input type=\"button\" value = \"展示Toast\" onClick=\"showToast('好')\"></input></div></body></html>","text/html",null,null);
-        mWebView.loadUrl("file:///android_asset/text.html");
+//        mWebView.loadUrl("file:///android_asset/text.html");
 //        mWebView.loadDataWithBaseURL(null,"<a href=\"https://www.baidu.com\" target=\"_blank\">yyy</a>","text/html",null,null);
     }
 

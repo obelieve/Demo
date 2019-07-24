@@ -3,6 +3,7 @@ package com.zxy.demo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -106,6 +107,46 @@ public class AppWebView extends WebView {
         settings.setJavaScriptEnabled(true);
     }
 
+    public class AppWebChromeClient extends WebChromeClient {
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+        }
+
+        // For Android  > 4.1.1
+        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
+            mValueCallbackAndroid4 = uploadMsg;
+            selectFile((Activity) getContext());
+        }
+
+        // For Android >5.0
+        @Override
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+            mValueCallbackAndroid5 = filePathCallback;
+            selectFile((Activity) getContext());
+            return true;
+        }
+    }
+
+    private class AppWebViewClient extends WebViewClient {
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            return super.shouldOverrideUrlLoading(view, url);
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+        }
+
+    }
+
     private void selectFile(final Activity activity) {
         final AlertDialog dialog = new AlertDialog.Builder(activity)
                 .create();
@@ -145,6 +186,12 @@ public class AppWebView extends WebView {
         dialog.setView(linearLayout);
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                htmlReceiveValue(null);
+            }
+        });
         dialog.show();
     }
 
@@ -218,7 +265,6 @@ public class AppWebView extends WebView {
         }
     }
 
-
     /**
      * 网页接收数据
      *
@@ -241,46 +287,6 @@ public class AppWebView extends WebView {
     private int screenWidth(Context context) {
         DisplayMetrics ds = context.getResources().getDisplayMetrics();
         return ds.widthPixels;
-    }
-
-    public class AppWebChromeClient extends WebChromeClient {
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            super.onProgressChanged(view, newProgress);
-        }
-
-        // For Android  > 4.1.1
-        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
-            mValueCallbackAndroid4 = uploadMsg;
-            selectFile((Activity) getContext());
-        }
-
-        // For Android >5.0
-        @Override
-        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-            mValueCallbackAndroid5 = filePathCallback;
-            selectFile((Activity) getContext());
-            return true;
-        }
-    }
-
-    private class AppWebViewClient extends WebViewClient {
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return super.shouldOverrideUrlLoading(view, url);
-        }
-
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-        }
-
     }
 
 }
