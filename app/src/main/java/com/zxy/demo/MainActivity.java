@@ -1,40 +1,14 @@
 package com.zxy.demo;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateFormat;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zxy.SystemInfoUtil;
 import com.zxy.demo.bind.Bind;
 import com.zxy.demo.bind.ViewInject;
-import com.zxy.utility.LogUtil;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * 1.issue:
@@ -64,8 +38,8 @@ public class MainActivity extends AppCompatActivity
 //                "    App.showToast(msg);\n" +
 //                "     }\n" +
 //                "</script><body><h1>biaosda</h1><p>萨空间打开的金卡</p><div><input type=\"button\" value = \"展示Toast\" onClick=\"showToast('好')\"></input></div></body></html>","text/html",null,null);
-//        mWebView.loadUrl("file:///android_asset/text.html");
-        mWebView.loadDataWithBaseURL(null,"<a href=\"https://www.baidu.com\" target=\"_blank\">yyy</a>","text/html",null,null);
+        mWebView.loadUrl("file:///android_asset/text.html");
+//        mWebView.loadDataWithBaseURL(null,"<a href=\"https://www.baidu.com\" target=\"_blank\">yyy</a>","text/html",null,null);
     }
 
     @Override

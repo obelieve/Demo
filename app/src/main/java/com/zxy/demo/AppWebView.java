@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -127,12 +128,15 @@ public class AppWebView extends WebView {
                 File file = new File(activity.getExternalCacheDir() + "/" + DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg");
                 mCameraPicturePath = file.getPath();
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                ;
                 Uri uri;
-                try {
-                    uri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".FileProvider", file);
-                } catch (Exception e) {
-                    throw new RuntimeException("Please check Manifest FileProvider config.");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    try {
+                        uri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".FileProvider", file);
+                    } catch (Exception e) {
+                        throw new RuntimeException("Please check Manifest FileProvider config.");
+                    }
+                } else {
+                    uri = Uri.fromFile(file);
                 }
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 activity.startActivityForResult(intent, REQUEST_CODE_TAKE_PICTURE);
@@ -180,9 +184,8 @@ public class AppWebView extends WebView {
                             }
                             options.inJustDecodeBounds = false;
                             try {
-                                out = new FileOutputStream(file);
                                 bitmap = BitmapFactory.decodeFile(filePath, options);
-                                LogUtil.e(filePath+" "+new File(filePath).exists()+" "+bitmap+" "+options);
+                                out = new FileOutputStream(file);
                                 bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
                             } catch (FileNotFoundException e) {
                                 e.printStackTrace();
@@ -206,11 +209,9 @@ public class AppWebView extends WebView {
                 } else {
                     htmlReceiveValue(null);
                 }
-                htmlValueCallbackNull();
                 break;
             case 1://相册
                 htmlReceiveValue(data != null ? data.getData() : null);
-                htmlValueCallbackNull();
                 break;
         }
     }
@@ -224,12 +225,14 @@ public class AppWebView extends WebView {
     private void htmlReceiveValue(Uri uri) {
         if (mValueCallbackAndroid4 != null) {
             mValueCallbackAndroid4.onReceiveValue(uri);
+            mValueCallbackAndroid4 = null;
         } else if (mValueCallbackAndroid5 != null) {
             if (uri == null) {
                 mValueCallbackAndroid5.onReceiveValue(new Uri[]{});
             } else {
                 mValueCallbackAndroid5.onReceiveValue(new Uri[]{uri});
             }
+            mValueCallbackAndroid5 = null;
         }
     }
 
@@ -244,8 +247,7 @@ public class AppWebView extends WebView {
         }
     }
 
-    private int screenWidth(Context context)
-    {
+    private int screenWidth(Context context) {
         DisplayMetrics ds = context.getResources().getDisplayMetrics();
         return ds.widthPixels;
     }
