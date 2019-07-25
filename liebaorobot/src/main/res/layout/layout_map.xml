@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <EditText
+        android:id="@+id/editText_map_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="地图名称"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/button_navigation_switch_map"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="切换地图" />
+
+    <Button
+        android:id="@+id/button_navigation_get_mapname"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取当前地图名称" />
+
+    <Button
+        android:id="@+id/button_navigation_get_place_list"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取位置列表" />
+
+    <Button
+        android:id="@+id/button_map_start_cruise"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="开始巡逻" />
+
+    <Button
+        android:id="@+id/button_map_stop_cruise"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="结束巡逻" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/text_map_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="无" />
+    </ScrollView>
+
+
+
+</LinearLayout>

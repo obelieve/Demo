@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/button_move_estimate_status"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="当前定位状态" />
+
+        <Button
+            android:id="@+id/button_get_pose_estimate"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="机器人当前位置坐标点" />
+
+        <EditText
+            android:id="@+id/editText_location_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="位置名称"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/button_set_location"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="设置当前位置名称" />
+
+        <Button
+            android:id="@+id/button_remove_location"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="删除当前位置点" />
+
+        <Button
+            android:id="@+id/button_get_location"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="获取指定位置坐标" />
+
+        <Button
+            android:id="@+id/button_is_in_location"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="是否在指定位置" />
+
+        <Button
+            android:id="@+id/button_resume_special_place_theta"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="转向目标点方向" />
+
+        <TextView
+            android:id="@+id/textView_navigation_location_point"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="无坐标"
+            android:lines="6" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_go_position"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="导航到上面坐标位置" />
+
+            <Button
+                android:id="@+id/button_stop_go_position"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="结束导航" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_start_navigation"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="导航到指定位置" />
+
+            <Button
+                android:id="@+id/button_stop_navigation"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="停止导航到指定位置" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_move_set_pose_estimate"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="设置上面坐标为定位点" />
+
+        <Button
+            android:id="@+id/button_move_set_locate_estimate"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="设置当前坐标点为定位点"
+            android:enabled="false"/>
+
+    </LinearLayout>
+
+</ScrollView>

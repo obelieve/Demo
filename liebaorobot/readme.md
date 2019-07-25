@@ -1,0 +1,7 @@
+## 猎豹机器人
+- 管理平台 `https://jiedai.ainirobot.com/#/home`
+- 官方社区 `https://bbs.ainirobot.com/forum.php`
+- 二次开发Demo `https://bbs.ainirobot.com/forum.php?mod=viewthread&tid=114`
+    - demo下载 `https://pan.baidu.com/s/1vRVROluJNTxIDcbsXfPevA?errno=0&errmsg=Auth%20Login%20Sucess&&bduss=&ssnerror=0&traceid=`
+    - demo文档 `https://note.youdao.com/ynoteshare1/index.html?id=9029108f9528c2865b9fc62ca8e887ce&type=note`
+

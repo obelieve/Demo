@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">SDK_Demo</string>
+    <string name="orion_standby">人脸检测中</string>
+    <string name="orion_scene">场景案例</string>
+    <string name="orion_interview">你是来面试的吗？</string>
+    <string name="orion_ask_me">你好！现在可以问我一些问题哦</string>
+    <string name="orion_had_waked_up">已唤醒</string>
+
+    <string name="speech_status_navi_out_map_please_edit">目标点不可到达，请擦除地图噪点或重新定位</string>
+    <string name="speech_status_navi_global_path_failed">哎呀，找不到去目的地的路，没法带您过去了</string>
+    <string name="speech_status_navi_global_path_obstacles">请让一让</string>
+    <string name="speech_status_navi_global_path_failed_please_edit_map">目标点不可到达，请检查地图标注或把机器人推到可通行区域</string>
+    <string name="speech_navi_can_not_arrive_go_back">我过不去了，先回去了</string>
+    <string name="speech_lead_here_is_destination">这里就是目的地了</string>
+    <string name="speech_lead_here_is_start">这里就是</string>
+    <string name="speech_lead_here_is_end">附近了，我先回去了</string>
+    <string name="speech_status_navi_avoid">哎呀，你站在我要去的位置了，请让一让</string>
+    <string name="orion_had_wakeup">已唤醒</string>
+    <string name="orion_had_not_navigation">没有开启导航模式</string>
+    <string name="without_map">没有地图</string>
+    <string name="orion_test">测试</string>
+    <string name="orion_speech">语音</string>
+    <string name="orion_move">移动</string>
+    <string name="orion_face_regist">人脸注册</string>
+    <string name="orion_navigation">位置导航</string>
+    <string name="orion_not_navigation">未导航</string>
+    <string name="orion_question">问题</string>
+    <string name="orion_answer">答案</string>
+    <string name="orion_nav_place">目的地：</string>
+
+
+</resources>

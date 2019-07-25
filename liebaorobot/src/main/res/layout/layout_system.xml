@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/button_get_sn"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="获取SN号" />
+
+        <TextView
+            android:id="@+id/textView_sn_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="SN"
+            android:lines="1" />
+
+
+        <EditText
+            android:id="@+id/editText_text_to_mp3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入文本"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/button_text_to_mp3"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="文本转换MP3"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="文件路径：/sdcard/test.mp3"
+            android:lines="1" />
+
+        <Button
+            android:id="@+id/button_play_mp3"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="播放MP3文件"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit_start_color"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="开始颜色"/>
+
+            <EditText
+                android:id="@+id/edit_end_color"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="结束颜色"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit_start_color_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:hint="开始颜色持续时间"/>
+
+            <EditText
+                android:id="@+id/edit_end_color_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:hint="结束颜色持续时间"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit_light_duration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:hint="渐变持续时间"/>
+
+            <EditText
+                android:id="@+id/edit_loop_times"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberSigned"
+                android:layout_weight="1"
+                android:hint="循环次数"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edit_final_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="循环结束颜色"/>
+
+        <Button
+            android:id="@+id/button_set_light"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="设置灯效"/>
+
+        <Button
+            android:id="@+id/button_back_to_module_app"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="回到豹小秘"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="请提前在SD卡根目录放置一个test.apk文件"/>
+
+        <Button
+            android:id="@+id/button_install_apk"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="安装APK"/>
+
+
+    </LinearLayout>
+</ScrollView>
