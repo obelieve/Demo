@@ -28,6 +28,7 @@
     <uses-permission android:name="android.permission.SET_PREFERRED_APPLICATIONS" />
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:name="com.ainirobot.sdk_demo.RobotApplication"
         android:allowBackup="true"
