@@ -127,3 +127,107 @@ xxx许可证核发
 - calling-system-services:具体调用例子；
 
 ## 猎豹机器人
+- RobotApplication
+	- 初始化所有任务模式
+		- IDLE_MODE 	//空闲模式
+		    - start
+		        - 1.页面切换到LeadFragment
+		        - 2.skillApi.setRecognizeMode(false)//取消语音连续识别
+		        - 3.地图存在，进行导航：RobotApi.getInstance().startNavigation(..)
+		        - 4.地图不存在，语音提示无地图
+		    - stop
+		        - 1.关闭主页面
+		        - 2.关闭导航
+		        - 3.重新设置为欢迎模式
+		- WELCOMD_MODE 	//欢迎模式
+		    - start
+		        - 1.页面切换到WelcomeFragment
+		        - 2.skillApi.setRecognizeMode(true);//设置语音连续识别
+		        - 3.RobotApi.getInstance().startGetAllPersonInfo(..)//开始人脸识别
+		    - update
+		        - 1.更新问题和答案 文本显示
+		        - 2.播放答案
+		        - 3.人脸检测超时停止判断
+		    - stop
+		        - 1.RobotApi.getInstance().stopGetAllPersonInfo(..)//停止人脸识别
+		        - 2.skillApi.setRecognizeMode(false);//取消语音连续识别
+		        - 3.关闭主页面
+		- LEADING_MODE 	//导航模式
+	- LauncherActivity
+		- SkillListFragment //列表
+			- 启动ModuleService
+				- RobotApi.getInstance().connectServer(...)//服务器连接
+					- 连接成功
+						- RobotApi.getInstance().setCallback(ModuleCallback)
+						- RobotApi.getInstance().registerStatusListener(...) //注册状态监听
+						- 启动SpeechService
+							- SkillApi.connectApi(..)//服务器连接
+							- SkillApi.addApiEventLisener(...)//监听连接
+			- 注册EventBus观察者
+		- NavigationFragment //导航功能
+			- NavigationSkill
+				- 1.RobotApi.getInstance().isRobotEstimate(..)//当前定位状态
+				- 2.RobotApi.getInstance().getPosition(..)//机器人当前位置坐标点
+				- 3.RobotApi.getInstance().setLocation(..)//设置当前位置名称
+				- 4.RobotApi.getInstance().removeLocation(..)//删除当前位置点
+				- 5.RobotApi.getInstance().getLocation(..)//获取指定位置坐标
+				- 6.NavigationSkill.getInstance().goPosition(..)//导航到指定位置坐标
+				- 7.RobotApi.getInstance().stopGoPosition(..)//结束导航
+				- 8.RobotApi.getInstance().isRobotInlocations()//是否在指定位置
+				- 9.NavigationSkill.getInstance().setPoseEstimate(..)//将上面坐标设置定位点
+				- 10.RobotApi.getInstance().saveRobotEstimate(..)//将当前坐标设为定位点
+				- 11.avigationSkill.getInstance().startNavigation(..)//导航到指定位置
+				- 12.RobotApi.getInstance().stopNavigation(..)//停止导航到指定位置
+				- 13.RobotApi.getInstance().resumeSpecialPlaceTheta(..)//转向目标点方向
+		- FaceFragment //视觉引领
+			- FaceSkill
+				- RobotApi.getInstance().startRegister(..)//人脸注册
+				- RobotApi.getInstance().stopRegister(..)//停止注册
+				- RobotApi.getInstance().startLead(..)//开始引导
+				- RobotApi.getInstance().stopLead(..)//结束引导
+				- RobotApi.getInstance().startFocusFollow(..)//开始焦点跟随
+				- RobotApi.getInstance().stopFocusFollow(..)//停止焦点跟随
+				- RobotApi.getInstance().switchCamera(..)//前/后置摄像头切换
+				- RobotApi.getInstance().getPictureById(..)//获取人脸信息
+				- RobotApi.getInstance().startGetAllPersonInfo(..)//开始识别人脸
+				- RobotApi.getInstance().stopGetAllPersonInfo(..)//停止识别人脸
+		- MoveFragment //位置移动
+			- RobotApi.getInstance().goForward(..)//前进
+			- RobotApi.getInstance().goBackward(..)//后退
+			- RobotApi.getInstance().turnLeft(..)//左转
+			- RobotApi.getInstance().turnRight(..)//右转
+			- RobotApi.getInstance().motionArc(..)//弧线运动
+			- RobotApi.getInstance().moveHead(..)//绝对运动，hmode="absolute"
+			- RobotApi.getInstance().moveHead(..)//相对运动, hmode="relative"
+			- RobotApi.getInstance().resetHead(..)//恢复云台初始角度
+			- RobotApi.getInstance().stopMove(..)//停止运动
+		- SpeechFragment //语音功能
+			- SpeechSkill
+				- RobotApi.getInstance().stopWakeUp(..)//停止唤醒
+				- skillApi.setRecognizeMode(true/false)//识别模式
+				- skillApi.playText(..)//文字转语音播放
+				- skillApi.stopTTS(..)//停止播放
+				- skillApi.setRecognizable(true/false)//开启/关闭语音识别
+				- skillApi.setASREnabled(true/false)//开启/关闭语音
+				- skillApi.setAngleCenterRange(..)//设置语音识别范围
+		- MapFragment //地图巡逻
+			- NavigationSkill
+				- RobotApi.getInstance().switchMap(..)//切换地图
+				- RobotApi.getInstance().getMapName(..)//获取当前地图名称
+				- RobotApi.getInstance().getPlaceList(..)//获取位置列表
+				- RobotApi.getInstance().startCruise(..)//开始巡逻
+				- RobotApi.getInstance().stopCruise(..)//停止巡逻
+		- ChargeFragment //充电功能
+			- ChargeSkill
+				- RobotApi.getInstance().setStartChargePoseAction(..)//设置充电桩
+				- RobotApi.getInstance().startNaviToAutoChargeAction(..)//设置自动回充
+				- RobotApi.getInstance().stopAutoChargeAction(..)//结束自动回充
+				- RobotApi.getInstance().stopChargingByApp()//离开充电并脱离充电桩，OTA4.6以上rom
+		- SystemFragment //系统功能
+			- SystemSkill
+				- RobotApi.getInstance().getRobotSn(..)//获取SN号
+				- RobotApi.getInstance().textToMp3(..)//文本转mp3文件
+			- MediaPlayer播放mp3文件
+			- startActivity(PackageManager#getLaunchIntentForPackage(Definition.MODULE_PACKAGE_NAME))//回到豹小秘
+				- RobotApi.getInstance().installApk(..)//安装apk
+		- 场景案例：关闭当前模式，重新设置欢迎模式。
