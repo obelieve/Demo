@@ -1,0 +1,89 @@
+GDS项目：
+MyApplication:
+-> IFSTART_ASR : true;
+->1.审批事项.xls数据导入到数据库、内存中
+->2.开启服务MQProxyService、ExternalDeviceService
+	->MQProxyService:MQ相关
+	->ExternalDeviceService:注册一个eventBus，子线程处理“send_mq_task”事件
+->3.保存gds.json到存储中，保存了solr服务配置信息
+->4.保存isPrintingSpeak.json到存储，保存isLog=0。
+->5.保存asrkeyword.json到存储中，保存了一些关键字信息
+
+BaseActivity
+->TaskListenerManager.getManager().bindListenerWithEventName(this,...);
+	->1.注册eventBus,子线程处理“recv_mq_task”事件
+	->2.对于事件处理的回调到TaskListenerManager中
+->发送“send_mq_task”事件，“base.request_poi_keywords”获取所有poi点保存到“PoiList”变量中。
+->注册广播，监听“com.hrt.service”用于发送去充电poi指令
+
+================================================================================================
+
+SplashActivity:
+->-1.如果充电时间有设置，加载倒计时，然后发送“com.hrt.service”
+->0.版本更新
+->1.轮播欢迎页(每隔8秒)
+->2.{(隔1秒)
+	1.IFSTART_ASR==true? 发送“send_mq_task”,“asr.start”启动语音
+	2.PoiList.length()==0? 发送“send_mq_task”,“base.request_poi_keywords”获取所有poi点
+	3.PoiList.length()==0? ||IFSTART_ASR==true 隔1秒后，重新轮询；
+     }
+->sendMassage(String)
+	->写入内容到Speak.log，如果在同一周内就追加写，否则重写。
+	->如果内容和asrkeyword.json的“MAINKEY”匹配，跳转到MainActivity。（点击“进入首页”或需要一个(wakeup)唤醒事件或语音识别(首页|主页)）
+
+================================================================================================
+MainActivity:
+(CountDownTimer(倒计时总时间，倒计时间隔tick时间))
+->1.加载MainFragment
+->2.倒计时60秒页面自动关闭
+
+BaseFragment
+->1.TaskListenerManager.getManager().bindListenerWithEventName(this,...);//绑定
+->2.Task回调处理onMQServiceTask(...)
+	->"asr.result"语音识别和语义分析出，没有“充电”这个词时，调用子类的sendMassage(text,content)；
+
+MainFragment
+->1.语音说话：“我是机器人,...”，MainActivity的文本提示；
+->2.点击监听事件或语音识别
+	->部门分类
+		->getDepartment();
+	->我要办
+		->getMatterInfo(text);
+			->1.通过Solr服务器进行查询操作；（Solr全文索引查询，基于Lucene的全文搜索服务器（词元匹配和切分词））
+			->2.将查询到的数据List<MattersInfo>，传给并显示RelatedMatterFrg
+				->RelatedMatterFrg
+					->1.layout显示
+					  ->"办事指南"、"取号"、"导航"、"其他事项"、"呼叫人工"
+						"为您找到相关事项" Tv
+						(事项列表)		   Rv
+					->2.语音识别
+						->1.识别到"首页"，fragment容器设置为->MainFragment
+						->2.识别到"返回上一步"，模拟返回键"sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);"
+						->3.识别到"办事指南"，fragment容器设置为-GudieFragment
+							->layout显示
+								->"取号"(VerificationFrg)、"导航"(NavigationFrg)、"其他事项"(MatterFragment)、"呼叫人工"
+								  TvTitle 【...办事指南】
+								  horizontal- elvGudeName(Rv)、elvGudeContent(Rv,data:MatterInfo)、tvGudeContent
+									->elvGudeName(item:iv-tv(基本信息,...)-iv(down/up)，listener:OnClickListener)、elvGudeContent(item:tv-tv,事务名称：...)
+									->pos=0"基本信息"时，显示elvGudeContent，否则显示tvGudeContent。
+									[图片]			   | pos==0?显示列表：显示tv内容
+									内容			   |
+									[(上/下箭头)图片]  |
+							->语音识别(基本信息,..)然后跳到该项显示数据。
+						->4.识别到"导航"，fragment容器设置为-NavigationFrg
+							->1.提示信息：有图片显示位置图片或直接文本提示在哪个地方
+							->2.识别到"首页"，fragment容器设置为->MainFragment
+							->3.识别到"返回上一步",模拟返回键"sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);"
+							->4.识别到"带我去"（或点击"带我去"按钮）,有poi就发送指令"base.goto"，否则提示"无定位点"
+							->5.识别到"结束导航",发送指令"base.cancel"
+						->5.识别到"其他事项"，fragment容器设置为-MatterFragment
+							->1.有数据，展示事项列表，否则弹出对话框提示“无数据”3秒后消失
+							->2.识别到文本（或点击子项），Solr服务器查询，有数据跳转到GudieFragment
+						->6.识别到"取号"，fragment容器设置为-VerificationFrg
+							->1.设置身份证信息指令监听TaskListenerManager.getManager().bindListenerWithEventName( this, "idcard_info");
+							->2.每隔1秒，发送指令"idcard_reader.do_read"，查询到身份证信息停止轮询。
+							->3.查询到身份证信息，发送打印指令"usb_printer.do_print"
+								->排队取号，号码计算(如果事务编码日期和当天不一致，排号编码重置为0000，否则排号编码+1)
+								
+
+
