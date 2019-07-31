@@ -127,6 +127,11 @@ xxx许可证核发
 - calling-system-services:具体调用例子；
 
 ## 猎豹机器人
+- 设备信息
+    - 1.屏幕 1200px * 1920px
+    - 2.基于Android 7.1
+    - 3.存储 4G/64G
+    - 4.远场语音OS:语音识别
 - RobotApplication
 	- 初始化所有任务模式
 		- IDLE_MODE 	//空闲模式
