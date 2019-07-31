@@ -1,17 +1,11 @@
 package com.zxy.demo;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.view.LayoutInflater;
+import android.support.v4.app.FragmentManager;
 import android.widget.FrameLayout;
 
 import com.zxy.utility.LogUtil;
-
-import java.lang.ref.WeakReference;
 
 /**
  lifecycle:
@@ -94,50 +88,49 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fl_container = findViewById(R.id.fl_container);
-        if (savedInstanceState == null) {
-            BaseFragment fragment = new BaseFragment();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fl_container, fragment)
-                    .commit();
-        }
-        mHandler.postDelayed(new Runnable() {
+        BaseFragment fragment = new AFragment();
+        addFragment(fragment,"AFragment");
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Fragment fragment = getSupportFragmentManager()
-                        .findFragmentById(R.id.fl_container);
-                LogUtil.e("1. HideHandler#Callback" + fragment);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .hide(fragment)
-                        .commit();
-            }
-        }, 1000);
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Fragment fragment = getSupportFragmentManager()
-                        .findFragmentById(R.id.fl_container);
-                LogUtil.e("2.Show Handler#Callback" + fragment);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .show(fragment)
-                        .commit();
-            }
-        }, 2000);
+                addFragment(new BFragment(),"BFragment");
 
-        mHandler.postDelayed(new Runnable() {
+            }
+        },1000);
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Fragment fragment = getSupportFragmentManager()
-                        .findFragmentById(R.id.fl_container);
-                LogUtil.e("3.Hide Handler#Callback" + fragment);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .hide(fragment)
-                        .commit();
+                addFragment(new CFragment(),"CFragment");
+
             }
-        }, 3000);
+        },2000);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                removeFragment();
+
+            }
+        },4000);
+    }
+
+    private void addFragment(BaseFragment fragment,String name) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fl_container, fragment)
+                .addToBackStack(name)//fragment.getClass().getSimpleName()
+                .commit();
+    }
+
+    private void removeFragment(){
+        final FragmentManager fm = getSupportFragmentManager();
+        int count = fm.getBackStackEntryCount();
+        long t = System.currentTimeMillis();
+        LogUtil.e(count+"===count"+" "+t);
+        if(count>0){
+            fm.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);//"AFragment",FragmentManager.POP_BACK_STACK_INCLUSIVE
+        }
+        int count1 = fm.getBackStackEntryCount();
+        LogUtil.e(count1+"===count1"+" t="+(System.currentTimeMillis()-t));
     }
 
     @Override
