@@ -236,3 +236,19 @@ xxx许可证核发
 			- startActivity(PackageManager#getLaunchIntentForPackage(Definition.MODULE_PACKAGE_NAME))//回到豹小秘
 				- RobotApi.getInstance().installApk(..)//安装apk
 		- 场景案例：关闭当前模式，重新设置欢迎模式。
+		```java
+		LauncherActivity启动
+		-> ModuleService启动(前台)
+			->有网络回调初始化
+			->ModuleCallback(回调)	***【等待】
+				->MessageManager(回调)【等待，指令处理回调】
+			->SpeechService启动(语音连接)
+			->EventBus回调		***【等待】
+			->加载SkillListFragment
+				->NavigationFragment(接口调用，监听回调)
+				...类似
+				->场景案例切换到
+					->WelcomeFragment(欢迎模式，人脸检索+加语音识别问答模式)
+						->通过导航命令跳转到LeadFragment(导航模式，导航目的地，完成后返回到欢迎模式)
+					->通过停止命令（欢迎模式->空闲模式 或 导航模式->欢迎模式）
+		```
