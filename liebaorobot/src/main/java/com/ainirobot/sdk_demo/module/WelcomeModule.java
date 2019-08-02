@@ -18,8 +18,6 @@ import com.ainirobot.sdk_demo.utils.MessageParser;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.List;
-
 /**
  * 欢迎模式 包含 人脸检测，人脸识别，问候语，自定义问答
  */
@@ -86,6 +84,13 @@ public class WelcomeModule extends BaseModule {
 
     private VisualDetectManager.VisualDetectListener mVisualDetectListener = new VisualDetectManager
             .VisualDetectListener() {
+        /**
+         * 唤醒
+         * 1.设置连续识别
+         * 2.提示已唤醒
+         * 3.机器人播放欢迎语
+         * @param person
+         */
         @Override
         public void onWakeup(Person person) {
             SpeechSkill.getInstance().getSkillApi().setRecognizeMode(true);
@@ -103,18 +108,34 @@ public class WelcomeModule extends BaseModule {
             Log.e(TAG, "识别出了该人，名字：" + mCurrentPerson.getName());
         }
 
+        /**
+         * 跟踪中
+         * 1.开始识别人脸数据
+         * @param person
+         */
         @Override
         public void onTracking(Person person) {
             Log.d(TAG, "onTracking WelcomeState: ");
             RobotApi.getInstance().startRecordFaceData();
         }
 
+        /**
+         * 跟踪结束
+         * 1.结束识别人脸数据
+         */
         @Override
         public void onTrackEnd() {
             Log.d(TAG, "onTrackEnd WelcomeState: ");
             RobotApi.getInstance().stopRecordFaceData();
         }
 
+        /**
+         * 唤醒结束
+         * 1.设置设备初始角度
+         * 2.撤销连续识别语音；停止语音操作
+         * 3.提示人脸检测中
+         * 4.设置人脸搜索
+         */
         @Override
         public void onWakeupEnd() {
             Log.d(TAG, "onWakeupEnd WelcomeState: ");
@@ -128,12 +149,19 @@ public class WelcomeModule extends BaseModule {
             doFaceSearch();
         }
 
+        /**
+         * 预唤醒说话
+         * @param person
+         */
         @Override
         public void onPreWakeup(Person person) {
             Log.e(TAG, "开始预唤醒说话");
             SpeechSkill.getInstance().playTxt(RobotApplication.getInstance().getString(R.string.orion_interview));
         }
 
+        /**
+         * 预唤醒结束，重设初始角度
+         */
         @Override
         public void onPreWakeupEnd() {
             Log.d(TAG, "onPreWakeupEnd");
