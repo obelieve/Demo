@@ -69,6 +69,7 @@ public class VisualDetectManager {
         /**
          * 搜索人脸状态
          */
+        //空闲，预唤醒，唤醒中，唤醒但未检测，仅唤醒，检测中，重新搜索
         IDLE, PRE_WAKE, WAKING, WAKED_BUT_NO_TRACK, WAKED_ONLY, TRACKING, RE_SEARCHING
     }
 
@@ -83,8 +84,8 @@ public class VisualDetectManager {
 
     private VisualDetectManager() {
         mCurrentPerson = null;
-        mIsStop = true;
         updateSearchFaceState(SearchFaceState.IDLE);
+        mIsStop = true;
         mHandlerThread = new HandlerThread("VisualDetectHandler");
         mHandlerThread.start();
         mHandler = new VisualDetectHandler(mHandlerThread.getLooper());
@@ -128,6 +129,7 @@ public class VisualDetectManager {
 
     /**
      * 开始检测人脸
+     *
      * @param bean
      * @param listener
      */
@@ -171,7 +173,7 @@ public class VisualDetectManager {
      */
     private void startGetAllPersonInfo() {
         Log.d(TAG, "startGetAllPersonInfo");
-        RobotApi.getInstance().startGetAllPersonInfo(mReqId, mWelcomePersonInfoListener, true);
+        RobotApi.getInstance().startGetAllPersonInfo(mReqId, mWelcomePersonInfoListener, true);//调用人脸检测接口
     }
 
     /**
@@ -187,27 +189,27 @@ public class VisualDetectManager {
             }
 
             Person person = MessageParser.getOnePersonWithFace(null, personList,
-                    mPreWakeMaxDistance);
+                    mPreWakeMaxDistance);//筛选出一个Person-face
 
             switch (getSearchFaceState()) {
                 case IDLE:
                 case PRE_WAKE:
                     Person personBody = MessageParser.getOnePersonWithBody(personList,
-                            mPreWakeMaxDistance);
+                            mPreWakeMaxDistance);//筛选出一个Person-body
                     if (person != null) {
-                        Log.e(TAG,"看见前方有人");
+                        Log.e(TAG, "看见前方有人");
                         if (Math.abs(person.getFaceAngleX()) <= MAX_FACE_ANGLE_X
-                                && isRecognizeAvailableDistance(person.getDistance())) {
-                            Log.e(TAG,"满足唤醒条件");
+                                && isRecognizeAvailableDistance(person.getDistance())) {//Person-face<=45 & Person-distance<=1.3m
+                            Log.e(TAG, "满足唤醒条件");//满足唤醒条件
                             if (!canBeTracked(person)) {
-                                Log.e(TAG,"红框条件 不处理");
+                                Log.e(TAG, "红框条件 不处理");
                             } else {
-                                Log.e(TAG,"蓝框条件");
+                                Log.e(TAG, "蓝框条件");
                                 mNotNeedTrackedDetectTime = INVALID_TIME;
                                 handleDetectResult(person);
                             }
                         } else {
-                            Log.e(TAG,"满足预唤醒条件");
+                            Log.e(TAG, "满足预唤醒条件");
                             startPreWake(person);
                         }
                     } else if (personBody != null) {
@@ -244,19 +246,20 @@ public class VisualDetectManager {
 
     /**
      * 远程识别人脸
+     *
      * @param person 人脸信息
      */
     private void handleDetectResult(Person person) {
         Log.d(TAG, "handle detect result isNeedRecognize: " + mVisualDetectBean.isNeedRecognize());
         if (mCurrentPerson == null
                 || person.getId() != mCurrentPerson.getId()) {
-            updateSearchFaceState(SearchFaceState.WAKING);
+            updateSearchFaceState(SearchFaceState.WAKING);//开启唤醒中状态
             mCurrentPerson = person;
-            if (mVisualDetectBean.isNeedRecognize()) {
+            if (mVisualDetectBean.isNeedRecognize()) {//需要识别
                 getPictureById();
                 startNetSearchTimer();
                 cancelTrackingTimer();
-            } else {
+            } else {//不需要识别，直接唤醒
                 visualWakeup();
                 cancelNetSearchTimer();
             }
@@ -284,6 +287,7 @@ public class VisualDetectManager {
 
     /**
      * 预唤醒-远程打招呼
+     *
      * @param person 身体信息
      */
     private void startPreWake(Person person) {
@@ -299,7 +303,7 @@ public class VisualDetectManager {
 
         if (mNeedToPlayPreWakeInfo) {
             Log.d(TAG, "startPreWake");
-            Log.e(TAG,"开始预唤醒");
+            Log.e(TAG, "开始预唤醒");
             updateSearchFaceState(SearchFaceState.PRE_WAKE);
             mNeedToPlayPreWakeInfo = false;
             if (mVisualDetectListener != null) {
@@ -321,7 +325,7 @@ public class VisualDetectManager {
             Log.e(TAG, "getPictureById, current person is null, return !");
             return;
         }
-        Log.e(TAG,"开始去TX1拿照");
+        Log.e(TAG, "开始去TX1拿照");
         RobotApi.getInstance().getPictureById(mReqId, mCurrentPerson.getId(),
                 MAX_PICTURE_NUM, new CommandListener() {
                     @Override
@@ -347,12 +351,12 @@ public class VisualDetectManager {
                             status = json.optString("status");
                             Log.d(TAG, "getPictureById status: " + status);
                             if (!TextUtils.isEmpty(status) && "failed".equals(status)) {
-                                Log.e(TAG,"去tx1拿照片返回失败");
+                                Log.e(TAG, "去tx1拿照片返回失败");
                                 cancelNetSearchTimer();
                                 visualWakeup();
                                 return;
                             }
-                            Log.e(TAG,"去tx1拿照片成功");
+                            Log.e(TAG, "去tx1拿照片成功");
                             JSONArray pictures = json.optJSONArray("pictures");
                             if (!TextUtils.isEmpty(pictures.optString(0))) {
                                 pictureList.add(pictures.optString(0));
@@ -382,19 +386,20 @@ public class VisualDetectManager {
 
     /**
      * 去网络识别照片
+     *
      * @param fileNames 获取到的照片地址
      */
     private void remoteDetect(final List<String> fileNames) {
         Log.d(TAG, "remoteDetect");
-        Log.e(TAG,"开始去网络识别照片");
+        Log.e(TAG, "开始去网络识别照片");
         RobotApi.getInstance().getPersonInfoFromNet(mReqId, String.valueOf(mCurrentPerson.getId()),
                 fileNames, new CommandListener() {
                     @Override
                     public void onResult(int result, String message) {
                         Log.d(TAG, "remoteDetect onResult result: " + result + ", message: " + message
                                 + ", SearchFaceState: " + getSearchFaceState() + ", isStop: " + mIsStop);
-                        if(mIsStop){
-                            Log.e(TAG,"网络识别照片返回");
+                        if (mIsStop) {
+                            Log.e(TAG, "网络识别照片返回");
                             Log.e(TAG, "remoteDetect, has stopped");
                             return;
                         }
@@ -444,16 +449,16 @@ public class VisualDetectManager {
         }
 
         if (mVisualDetectListener != null) {
-            mVisualDetectListener.onWakeup(mCurrentPerson);
+            mVisualDetectListener.onWakeup(mCurrentPerson);//1.设置语音连续识别，UI显示已唤醒提示
         }
         if (!mVisualDetectBean.isNeedTrack()) {
-            updateSearchFaceState(SearchFaceState.WAKED_ONLY);
+            updateSearchFaceState(SearchFaceState.WAKED_ONLY);//2.设置仅唤醒
             startTrackingTimer(true);
         } else if (canBeTracked(mCurrentPerson)) {
             updateSearchFaceState(SearchFaceState.TRACKING);
             startTrackPerson();
         } else {
-            Log.e(TAG,"红框唤醒");
+            Log.e(TAG, "红框唤醒");
             updateSearchFaceState(SearchFaceState.WAKED_BUT_NO_TRACK);
             startTrackingTimer(true);
         }
@@ -465,7 +470,7 @@ public class VisualDetectManager {
     private void startTrackPerson() {
         Log.d(TAG, "startTrackPerson mCurrentPerson: " + mCurrentPerson);
         if (mCurrentPerson != null) {
-            Log.e(TAG,"开始焦点跟随");
+            Log.e(TAG, "开始焦点跟随");
             RobotApi.getInstance().startFocusFollow(mReqId, mCurrentPerson.getId(),
                     LOST_PERSON_TIMEOUT, LOST_PERSON_DISTANCE, new ActionListener() {
 
@@ -533,9 +538,9 @@ public class VisualDetectManager {
                                         }
                                     }
                                     break;
-                                    default:
-                                        Log.d(TAG, "default");
-                                        break;
+                                default:
+                                    Log.d(TAG, "default");
+                                    break;
                             }
                         }
                     });
@@ -543,7 +548,7 @@ public class VisualDetectManager {
     }
 
     /**
-     * 丢失焦点一段时间后，关闭唤醒
+     * 丢失焦点一段时间后，设置为空闲状态并提示关闭唤醒
      */
     private void invalid() {
         Log.i(TAG, "invalid");
@@ -570,6 +575,11 @@ public class VisualDetectManager {
         }
     }
 
+    /**
+     * 经过几秒后，还未停止，设置为空闲状态并提示唤醒
+     *
+     * @param isLongTimer
+     */
     private void startTrackingTimer(boolean isLongTimer) {
         Log.d(TAG, "startTrackingTimer isLongTimer: " + isLongTimer);
         cancelTrackingTimer();
@@ -579,7 +589,7 @@ public class VisualDetectManager {
         } else {
             timeout = mVisualDetectBean.getAssignedPersonLostTimer();
         }
-        synchronized (mLockTrackingTimer){
+        synchronized (mLockTrackingTimer) {
             mTrackingTimer = new Timer();
             mTrackingTimer.schedule(new TimerTask() {
                 @Override
@@ -607,6 +617,9 @@ public class VisualDetectManager {
         }
     }
 
+    /**
+     * 2秒后，执行人脸唤醒操作
+     */
     private synchronized void startNetSearchTimer() {
         cancelNetSearchTimer();
         mNetSearchTimer = new Timer();
@@ -622,6 +635,9 @@ public class VisualDetectManager {
         }, 2000);
     }
 
+    /**
+     * 取消NetSearchTimer定时器
+     */
     private synchronized void cancelNetSearchTimer() {
         if (mNetSearchTimer != null) {
             mNetSearchTimer.cancel();
@@ -630,7 +646,7 @@ public class VisualDetectManager {
     }
 
     private boolean canBeTracked(Person person) {
-        if(person != null){
+        if (person != null) {
             return person.getId() >= 0;
         }
         return false;
