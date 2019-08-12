@@ -246,8 +246,13 @@ public class VisualDetectManager {
 
     /**
      * 远程识别人脸
-     *
-     * @param person 人脸信息
+     * 1.设置为“唤醒中”状态； SearchFaceState.WAKING
+     * 2.有识别：
+     *      -1.获取人脸图片路径
+     *      -2.获取人脸网络信息
+     *      -3.开始唤醒并跟随人脸(调用 visualWakeup())，并删除本地人脸图片
+     * 3.无识别：
+     *    开始唤醒并跟随人脸。(调用 visualWakeup())
      */
     private void handleDetectResult(Person person) {
         Log.d(TAG, "handle detect result isNeedRecognize: " + mVisualDetectBean.isNeedRecognize());
