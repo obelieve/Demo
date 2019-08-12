@@ -53,7 +53,7 @@ public class VisualDetectManager {
     private volatile VisualDetectListener mVisualDetectListener;
     private volatile Timer mTrackingTimer;
     private Object mLockTrackingTimer = new Object();
-    private Timer mNetSearchTimer;
+    private Timer mNetSearchTimer;//唤醒提示+人脸跟随
     private long mNotNeedTrackedDetectTime = INVALID_TIME;
     private boolean mNeedToPlayPreWakeInfo = true;
     protected Handler mHandler;
@@ -140,7 +140,7 @@ public class VisualDetectManager {
         if (mIsStop) {
             mIsStop = false;
             updateSearchFaceState(SearchFaceState.IDLE);
-            startTrackingTimer(true);
+            startTrackingTimer(true);//间隔7秒后，重新检测，SearchFaceState.IDLE重新调用startVisualDetect(...)，mIsStop=false
         }
         startGetAllPersonInfo();
     }
@@ -190,7 +190,13 @@ public class VisualDetectManager {
 
             Person person = MessageParser.getOnePersonWithFace(null, personList,
                     mPreWakeMaxDistance);//筛选出一个Person-face
-
+            /**
+             * 1.如果7秒后，startTrackingTimer(Boolean),会进行重新人脸识别监听。如果再没有人脸信息就不再触发了。
+             * 只能靠命令回调，MessageManager.getInstance().handleMessage(msg);其他闲聊模式等触发， ControlManager.getInstance().setMode(WELCOME_MODE,param);
+             * 才能moduleList.get(mode).update(params);->触发VisualDetectManager.getInstance().continueSearchFace()
+             * ->startTrackingTimer(Boolean)进行重新人脸识别。
+             * 2.有人脸信息，才会进行识别人脸信息->唤醒->人脸跟随等处理，如果没有就不处理。
+             */
             switch (getSearchFaceState()) {
                 case IDLE:
                 case PRE_WAKE:
@@ -244,6 +250,25 @@ public class VisualDetectManager {
         }
     };
 
+    private void handleNoTrackDetectResult(Person person) {
+        Log.i(TAG, "handleNoTrackDetectResult id: " + person.getId());
+        if (mCurrentPerson == null) {
+            mCurrentPerson = person;
+            startTrackingTimer(true);
+            mNotNeedTrackedDetectTime = System.currentTimeMillis();
+        } else if (!isNotNeedTrackedDetectTimeout()) {
+            mCurrentPerson = person;
+            startTrackingTimer(true);
+        } else {
+            updateSearchFaceState(SearchFaceState.WAKING);
+            mCurrentPerson = person;
+            mNotNeedTrackedDetectTime = INVALID_TIME;
+            startNetSearchTimer();
+            cancelTrackingTimer();
+            visualWakeup();
+        }
+    }
+
     /**
      * 远程识别人脸
      * 1.设置为“唤醒中”状态； SearchFaceState.WAKING
@@ -268,25 +293,6 @@ public class VisualDetectManager {
                 visualWakeup();
                 cancelNetSearchTimer();
             }
-        }
-    }
-
-    private void handleNoTrackDetectResult(Person person) {
-        Log.i(TAG, "handleNoTrackDetectResult id: " + person.getId());
-        if (mCurrentPerson == null) {
-            mCurrentPerson = person;
-            startTrackingTimer(true);
-            mNotNeedTrackedDetectTime = System.currentTimeMillis();
-        } else if (!isNotNeedTrackedDetectTimeout()) {
-            mCurrentPerson = person;
-            startTrackingTimer(true);
-        } else {
-            updateSearchFaceState(SearchFaceState.WAKING);
-            mCurrentPerson = person;
-            mNotNeedTrackedDetectTime = INVALID_TIME;
-            startNetSearchTimer();
-            cancelTrackingTimer();
-            visualWakeup();
         }
     }
 
