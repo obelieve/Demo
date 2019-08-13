@@ -191,11 +191,11 @@ public class VisualDetectManager {
             Person person = MessageParser.getOnePersonWithFace(null, personList,
                     mPreWakeMaxDistance);//筛选出一个Person-face
             /**
-             * 1.如果7秒后，startTrackingTimer(Boolean),会进行重新人脸识别监听。如果再没有人脸信息就不再触发了。
-             * 只能靠命令回调，MessageManager.getInstance().handleMessage(msg);其他闲聊模式等触发， ControlManager.getInstance().setMode(WELCOME_MODE,param);
-             * 才能moduleList.get(mode).update(params);->触发VisualDetectManager.getInstance().continueSearchFace()
-             * ->startTrackingTimer(Boolean)进行重新人脸识别。
-             * 2.有人脸信息，才会进行识别人脸信息->唤醒->人脸跟随等处理，如果没有就不处理。
+             * 1.如果7秒后，startTrackingTimer(Boolean),会进行重新设置人脸识别监听、头部云台设置为初始角度。
+             * 2.通过命令回调：MessageManager.getInstance().handleMessage(msg);其他闲聊模式等触发， ControlManager.getInstance().setMode(WELCOME_MODE,param);
+             * moduleList.get(mode).update(params);->触发VisualDetectManager.getInstance().continueSearchFace()。
+             * ->startTrackingTimer(Boolean)进行重新设置人脸识别监听、头部云台设置为初始角度。
+             * 3.【人脸识别】有人脸信息，才会进行识别【人脸信息查询】人脸图片->进而通过网络查询，更新Person信息->机器人语音提示语->【人脸跟随】？判断，如果没有就不处理。
              */
             switch (getSearchFaceState()) {
                 case IDLE:
