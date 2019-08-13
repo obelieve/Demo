@@ -146,7 +146,7 @@ public class WelcomeModule extends BaseModule {
             if (mWelcomeListener != null) {
                 mWelcomeListener.standby();
             }
-            doFaceSearch();
+            doFaceSearch();//感觉调不调用无所谓
         }
 
         /**
