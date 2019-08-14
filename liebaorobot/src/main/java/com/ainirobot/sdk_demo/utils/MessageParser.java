@@ -96,16 +96,15 @@ public class MessageParser {
                     }
                 }
 
-                if (person != null) {
-                    //跟之前person比较，如果当前person的distance和angle都比之前大直接过滤
+                if (person != null) {//优先考虑有距离的并且距离比较小的，如果距离都为0就看看角度。
                     double currentDistance = person.getDistance();
                     if (currentDistance != 0
                             && (currentDistance < distance || distance == 0)) {
-                        continue;
+                        continue;//1.之前距离!=0并且之前距离<当前遍历Person的距离；2.之前距离!=0并且当前距离==0
                     } else if (distance == 0) {
                         float currentAngle = person.getAngle();
                         if (Math.abs(currentAngle) < Math.abs(angle)) {
-                            continue;
+                            continue;//两边距离==0，角度>之前角度，跳过
                         }
                     }
                 }
