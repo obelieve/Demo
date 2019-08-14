@@ -196,7 +196,7 @@ public class WelcomeModule extends BaseModule {
             Log.d(TAG, "mCurrentPerson | name is null");
             Log.e(TAG, "小豹直接唤醒");
             wakeUpWords = RobotApplication.getInstance().getString(R.string.orion_ask_me);
-            startChat(wakeUpWords);
+            SpeechSkill.getInstance().playTxt(wakeUpWords);
         } else {
             Log.e(TAG, "小豹人名上屏唤醒，人名："
                     + mCurrentPerson.getName());
@@ -206,15 +206,6 @@ public class WelcomeModule extends BaseModule {
         if (mWelcomeListener != null) {
             mWelcomeListener.chat("问候语：", wakeUpWords);
         }
-    }
-
-    /**
-     * 开始闲聊
-     *
-     * @param wakeUpWords 开始闲聊
-     */
-    private void startChat(String wakeUpWords) {
-        SpeechSkill.getInstance().playTxt(wakeUpWords);
     }
 
     public void registerWelcomeListener(WelcomeListener listener) {
