@@ -40,13 +40,14 @@ public class MessageParser {
 
     /**
      * 获取最佳的一个人脸信息
+     *
      * @param trackingPerson
      * @param personList
      * @param maxDistance
      * @return
      */
     public static Person getOnePersonWithFace(Person trackingPerson, List<Person>
-            personList, double maxDistance){
+            personList, double maxDistance) {
         return getOnePerson(trackingPerson, getAllPersonWithFace(personList), maxDistance);
     }
 
@@ -78,9 +79,9 @@ public class MessageParser {
 
             if (trackingPerson != null
                     && trackingPerson.getId() == id) {
-                tracking = newPerson;
+                tracking = newPerson;//与trackingPerson人脸id相等人脸
             } else {
-                if (trackingPerson != null) {
+                if (trackingPerson != null) {//找出人脸列表中，与trackingPerson角度相差最小的人脸nearTracking
                     float trackingAngle = trackingPerson.getAngle();
                     float nearAngle = (nearTracking == null ?
                             0 : nearTracking.getAngle());
@@ -96,6 +97,7 @@ public class MessageParser {
                 }
 
                 if (person != null) {
+                    //跟之前person比较，如果当前person的distance和angle都比之前大直接过滤
                     double currentDistance = person.getDistance();
                     if (currentDistance != 0
                             && (currentDistance < distance || distance == 0)) {
@@ -157,7 +159,7 @@ public class MessageParser {
     }
 
 
-    public static String parseRegisterName(String params){
+    public static String parseRegisterName(String params) {
         String name = "";
         if (TextUtils.isEmpty(params) || "[]".equals(params) || "{}".equals(params)) {
             return name;
@@ -166,9 +168,9 @@ public class MessageParser {
         try {
             JSONObject jsonObject = new JSONObject(params);
             String slots = jsonObject.optString("slots");
-            if (TextUtils.isEmpty(slots) || "[]".equals(slots) || "{}".equals(slots)){
+            if (TextUtils.isEmpty(slots) || "[]".equals(slots) || "{}".equals(slots)) {
                 name = "";
-            }else {
+            } else {
                 JSONArray start = new JSONObject(slots).optJSONArray("start");
                 if (start != null) {
                     JSONObject jsonObj = start.getJSONObject(0);
@@ -192,6 +194,7 @@ public class MessageParser {
     /**
      * Use body info just when has not face info.
      * Body info just used to pre-wake-up.
+     *
      * @param personList
      * @param maxDistance
      * @return
@@ -206,7 +209,7 @@ public class MessageParser {
             Person newPerson = personList.get(i);
             double distance = newPerson.getDistance();
             boolean isBody = !newPerson.isWithFace() && newPerson.isWithBody();
-            if(isBody && distance <= maxDistance){
+            if (isBody && distance <= maxDistance) {
                 Log.d(TAG, "hasPersonBody distance: " + distance + ", isBody: " + isBody);
                 return newPerson;
             }
@@ -225,13 +228,14 @@ public class MessageParser {
 
         List<Person> personF = new ArrayList<>();
         for (int i = 0; i < personList.size(); i++) {
-            if(personList.get(i).isWithFace()){
+            if (personList.get(i).isWithFace()) {
                 personF.add(personList.get(i));
             }
         }
 
         return personF;
     }
+
     /**
      * 获取应答内容
      *
@@ -249,6 +253,7 @@ public class MessageParser {
 
         return answerText;
     }
+
     /**
      * 获取应答内容
      *
