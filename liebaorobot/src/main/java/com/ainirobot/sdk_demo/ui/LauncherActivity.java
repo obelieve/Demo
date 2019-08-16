@@ -53,7 +53,7 @@ public class LauncherActivity extends AppCompatActivity implements BaseFragment.
             startService(intent);
         }
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
+        if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -62,6 +62,7 @@ public class LauncherActivity extends AppCompatActivity implements BaseFragment.
         EventBus.getDefault().register(this);
         tvApi = findViewById(R.id.tv_api);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -73,8 +74,10 @@ public class LauncherActivity extends AppCompatActivity implements BaseFragment.
         }
         return super.onOptionsItemSelected(item);
     }
+
     /**
      * 注册欢迎界面和导航界面监听
+     *
      * @param messageEvent
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -100,12 +103,14 @@ public class LauncherActivity extends AppCompatActivity implements BaseFragment.
             }
         }
     }
+
     private void exchangeFragment(Fragment newFragment, String tag) {
         FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.replace(R.id.container, newFragment, tag);
         mFragmentTransaction.commit();
         onChanged(newFragment);
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -129,9 +134,9 @@ public class LauncherActivity extends AppCompatActivity implements BaseFragment.
     public void onBackPressed() {
         if (mCurrentFragment instanceof SkillListFragment) {
             super.onBackPressed();
+        } else {
+            setCurrentFragment();
         }
-
-        setCurrentFragment();
     }
 
     @Override
