@@ -341,3 +341,55 @@ xxx许可证核发
         - 6.获取地图
             - 不存在，tts没有地图 并停止导航 并切换到欢迎模式
             - 存在，进行导航.(成功/失败后，切换到欢迎模式)
+- issue
+```java
+ControlManager:
+model = IDLE_MODE
+
+IDLE_MODE   	BaseModule   	空闲模式
+WELCOME_MODE	WelcomeModule	欢迎模式
+LEADING_MODE 	LeadingModule	闲聊模式
+
+stopCurrentModule ->#current.stop()
+resetMode ->model = IDLE_MODE
+setMode->
+1.== 调用#mode.update()
+2.<  当前mode.stop(); mode设置为当前，mode.start()
+====================================== Application中主要做了这个
+ToastUtil -> 消息队列处理
+TestUtil  -> testMode = SINGLE_MODE ;（主要是识别语音请求命令时，处理做的区分）
+
+======================================
+ModuleCallback ***** ***** ***** 》 监听语音请求命令及系统事件的回调
+系统事件：
+恢复对机器人控制权
+控制权被系统剥夺API调用无效
+=======================================
+LauncherActivity中，onBackPressed()处理
+		- 是 SkillListFragment就直接退出
+		- 否 重新设置为SkillListFragment
+
+==============================================================
+IDLE  -> WELCOME
+1.WELCOME 欢迎模式
+2.设置连续识别语音
+3.人脸识别、问候、人脸跟随
+--------
+WELCOME -> LEADING_MODE
+1.停止人脸识别、人脸跟随、
+1.1.（页面切换到List列表页面）
+2.停止连续识别语音
+3.重设为IDLE空闲模式
+4.切换到导航页面
+5.停止连续识别语音
+6.导航判断？  否：语音提示；是：进行导航；
+7.切换到列表页、停止导航、重新切换欢迎页；
+--------
+issue:1.当导航页面进行时，直接按返回，这时候如果等到导航关闭后回调stop()，由于监听被注销NullPointerException?
+issue:2.当欢迎页面进行时，直接按返回，这时候连续语音识别还在如果匹配到命令，
+如果恢复到未唤醒的倒计时还在走，isWakedUp=true，这时候由于监听被注销 NullPointerException ?
+
+这时，
+stopCurrentModule()->最有可能触发的机会是REQUEST_TYPE_STOP命令
+setMode()->最有可能触发的只能是update()
+```
