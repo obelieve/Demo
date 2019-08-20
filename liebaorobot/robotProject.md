@@ -393,3 +393,12 @@ issue:2.当欢迎页面进行时，直接按返回，这时候连续语音识别
 stopCurrentModule()->最有可能触发的机会是REQUEST_TYPE_STOP命令
 setMode()->最有可能触发的只能是update()
 ```
+WELCOME模式：视觉识别状态
+```java
+IDLE -> 倒计时7秒后，重置状态(关闭语音识别)，->
+PRE_WAKE（机器人说句话）->
+WAKING 检测到有人(检测到人脸，开启语音识别,[网络识别更新人脸信息])，机器人欢迎语
+-> isNeedTrack?  false->WAKED_ONLY
+->person.getId()>=0?TRACKING : WAKED_BUT_NO_TRACK
+TRACKING -> RE_SEARCHING.
+```
