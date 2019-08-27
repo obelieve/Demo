@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -16,6 +15,8 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.zxy.utility.LogUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         private static Bitmap drawBackground(Bitmap bitmap, int pixInterval) {
+            long startTime = System.currentTimeMillis();
+            LogUtil.e("当前时间：" + startTime);
             /**
              * 注意多个createBiamap重载函数，必须是可变位图对应的重载才能绘制
              * bitmap: 原图像
@@ -78,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
             Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);  //很重要
             Canvas canvas = new Canvas(copy);  //创建画布
             Paint paint = new Paint();  //画笔
-            paint.setStrokeWidth(50);  //设置线宽。单位为像素
+            paint.setStrokeWidth(1);  //设置线宽。单位为像素
             paint.setAntiAlias(true); //抗锯齿
-            paint.setColor(Color.RED);  //画笔颜色
+            paint.setColor(Color.BLACK);  //画笔颜色
             canvas.drawBitmap(bitmap, new Matrix(), paint);  //在画布上画一个和bitmap一模一样的图
             //根据Bitmap大小，画网格线
             //画横线
@@ -91,9 +94,42 @@ public class MainActivity extends AppCompatActivity {
 //            for (int i = 0; i < bitmap.getWidth() / pixInterval; i++) {
 //                canvas.drawLine(i * pixInterval, 0, i * pixInterval, bitmap.getHeight(), paint);
 //            }
-            canvas.drawLine(2000, 2000, 4000, 1500, paint);
+//            canvas.drawLine(2000, 2000, 4000, 1500, paint);
+            drawInsideRoad(bitmap, startTime, canvas, paint);
 
             return copy;
         }
+    }
+
+    /**
+     * 绘制除了路之外的区域
+     *
+     * @param bitmap
+     * @param startTime
+     * @param canvas
+     * @param paint
+     */
+    private static void drawInsideRoad(Bitmap bitmap, long startTime, Canvas canvas, Paint paint) {
+        //耗时44秒
+        for (int i = 0; i < bitmap.getWidth(); i++) {
+            for (int j = 0; j < bitmap.getHeight(); j++) {
+                int r = Color.red(bitmap.getPixel(i, j));
+                int g = Color.green(bitmap.getPixel(i, j));
+                int b = Color.blue(bitmap.getPixel(i, j));
+                //231,240,245 灰色
+                final int fR = 231;
+                final int fG = 240;
+                final int fB = 245;
+                final int fDiff = 30;
+                if (!((r >= (fR - fDiff) && r <= (fR + fDiff)) && (g >= (fG - fDiff) && g <= (fG + fDiff)) && (b >= (fB - fDiff) && b <= (fB + fDiff)))) {
+                    canvas.drawPoint(i, j, paint);
+                }else {
+                    if(r==255&&g==255&&b==255){
+                        canvas.drawPoint(i, j, paint);
+                    }
+                }
+            }
+        }
+        LogUtil.e("当前时间-耗时：" + (System.currentTimeMillis() - startTime));
     }
 }
