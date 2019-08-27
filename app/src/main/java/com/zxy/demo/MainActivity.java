@@ -9,10 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,19 +29,48 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mTv = findViewById(R.id.tv);
         mIv = findViewById(R.id.iv);
-        Bitmap bitmap = BitmapUtil.getBitmap(AssetsUtil.getFile(this, "f1.jpg"));
-        SpannableString sp = new SpannableString("abcdefghijklmnopqrstuvwxyz\n");
-        sp.setSpan(new AbsoluteSizeSpan(20, true), 0, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(3287, 2367)), 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(2969, 2268)), 6, 13, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(2910, 2619)), 13, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mTv.setText(sp);
-        int b = Color.blue(bitmap.getPixel(3287, 2367));
-        int r = Color.red(bitmap.getPixel(3287, 2367));
-        int g = Color.green(bitmap.getPixel(3287, 2367));
-        mTv.append("(3287,2367) r:" + Integer.toHexString(r) + " g:" + Integer.toHexString(g) + " b:" + Integer.toHexString(b) + "\n");
-        mTv.append("        h:" + bitmap.getHeight() + " w:" + bitmap.getWidth() + " count=" + bitmap.getByteCount());
-        mIv.setImageBitmap(BitmapUtil.drawBackground(bitmap, 20));
+        mTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                A_start();
+            }
+        });
+
+//        Bitmap bitmap = BitmapUtil.getBitmap(AssetsUtil.getFile(this, "f1.jpg"));
+//        SpannableString sp = new SpannableString("abcdefghijklmnopqrstuvwxyz\n");
+//        sp.setSpan(new AbsoluteSizeSpan(20, true), 0, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(3287, 2367)), 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(2969, 2268)), 6, 13, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(2910, 2619)), 13, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        mTv.setText(sp);
+//        int b = Color.blue(bitmap.getPixel(3287, 2367));
+//        int r = Color.red(bitmap.getPixel(3287, 2367));
+//        int g = Color.green(bitmap.getPixel(3287, 2367));
+//        mTv.append("(3287,2367) r:" + Integer.toHexString(r) + " g:" + Integer.toHexString(g) + " b:" + Integer.toHexString(b) + "\n");
+//        mTv.append("        h:" + bitmap.getHeight() + " w:" + bitmap.getWidth() + " count=" + bitmap.getByteCount());
+//        mIv.setImageBitmap(BitmapUtil.drawBackground(bitmap, 20));
+    }
+
+    private void A_start() {
+        A_StartAlgorithm algorithm = new A_StartAlgorithm();
+        /**
+         * 000
+         * 010
+         * 000
+         */
+        int[][] ints = new int[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                ints[i][j] = 0;
+            }
+        }
+        ints[1][1] = 1;
+        A_StartAlgorithm.Node<A_StartAlgorithm.Location> start = new A_StartAlgorithm.Node<A_StartAlgorithm.Location>(new A_StartAlgorithm.Location(0,1));
+        start.setH(20);
+        A_StartAlgorithm.Node<A_StartAlgorithm.Location> end = new A_StartAlgorithm.Node<A_StartAlgorithm.Location>(new A_StartAlgorithm.Location(2,1));
+        algorithm.init(ints,start,end);
+        algorithm.execute();
+        algorithm.result();
     }
 
 
@@ -123,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
                 final int fDiff = 30;
                 if (!((r >= (fR - fDiff) && r <= (fR + fDiff)) && (g >= (fG - fDiff) && g <= (fG + fDiff)) && (b >= (fB - fDiff) && b <= (fB + fDiff)))) {
                     canvas.drawPoint(i, j, paint);
-                }else {
-                    if(r==255&&g==255&&b==255){
+                } else {
+                    if (r == 255 && g == 255 && b == 255) {
                         canvas.drawPoint(i, j, paint);
                     }
                 }
