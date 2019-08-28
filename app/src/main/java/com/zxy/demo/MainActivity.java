@@ -37,22 +37,50 @@ public class MainActivity extends AppCompatActivity {
         mTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bitmap bitmap = BitmapUtil.getBitmap(AssetsUtil.getFile(MainActivity.this, "f1.jpg"));
-                SpannableString sp = new SpannableString("abcdefghijklmnopqrstuvwxyz\n");
-                sp.setSpan(new AbsoluteSizeSpan(20, true), 0, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(3287, 2367)), 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(2969, 2268)), 6, 13, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(2910, 2619)), 13, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                mTv.setText(sp);
-                int b = Color.blue(bitmap.getPixel(3287, 2367));
-                int r = Color.red(bitmap.getPixel(3287, 2367));
-                int g = Color.green(bitmap.getPixel(3287, 2367));
-                mTv.append("(3287,2367) r:" + Integer.toHexString(r) + " g:" + Integer.toHexString(g) + " b:" + Integer.toHexString(b) + "\n");
-                mTv.append("        h:" + bitmap.getHeight() + " w:" + bitmap.getWidth() + " count=" + bitmap.getByteCount());
-                mIv.setImageBitmap(BitmapUtil.drawBackground(bitmap, 20));
+                A_start_bitmap();
+                //A_start();
             }
         });
 
+    }
+
+    private void A_start_bitmap() {
+        Bitmap bitmap = BitmapUtil.getBitmap(AssetsUtil.getFile(MainActivity.this, "f1.jpg"));
+        SpannableString sp = new SpannableString("abcdefghijklmnopqrstuvwxyz\n");
+        sp.setSpan(new AbsoluteSizeSpan(20, true), 0, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(3287, 2367)), 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(2969, 2268)), 6, 13, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(2910, 2619)), 13, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mTv.setText(sp);
+        int b = Color.blue(bitmap.getPixel(3287, 2367));
+        int r = Color.red(bitmap.getPixel(3287, 2367));
+        int g = Color.green(bitmap.getPixel(3287, 2367));
+        mTv.append("(3287,2367) r:" + Integer.toHexString(r) + " g:" + Integer.toHexString(g) + " b:" + Integer.toHexString(b) + "\n");
+        mTv.append("        h:" + bitmap.getHeight() + " w:" + bitmap.getWidth() + " count=" + bitmap.getByteCount());
+        mIv.setImageBitmap(BitmapUtil.drawBackground(bitmap, 20));
+    }
+
+    private static void A_start() {
+        /**
+         * 000
+         * 010
+         * 000
+         */
+        int[][] ints = new int[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                ints[i][j] = 0;
+            }
+        }
+        ints[2][1] = 1;
+        ints[2][2] = 1;
+        ints[1][2] = 1;
+        A_StartAlgorithm algorithm = new A_StartAlgorithm();
+        A_StartAlgorithm.Node end = new A_StartAlgorithm.Node(1, 3);
+        A_StartAlgorithm.Node start = new A_StartAlgorithm.Node(2, 0);
+        algorithm.init(ints, start, end);
+        List<A_StartAlgorithm.Node> nodes = algorithm.execute();
+        LogUtil.e("结果 nodes：" + nodes);
     }
 
 
@@ -89,9 +117,9 @@ public class MainActivity extends AppCompatActivity {
             Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);  //很重要
             Canvas canvas = new Canvas(copy);  //创建画布
             Paint paint = new Paint();  //画笔
-            paint.setStrokeWidth(1);  //设置线宽。单位为像素
+            paint.setStrokeWidth(30);  //设置线宽。单位为像素
             paint.setAntiAlias(true); //抗锯齿
-            paint.setColor(Color.BLACK);  //画笔颜色
+            paint.setColor(Color.RED);  //画笔颜色
             canvas.drawBitmap(bitmap, new Matrix(), paint);  //在画布上画一个和bitmap一模一样的图
             //根据Bitmap大小，画网格线
             //画横线
@@ -120,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
     private static void drawInsideRoad(Bitmap bitmap, long startTime, Canvas canvas, Paint paint) {
         //耗时44秒
         int[][] surface = new int[bitmap.getWidth()][bitmap.getHeight()];
-        A_StartAlgorithm.Node start = new A_StartAlgorithm.Node(3093,2449);
-        A_StartAlgorithm.Node end = new A_StartAlgorithm.Node(3883,1889);
+        A_StartAlgorithm.Node start = new A_StartAlgorithm.Node(3342,2299);
+        A_StartAlgorithm.Node end = new A_StartAlgorithm.Node(2380,2389);
         for (int i = 0; i < bitmap.getWidth(); i++) {
             for (int j = 0; j < bitmap.getHeight(); j++) {
                 int r = Color.red(bitmap.getPixel(i, j));
@@ -156,21 +184,4 @@ public class MainActivity extends AppCompatActivity {
         LogUtil.e("绘制当前时间-耗时：" + (System.currentTimeMillis() - startTime));
     }
 
-    private static void A_start(int[][] surface, A_StartAlgorithm.Node start, A_StartAlgorithm.Node end) {
-//        /**
-//         * 000
-//         * 010
-//         * 000
-//         */
-//        int[][] ints = new int[4][4];
-//        for (int i = 0; i < 4; i++) {
-//            for (int j = 0; j < 4; j++) {
-//                ints[i][j] = 0;
-//            }
-//        }
-//        ints[2][1] = 1;
-//        ints[2][2] = 1;
-//        ints[1][2] = 1;
-//        algorithm.init(surface, new A_StartAlgorithm.Node(1, 3), new A_StartAlgorithm.Node(2, 0));
-    }
 }

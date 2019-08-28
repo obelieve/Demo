@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * Created by zxy on 2019/08/27.
@@ -21,7 +20,7 @@ public class A_StartAlgorithm {
     private final int S_LINE = 10;//直线
     private final int D_LINE = 14;//对角线
 
-    private Stack<Node> mOpenStack = new Stack<>();//“开启”列表
+    private List<Node> mOpenList = new ArrayList<>();//“开启”列表
     private List<Node> mCloseList = new ArrayList<>();//“关闭”列表
     private int[][] mSurface;
     private Node mStart;
@@ -36,8 +35,8 @@ public class A_StartAlgorithm {
         mSurface = surface;
         mStart = start;
         mEnd = end;
-        mOpenStack.push(start);
-        log("初始化：Start节点=" + mStart + " End节点=" + mEnd + " \"开启列表：\"" + mOpenStack);
+        mOpenList.add(start);
+        log("初始化：Start节点=" + mStart + " End节点=" + mEnd + " \"开启列表：\"" + mOpenList);
     }
 
     /**
@@ -54,17 +53,17 @@ public class A_StartAlgorithm {
      * 路径搜索，直到找到终点
      */
     private void searching() {
-        Node current_node = mOpenStack.pop();
-        log("当前路径节点：" + current_node);
+        Node current_node = mOpenList.remove(mOpenList.size() - 1);
+        //log("当前路径节点：" + current_node);
         mCloseList.add(current_node);
         addNodeToOpenStack(current_node);
-        if (mOpenStack.contains(mEnd) || mOpenStack.isEmpty()) {
-            log("找到终点：" + mEnd + " openStack.isEmpty=" + mOpenStack.isEmpty());
+        if (mOpenList.contains(mEnd) || mOpenList.isEmpty()) {
+            log("找到终点：" + mEnd + " openStack.isEmpty=" + mOpenList.isEmpty());
             return;
         } else {
             searching();
         }
-        log("searching结果: openStack=" + mOpenStack + " closeList=" + mCloseList);
+      //  log("searching结果: openStack=" + mOpenList + " closeList=" + mCloseList);
     }
 
 
@@ -74,11 +73,11 @@ public class A_StartAlgorithm {
      * @return
      */
     private List<Node> result() {
-        if (!mOpenStack.contains(mEnd)) {
+        if (!mOpenList.contains(mEnd)) {
             return Collections.EMPTY_LIST;
         }
-        int index = mOpenStack.lastIndexOf(mEnd);
-        Node endNode = mOpenStack.get(index);//返回终点节点
+        int index = mOpenList.lastIndexOf(mEnd);
+        Node endNode = mOpenList.get(index);//返回终点节点
         List<Node> pathNodes = new ArrayList<>();
         pathNodes.add(endNode);
         if (endNode != null && endNode.getParent() != null) {
@@ -164,22 +163,23 @@ public class A_StartAlgorithm {
                 aroundNodes.add(node);
             }
         }
-        log("当前节点的附近节点 aroundNodes:" + aroundNodes);
+        //log("当前节点的附近节点 aroundNodes:" + aroundNodes);
         //附近节点判断
         for (int i = 0; i < aroundNodes.size(); i++) {
             Node node = aroundNodes.get(i);
-            if (mOpenStack.contains(node)) {
-                int index = mOpenStack.lastIndexOf(node);
-                Node openNode = mOpenStack.get(index);//open列表中存在该节点
+            if (mOpenList.contains(node)) {
+                int index = mOpenList.indexOf(node);
+                Node openNode = mOpenList.get(index);//open列表中存在该节点
                 if (node.getG() < openNode.getG()) {//如果open列表的节点G值比较大，那么代替该节点
-                    mOpenStack.set(index, node);
+                    mOpenList.set(index, node);
                 }
             } else {
-                mOpenStack.push(node);
+                mOpenList.add(node);
             }
         }
-        log("排序前 OpenStack:" + mOpenStack);
-        Collections.sort(mOpenStack, new Comparator<Node>() {
+        aroundNodes = null;
+        //log("排序前 OpenStack:" + mOpenList);
+        Collections.sort(mOpenList, new Comparator<Node>() {
             @Override
             public int compare(Node o1, Node o2) {
                 if (o1.getF() < o2.getF()) {//越小越靠前
@@ -191,7 +191,7 @@ public class A_StartAlgorithm {
                 }
             }
         });
-        log("排序后 OpenStack:" + mOpenStack);
+        //log("排序后 OpenStack:" + mOpenList);
     }
 
 
