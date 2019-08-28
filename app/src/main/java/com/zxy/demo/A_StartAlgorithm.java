@@ -1,12 +1,12 @@
 package com.zxy.demo;
 
-import android.util.SparseArray;
-
 import com.zxy.utility.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by zxy on 2019/08/27.
@@ -21,89 +21,84 @@ public class A_StartAlgorithm {
     private final int S_LINE = 10;//直线
     private final int D_LINE = 14;//对角线
 
-    private SparseArray<Node<Location>> mOpenArray = new SparseArray<>();//“开启”列表
-    private SparseArray<Node<Location>> mCloseArray = new SparseArray<>();//“关闭”列表
+    private Stack<Node> mOpenStack = new Stack<>();//“开启”列表
+    private List<Node> mCloseList = new ArrayList<>();//“关闭”列表
     private int[][] mSurface;
-    private Node<Location> mStart;
-    private Node<Location> mEnd;
+    private Node mStart;
+    private Node mEnd;
 
 
-    public void init(int[][] surface, Node<Location> start, Node<Location> end) {
+    public void init(int[][] surface, Node start, Node end) {
         mSurface = surface;
         mStart = start;
         mEnd = end;
-        mOpenArray.put(getNodeKey(start), start);
+        mOpenStack.push(start);
+        LogUtil.e("初始化：Start节点=" + mStart + " End节点=" + mEnd + " \"开启列表：\"" + mOpenStack);
     }
 
-    public int getNodeKey(Node<Location> node) {
-        int current_node_x = node.Location.X;
-        int current_node_y = node.Location.Y;
-        return current_node_x + current_node_y * mSurface.length;
+    /**
+     * 执行，返回路径结果
+     *
+     * @return
+     */
+    public List<Node> execute() {
+        searching();
+        return result();
     }
 
-    public void execute() {
-        Node<Location> current_node = getCurrentNode();
+    /**
+     * 路径搜索，直到找到终点
+     */
+    private void searching() {
+        Node current_node = mOpenStack.pop();
         LogUtil.e("当前路径节点：" + current_node);
-        int key = getNodeKey(current_node);
-        mOpenArray.remove(key);
-        mCloseArray.put(key, current_node);
-        enterOpenArray(current_node);
-        if (mOpenArray.get(getNodeKey(mEnd)) != null || mOpenArray.size() == 0) {
+        mCloseList.add(current_node);
+        addNodeToOpenStack(current_node);
+        if (mOpenStack.contains(mEnd) || mOpenStack.isEmpty()) {
+            LogUtil.e("找到终点：" + mEnd + " openStack.isEmpty=" + mOpenStack.isEmpty());
             return;
         } else {
-            execute();
+            searching();
         }
-        LogUtil.e("execute: openArray=" + mOpenArray + " closeArray=" + mCloseArray);
+        LogUtil.e("searching结果: openStack=" + mOpenStack + " closeList=" + mCloseList);
     }
 
-    public List<Node<Location>> result() {
-        int endKey = getNodeKey(mEnd);
-        Node<Location> endNode = mOpenArray.get(endKey);
-        List<Node<Location>> pathNodes = new ArrayList<>();
-        pathNodes.add(mEnd);
+
+    /**
+     * 返回路径结果
+     *
+     * @return
+     */
+    private List<Node> result() {
+        if (!mOpenStack.contains(mEnd)) {
+            return Collections.EMPTY_LIST;
+        }
+        int index = mOpenStack.lastIndexOf(mEnd);
+        Node endNode = mOpenStack.get(index);//返回终点节点
+        List<Node> pathNodes = new ArrayList<>();
+        pathNodes.add(endNode);
         if (endNode != null && endNode.getParent() != null) {
-            int lastKey = getNodeKey(endNode.getParent());//终点上一个节点的key
-            while (getNodeKey(mStart) != lastKey) {
-                Node<Location> pathNode = getCloseArrayNode(lastKey);
-                pathNodes.add(pathNode);
-                if (pathNode != null && pathNode.getParent() != null) {
-                    lastKey = getNodeKey(pathNode.getParent());
-                }
+            Node lastNode = endNode.getParent();//路径的上一个节点
+            while (!mStart.equals(lastNode)) {
+                pathNodes.add(lastNode);
+                lastNode = lastNode.getParent();
             }
-            pathNodes.add(mStart);
+            pathNodes.add(lastNode);
         }
         Collections.reverse(pathNodes);
+        LogUtil.e("返回节点路径结果，size = " + pathNodes.size());
         return pathNodes;
     }
 
-    private Node<Location> getCloseArrayNode(int pathKey) {
-        for (int i = 0; i < mCloseArray.size(); i++) {
-            int key = mCloseArray.keyAt(i);
-            Node<Location> value = mCloseArray.valueAt(i);
-            if (key == pathKey) {
-                return value;
-            }
-        }
-        return null;
-    }
-
-    private Node<Location> getCurrentNode() {
-        Node<Location> current_node = null;
-        int mMinF = Integer.MAX_VALUE;
-        for (int i = 0; i < mOpenArray.size(); i++) {
-            Node<Location> value = mOpenArray.valueAt(i);
-            if (value.getF() < mMinF) {
-                current_node = value;
-            }
-        }
-        return current_node;
-    }
-
-
-    private void enterOpenArray(Node<Location> current_node) {
-        int current_node_x = current_node.Location.X;
-        int current_node_y = current_node.Location.Y;
-        SparseArray<Node<Location>> aroundNodes = new SparseArray<>();
+    /**
+     * 查找周围节点，并加入到open列表中（备选路径）
+     *
+     * @param current_node open列表中，具有最小F值的节点
+     */
+    private void addNodeToOpenStack(Node current_node) {
+        int current_node_x = current_node.X;
+        int current_node_y = current_node.Y;
+        List<Node> aroundNodes = new ArrayList<>();
         /*
          * (x-1,y-1)  (x,y-1) (x+1,y-1)
          * (x-1,y)    (x,y)   (x+1,y)
@@ -113,113 +108,108 @@ public class A_StartAlgorithm {
         for (int i = 0; i < 3; i++) {
             int node_x;
             int node_y;
-            int node_key;
             int node_g;
             int node_h;
             //x-1
             node_x = current_node_x - 1;
             node_y = current_node_y - 1 + i;
-            node_key = node_x + node_y * mSurface.length;
             if (i == 0 || i == 2) {
                 node_g = D_LINE;
             } else {
                 node_g = S_LINE;
             }
             node_g += current_node.getG();
-            node_h = (Math.abs(mEnd.Location.X - node_x) + Math.abs(mEnd.Location.Y - node_y)) * S_LINE;
-            if ((node_x >= 0 && node_x < mSurface.length) && (node_y >= 0 && node_y < mSurface[0].length) && mSurface[node_x][node_y] != SURFACE_BARRIER_TAG && mCloseArray.get(node_key) == null) {
-                Node<Location> node = new Node<>(new Location(node_x, node_y));
+            node_h = (Math.abs(mEnd.X - node_x) + Math.abs(mEnd.Y - node_y)) * S_LINE;
+            if ((node_x >= 0 && node_x < mSurface.length) && (node_y >= 0 && node_y < mSurface[0].length) && mSurface[node_x][node_y] != SURFACE_BARRIER_TAG && !mCloseList.contains(new Node(node_x, node_y))) {
+                Node node = new Node(node_x, node_y);
                 node.setParent(current_node);
                 node.setG(node_g);
                 node.setH(node_h);
-                aroundNodes.put(node_key, node);
+                aroundNodes.add(node);
             }
             //x
             node_x += 1;
-            node_key = node_x + node_y * mSurface.length;
             if (i == 1) {
                 node_g = 0;
             } else {
                 node_g = S_LINE;
             }
             node_g += current_node.getG();
-            node_h = (Math.abs(mEnd.Location.X - node_x) + Math.abs(mEnd.Location.Y - node_y)) * S_LINE;
-            if ((node_x >= 0 && node_x < mSurface.length) && (node_y >= 0 && node_y < mSurface[0].length) && mSurface[node_x][node_y] != SURFACE_BARRIER_TAG && mCloseArray.get(node_key) == null) {
-                Node<Location> node = new Node<>(new Location(node_x, node_y));
+            node_h = (Math.abs(mEnd.X - node_x) + Math.abs(mEnd.Y - node_y)) * S_LINE;
+            if ((node_x >= 0 && node_x < mSurface.length) && (node_y >= 0 && node_y < mSurface[0].length) && mSurface[node_x][node_y] != SURFACE_BARRIER_TAG && !mCloseList.contains(new Node(node_x, node_y))) {
+                Node node = new Node(node_x, node_y);
                 node.setParent(current_node);
                 node.setG(node_g);
                 node.setH(node_h);
-                aroundNodes.put(node_key, node);
+                aroundNodes.add(node);
             }
             //x+1
             node_x += 1;
-            node_key = node_x + node_y * mSurface.length;
             if (i == 0 || i == 2) {
                 node_g = D_LINE;
             } else {
                 node_g = S_LINE;
             }
             node_g += current_node.getG();
-            node_h = (Math.abs(mEnd.Location.X - node_x) + Math.abs(mEnd.Location.Y - node_y)) * S_LINE;
-            if ((node_x >= 0 && node_x < mSurface.length) && (node_y >= 0 && node_y < mSurface[0].length) && mSurface[node_x][node_y] != SURFACE_BARRIER_TAG && mCloseArray.get(node_key) == null) {
-                Node<Location> node = new Node<>(new Location(node_x, node_y));
+            node_h = (Math.abs(mEnd.X - node_x) + Math.abs(mEnd.Y - node_y)) * S_LINE;
+            if ((node_x >= 0 && node_x < mSurface.length) && (node_y >= 0 && node_y < mSurface[0].length) && mSurface[node_x][node_y] != SURFACE_BARRIER_TAG && !mCloseList.contains(new Node(node_x, node_y))) {
+                Node node = new Node(node_x, node_y);
                 node.setParent(current_node);
                 node.setG(node_g);
                 node.setH(node_h);
-                aroundNodes.put(node_key, node);
+                aroundNodes.add(node);
             }
         }
-        LogUtil.e("aroundNodes:" + aroundNodes);
+        LogUtil.e("当前节点的附近节点 aroundNodes:" + aroundNodes);
         //附近节点判断
         for (int i = 0; i < aroundNodes.size(); i++) {
-            int key = aroundNodes.keyAt(i);
-            Node<Location> value = aroundNodes.valueAt(i);
-            boolean replace = true;
-            if (mOpenArray.get(key) != null) {
-                Node<Location> existValue = mOpenArray.get(key);
-                if (existValue.getG() < value.getG()) {
-                    replace = false;//如果“开启列表”已存在当前节点，那么不代替该节点
+            Node node = aroundNodes.get(i);
+            if (mOpenStack.contains(node)) {
+                int index = mOpenStack.lastIndexOf(node);
+                Node openNode = mOpenStack.get(index);//open列表中存在该节点
+                if (node.getG() < openNode.getG()) {//如果open列表的节点G值比较大，那么代替该节点
+                    mOpenStack.set(index, node);
                 }
-            }
-            if (replace) {
-                mOpenArray.put(key, value);
+            } else {
+                mOpenStack.push(node);
             }
         }
+        LogUtil.e("排序前 OpenStack:" + mOpenStack);
+        Collections.sort(mOpenStack, new Comparator<Node>() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                if (o1.getF() < o2.getF()) {//越小越靠前
+                    return 1;
+                } else if (o1.getF() == o2.getF()) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        });
+        LogUtil.e("排序后 OpenStack:" + mOpenStack);
     }
 
-    public static class Location {
+
+    public static class Node {
 
         public final int X;
         public final int Y;
 
-        public Location(int x, int y) {
+        private Node mParent;
+        private int mG;//G值，起点到当前点的实际距离
+        private int mH;//H值，当前点到终点的预估距离
+
+        public Node(int x, int y) {
             X = x;
             Y = y;
         }
 
-        @Override
-        public String toString() {
-            return "(" + X + "," + Y + ")";
-        }
-    }
-
-    public static class Node<T> {
-
-        public final T Location;
-
-        private Node<T> mParent;
-        private int mG;//G值，起点到当前点的实际距离
-        private int mH;//H值，当前点到终点的预估距离
-
-        public Node(T location) {
-            Location = location;
-        }
-
-        public Node<T> getParent() {
+        public Node getParent() {
             return mParent;
         }
 
-        public void setParent(Node<T> parent) {
+        public void setParent(Node parent) {
             mParent = parent;
         }
 
@@ -244,8 +234,25 @@ public class A_StartAlgorithm {
         }
 
         @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof Node) {
+                Node node = (Node) obj;
+                if (node.X == X && node.Y == Y) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return super.equals(obj);
+        }
+
+        @Override
         public String toString() {
-            return Location + "--len=" + getF();
+            return "Node{" + "(" + X + "," + Y + ")" +
+                    ", Parent=" + mParent +
+                    ", G=" + mG +
+                    ", H=" + mH +
+                    '}';
         }
     }
 }
