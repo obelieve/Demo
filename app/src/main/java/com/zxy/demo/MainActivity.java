@@ -58,19 +58,21 @@ public class MainActivity extends AppCompatActivity {
          * 010
          * 000
          */
-        int[][] ints = new int[3][3];
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+        int[][] ints = new int[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
                 ints[i][j] = 0;
             }
         }
-        ints[1][1] = 1;
-        A_StartAlgorithm.Node<A_StartAlgorithm.Location> start = new A_StartAlgorithm.Node<A_StartAlgorithm.Location>(new A_StartAlgorithm.Location(0,1));
+        ints[2][1] = 1;
+        ints[2][2] = 1;
+        ints[1][2] = 1;
+        A_StartAlgorithm.Node<A_StartAlgorithm.Location> start = new A_StartAlgorithm.Node<A_StartAlgorithm.Location>(new A_StartAlgorithm.Location(1,3));
         start.setH(20);
-        A_StartAlgorithm.Node<A_StartAlgorithm.Location> end = new A_StartAlgorithm.Node<A_StartAlgorithm.Location>(new A_StartAlgorithm.Location(2,1));
+        A_StartAlgorithm.Node<A_StartAlgorithm.Location> end = new A_StartAlgorithm.Node<A_StartAlgorithm.Location>(new A_StartAlgorithm.Location(3,4));
         algorithm.init(ints,start,end);
         algorithm.execute();
-        algorithm.result();
+        LogUtil.e("结果："+algorithm.result());
     }
 
 

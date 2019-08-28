@@ -5,6 +5,7 @@ import android.util.SparseArray;
 import com.zxy.utility.LogUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,11 +13,16 @@ import java.util.List;
  */
 public class A_StartAlgorithm {
 
+    /**
+     * 标记为障碍物
+     */
+    public static final int SURFACE_BARRIER_TAG = 1;
+
     private final int S_LINE = 10;//直线
     private final int D_LINE = 14;//对角线
 
-    private SparseArray<Node<Location>> mOpenArray = new SparseArray<>();
-    private SparseArray<Node<Location>> mCloseArray = new SparseArray<>();
+    private SparseArray<Node<Location>> mOpenArray = new SparseArray<>();//“开启”列表
+    private SparseArray<Node<Location>> mCloseArray = new SparseArray<>();//“关闭”列表
     private int[][] mSurface;
     private Node<Location> mStart;
     private Node<Location> mEnd;
@@ -37,6 +43,7 @@ public class A_StartAlgorithm {
 
     public void execute() {
         Node<Location> current_node = getCurrentNode();
+        LogUtil.e("当前路径节点：" + current_node);
         int key = getNodeKey(current_node);
         mOpenArray.remove(key);
         mCloseArray.put(key, current_node);
@@ -49,10 +56,11 @@ public class A_StartAlgorithm {
         LogUtil.e("execute: openArray=" + mOpenArray + " closeArray=" + mCloseArray);
     }
 
-    public void result() {
+    public List<Node<Location>> result() {
         int endKey = getNodeKey(mEnd);
         Node<Location> endNode = mOpenArray.get(endKey);
         List<Node<Location>> pathNodes = new ArrayList<>();
+        pathNodes.add(mEnd);
         if (endNode != null && endNode.getParent() != null) {
             int lastKey = getNodeKey(endNode.getParent());//终点上一个节点的key
             while (getNodeKey(mStart) != lastKey) {
@@ -64,7 +72,8 @@ public class A_StartAlgorithm {
             }
             pathNodes.add(mStart);
         }
-        LogUtil.e("路径：" + pathNodes);
+        Collections.reverse(pathNodes);
+        return pathNodes;
     }
 
     private Node<Location> getCloseArrayNode(int pathKey) {
@@ -94,62 +103,86 @@ public class A_StartAlgorithm {
     private void enterOpenArray(Node<Location> current_node) {
         int current_node_x = current_node.Location.X;
         int current_node_y = current_node.Location.Y;
-        int currentKey = getNodeKey(current_node);
         SparseArray<Node<Location>> aroundNodes = new SparseArray<>();
-        /**
-         * 0 1 2
-         * 3 * 4
-         * 5 6 7
+        /*
+         * (x-1,y-1)  (x,y-1) (x+1,y-1)
+         * (x-1,y)    (x,y)   (x+1,y)
+         * (x-1,y+1)  (x,y+1) (x+1,y+1)
+         * 计算周围的节点，进行下一步
          */
-        for (int i = 0; i < 8; i++) {
-            int node_key;
+        for (int i = 0; i < 3; i++) {
             int node_x;
             int node_y;
+            int node_key;
             int node_g;
             int node_h;
-            if (i < 3) {//0 1 2
-                node_key = currentKey - 1 - mSurface.length + i;
-                node_x = current_node_x - 1 + i;
-                node_y = current_node_y - 1;
-            } else if (i < 5) {//3   4
-                node_key = currentKey - 1 + (i - 3);
-                node_x = current_node_x - 1 + (i - 3);
-                node_y = current_node_y;
-            } else {//5 6 7
-                node_key = currentKey - 1 + mSurface.length + (i - 5);
-                node_x = current_node_x - 1 + (i - 5);
-                node_y = current_node_y + 1;
-            }
-            if (i == 0 || i == 2 || i == 5 || i == 7) {
+            //x-1
+            node_x = current_node_x - 1;
+            node_y = current_node_y - 1 + i;
+            node_key = node_x + node_y * mSurface.length;
+            if (i == 0 || i == 2) {
                 node_g = D_LINE;
             } else {
                 node_g = S_LINE;
             }
             node_g += current_node.getG();
-            node_h = Math.abs(mEnd.Location.X - node_x) + Math.abs(mEnd.Location.Y - node_y);
-            Node<Location> node = new Node<>(new Location(node_x, node_y));
-            node.setParent(current_node);
-            node.setG(node_g);
-            node.setH(node_h);
-            aroundNodes.put(node_key, node);
+            node_h = (Math.abs(mEnd.Location.X - node_x) + Math.abs(mEnd.Location.Y - node_y)) * S_LINE;
+            if ((node_x >= 0 && node_x < mSurface.length) && (node_y >= 0 && node_y < mSurface[0].length) && mSurface[node_x][node_y] != SURFACE_BARRIER_TAG && mCloseArray.get(node_key) == null) {
+                Node<Location> node = new Node<>(new Location(node_x, node_y));
+                node.setParent(current_node);
+                node.setG(node_g);
+                node.setH(node_h);
+                aroundNodes.put(node_key, node);
+            }
+            //x
+            node_x += 1;
+            node_key = node_x + node_y * mSurface.length;
+            if (i == 1) {
+                node_g = 0;
+            } else {
+                node_g = S_LINE;
+            }
+            node_g += current_node.getG();
+            node_h = (Math.abs(mEnd.Location.X - node_x) + Math.abs(mEnd.Location.Y - node_y)) * S_LINE;
+            if ((node_x >= 0 && node_x < mSurface.length) && (node_y >= 0 && node_y < mSurface[0].length) && mSurface[node_x][node_y] != SURFACE_BARRIER_TAG && mCloseArray.get(node_key) == null) {
+                Node<Location> node = new Node<>(new Location(node_x, node_y));
+                node.setParent(current_node);
+                node.setG(node_g);
+                node.setH(node_h);
+                aroundNodes.put(node_key, node);
+            }
+            //x+1
+            node_x += 1;
+            node_key = node_x + node_y * mSurface.length;
+            if (i == 0 || i == 2) {
+                node_g = D_LINE;
+            } else {
+                node_g = S_LINE;
+            }
+            node_g += current_node.getG();
+            node_h = (Math.abs(mEnd.Location.X - node_x) + Math.abs(mEnd.Location.Y - node_y)) * S_LINE;
+            if ((node_x >= 0 && node_x < mSurface.length) && (node_y >= 0 && node_y < mSurface[0].length) && mSurface[node_x][node_y] != SURFACE_BARRIER_TAG && mCloseArray.get(node_key) == null) {
+                Node<Location> node = new Node<>(new Location(node_x, node_y));
+                node.setParent(current_node);
+                node.setG(node_g);
+                node.setH(node_h);
+                aroundNodes.put(node_key, node);
+            }
         }
+        LogUtil.e("aroundNodes:" + aroundNodes);
         //附近节点判断
         for (int i = 0; i < aroundNodes.size(); i++) {
             int key = aroundNodes.keyAt(i);
             Node<Location> value = aroundNodes.valueAt(i);
-            if ((value.Location.X >= 0 && value.Location.X <= (mSurface.length - 1)) &&
-                    (value.Location.Y >= 0 && value.Location.Y <= (mSurface[0].length - 1)) &&
-                    mCloseArray.get(key) == null) {//坐标合法且可通过，不在“关闭列表中”
-                boolean replace = true;
-                if (mOpenArray.get(key) != null) {
-                    Node<Location> existValue = mOpenArray.get(key);
-                    if (existValue.getG() < value.getG()) {
-                        replace = false;//如果“开启列表”已存在当前节点，那么不代替该节点
-                    }
+            boolean replace = true;
+            if (mOpenArray.get(key) != null) {
+                Node<Location> existValue = mOpenArray.get(key);
+                if (existValue.getG() < value.getG()) {
+                    replace = false;//如果“开启列表”已存在当前节点，那么不代替该节点
                 }
-                if (replace) {
-                    mOpenArray.put(key, value);
-                }
+            }
+            if (replace) {
+                mOpenArray.put(key, value);
             }
         }
     }
@@ -166,10 +199,7 @@ public class A_StartAlgorithm {
 
         @Override
         public String toString() {
-            return "Location{" +
-                    "X=" + X +
-                    ", Y=" + Y +
-                    '}';
+            return "(" + X + "," + Y + ")";
         }
     }
 
@@ -215,12 +245,7 @@ public class A_StartAlgorithm {
 
         @Override
         public String toString() {
-            return "Node{" +
-                    "Location=" + Location +
-                    ", mParent=" + mParent +
-                    ", mG=" + mG +
-                    ", mH=" + mH +
-                    '}';
+            return Location + "--len=" + getF();
         }
     }
 }
