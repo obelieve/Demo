@@ -28,12 +28,16 @@ public class A_StartAlgorithm {
     private Node mEnd;
 
 
+    public void log(String msg) {
+        LogUtil.e(msg);
+    }
+
     public void init(int[][] surface, Node start, Node end) {
         mSurface = surface;
         mStart = start;
         mEnd = end;
         mOpenStack.push(start);
-        LogUtil.e("初始化：Start节点=" + mStart + " End节点=" + mEnd + " \"开启列表：\"" + mOpenStack);
+        log("初始化：Start节点=" + mStart + " End节点=" + mEnd + " \"开启列表：\"" + mOpenStack);
     }
 
     /**
@@ -51,16 +55,16 @@ public class A_StartAlgorithm {
      */
     private void searching() {
         Node current_node = mOpenStack.pop();
-        LogUtil.e("当前路径节点：" + current_node);
+        log("当前路径节点：" + current_node);
         mCloseList.add(current_node);
         addNodeToOpenStack(current_node);
         if (mOpenStack.contains(mEnd) || mOpenStack.isEmpty()) {
-            LogUtil.e("找到终点：" + mEnd + " openStack.isEmpty=" + mOpenStack.isEmpty());
+            log("找到终点：" + mEnd + " openStack.isEmpty=" + mOpenStack.isEmpty());
             return;
         } else {
             searching();
         }
-        LogUtil.e("searching结果: openStack=" + mOpenStack + " closeList=" + mCloseList);
+        log("searching结果: openStack=" + mOpenStack + " closeList=" + mCloseList);
     }
 
 
@@ -86,7 +90,7 @@ public class A_StartAlgorithm {
             pathNodes.add(lastNode);
         }
         Collections.reverse(pathNodes);
-        LogUtil.e("返回节点路径结果，size = " + pathNodes.size());
+        log("返回节点路径结果，size = " + pathNodes.size());
         return pathNodes;
     }
 
@@ -160,7 +164,7 @@ public class A_StartAlgorithm {
                 aroundNodes.add(node);
             }
         }
-        LogUtil.e("当前节点的附近节点 aroundNodes:" + aroundNodes);
+        log("当前节点的附近节点 aroundNodes:" + aroundNodes);
         //附近节点判断
         for (int i = 0; i < aroundNodes.size(); i++) {
             Node node = aroundNodes.get(i);
@@ -174,7 +178,7 @@ public class A_StartAlgorithm {
                 mOpenStack.push(node);
             }
         }
-        LogUtil.e("排序前 OpenStack:" + mOpenStack);
+        log("排序前 OpenStack:" + mOpenStack);
         Collections.sort(mOpenStack, new Comparator<Node>() {
             @Override
             public int compare(Node o1, Node o2) {
@@ -187,7 +191,7 @@ public class A_StartAlgorithm {
                 }
             }
         });
-        LogUtil.e("排序后 OpenStack:" + mOpenStack);
+        log("排序后 OpenStack:" + mOpenStack);
     }
 
 

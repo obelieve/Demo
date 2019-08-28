@@ -9,6 +9,10 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +21,7 @@ import com.zxy.utility.LogUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,43 +37,22 @@ public class MainActivity extends AppCompatActivity {
         mTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                A_start();
+                Bitmap bitmap = BitmapUtil.getBitmap(AssetsUtil.getFile(MainActivity.this, "f1.jpg"));
+                SpannableString sp = new SpannableString("abcdefghijklmnopqrstuvwxyz\n");
+                sp.setSpan(new AbsoluteSizeSpan(20, true), 0, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(3287, 2367)), 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(2969, 2268)), 6, 13, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(2910, 2619)), 13, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                mTv.setText(sp);
+                int b = Color.blue(bitmap.getPixel(3287, 2367));
+                int r = Color.red(bitmap.getPixel(3287, 2367));
+                int g = Color.green(bitmap.getPixel(3287, 2367));
+                mTv.append("(3287,2367) r:" + Integer.toHexString(r) + " g:" + Integer.toHexString(g) + " b:" + Integer.toHexString(b) + "\n");
+                mTv.append("        h:" + bitmap.getHeight() + " w:" + bitmap.getWidth() + " count=" + bitmap.getByteCount());
+                mIv.setImageBitmap(BitmapUtil.drawBackground(bitmap, 20));
             }
         });
 
-//        Bitmap bitmap = BitmapUtil.getBitmap(AssetsUtil.getFile(this, "f1.jpg"));
-//        SpannableString sp = new SpannableString("abcdefghijklmnopqrstuvwxyz\n");
-//        sp.setSpan(new AbsoluteSizeSpan(20, true), 0, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(3287, 2367)), 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(2969, 2268)), 6, 13, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        sp.setSpan(new ForegroundColorSpan(bitmap.getPixel(2910, 2619)), 13, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        mTv.setText(sp);
-//        int b = Color.blue(bitmap.getPixel(3287, 2367));
-//        int r = Color.red(bitmap.getPixel(3287, 2367));
-//        int g = Color.green(bitmap.getPixel(3287, 2367));
-//        mTv.append("(3287,2367) r:" + Integer.toHexString(r) + " g:" + Integer.toHexString(g) + " b:" + Integer.toHexString(b) + "\n");
-//        mTv.append("        h:" + bitmap.getHeight() + " w:" + bitmap.getWidth() + " count=" + bitmap.getByteCount());
-//        mIv.setImageBitmap(BitmapUtil.drawBackground(bitmap, 20));
-    }
-
-    private void A_start() {
-        A_StartAlgorithm algorithm = new A_StartAlgorithm();
-        /**
-         * 000
-         * 010
-         * 000
-         */
-        int[][] ints = new int[4][4];
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                ints[i][j] = 0;
-            }
-        }
-        ints[2][1] = 1;
-        ints[2][2] = 1;
-        ints[1][2] = 1;
-        algorithm.init(ints, new A_StartAlgorithm.Node(1, 3), new A_StartAlgorithm.Node(2, 0));
-        LogUtil.e("结果：" + algorithm.execute());
     }
 
 
@@ -135,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private static void drawInsideRoad(Bitmap bitmap, long startTime, Canvas canvas, Paint paint) {
         //耗时44秒
+        int[][] surface = new int[bitmap.getWidth()][bitmap.getHeight()];
+        A_StartAlgorithm.Node start = new A_StartAlgorithm.Node(3093,2449);
+        A_StartAlgorithm.Node end = new A_StartAlgorithm.Node(3883,1889);
         for (int i = 0; i < bitmap.getWidth(); i++) {
             for (int j = 0; j < bitmap.getHeight(); j++) {
                 int r = Color.red(bitmap.getPixel(i, j));
@@ -145,15 +132,45 @@ public class MainActivity extends AppCompatActivity {
                 final int fG = 240;
                 final int fB = 245;
                 final int fDiff = 30;
+                surface[i][j] = 0;
                 if (!((r >= (fR - fDiff) && r <= (fR + fDiff)) && (g >= (fG - fDiff) && g <= (fG + fDiff)) && (b >= (fB - fDiff) && b <= (fB + fDiff)))) {
-                    canvas.drawPoint(i, j, paint);
+//                    canvas.drawPoint(i, j, paint);
+                    surface[i][j] = 1;
                 } else {
                     if (r == 255 && g == 255 && b == 255) {
-                        canvas.drawPoint(i, j, paint);
+//                        canvas.drawPoint(i, j, paint);
+                        surface[i][j] = 1;
                     }
                 }
             }
         }
         LogUtil.e("当前时间-耗时：" + (System.currentTimeMillis() - startTime));
+        A_StartAlgorithm algorithm = new A_StartAlgorithm();
+        algorithm.init(surface, start, end);
+        List<A_StartAlgorithm.Node> nodes = algorithm.execute();
+        LogUtil.e("结果当前时间-耗时：" + (System.currentTimeMillis() - startTime));
+        for (int i = 0; i < nodes.size(); i++) {
+            A_StartAlgorithm.Node node = nodes.get(i);
+            canvas.drawPoint(node.X, node.Y, paint);
+        }
+        LogUtil.e("绘制当前时间-耗时：" + (System.currentTimeMillis() - startTime));
+    }
+
+    private static void A_start(int[][] surface, A_StartAlgorithm.Node start, A_StartAlgorithm.Node end) {
+//        /**
+//         * 000
+//         * 010
+//         * 000
+//         */
+//        int[][] ints = new int[4][4];
+//        for (int i = 0; i < 4; i++) {
+//            for (int j = 0; j < 4; j++) {
+//                ints[i][j] = 0;
+//            }
+//        }
+//        ints[2][1] = 1;
+//        ints[2][2] = 1;
+//        ints[1][2] = 1;
+//        algorithm.init(surface, new A_StartAlgorithm.Node(1, 3), new A_StartAlgorithm.Node(2, 0));
     }
 }
