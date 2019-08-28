@@ -67,12 +67,8 @@ public class MainActivity extends AppCompatActivity {
         ints[2][1] = 1;
         ints[2][2] = 1;
         ints[1][2] = 1;
-        A_StartAlgorithm.Node<A_StartAlgorithm.Location> start = new A_StartAlgorithm.Node<A_StartAlgorithm.Location>(new A_StartAlgorithm.Location(1,3));
-        start.setH(20);
-        A_StartAlgorithm.Node<A_StartAlgorithm.Location> end = new A_StartAlgorithm.Node<A_StartAlgorithm.Location>(new A_StartAlgorithm.Location(3,4));
-        algorithm.init(ints,start,end);
-        algorithm.execute();
-        LogUtil.e("结果："+algorithm.result());
+        algorithm.init(ints, new A_StartAlgorithm.Node(1, 3), new A_StartAlgorithm.Node(2, 0));
+        LogUtil.e("结果：" + algorithm.execute());
     }
 
 
