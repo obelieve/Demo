@@ -64,9 +64,8 @@ public class MainActivity extends AppCompatActivity {
                 AStarAlgorithm algorithm = new AStarAlgorithm();
                 LogUtil.e("surface[start[0]][start[1]]:"+surface[start[0]][start[1]]);
                 LogUtil.e("surface[end[0]][end[1]]:"+surface[end[0]][end[1]]);
-                algorithm.init(surface, new AStarAlgorithm.Node(start[0], start[1]), new AStarAlgorithm.Node(end[0], end[1]));
                 startTime = System.currentTimeMillis();
-                List<AStarAlgorithm.Node> list = algorithm.execute();
+                List<AStarAlgorithm.Node> list = algorithm.execute(surface, new AStarAlgorithm.Node(start[0], start[1]), new AStarAlgorithm.Node(end[0], end[1]));
                 LogUtil.e("节点搜索-耗时：" + (System.currentTimeMillis() - startTime));
                 startTime = System.currentTimeMillis();
                 Bitmap bitmap1 = BitmapUtil.drawSurfaceRouting(bitmap, list, ZOOM_SIZE);
@@ -142,8 +141,7 @@ public class MainActivity extends AppCompatActivity {
         AStarAlgorithm algorithm = new AStarAlgorithm();
         AStarAlgorithm.Node end = new AStarAlgorithm.Node(1, 3);
         AStarAlgorithm.Node start = new AStarAlgorithm.Node(2, 0);
-        algorithm.init(ints, start, end);
-        List<AStarAlgorithm.Node> nodes = algorithm.execute();
+        List<AStarAlgorithm.Node> nodes = algorithm.execute(ints, start, end);
         LogUtil.e("结果 nodes：" + nodes);
 //        Bitmap bitmap1 = BitmapUtil.changeToNewBitmap(surface, ZOOM_SIZE, bitmap, Color.parseColor("#7B4343"));
 //        try {
