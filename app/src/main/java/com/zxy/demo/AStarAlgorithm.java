@@ -1,6 +1,6 @@
 package com.zxy.demo;
 
-import com.zxy.utility.LogUtil;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,15 +28,9 @@ public class AStarAlgorithm {
 
 
     public void log(String msg) {
-        LogUtil.e(msg);
-    }
-
-    public void init(int[][] surface, Node start, Node end) {
-        mSurface = surface;
-        mStart = start;
-        mEnd = end;
-        mOpenList.add(start);
-        log("初始化：Start节点=" + mStart + " End节点=" + mEnd + " \"开启列表：\"" + mOpenList);
+        if (BuildConfig.DEBUG) {
+            Log.e(AStarAlgorithm.class.getSimpleName(), msg);
+        }
     }
 
     /**
@@ -44,7 +38,12 @@ public class AStarAlgorithm {
      *
      * @return
      */
-    public List<Node> execute() {
+    public List<Node> execute(int[][] surface, Node start, Node end) {
+        mSurface = surface;
+        mStart = start;
+        mEnd = end;
+        mOpenList.add(start);
+        log("初始化：Start节点=" + mStart + " End节点=" + mEnd + " \"开启列表：\"" + mOpenList);
         searching();
         return result();
     }
@@ -63,7 +62,7 @@ public class AStarAlgorithm {
         } else {
             searching();
         }
-      //  log("searching结果: openStack=" + mOpenList + " closeList=" + mCloseList);
+        //  log("searching结果: openStack=" + mOpenList + " closeList=" + mCloseList);
     }
 
 
