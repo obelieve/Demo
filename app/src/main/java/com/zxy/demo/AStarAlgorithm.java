@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by zxy on 2019/08/27.
  */
-public class A_StartAlgorithm {
+public class AStarAlgorithm {
 
     /**
      * 标记为障碍物
