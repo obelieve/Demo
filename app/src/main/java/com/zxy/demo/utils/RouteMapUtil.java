@@ -56,17 +56,12 @@ public class RouteMapUtil {
     /**
      * 绘制分隔线
      *
-     * @param bitmap
-     * @param splitPixel 分割线间隔的像素数
+     * @param bitmap       原图
+     * @param lineDistance 分割线间隔距离 单位px
      * @return
      */
-    public static Bitmap drawIntervalLine(Bitmap bitmap, int splitPixel) {
+    public static Bitmap drawIntervalLine(Bitmap bitmap, int lineDistance) {
 
-        /**
-         * 注意多个createBitmap重载函数，必须是可变位图对应的重载才能绘制
-         * bitmap: 原图像
-         * pixInterval: 网格线的横竖间隔，单位:像素
-         */
         Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);  //很重要
         Canvas canvas = new Canvas(copy);  //创建画布
         Paint paint = new Paint();  //画笔
@@ -76,14 +71,34 @@ public class RouteMapUtil {
         canvas.drawBitmap(bitmap, new Matrix(), paint);  //在画布上画一个和bitmap一模一样的图
         //根据Bitmap大小，画网格线
         //画横线
-        for (int i = 0; i < bitmap.getHeight() / splitPixel; i++) {
-            canvas.drawLine(0, i * splitPixel, bitmap.getWidth(), i * splitPixel, paint);
+        for (int i = 0; i < bitmap.getHeight() / lineDistance; i++) {
+            canvas.drawLine(0, i * lineDistance, bitmap.getWidth(), i * lineDistance, paint);
         }
         //画竖线
-        for (int i = 0; i < bitmap.getWidth() / splitPixel; i++) {
-            canvas.drawLine(i * splitPixel, 0, i * splitPixel, bitmap.getHeight(), paint);
+        for (int i = 0; i < bitmap.getWidth() / lineDistance; i++) {
+            canvas.drawLine(i * lineDistance, 0, i * lineDistance, bitmap.getHeight(), paint);
         }
         return copy;
+    }
+
+    /**
+     * Bitmap中的x,y通过缩放比例转为二维数组的x,y
+     *
+     * @param zoomSize
+     * @param bitmapX
+     * @param bitmapY
+     * @return
+     */
+    public static int[] changeToArrayXY(int zoomSize, int bitmapX, int bitmapY) {
+        int x = bitmapX / zoomSize;
+        int y = bitmapY / zoomSize;
+        if (bitmapX > zoomSize * x) {
+            x++;
+        }
+        if (bitmapY > zoomSize * y) {
+            y++;
+        }
+        return new int[]{x, y};
     }
 
     /**
@@ -152,32 +167,32 @@ public class RouteMapUtil {
     }
 
     /**
-     * 二维数组标记为1值作为参照，对Bitmap进行填充相应颜色和显示二维数组位置值(黑色字体)
+     * 对非路线区域进行绘制并覆盖到原图上
      *
-     * @param surface   Bitmap转为二维数组的值
-     * @param zoomSize  #surface缩放的比例
-     * @param bitmap    原图的Bitmap
-     * @param drawColor 填充的颜色
-     * @return 填充后的Bitmap
+     * @param bitmap               原图
+     * @param surface              Bitmap的二维数组映射
+     * @param zoomSize             Bitmap在二维数组映射中,缩放的比例
+     * @param noRouteAreaColor     非路线区域填充的颜色
+     * @return 覆盖后的Bitmap
      */
-    public static Bitmap changeToNewBitmap(int[][] surface, int zoomSize, Bitmap bitmap, int drawColor) {
+    public static Bitmap overlayNoRouteAreaToBitmap(Bitmap bitmap, int[][] surface, int zoomSize, int noRouteAreaColor) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int arrayWidth = surface.length;
         int arrayHeight = surface[0].length;
-        Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);  //很重要
+        Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(copy);  //创建画布
         Paint paint = new Paint();//画笔
         paint.setStrokeWidth(1);  //设置线宽。单位为像素
         paint.setAntiAlias(true); //抗锯齿
-        paint.setColor(drawColor);  //画笔颜色
+        paint.setColor(noRouteAreaColor);  //画笔颜色
         canvas.drawBitmap(bitmap, new Matrix(), paint);  //在画布上画一个和bitmap一模一样的图
         for (int aw = 0; aw < arrayWidth; aw++) {
             for (int ah = 0; ah < arrayHeight; ah++) {
                 for (int w = aw * zoomSize; w < (aw + 1) * zoomSize; w++) {
                     for (int h = ah * zoomSize; h < (ah + 1) * zoomSize; h++) {
                         if (w < width && h < height && surface[aw][ah] == 1) {
-                            paint.setColor(drawColor);
+                            paint.setColor(noRouteAreaColor);
                             canvas.drawPoint(w, h, paint);
                         }
                     }
@@ -186,7 +201,7 @@ public class RouteMapUtil {
                     paint.setColor(Color.parseColor("#0A4082"));
                     paint.setTextSize(8);
                     canvas.drawText(aw + "", aw * zoomSize + 2, ah * zoomSize + 8, paint);
-                    canvas.drawText(ah + "", aw * zoomSize + 2, ah * zoomSize + 16, paint);
+                    canvas.drawText(ah + "", aw * zoomSize + 2, ah * zoomSize + 8 * 2, paint);
                 }
             }
         }
@@ -194,31 +209,27 @@ public class RouteMapUtil {
     }
 
     /**
-     * Bitmap中的x,y通过缩放比例转为二维数组的x,y
+     * 绘制起点到终点完整路线
      *
-     * @param zoomSize
-     * @param bitmapX
-     * @param bitmapY
+     * @param bitmap   原图
+     * @param nodes    节点列表
+     * @param zoomSize 缩放尺寸
      * @return
      */
-    public static int[] changeToArrayXY(int zoomSize, int bitmapX, int bitmapY) {
-        int x = bitmapX / zoomSize;
-        int y = bitmapY / zoomSize;
-        if (bitmapX > zoomSize * x) {
-            x++;
-        }
-        if (bitmapY > zoomSize * y) {
-            y++;
-        }
-        return new int[]{x, y};
-    }
-
-    public static Bitmap drawSurfaceStartRouting(Bitmap bitmap, List<AStarAlgorithm.Node> nodes, int zoomSize) {
-        return drawSurfacePath(bitmap, nodes, true, false, zoomSize);
-    }
-
     public static Bitmap drawSurfaceWholeRouting(Bitmap bitmap, List<AStarAlgorithm.Node> nodes, int zoomSize) {
         return drawSurfacePath(bitmap, nodes, true, true, zoomSize);
+    }
+
+    /**
+     * 绘制起点到中间某个节点的路线
+     *
+     * @param bitmap    原图
+     * @param nodes     节点列表
+     * @param zoomSize  缩放尺寸
+     * @return
+     */
+    public static Bitmap drawSurfaceStartRouting(Bitmap bitmap, List<AStarAlgorithm.Node> nodes, int zoomSize) {
+        return drawSurfacePath(bitmap, nodes, true, false, zoomSize);
     }
 
     private static Bitmap drawSurfacePath(Bitmap bitmap, List<AStarAlgorithm.Node> nodes, boolean startTag, boolean endTag, int zoomSize) {
@@ -277,8 +288,7 @@ public class RouteMapUtil {
         // 样图可以回收内存
         factoryOptions.inPurgeable = true;
 
-        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, factoryOptions);
-        return bitmap;
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length, factoryOptions);
     }
 
     private static byte[] toByteArray(InputStream input) {
@@ -287,7 +297,9 @@ public class RouteMapUtil {
         int n = 0;
         while (true) {
             try {
-                if (!(-1 != (n = input.read(buffer)))) break;
+                if (-1 == (n = input.read(buffer))) {
+                    break;
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

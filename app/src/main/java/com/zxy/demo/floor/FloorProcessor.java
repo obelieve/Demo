@@ -2,6 +2,7 @@ package com.zxy.demo.floor;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+
 import com.zxy.demo.algorithm.AStarAlgorithm;
 import com.zxy.demo.utils.RouteMapUtil;
 
@@ -133,7 +134,7 @@ public class FloorProcessor {
             e.printStackTrace();
         }
         bitmap = RouteMapUtil.drawIntervalLine(bitmap, zoomSize);
-        bitmap = RouteMapUtil.changeToNewBitmap(surface, zoomSize, bitmap, noRouteColor);
+        bitmap = RouteMapUtil.overlayNoRouteAreaToBitmap(bitmap, surface, zoomSize, noRouteColor);
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(filePath);

@@ -39,7 +39,7 @@ public class Floor1GeneratorImpl implements FloorGenerator {
         surface[42][26] = 0;
         surface[50][17] = 0;//冰箱
 //        bitmap = RouteMapUtil.drawIntervalLine(bitmap, 10);
-//        bitmap = RouteMapUtil.changeToNewBitmap(surface, 10, bitmap, Color.parseColor("#f2c3c3c3"));
+//        bitmap = RouteMapUtil.overlayNoRouteAreaToBitmap(bitmap, surface, 10, Color.parseColor("#f2c3c3c3"));
 //        saveNewBitmapToFile(RouteMapUtil.getContext(), bitmap);
         saveDataToFile(surface);
         saveJsonToFile();
