@@ -2,7 +2,6 @@ package com.zxy.demo.floor;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-
 import com.zxy.demo.algorithm.AStarAlgorithm;
 import com.zxy.demo.utils.RouteMapUtil;
 

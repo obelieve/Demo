@@ -12,6 +12,7 @@ import android.support.annotation.ColorInt;
 
 import com.zxy.demo.algorithm.AStarAlgorithm;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -133,6 +134,8 @@ public class RouteMapUtil {
                                             routeCount++;
                                         }
                                     }
+                                } else {
+                                    routeCount++;
                                 }
                             }
                         }
@@ -180,7 +183,7 @@ public class RouteMapUtil {
                     }
                 }
                 if (aw * zoomSize < width && ah * zoomSize < height && surface[aw][ah] == 1) {
-                    paint.setColor(Color.BLACK);
+                    paint.setColor(Color.parseColor("#0A4082"));
                     paint.setTextSize(8);
                     canvas.drawText(aw + "", aw * zoomSize + 2, ah * zoomSize + 8, paint);
                     canvas.drawText(ah + "", aw * zoomSize + 2, ah * zoomSize + 16, paint);
@@ -222,7 +225,7 @@ public class RouteMapUtil {
         Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);  //很重要
         Canvas canvas = new Canvas(copy);  //创建画布
         Paint paint = new Paint();  //画笔
-        paint.setStrokeWidth(20);  //设置线宽。单位为像素
+        paint.setStrokeWidth(10);  //设置线宽。单位为像素
         paint.setAntiAlias(true); //抗锯齿
         paint.setColor(Color.RED);  //画笔颜色
         paint.setStyle(Paint.Style.STROKE);
@@ -245,13 +248,51 @@ public class RouteMapUtil {
             canvas.drawPath(path, paint);
             if (startIn != null || endIn != null) {
                 if (startTag) {
-                    canvas.drawBitmap(getBitmap(startIn), startX - 55, startY - 117, paint);
+                    canvas.drawBitmap(zoomBitmap(startIn, 30, 30), startX - 10, startY - 15, paint);
                 }
                 if (endTag) {
-                    canvas.drawBitmap(getBitmap(endIn), endX - 55, endY - 117, paint);
+                    canvas.drawBitmap(zoomBitmap(endIn, 30, 30), endX - 10, endY - 15, paint);
                 }
             }
         }
         return copy;
+    }
+
+    public static Bitmap zoomBitmap(InputStream in, int previewWidth, int previewHeight) {
+        BitmapFactory.Options factoryOptions = new BitmapFactory.Options();
+// 不将图片读取到内存中，仍然可以通过参数获得它的高宽
+        factoryOptions.inJustDecodeBounds = true;
+        byte[] bytes = toByteArray(in);
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.length, factoryOptions);
+        int imageWidth = factoryOptions.outWidth;
+        int imageHeight = factoryOptions.outHeight;
+        // 等比缩小，previewWidth和height是imageView的宽高
+        int scaleFactor = Math.max(imageWidth / previewWidth,
+                imageHeight / previewHeight);
+
+        // 将图片读取到内存中
+        factoryOptions.inJustDecodeBounds = false;
+        // 设置等比缩小图
+        factoryOptions.inSampleSize = scaleFactor;
+        // 样图可以回收内存
+        factoryOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, factoryOptions);
+        return bitmap;
+    }
+
+    private static byte[] toByteArray(InputStream input) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        byte[] buffer = new byte[4096];
+        int n = 0;
+        while (true) {
+            try {
+                if (!(-1 != (n = input.read(buffer)))) break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            output.write(buffer, 0, n);
+        }
+        return output.toByteArray();
     }
 }

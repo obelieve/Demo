@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.zxy.demo.ui.RouteImageView;
-import com.zxy.demo.utils.generator.Floor1GeneratorImpl;
 
 public class MainActivity extends Activity {
 
@@ -46,8 +45,10 @@ public class MainActivity extends Activity {
     }
 
     private void clickRoute() {
-        new Floor1GeneratorImpl().saveToFile();
-        //routePlanning1("入口","前台");
+//        routePlanning1("推拉门","冰箱位");
+//        routePlanning1("推拉门","冰箱位");
+//        routePlanning1("抽屉","消毒柜");
+        routePlanning1("抽屉","冰箱位");
     }
 
     public void routePlanning1(String startPosition, String endPosition) {
