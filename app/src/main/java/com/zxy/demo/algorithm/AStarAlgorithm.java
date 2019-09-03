@@ -1,6 +1,8 @@
-package com.zxy.demo;
+package com.zxy.demo.algorithm;
 
 import android.util.Log;
+
+import com.zxy.demo.BuildConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +22,8 @@ public class AStarAlgorithm {
     private final int S_LINE = 10;//直线
     private final int D_LINE = 14;//对角线
 
-    private List<Node> mOpenList = new ArrayList<>();//“开启”列表
-    private List<Node> mCloseList = new ArrayList<>();//“关闭”列表
+    private List<Node> mOpenList;//“开启”列表
+    private List<Node> mCloseList;//“关闭”列表
     private int[][] mSurface;
     private Node mStart;
     private Node mEnd;
@@ -42,6 +44,8 @@ public class AStarAlgorithm {
         mSurface = surface;
         mStart = start;
         mEnd = end;
+        mCloseList = new ArrayList<>();
+        mOpenList = new ArrayList<>();
         mOpenList.add(start);
         log("初始化：Start节点=" + mStart + " End节点=" + mEnd + " \"开启列表：\"" + mOpenList);
         searching();
@@ -58,11 +62,9 @@ public class AStarAlgorithm {
         addNodeToOpenStack(current_node);
         if (mOpenList.contains(mEnd) || mOpenList.isEmpty()) {
             log("找到终点：" + mEnd + " openStack.isEmpty=" + mOpenList.isEmpty());
-            return;
         } else {
             searching();
         }
-        //  log("searching结果: openStack=" + mOpenList + " closeList=" + mCloseList);
     }
 
 
@@ -191,6 +193,31 @@ public class AStarAlgorithm {
             }
         });
         //log("排序后 OpenStack:" + mOpenList);
+    }
+
+    private static void main(String[] args) {
+        /**
+         * Test
+         *
+         * 00*0
+         * 0010
+         * 0110
+         * 0*00
+         */
+        int[][] ints = new int[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                ints[i][j] = 0;
+            }
+        }
+        ints[2][1] = 1;
+        ints[2][2] = 1;
+        ints[1][2] = 1;
+        AStarAlgorithm algorithm = new AStarAlgorithm();
+        AStarAlgorithm.Node end = new AStarAlgorithm.Node(1, 3);
+        AStarAlgorithm.Node start = new AStarAlgorithm.Node(2, 0);
+        List<Node> nodes = algorithm.execute(ints, start, end);
+        System.out.println("结果 nodes：" + nodes);
     }
 
 
