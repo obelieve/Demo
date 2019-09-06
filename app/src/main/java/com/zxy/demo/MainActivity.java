@@ -11,14 +11,23 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zxy.demo.ui.RouteImageView;
+import com.zxy.demo.generator.MapGenerator;
+import com.zxy.demo.impl.Floor1MapConfigurator;
+import com.zxy.demo.utils.RouteMapUtil;
+
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+
 
 public class MainActivity extends Activity {
 
     private TextView mTv;
-    private RouteImageView mIv;
+    private ImageView mIv;
+
+    private Disposable mDisposable;
 
     public void log(String msg) {
         Log.e(MainActivity.class.getSimpleName(), msg);
@@ -28,6 +37,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        RouteMapUtil.init(getApplicationContext());
         mTv = findViewById(R.id.tv);
         mIv = findViewById(R.id.iv);
         mTv.setOnClickListener(new View.OnClickListener() {
@@ -45,16 +55,36 @@ public class MainActivity extends Activity {
     }
 
     private void clickRoute() {
-//        routePlanning1("推拉门","冰箱位");
-//        routePlanning1("推拉门","冰箱位");
-//        routePlanning1("抽屉","消毒柜");
-        routePlanning1("抽屉","冰箱位");
+        String start, end;
+        start = "抽屉";
+        end = "冰箱位";
+        routePlanning1(start, end);
+//        gen();
+    }
+
+    private void gen() {
+        final long startTime = System.currentTimeMillis();
+        MapGenerator.create(new Floor1MapConfigurator());
+        log("显示-耗时：" + (System.currentTimeMillis() - startTime));
     }
 
     public void routePlanning1(String startPosition, String endPosition) {
-        long startTime = System.currentTimeMillis();
-        mIv.setRouteImageBitmap("f1.jpg","f1.json","f1.data",startPosition,endPosition);
-        log("显示-耗时：" + (System.currentTimeMillis() - startTime));
+        final long startTime = System.currentTimeMillis();
+        mDisposable = RouteMapUtil.Observable("f1.jpg", "f1.json", "f1.data", startPosition, endPosition).subscribe(new Consumer<Bitmap>() {
+            @Override
+            public void accept(Bitmap bitmap) throws Exception {
+                mIv.setImageBitmap(bitmap);
+                log("显示-耗时：" + (System.currentTimeMillis() - startTime));
+            }
+        });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
     }
 
     /**

@@ -1,8 +1,7 @@
 package com.zxy.demo.algorithm;
 
-import android.util.Log;
 
-import com.zxy.demo.BuildConfig;
+import com.zxy.demo.utils.RouteLog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +13,7 @@ import java.util.List;
  */
 public class AStarAlgorithm {
 
+    private static final String TAG = AStarAlgorithm.class.getSimpleName();
     /**
      * 标记为障碍物
      */
@@ -27,13 +27,8 @@ public class AStarAlgorithm {
     private int[][] mSurface;
     private Node mStart;
     private Node mEnd;
+    private boolean mIsReverse;//路线是否进行反向选择
 
-
-    public void log(String msg) {
-        if (BuildConfig.DEBUG) {
-            Log.e(AStarAlgorithm.class.getSimpleName(), msg);
-        }
-    }
 
     /**
      * 执行，返回路径结果
@@ -42,12 +37,21 @@ public class AStarAlgorithm {
      */
     public List<Node> execute(int[][] surface, Node start, Node end) {
         mSurface = surface;
-        mStart = start;
-        mEnd = end;
+        mIsReverse = false;
+        if (start.X > end.X) {
+            mIsReverse = true;
+        }
+        if (mIsReverse) {
+            mStart = end;
+            mEnd = start;
+        } else {
+            mStart = start;
+            mEnd = end;
+        }
         mCloseList = new ArrayList<>();
         mOpenList = new ArrayList<>();
-        mOpenList.add(start);
-        log("初始化：Start节点=" + mStart + " End节点=" + mEnd + " \"开启列表：\"" + mOpenList);
+        mOpenList.add(mStart);
+        RouteLog.log(TAG, "初始化：Start节点=" + mStart + " End节点=" + mEnd + " \"开启列表：\"" + mOpenList);
         searching();
         return result();
     }
@@ -57,11 +61,11 @@ public class AStarAlgorithm {
      */
     private void searching() {
         Node current_node = mOpenList.remove(mOpenList.size() - 1);
-        //log("当前路径节点：" + current_node);
+        //RouteLog.log(TAG,"当前路径节点：" + current_node);
         mCloseList.add(current_node);
         addNodeToOpenStack(current_node);
         if (mOpenList.contains(mEnd) || mOpenList.isEmpty()) {
-            log("找到终点：" + mEnd + " openStack.isEmpty=" + mOpenList.isEmpty());
+            RouteLog.log(TAG,"找到终点：" + mEnd + " openStack.isEmpty=" + mOpenList.isEmpty());
         } else {
             searching();
         }
@@ -89,8 +93,10 @@ public class AStarAlgorithm {
             }
             pathNodes.add(lastNode);
         }
-        Collections.reverse(pathNodes);
-        log("返回节点路径结果，size = " + pathNodes.size());
+        if (!mIsReverse) {
+            Collections.reverse(pathNodes);//从终点->起点
+        }
+        RouteLog.log(TAG,"返回节点路径结果，size = " + pathNodes.size());
         return pathNodes;
     }
 
@@ -123,7 +129,7 @@ public class AStarAlgorithm {
                 node_g = S_LINE;
             }
             node_g += current_node.getG();
-            node_h = (Math.abs(mEnd.X - node_x) + Math.abs(mEnd.Y - node_y)) * S_LINE;
+            node_h = getNode_h(node_x, node_y);
             if ((node_x >= 0 && node_x < mSurface.length) && (node_y >= 0 && node_y < mSurface[0].length) && mSurface[node_x][node_y] != SURFACE_BARRIER_TAG && !mCloseList.contains(new Node(node_x, node_y))) {
                 Node node = new Node(node_x, node_y);
                 node.setParent(current_node);
@@ -139,7 +145,7 @@ public class AStarAlgorithm {
                 node_g = S_LINE;
             }
             node_g += current_node.getG();
-            node_h = (Math.abs(mEnd.X - node_x) + Math.abs(mEnd.Y - node_y)) * S_LINE;
+            node_h = getNode_h(node_x, node_y);
             if ((node_x >= 0 && node_x < mSurface.length) && (node_y >= 0 && node_y < mSurface[0].length) && mSurface[node_x][node_y] != SURFACE_BARRIER_TAG && !mCloseList.contains(new Node(node_x, node_y))) {
                 Node node = new Node(node_x, node_y);
                 node.setParent(current_node);
@@ -155,7 +161,7 @@ public class AStarAlgorithm {
                 node_g = S_LINE;
             }
             node_g += current_node.getG();
-            node_h = (Math.abs(mEnd.X - node_x) + Math.abs(mEnd.Y - node_y)) * S_LINE;
+            node_h = getNode_h(node_x, node_y);
             if ((node_x >= 0 && node_x < mSurface.length) && (node_y >= 0 && node_y < mSurface[0].length) && mSurface[node_x][node_y] != SURFACE_BARRIER_TAG && !mCloseList.contains(new Node(node_x, node_y))) {
                 Node node = new Node(node_x, node_y);
                 node.setParent(current_node);
@@ -164,7 +170,7 @@ public class AStarAlgorithm {
                 aroundNodes.add(node);
             }
         }
-        //log("当前节点的附近节点 aroundNodes:" + aroundNodes);
+        //RouteLog.log(TAG,"当前节点的附近节点 aroundNodes:" + aroundNodes);
         //附近节点判断
         for (int i = 0; i < aroundNodes.size(); i++) {
             Node node = aroundNodes.get(i);
@@ -179,7 +185,7 @@ public class AStarAlgorithm {
             }
         }
         aroundNodes = null;
-        //log("排序前 OpenStack:" + mOpenList);
+        //RouteLog.log(TAG,"排序前 OpenStack:" + mOpenList);
         Collections.sort(mOpenList, new Comparator<Node>() {
             @Override
             public int compare(Node o1, Node o2) {
@@ -192,7 +198,26 @@ public class AStarAlgorithm {
                 }
             }
         });
-        //log("排序后 OpenStack:" + mOpenList);
+        //RouteLog.log(TAG,"排序后 OpenStack:" + mOpenList);
+    }
+
+    /**
+     * 估算距离
+     *
+     * @param node_x
+     * @param node_y
+     * @return
+     */
+    private int getNode_h(int node_x, int node_y) {
+        return (Math.abs(mEnd.X - node_x) + Math.abs(mEnd.Y - node_y)) * S_LINE;
+    }
+
+    public List<Node> getOpenList() {
+        return mOpenList;
+    }
+
+    public List<Node> getCloseList() {
+        return mCloseList;
     }
 
     private static void main(String[] args) {

@@ -8,23 +8,42 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.zxy.demo.algorithm.AStarAlgorithm;
+import com.zxy.demo.generator.MapProcessor;
+import com.zxy.demo.generator.model.MapData;
+import com.zxy.demo.generator.model.MapInfo;
+import com.zxy.demo.impl.FloorMap;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by zxy on 2019/08/30.
  */
 public class RouteMapUtil {
 
+    /**
+     * 需要分段显示路线时，所需的间隔时间
+     */
+    private static final int ROUTE_DELAY_TIME = 500;
     private static Context sContext;
 
     public static Context getContext() {
+        if (sContext == null) {
+            throw new IllegalStateException("Need to initialize RouteMapUtil#init(Context) !");
+        }
         return sContext;
     }
 
@@ -32,11 +51,108 @@ public class RouteMapUtil {
         sContext = context;
     }
 
+    public static Observable<Bitmap> Observable(@NonNull FloorMap map, final String startPosition, final String endPosition) {
+        String assetsImagePath;
+        String assetsJsonPath;
+        String assetsDataPath;
+        switch (map) {
+            case FLOOR_1:
+            default:
+                assetsImagePath = "f1.jpg";
+                assetsJsonPath = "f1.json";
+                assetsDataPath = "f1.data";
+                break;
+            case FLOOR_2:
+                assetsImagePath = "f2.jpg";
+                assetsJsonPath = "f2.json";
+                assetsDataPath = "f2.data";
+                break;
+            case FLOOR_3:
+                assetsImagePath = "f3.jpg";
+                assetsJsonPath = "f3.json";
+                assetsDataPath = "f3.data";
+                break;
+        }
+        return Observable(assetsImagePath, assetsJsonPath, assetsDataPath, startPosition, endPosition);
+    }
+
+    public static Observable<Bitmap> Observable(final String assetsImagePath, final String assetsJsonPath, final String assetsDataPath, final String startPosition, final String endPosition) {
+
+        return Observable.create(new ObservableOnSubscribe<Bitmap>() {
+            @Override
+            public void subscribe(ObservableEmitter<Bitmap> emitter) throws Exception {
+                try {
+                    Bitmap bitmap = RouteMapUtil.getBitmap(RouteMapUtil.getAssetsFile(assetsImagePath));
+                    emitter.onNext(bitmap);
+                    if (TextUtils.isEmpty(startPosition) || TextUtils.isEmpty(endPosition) || startPosition.equals(endPosition)) {
+                        emitter.onComplete();
+                        return;
+                    }
+                    MapInfo mapInfo = MapStreamUtil.readMapInfo(RouteMapUtil.getAssetsFile(assetsJsonPath));
+                    MapProcessor mapProcessor = new MapProcessor(mapInfo);
+                    MapData mapData = new MapData(MapStreamUtil.readMapData(RouteMapUtil.getAssetsFile(assetsDataPath)));
+                    mapProcessor.setMapData(mapData);
+                    List<AStarAlgorithm.Node> list = mapProcessor.genMapRouteNodes(startPosition, endPosition);
+
+                    if (list.size() >= 2) {
+                        int startX = list.get(0).X;
+                        int startY = list.get(0).Y;
+                        int endX = list.get(list.size() - 1).X;
+                        int endY = list.get(list.size() - 1).Y;
+                        int distance = Math.abs(endY - startY) + Math.abs(endX - startX);
+                        final int DEF_DISTANCE = (mapInfo.getWidth() + mapInfo.getHeight()) / mapInfo.getZoomSize() / 10;//设置默认每秒显示的距离
+                        if (DEF_DISTANCE == 0 || distance < 2 * DEF_DISTANCE || list.size() == 2) {//直接显示起始点路线
+                            Bitmap tempBitmap = mapProcessor.genMapRouteBitmap(bitmap, list);
+                            bitmap.recycle();
+                            bitmap = tempBitmap;
+                            emitter.onNext(bitmap);
+                        } else {//间隔一段时间，显示一段路线
+                            int split = distance / DEF_DISTANCE;
+                            int increase = list.size() / split;
+                            int curIndex = 0;
+                            RouteTrace routeTrace = RouteTrace.START;
+                            Bitmap tempBitmap = null;
+                            while (curIndex < list.size()) {
+                                switch (routeTrace) {
+                                    case START:
+                                        curIndex += increase;
+                                        tempBitmap = RouteMapUtil.drawSurfaceStartRouting(bitmap, list.subList(0, curIndex), mapInfo.getZoomSize());
+                                        bitmap.recycle();
+                                        bitmap = tempBitmap;
+                                        emitter.onNext(bitmap);
+                                        if (curIndex + increase >= list.size()) {
+                                            routeTrace = RouteTrace.WHOLE;
+                                        } else {
+                                            routeTrace = RouteTrace.START;
+                                        }
+                                        Thread.sleep(ROUTE_DELAY_TIME);
+                                        break;
+                                    case WHOLE:
+                                        curIndex += increase;
+                                        tempBitmap = RouteMapUtil.drawSurfaceWholeRouting(bitmap, list, mapInfo.getZoomSize());
+                                        bitmap.recycle();
+                                        bitmap = tempBitmap;
+                                        emitter.onNext(bitmap);
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                    emitter.onComplete();
+                } catch (Exception e) {
+                    emitter.onError(e);
+                    e.printStackTrace();
+                }
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation());
+    }
+
     public static InputStream getAssetsFile(String name) {
 
         InputStream inputStream = null;
         try {
-            inputStream = sContext.getAssets().open(name);
+            inputStream = getContext().getAssets().open(name);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,12 +172,17 @@ public class RouteMapUtil {
     /**
      * 绘制分隔线
      *
-     * @param bitmap       原图
-     * @param lineDistance 分割线间隔距离 单位px
+     * @param bitmap
+     * @param splitPixel 分割线间隔的像素数
      * @return
      */
-    public static Bitmap drawIntervalLine(Bitmap bitmap, int lineDistance) {
+    public static Bitmap drawIntervalLine(Bitmap bitmap, int splitPixel) {
 
+        /**
+         * 注意多个createBitmap重载函数，必须是可变位图对应的重载才能绘制
+         * bitmap: 原图像
+         * pixInterval: 网格线的横竖间隔，单位:像素
+         */
         Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);  //很重要
         Canvas canvas = new Canvas(copy);  //创建画布
         Paint paint = new Paint();  //画笔
@@ -71,34 +192,14 @@ public class RouteMapUtil {
         canvas.drawBitmap(bitmap, new Matrix(), paint);  //在画布上画一个和bitmap一模一样的图
         //根据Bitmap大小，画网格线
         //画横线
-        for (int i = 0; i < bitmap.getHeight() / lineDistance; i++) {
-            canvas.drawLine(0, i * lineDistance, bitmap.getWidth(), i * lineDistance, paint);
+        for (int i = 0; i < bitmap.getHeight() / splitPixel; i++) {
+            canvas.drawLine(0, i * splitPixel, bitmap.getWidth(), i * splitPixel, paint);
         }
         //画竖线
-        for (int i = 0; i < bitmap.getWidth() / lineDistance; i++) {
-            canvas.drawLine(i * lineDistance, 0, i * lineDistance, bitmap.getHeight(), paint);
+        for (int i = 0; i < bitmap.getWidth() / splitPixel; i++) {
+            canvas.drawLine(i * splitPixel, 0, i * splitPixel, bitmap.getHeight(), paint);
         }
         return copy;
-    }
-
-    /**
-     * Bitmap中的x,y通过缩放比例转为二维数组的x,y
-     *
-     * @param zoomSize
-     * @param bitmapX
-     * @param bitmapY
-     * @return
-     */
-    public static int[] changeToArrayXY(int zoomSize, int bitmapX, int bitmapY) {
-        int x = bitmapX / zoomSize;
-        int y = bitmapY / zoomSize;
-        if (bitmapX > zoomSize * x) {
-            x++;
-        }
-        if (bitmapY > zoomSize * y) {
-            y++;
-        }
-        return new int[]{x, y};
     }
 
     /**
@@ -114,7 +215,8 @@ public class RouteMapUtil {
      * @param zoomSize    缩放的尺寸,大于1                        (PS：500x500图像,zoomSize=10,那么就是[50][50])
      * @return 路径二维数组 [*][*]=1,表示为不可路由区域
      */
-    public static int[][] changeToArray(Bitmap bitmap, int routeR, int routeG, int routeB, int rgbBias, @ColorInt int[] noRouteRGBs, float ratio, int zoomSize) {
+    public static int[][] changeToArray(Bitmap bitmap, int routeR, int routeG, int routeB,
+                                        int rgbBias, @ColorInt int[] noRouteRGBs, float ratio, int zoomSize) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
 
@@ -167,41 +269,42 @@ public class RouteMapUtil {
     }
 
     /**
-     * 对非路线区域进行绘制并覆盖到原图上
+     * 二维数组标记为1值作为参照，对Bitmap进行填充相应颜色和显示二维数组位置值(黑色字体)
      *
-     * @param bitmap               原图
-     * @param surface              Bitmap的二维数组映射
-     * @param zoomSize             Bitmap在二维数组映射中,缩放的比例
-     * @param noRouteAreaColor     非路线区域填充的颜色
-     * @return 覆盖后的Bitmap
+     * @param surface   Bitmap转为二维数组的值
+     * @param zoomSize  #surface缩放的比例
+     * @param bitmap    原图的Bitmap
+     * @param drawColor 填充的颜色
+     * @return 填充后的Bitmap
      */
-    public static Bitmap overlayNoRouteAreaToBitmap(Bitmap bitmap, int[][] surface, int zoomSize, int noRouteAreaColor) {
+    public static Bitmap changeToNewBitmap(int[][] surface, int zoomSize, Bitmap bitmap,
+                                           int drawColor) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int arrayWidth = surface.length;
         int arrayHeight = surface[0].length;
-        Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);  //很重要
         Canvas canvas = new Canvas(copy);  //创建画布
         Paint paint = new Paint();//画笔
         paint.setStrokeWidth(1);  //设置线宽。单位为像素
         paint.setAntiAlias(true); //抗锯齿
-        paint.setColor(noRouteAreaColor);  //画笔颜色
+        paint.setColor(drawColor);  //画笔颜色
         canvas.drawBitmap(bitmap, new Matrix(), paint);  //在画布上画一个和bitmap一模一样的图
         for (int aw = 0; aw < arrayWidth; aw++) {
             for (int ah = 0; ah < arrayHeight; ah++) {
                 for (int w = aw * zoomSize; w < (aw + 1) * zoomSize; w++) {
                     for (int h = ah * zoomSize; h < (ah + 1) * zoomSize; h++) {
                         if (w < width && h < height && surface[aw][ah] == 1) {
-                            paint.setColor(noRouteAreaColor);
+                            paint.setColor(drawColor);
                             canvas.drawPoint(w, h, paint);
                         }
                     }
                 }
                 if (aw * zoomSize < width && ah * zoomSize < height && surface[aw][ah] == 1) {
-                    paint.setColor(Color.parseColor("#0A4082"));
+                    paint.setColor(Color.BLACK);
                     paint.setTextSize(8);
                     canvas.drawText(aw + "", aw * zoomSize + 2, ah * zoomSize + 8, paint);
-                    canvas.drawText(ah + "", aw * zoomSize + 2, ah * zoomSize + 8 * 2, paint);
+                    canvas.drawText(ah + "", aw * zoomSize + 2, ah * zoomSize + 16, paint);
                 }
             }
         }
@@ -209,34 +312,93 @@ public class RouteMapUtil {
     }
 
     /**
-     * 绘制起点到终点完整路线
+     * Bitmap中的x,y通过缩放比例转为二维数组的x,y
      *
-     * @param bitmap   原图
-     * @param nodes    节点列表
-     * @param zoomSize 缩放尺寸
+     * @param zoomSize
+     * @param bitmapX
+     * @param bitmapY
      * @return
      */
-    public static Bitmap drawSurfaceWholeRouting(Bitmap bitmap, List<AStarAlgorithm.Node> nodes, int zoomSize) {
+    public static int[] changeToArrayXY(int zoomSize, int bitmapX, int bitmapY) {
+        int x = bitmapX / zoomSize;
+        int y = bitmapY / zoomSize;
+        if (bitmapX > zoomSize * x) {
+            x++;
+        }
+        if (bitmapY > zoomSize * y) {
+            y++;
+        }
+        return new int[]{x, y};
+    }
+
+    public static Bitmap drawSurfaceStartRouting(Bitmap
+                                                         bitmap, List<AStarAlgorithm.Node> nodes, int zoomSize) {
+        return drawSurfacePath(bitmap, nodes, true, false, zoomSize);
+    }
+
+    public static Bitmap drawSurfaceWholeRouting(Bitmap
+                                                         bitmap, List<AStarAlgorithm.Node> nodes, int zoomSize) {
         return drawSurfacePath(bitmap, nodes, true, true, zoomSize);
     }
 
     /**
-     * 绘制起点到中间某个节点的路线
+     * 绘制节点区域
      *
-     * @param bitmap    原图
-     * @param nodes     节点列表
-     * @param zoomSize  缩放尺寸
+     * @param bitmap
+     * @param nodes
+     * @param zoomSize
+     * @param paintWidth
+     * @param paintColor
+     * @param paintStyle
      * @return
      */
-    public static Bitmap drawSurfaceStartRouting(Bitmap bitmap, List<AStarAlgorithm.Node> nodes, int zoomSize) {
-        return drawSurfacePath(bitmap, nodes, true, false, zoomSize);
-    }
-
-    private static Bitmap drawSurfacePath(Bitmap bitmap, List<AStarAlgorithm.Node> nodes, boolean startTag, boolean endTag, int zoomSize) {
-        Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);  //很重要
+    public static Bitmap drawSurfaceNodes(Bitmap bitmap, List<AStarAlgorithm.Node> nodes, int zoomSize, int paintWidth, int paintColor, Paint.Style paintStyle) {
+        Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(copy);  //创建画布
         Paint paint = new Paint();  //画笔
-        paint.setStrokeWidth(10);  //设置线宽。单位为像素
+        paint.setStrokeWidth(paintWidth);  //设置线宽。单位为像素
+        paint.setAntiAlias(true); //抗锯齿
+        paint.setColor(paintColor);  //画笔颜色
+        paint.setStyle(paintStyle);
+        canvas.drawBitmap(bitmap, new Matrix(), paint);  //在画布上画一个和bitmap一模一样的图
+        Paint textPaint = new Paint();
+        textPaint.setStrokeWidth(1);  //设置线宽。单位为像素
+        textPaint.setAntiAlias(true); //抗锯齿
+        textPaint.setTextSize(8);
+        textPaint.setColor(Color.BLACK);  //画笔颜色
+        textPaint.setStyle(Paint.Style.STROKE);
+        for (int i = 0; i < nodes.size(); i++) {
+            AStarAlgorithm.Node node = nodes.get(i);
+            Rect rect = new Rect();
+            rect.set(node.X * zoomSize, node.Y * zoomSize, (node.X + 1) * zoomSize, (node.Y + 1) * zoomSize);
+            canvas.drawRect(rect, paint);
+            String ff = node.getF() + "";
+            if (ff.length() > 2) {
+                canvas.drawText(ff.substring(0, 2), node.X * zoomSize + 8, node.Y * zoomSize + 8, textPaint);
+                canvas.drawText(ff.substring(2), node.X * zoomSize + 8, node.Y * zoomSize + 16, textPaint);
+            } else {
+                canvas.drawText(node.getF() + "", node.X * zoomSize + 8, node.Y * zoomSize + 8, textPaint);
+            }
+        }
+        return copy;
+    }
+
+    /**
+     * 绘制节点的路线
+     *
+     * @param bitmap
+     * @param nodes
+     * @param startTag
+     * @param endTag
+     * @param zoomSize
+     * @return
+     */
+    private static Bitmap drawSurfacePath(Bitmap bitmap, List<AStarAlgorithm.Node> nodes,
+                                          boolean startTag, boolean endTag, int zoomSize) {
+        Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(copy);  //创建画布
+        Paint paint = new Paint();  //画笔
+        paint.setStrokeWidth(20);  //设置线宽。单位为像素
         paint.setAntiAlias(true); //抗锯齿
         paint.setColor(Color.RED);  //画笔颜色
         paint.setStyle(Paint.Style.STROKE);
@@ -259,52 +421,28 @@ public class RouteMapUtil {
             canvas.drawPath(path, paint);
             if (startIn != null || endIn != null) {
                 if (startTag) {
-                    canvas.drawBitmap(zoomBitmap(startIn, 30, 30), startX - 10, startY - 15, paint);
+                    canvas.drawBitmap(getBitmap(startIn), startX - 55, startY - 117, paint);
                 }
                 if (endTag) {
-                    canvas.drawBitmap(zoomBitmap(endIn, 30, 30), endX - 10, endY - 15, paint);
+                    canvas.drawBitmap(getBitmap(endIn), endX - 55, endY - 117, paint);
                 }
             }
         }
         return copy;
     }
 
-    public static Bitmap zoomBitmap(InputStream in, int previewWidth, int previewHeight) {
-        BitmapFactory.Options factoryOptions = new BitmapFactory.Options();
-// 不将图片读取到内存中，仍然可以通过参数获得它的高宽
-        factoryOptions.inJustDecodeBounds = true;
-        byte[] bytes = toByteArray(in);
-        BitmapFactory.decodeByteArray(bytes, 0, bytes.length, factoryOptions);
-        int imageWidth = factoryOptions.outWidth;
-        int imageHeight = factoryOptions.outHeight;
-        // 等比缩小，previewWidth和height是imageView的宽高
-        int scaleFactor = Math.max(imageWidth / previewWidth,
-                imageHeight / previewHeight);
-
-        // 将图片读取到内存中
-        factoryOptions.inJustDecodeBounds = false;
-        // 设置等比缩小图
-        factoryOptions.inSampleSize = scaleFactor;
-        // 样图可以回收内存
-        factoryOptions.inPurgeable = true;
-
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length, factoryOptions);
+    /**
+     * 路线轨迹枚举
+     */
+    private enum RouteTrace {
+        /**
+         * 完整路线
+         */
+        WHOLE,
+        /**
+         * 从起点到中间某个点的路线
+         */
+        START
     }
 
-    private static byte[] toByteArray(InputStream input) {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        byte[] buffer = new byte[4096];
-        int n = 0;
-        while (true) {
-            try {
-                if (-1 == (n = input.read(buffer))) {
-                    break;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            output.write(buffer, 0, n);
-        }
-        return output.toByteArray();
-    }
 }
