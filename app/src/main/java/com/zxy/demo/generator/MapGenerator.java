@@ -3,8 +3,10 @@ package com.zxy.demo.generator;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
+
 import com.zxy.demo.algorithm.AStarAlgorithm;
 import com.zxy.demo.generator.configurator.MapConfigurator;
+import com.zxy.demo.generator.model.DrawRouteConfig;
 import com.zxy.demo.generator.model.MapInfo;
 import com.zxy.demo.utils.MapStreamUtil;
 import com.zxy.demo.utils.RouteLog;
@@ -65,6 +67,7 @@ public class MapGenerator {
         mapInfo.setHeight(height);
         mapInfo.setLocationMapping(mapping);
         mapInfo.setZoomSize(zoomSize);
+        mapInfo.setConfig(new DrawRouteConfig(configurator.getDrawConfigurator()));
         //生成.json文件，地图信息文件
         MapStreamUtil.writeMapInfo(mapInfo, RouteMapUtil.getContext().getExternalFilesDir(null) + File.separator + configurator.getUniqueMapName() + MAP_INFO_FILE_SUFFIX);
         RouteLog.log(TAG, "生成.json文件，地图信息文件:" + (System.currentTimeMillis() - startTime));

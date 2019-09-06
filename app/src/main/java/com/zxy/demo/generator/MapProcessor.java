@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 
 import com.zxy.demo.algorithm.AStarAlgorithm;
+import com.zxy.demo.generator.model.DrawRouteConfig;
 import com.zxy.demo.generator.model.MapData;
 import com.zxy.demo.generator.model.MapInfo;
 import com.zxy.demo.utils.RouteMapUtil;
@@ -67,8 +68,8 @@ public class MapProcessor {
      * @param nodes  路线的所有节点
      * @return bitmap
      */
-    public Bitmap genMapRouteBitmap(Bitmap bitmap, List<AStarAlgorithm.Node> nodes) {
-        return RouteMapUtil.drawSurfaceWholeRouting(bitmap, nodes, mMapInfo.getZoomSize());
+    public Bitmap genMapRouteBitmap(Bitmap bitmap, List<AStarAlgorithm.Node> nodes, DrawRouteConfig config) {
+        return RouteMapUtil.drawSurfaceWholeRouting(bitmap, nodes, mMapInfo.getZoomSize(), config);
     }
 
     /**

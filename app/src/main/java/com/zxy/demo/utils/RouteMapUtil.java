@@ -15,10 +15,12 @@ import android.text.TextUtils;
 
 import com.zxy.demo.algorithm.AStarAlgorithm;
 import com.zxy.demo.generator.MapProcessor;
+import com.zxy.demo.generator.model.DrawRouteConfig;
 import com.zxy.demo.generator.model.MapData;
 import com.zxy.demo.generator.model.MapInfo;
 import com.zxy.demo.impl.FloorMap;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -102,7 +104,7 @@ public class RouteMapUtil {
                         int distance = Math.abs(endY - startY) + Math.abs(endX - startX);
                         final int DEF_DISTANCE = (mapInfo.getWidth() + mapInfo.getHeight()) / mapInfo.getZoomSize() / 10;//设置默认每秒显示的距离
                         if (DEF_DISTANCE == 0 || distance < 2 * DEF_DISTANCE || list.size() == 2) {//直接显示起始点路线
-                            Bitmap tempBitmap = mapProcessor.genMapRouteBitmap(bitmap, list);
+                            Bitmap tempBitmap = mapProcessor.genMapRouteBitmap(bitmap, list, mapInfo.getConfig());
                             bitmap.recycle();
                             bitmap = tempBitmap;
                             emitter.onNext(bitmap);
@@ -116,7 +118,7 @@ public class RouteMapUtil {
                                 switch (routeTrace) {
                                     case START:
                                         curIndex += increase;
-                                        tempBitmap = RouteMapUtil.drawSurfaceStartRouting(bitmap, list.subList(0, curIndex), mapInfo.getZoomSize());
+                                        tempBitmap = RouteMapUtil.drawSurfaceStartRouting(bitmap, list.subList(0, curIndex), mapInfo.getZoomSize(), mapInfo.getConfig());
                                         bitmap.recycle();
                                         bitmap = tempBitmap;
                                         emitter.onNext(bitmap);
@@ -129,7 +131,7 @@ public class RouteMapUtil {
                                         break;
                                     case WHOLE:
                                         curIndex += increase;
-                                        tempBitmap = RouteMapUtil.drawSurfaceWholeRouting(bitmap, list, mapInfo.getZoomSize());
+                                        tempBitmap = RouteMapUtil.drawSurfaceWholeRouting(bitmap, list, mapInfo.getZoomSize(), mapInfo.getConfig());
                                         bitmap.recycle();
                                         bitmap = tempBitmap;
                                         emitter.onNext(bitmap);
@@ -331,14 +333,12 @@ public class RouteMapUtil {
         return new int[]{x, y};
     }
 
-    public static Bitmap drawSurfaceStartRouting(Bitmap
-                                                         bitmap, List<AStarAlgorithm.Node> nodes, int zoomSize) {
-        return drawSurfacePath(bitmap, nodes, true, false, zoomSize);
+    public static Bitmap drawSurfaceStartRouting(Bitmap bitmap, List<AStarAlgorithm.Node> nodes, int zoomSize, DrawRouteConfig config) {
+        return drawSurfacePath(bitmap, nodes, true, false, zoomSize, config);
     }
 
-    public static Bitmap drawSurfaceWholeRouting(Bitmap
-                                                         bitmap, List<AStarAlgorithm.Node> nodes, int zoomSize) {
-        return drawSurfacePath(bitmap, nodes, true, true, zoomSize);
+    public static Bitmap drawSurfaceWholeRouting(Bitmap bitmap, List<AStarAlgorithm.Node> nodes, int zoomSize, DrawRouteConfig config) {
+        return drawSurfacePath(bitmap, nodes, true, true, zoomSize, config);
     }
 
     /**
@@ -391,16 +391,17 @@ public class RouteMapUtil {
      * @param startTag
      * @param endTag
      * @param zoomSize
+     * @param config
      * @return
      */
     private static Bitmap drawSurfacePath(Bitmap bitmap, List<AStarAlgorithm.Node> nodes,
-                                          boolean startTag, boolean endTag, int zoomSize) {
+                                          boolean startTag, boolean endTag, int zoomSize, DrawRouteConfig config) {
         Bitmap copy = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(copy);  //创建画布
         Paint paint = new Paint();  //画笔
-        paint.setStrokeWidth(20);  //设置线宽。单位为像素
+        paint.setStrokeWidth(config.getRouteWidth());  //设置线宽。单位为像素
         paint.setAntiAlias(true); //抗锯齿
-        paint.setColor(Color.RED);  //画笔颜色
+        paint.setColor(config.getRouteColor());  //画笔颜色
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawBitmap(bitmap, new Matrix(), paint);  //在画布上画一个和bitmap一模一样的图
         if (nodes.size() > 1) {
@@ -409,9 +410,9 @@ public class RouteMapUtil {
             float startY = (nodes.get(0).Y + 0.5f) * zoomSize;
             float endX = (nodes.get(nodes.size() - 1).X + 0.5f) * zoomSize;
             float endY = (nodes.get(nodes.size() - 1).Y + 0.5f) * zoomSize;
-            InputStream startIn = getAssetsFile("start.png");
-            InputStream endIn = getAssetsFile("end.png");
             path.moveTo(startX, startY);
+            InputStream startIn = getAssetsFile(config.getStartFileName());
+            InputStream endIn = getAssetsFile(config.getEndFileName());
             for (int i = 1; i < nodes.size(); i++) {
                 AStarAlgorithm.Node node = nodes.get(i);
                 float nodeX = (node.X + 0.5f) * zoomSize;
@@ -419,16 +420,57 @@ public class RouteMapUtil {
                 path.lineTo(nodeX, nodeY);
             }
             canvas.drawPath(path, paint);
-            if (startIn != null || endIn != null) {
+            if (startIn != null && endIn != null) {
                 if (startTag) {
-                    canvas.drawBitmap(getBitmap(startIn), startX - 55, startY - 117, paint);
+                    Bitmap startBitmap = config.isZoom() ? zoomBitmap(startIn, config.getZoomWH(), config.getZoomWH()) : getBitmap(startIn);
+                    canvas.drawBitmap(startBitmap, startX - config.getPointLeftOffset(), startY - config.getPointTopOffset(), paint);
                 }
                 if (endTag) {
-                    canvas.drawBitmap(getBitmap(endIn), endX - 55, endY - 117, paint);
+                    Bitmap endBitmap = config.isZoom() ? zoomBitmap(endIn, config.getZoomWH(), config.getZoomWH()) : getBitmap(endIn);
+                    canvas.drawBitmap(endBitmap, endX - config.getPointLeftOffset(), endY - config.getPointTopOffset(), paint);
                 }
             }
         }
         return copy;
+    }
+
+    public static Bitmap zoomBitmap(InputStream in, int previewWidth, int previewHeight) {
+        BitmapFactory.Options factoryOptions = new BitmapFactory.Options();
+// 不将图片读取到内存中，仍然可以通过参数获得它的高宽
+        factoryOptions.inJustDecodeBounds = true;
+        byte[] bytes = toByteArray(in);
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.length, factoryOptions);
+        int imageWidth = factoryOptions.outWidth;
+        int imageHeight = factoryOptions.outHeight;
+        // 等比缩小，previewWidth和height是imageView的宽高
+        int scaleFactor = Math.max(imageWidth / previewWidth,
+                imageHeight / previewHeight);
+
+        // 将图片读取到内存中
+        factoryOptions.inJustDecodeBounds = false;
+        // 设置等比缩小图
+        factoryOptions.inSampleSize = scaleFactor;
+        // 样图可以回收内存
+        factoryOptions.inPurgeable = true;
+
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length, factoryOptions);
+    }
+
+    private static byte[] toByteArray(InputStream input) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        byte[] buffer = new byte[4096];
+        int n = 0;
+        while (true) {
+            try {
+                if (-1 == (n = input.read(buffer))) {
+                    break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            output.write(buffer, 0, n);
+        }
+        return output.toByteArray();
     }
 
     /**

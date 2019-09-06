@@ -45,4 +45,11 @@ public interface MapConfigurator {
      * @return
      */
     BuildConfigurator getBuildConfigurator();
+
+    /**
+     * 绘制配置器
+     *
+     * @return
+     */
+    DrawConfigurator getDrawConfigurator();
 }

@@ -1,5 +1,7 @@
 package com.zxy.demo.generator.model;
 
+import com.zxy.demo.generator.configurator.DrawConfigurator;
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +14,7 @@ public class MapInfo {
     private int height;
     private int zoomSize;
     private Map<String, List<Integer>> locationMapping;
+    private DrawRouteConfig config;
 
     public int getWidth() {
         return width;
@@ -45,6 +48,14 @@ public class MapInfo {
         this.locationMapping = locationMapping;
     }
 
+    public DrawRouteConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(DrawRouteConfig config) {
+        this.config = config;
+    }
+
     @Override
     public String toString() {
         return "MapInfo{" +
@@ -52,6 +63,9 @@ public class MapInfo {
                 ", height=" + height +
                 ", zoomSize=" + zoomSize +
                 ", locationMapping=" + locationMapping +
+                ", config=" + config +
                 '}';
     }
+
+
 }

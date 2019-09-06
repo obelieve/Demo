@@ -5,6 +5,8 @@ import android.graphics.Color;
 
 import com.zxy.demo.generator.configurator.BuildConfigurator;
 import com.zxy.demo.generator.configurator.CommonBuildConfigurator;
+import com.zxy.demo.generator.configurator.CommonDrawConfigurator;
+import com.zxy.demo.generator.configurator.DrawConfigurator;
 import com.zxy.demo.generator.configurator.MapConfigurator;
 import com.zxy.demo.utils.RouteMapUtil;
 
@@ -85,5 +87,10 @@ public class Floor2MapConfigurator implements MapConfigurator {
                 return 20;
             }
         };
+    }
+
+    @Override
+    public DrawConfigurator getDrawConfigurator() {
+        return new CommonDrawConfigurator();
     }
 }
