@@ -1,1 +1,37 @@
-{"config":{"endFileName":"end.png","pointLeftOffset":10,"pointTopOffset":15,"routeColor":-65536,"routeWidth":10,"startFileName":"start.png","zoom":true,"zoomWH":30},"height":334,"locationMapping":{"抽屉":[33,36],"推拉门":[102,55],"消毒柜":[71,36],"上柜":[85,6],"冰箱位":[104,33]},"width":600,"zoomSize":5}
+{
+  "config": {
+    "endFileName": "end.png",
+    "pointLeftOffset": 10,
+    "pointTopOffset": 15,
+    "routeColor": -65536,
+    "routeWidth": 10,
+    "startFileName": "start.png",
+    "zoom": true,
+    "zoomWH": 30
+  },
+  "height": 334,
+  "locationMapping": {
+    "抽屉": [
+      33,
+      36
+    ],
+    "推拉门": [
+      102,
+      55
+    ],
+    "消毒柜": [
+      71,
+      36
+    ],
+    "上柜": [
+      85,
+      6
+    ],
+    "冰箱位": [
+      104,
+      33
+    ]
+  },
+  "width": 600,
+  "zoomSize": 5
+}
