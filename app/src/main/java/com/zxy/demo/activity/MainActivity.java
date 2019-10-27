@@ -26,6 +26,7 @@ public class MainActivity extends BaseActivity {
     ViewPager vp_content;
     BottomTabView view_bottom_tab;
     ViewPagerAdapter mAdapter;
+    private int mLastIndexTab = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +45,26 @@ public class MainActivity extends BaseActivity {
         vp_content.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Fragment fragment = mAdapter.getItem(position);
-                if (fragment instanceof BaseFragment) {
-                    BaseFragment fragment1 = (BaseFragment) fragment;
-                    configStatusBar(fragment1.settingStatusBarLight(), fragment1.settingStatusBarColor());
-                }
+
             }
 
             @Override
             public void onPageSelected(int position) {
                 view_bottom_tab.setCurrentItem(position);
+                updatePageStatusBar(true, mLastIndexTab);
+                updatePageStatusBar(false, position);
+                mLastIndexTab = position;
+            }
+
+            private void updatePageStatusBar(boolean disable, int position) {
+                if (position < 0 || position >= mAdapter.getCount())
+                    return;
+                Fragment fragment = mAdapter.getItem(position);
+                if (fragment instanceof BaseFragment) {
+                    BaseFragment fragment1 = (BaseFragment) fragment;
+                    fragment1.setDisableStatusBarUpdate(disable);
+                    configStatusBar(fragment1.settingStatusBarLight(), fragment1.settingStatusBarColor());
+                }
             }
 
             @Override

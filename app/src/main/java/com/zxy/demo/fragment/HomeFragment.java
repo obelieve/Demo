@@ -6,16 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
-import android.util.ArrayMap;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.zxy.demo.R;
+import com.zxy.demo.base.BaseActivity;
 import com.zxy.demo.base.BaseFragment;
 import com.zxy.demo.fragment.home.HomeCategory1Fragment;
 import com.zxy.demo.fragment.home.HomeCategory2Fragment;
@@ -24,11 +22,7 @@ import com.zxy.demo.view.HomeTopView;
 import com.zxy.demo.view.HomeViewPager;
 import com.zxy.demo.view.HomeViewPager.HomeAdapter;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by zxy on 2018/10/30 10:35.
@@ -48,14 +42,29 @@ public class HomeFragment extends BaseFragment {
     private HomeViewPager mVpContent;
     private HomeAdapter mHomeAdapter;
 
+    private boolean mStatusBarLight = true;
+    private int mStatusBarColor = Color.TRANSPARENT;
+
+    private HomeTopView.StatusBarChangedNotifier mStatusBarChangedNotifier = new HomeTopView.StatusBarChangedNotifier() {
+        @Override
+        public void notifyStatusBarChanged(boolean light, int color) {
+            mStatusBarLight = light;
+            mStatusBarColor = color;
+            if (getActivity() instanceof BaseActivity && !isDisableStatusBarUpdate()) {
+                BaseActivity activity = (BaseActivity) getActivity();
+                activity.configStatusBar(light, color);
+            }
+        }
+    };
+
     @Override
     public boolean settingStatusBarLight() {
-        return mClTop == null || mClTop.isStatusBarLight();
+        return mStatusBarLight;
     }
 
     @Override
     public int settingStatusBarColor() {
-        return mClTop == null ? Color.TRANSPARENT : mClTop.getStatusBarColor();
+        return mStatusBarColor;
     }
 
     @Override
@@ -145,7 +154,7 @@ public class HomeFragment extends BaseFragment {
         mClTop = view.findViewById(R.id.cl_top);
         mTlTab = view.findViewById(R.id.tl_tab);
         mVpContent = view.findViewById(R.id.vp_content);
-        mClTop.setHomeContentView(mVpContent);
+        mClTop.setHomeContentView(mVpContent, mStatusBarChangedNotifier);
         mVpContent.setAdapter(mHomeAdapter);
         mTlTab.setupWithViewPager(mVpContent);
         return view;

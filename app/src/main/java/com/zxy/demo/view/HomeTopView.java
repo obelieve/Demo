@@ -1,10 +1,10 @@
 package com.zxy.demo.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Parcelable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -49,12 +49,10 @@ public class HomeTopView extends ConstraintLayout {
     private TextView tv_search;
     private TabLayout tl_tab;
 
-    private int mStatusBarColor = Color.TRANSPARENT;
-    private boolean mStatusBarLight = true;
-
     private HomeViewPager mVpContent;
     private ViewPager.OnPageChangeListener mPageChangeListener;
     private RecyclerView.OnScrollListener mOnScrollListener;
+    private StatusBarChangedNotifier mStatusBarChangedNotifier;
 
 
     public HomeTopView(Context context) {
@@ -69,8 +67,9 @@ public class HomeTopView extends ConstraintLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setHomeContentView(HomeViewPager vp) {
+    public void setHomeContentView(HomeViewPager vp, StatusBarChangedNotifier listener) {
         mVpContent = vp;
+        mStatusBarChangedNotifier = listener;
         if (mPageChangeListener == null) {
             mPageChangeListener = new ViewPager.OnPageChangeListener() {
                 @Override
@@ -110,13 +109,6 @@ public class HomeTopView extends ConstraintLayout {
         return sMaxTranslationY;
     }
 
-    public int getStatusBarColor() {
-        return mStatusBarColor;
-    }
-
-    public boolean isStatusBarLight() {
-        return mStatusBarLight;
-    }
 
     @Override
     protected void onFinishInflate() {
@@ -219,10 +211,7 @@ public class HomeTopView extends ConstraintLayout {
         tl_tab.setBackgroundColor(getResources().getColor(R.color.white));
 
         if (getContext() instanceof BaseActivity) {
-            mStatusBarLight = false;
-            mStatusBarColor = Color.WHITE;
-            BaseActivity activity = (BaseActivity) getContext();
-            activity.configStatusBar(false, Color.WHITE);
+            mStatusBarChangedNotifier.notifyStatusBarChanged(false, Color.WHITE);
         }
     }
 
@@ -274,10 +263,13 @@ public class HomeTopView extends ConstraintLayout {
             tl_tab.setBackgroundColor(getResources().getColor(R.color.transparent));
         }
         if (getContext() instanceof BaseActivity) {
-            mStatusBarLight = translationY == 0;
-            mStatusBarColor = Color.TRANSPARENT;
-            BaseActivity activity = (BaseActivity) getContext();
-            activity.configStatusBar(translationY == 0,Color.TRANSPARENT);
+            mStatusBarChangedNotifier.notifyStatusBarChanged(translationY == 0, Color.TRANSPARENT);
         }
+    }
+
+
+    public interface StatusBarChangedNotifier {
+
+        void notifyStatusBarChanged(boolean light, @ColorInt int color);
     }
 }
