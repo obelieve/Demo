@@ -2,6 +2,9 @@ package com.zxy.demo;
 
 import android.app.Application;
 
+import com.zxy.demo.http.HttpInterceptor;
+import com.zxy.demo.http.LogInterceptor;
+import com.zxy.demo.http.ServiceInterface;
 import com.zxy.frame.net.HttpUtil;
 import com.zxy.frame.utils.ToastUtil;
 

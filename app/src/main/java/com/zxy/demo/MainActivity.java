@@ -33,12 +33,11 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.tv)
     public void onViewClicked() {
-        App.getServiceInterface().get_tab().enqueue(new Callback<ResponseBody>() {
+        App.getServiceInterface().square_post(1).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     String string = response.body().string();
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
