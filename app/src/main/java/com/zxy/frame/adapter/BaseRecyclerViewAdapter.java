@@ -89,13 +89,6 @@ public abstract class BaseRecyclerViewAdapter<DATA, VH extends BaseRecyclerViewA
         boolean onItemLongClick(View view, DATA t, int position);
     }
 
-    private static class aa extends BaseViewHolder {
-
-        private aa(ViewGroup parent) {
-            super(parent, R.layout.activity_main);
-        }
-    }
-
 
     public static class BaseDataHolder<DATA> {
 
