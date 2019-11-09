@@ -327,8 +327,68 @@ public class SquareListModel {
                     public void setThumbnail(String thumbnail) {
                         this.thumbnail = thumbnail;
                     }
+
+                    @Override
+                    public String toString() {
+                        return "MediaListBean{" +
+                                "scale='" + scale + '\'' +
+                                ", original='" + original + '\'' +
+                                ", thumbnail='" + thumbnail + '\'' +
+                                '}';
+                    }
+                }
+
+                @Override
+                public String toString() {
+                    return "MediaBean{" +
+                            "media_type='" + media_type + '\'' +
+                            ", media_list=" + media_list +
+                            '}';
                 }
             }
+
+            @Override
+            public String toString() {
+                return "PostListBean{" +
+                        "user_id=" + user_id +
+                        ", nickname='" + nickname + '\'' +
+                        ", avatar='" + avatar + '\'' +
+                        ", post_id=" + post_id +
+                        ", post_time='" + post_time + '\'' +
+                        ", content='" + content + '\'' +
+                        ", media=" + media +
+                        ", pc_num=" + pc_num +
+                        ", zan_num=" + zan_num +
+                        ", is_top=" + is_top +
+                        ", is_zan=" + is_zan +
+                        ", is_del=" + is_del +
+                        ", is_report=" + is_report +
+                        '}';
+            }
         }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "current_page=" + current_page +
+                    ", from=" + from +
+                    ", last_page=" + last_page +
+                    ", per_page=" + per_page +
+                    ", to=" + to +
+                    ", total=" + total +
+                    ", has_next_page=" + has_next_page +
+                    ", post_list=" + post_list +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "SquareListModel{" +
+                "status=" + status +
+                ", code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

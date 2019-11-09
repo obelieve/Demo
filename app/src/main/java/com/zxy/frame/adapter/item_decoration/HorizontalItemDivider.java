@@ -18,7 +18,7 @@ public class HorizontalItemDivider extends RecyclerView.ItemDecoration {
     private Paint mPaint;
 
     public HorizontalItemDivider() {
-        this(false, 1, Color.GRAY);
+        this(false, 1, Color.rgb(216, 216, 216));
     }
 
     public HorizontalItemDivider(int color) {

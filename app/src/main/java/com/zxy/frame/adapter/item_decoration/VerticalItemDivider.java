@@ -29,7 +29,7 @@ public class VerticalItemDivider extends RecyclerView.ItemDecoration {
     private int mMarginRight;
 
     public VerticalItemDivider() {
-        this(false, 1, Color.GRAY);
+        this(false, 1, Color.rgb(216, 216, 216));
     }
 
     public VerticalItemDivider(int color) {
@@ -106,7 +106,7 @@ public class VerticalItemDivider extends RecyclerView.ItemDecoration {
             int top;
             int bottom;
             if (mDividerToTop) {
-                top = view.getTop()-mDividerWidth;
+                top = view.getTop() - mDividerWidth;
                 bottom = view.getTop();
             } else {
                 top = view.getBottom();

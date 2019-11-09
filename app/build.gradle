@@ -48,4 +48,5 @@ dependencies {
     api 'com.squareup.retrofit2:converter-gson:2.6.0'
 
     api 'com.lcodecorex:tkrefreshlayout:1.0.7'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.47'
 }
