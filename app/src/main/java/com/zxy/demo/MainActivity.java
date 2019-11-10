@@ -1,95 +1,148 @@
 package com.zxy.demo;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.widget.ImageView;
+import android.util.SparseArray;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
-import com.chad.library.adapter.base.BaseViewHolder;
-import com.zxy.demo.model.SquareListModel;
-import com.zxy.demo.viewmodel.MainViewModel;
-import com.zxy.frame.adapter.BaseQuickRecyclerViewAdapter;
-import com.zxy.frame.adapter.func.Func;
-import com.zxy.frame.adapter.item_decoration.VerticalItemDivider;
-import java.util.List;
+import com.google.android.material.tabs.TabLayout;
+import com.zxy.demo.fragment.MainFragment;
+import com.zxy.frame.view.SlidingViewPager;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final String[] mStrings = new String[]{
+            "推荐", "精选", "Kindle"};
 
-    @BindView(R.id.rv_content)
-    RecyclerView mRvContent;
-    @BindView(R.id.srl_content)
-    SwipeRefreshLayout mSrlContent;
-
-    MainAdapter mMainAdapter;
-
-    MainViewModel mMainViewModel;
+    @BindView(R.id.tl_tab)
+    TabLayout mTlTab;
+    @BindView(R.id.vp_content)
+    ViewPager mVpContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mMainAdapter = new MainAdapter(this);
-        mMainAdapter.setEmptyView(LayoutInflater.from(this).inflate(R.layout.view_empty, null));
-        mMainAdapter.setOnLoadMoreListener((Func.OnLoadMoreListener) () -> mMainViewModel.square_post(true), mRvContent);
-        mRvContent.setLayoutManager(new LinearLayoutManager(this));
-        mRvContent.addItemDecoration(new VerticalItemDivider());
-        mRvContent.setAdapter(mMainAdapter);
-        mSrlContent.setOnRefreshListener(() -> mMainViewModel.square_post(false));
-        observerData();
-    }
+        mVpContent.setOffscreenPageLimit(2);
+        mVpContent.setAdapter(new MainAdapter(getSupportFragmentManager()){
 
-    private void observerData() {
-        mMainViewModel.getListMutableLiveData().observe(this, new Observer<List<SquareListModel.DataBean.PostListBean>>() {
+            SparseArray<Fragment> mFragmentSparseArray = new SparseArray<>();
+
             @Override
-            public void onChanged(List<SquareListModel.DataBean.PostListBean> postListBeans) {
-                mMainAdapter.setNewData(postListBeans);
-            }
-        });
-        mMainViewModel.getRefreshLiveData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                mSrlContent.setRefreshing(aBoolean);
-            }
-        });
-        mMainViewModel.getLoadMoreLiveData().observe(this, new Observer<MainViewModel.LoadMoreModel>() {
-            @Override
-            public void onChanged(MainViewModel.LoadMoreModel loadMoreModel) {
-                if(loadMoreModel.isCompleted()){
-                    mMainAdapter.loadMoreComplete();
-                }else if(loadMoreModel.isEnd()){
-                    mMainAdapter.loadMoreEnd();
-                }else{
-                    mMainAdapter.loadMoreFail();
+            public RecyclerView getContentView(int position) {
+                ArrayList<Fragment> list = getFragments();//避免onRestoreInstanceState时，Fragment是之前的。
+                View view = list != null ? list.get(position).getView() : null;
+                if (view instanceof ViewGroup) {
+                    ViewGroup vp = ((ViewGroup) view);
+                    for (int i = 0; i < vp.getChildCount(); i++) {
+                        if (vp.getChildAt(i) instanceof RecyclerView) {
+                            return (RecyclerView) vp.getChildAt(i);
+                        }
+                    }
                 }
+                return null;
+            }
+
+            @Override
+            public Fragment getItem(int position) {
+                Fragment fragment;
+                switch (position) {
+                    case 0:
+                        if (mFragmentSparseArray.get(0) == null) {
+                            fragment = new MainFragment();
+                            mFragmentSparseArray.put(0, fragment);
+                        } else {
+                            fragment = mFragmentSparseArray.get(0);
+                        }
+                        break;
+                    case 1:
+                        if (mFragmentSparseArray.get(1) == null) {
+                            fragment = new MainFragment();
+                            mFragmentSparseArray.put(1, fragment);
+                        } else {
+                            fragment = mFragmentSparseArray.get(1);
+                        }
+                        break;
+                    case 2:
+                        if (mFragmentSparseArray.get(2) == null) {
+                            fragment = new MainFragment();
+                            mFragmentSparseArray.put(2, fragment);
+                        } else {
+                            fragment = mFragmentSparseArray.get(2);
+                        }
+                    default:
+                        if (mFragmentSparseArray.get(position) == null) {
+                            fragment = new MainFragment();
+                            mFragmentSparseArray.put(position, fragment);
+                        } else {
+                            fragment = mFragmentSparseArray.get(position);
+                        }
+                        break;
+
+                }
+                return fragment;
+            }
+
+            @Override
+            public int getCount() {
+                return 3;
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mStrings[position];
             }
         });
+        mTlTab.setupWithViewPager(mVpContent);
     }
 
-    public class MainAdapter extends BaseQuickRecyclerViewAdapter<SquareListModel.DataBean.PostListBean, BaseViewHolder> {
+    public static abstract class MainAdapter extends FragmentStatePagerAdapter {
 
-        public MainAdapter(Context context) {
-            super(context);
+        protected MainAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-        @Override
-        public void loadViewHolder(BaseViewHolder holder, SquareListModel.DataBean.PostListBean item) {
-            holder.setText(R.id.tv_name, item.getNickname())
-                    .setText(R.id.tv_content, item.getContent());
-            Glide.with(getContext()).load(item.getAvatar()).into((ImageView) holder.getView(R.id.iv_image));
+        public abstract RecyclerView getContentView(int position);
+
+        protected ArrayList<Fragment> getFragments() {
+            ArrayList<Fragment> list = new ArrayList<>();
+            Field field = null;
+            ArrayList temp = null;
+            try {
+                field = FragmentStatePagerAdapter.class.getDeclaredField("mFragments");
+                field.setAccessible(true);
+                temp = (ArrayList) field.get(this);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            if (temp != null) {
+                for (int i = 0; i < temp.size(); i++) {
+                    Object obj = temp.get(i);
+                    if (obj instanceof Fragment) {
+                        list.add((Fragment) obj);
+                    }
+                }
+            }
+            return list;
         }
     }
 }
