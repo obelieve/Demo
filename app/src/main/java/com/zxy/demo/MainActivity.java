@@ -1,5 +1,6 @@
 package com.zxy.demo;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -16,6 +18,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.zxy.demo.model.SquareListModel;
+import com.zxy.frame.adapter.BaseQuickRecyclerViewAdapter;
+import com.zxy.frame.adapter.func.Func;
 import com.zxy.frame.adapter.item_decoration.VerticalItemDivider;
 import com.zxy.frame.json.MGson;
 import com.zxy.frame.utils.ToastUtil;
@@ -51,11 +55,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mMainAdapter = new MainAdapter();
+        mMainAdapter = new MainAdapter(this);
         mMainAdapter.setEmptyView(LayoutInflater.from(this).inflate(R.layout.view_empty, null));
-        mMainAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        mMainAdapter.setOnLoadMoreListener(new Func.OnLoadMoreListener() {
             @Override
-            public void onLoadMoreRequested() {
+            public void onLoadMore() {
                 App.getServiceInterface().square_post(mCurPage).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -83,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, mRvContent);
+        },mRvContent);
         mRvContent.setLayoutManager(new LinearLayoutManager(this));
         mRvContent.addItemDecoration(new VerticalItemDivider());
         mRvContent.setAdapter(mMainAdapter);
@@ -115,20 +119,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public class MainAdapter extends BaseQuickRecyclerViewAdapter<SquareListModel.DataBean.PostListBean, BaseViewHolder> {
 
-    public class MainAdapter extends BaseQuickAdapter<SquareListModel.DataBean.PostListBean, BaseViewHolder> {
-
-        public MainAdapter() {
-            super(R.layout.viewholder_main, mPostListBeans);//R.layout.viewholder_main
+        public MainAdapter(Context context) {
+            super(context);
         }
 
         @Override
-        protected void convert(@NonNull BaseViewHolder helper, SquareListModel.DataBean.PostListBean item) {
-            helper.setText(R.id.tv_name, item.getNickname())
+        public void loadViewHolder(BaseViewHolder holder, SquareListModel.DataBean.PostListBean item) {
+            holder.setText(R.id.tv_name, item.getNickname())
                     .setText(R.id.tv_content, item.getContent());
-            Glide.with(mContext).load(item.getAvatar()).into((ImageView) helper.getView(R.id.iv_image));
+            Glide.with(getContext()).load(item.getAvatar()).into((ImageView) holder.getView(R.id.iv_image));
         }
-
-
     }
 }
+
+
+
