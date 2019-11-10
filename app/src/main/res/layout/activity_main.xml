@@ -14,12 +14,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tabIndicatorColor="@color/green"
         app:tabIndicatorHeight="2dp"
-        app:tabMode="scrollable"
         app:tabPaddingEnd="15dp"
         app:tabPaddingStart="15dp"
         app:tabSelectedTextColor="@color/green"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="@color/cardview_dark_background" />
+<!--    app:tabMode="scrollable"-->
 <!--    app:tabMaxWidth="144dp"-->
 <!--    app:tabMinWidth="48dp"-->
     <androidx.viewpager.widget.ViewPager
