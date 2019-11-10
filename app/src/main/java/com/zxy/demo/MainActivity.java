@@ -44,21 +44,15 @@ public class MainActivity extends AppCompatActivity {
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mMainAdapter = new MainAdapter(this);
         mMainAdapter.setEmptyView(LayoutInflater.from(this).inflate(R.layout.view_empty, null));
-        mMainAdapter.setOnLoadMoreListener(new Func.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                mMainViewModel.square_post(true);
-            }
-        }, mRvContent);
+        mMainAdapter.setOnLoadMoreListener((Func.OnLoadMoreListener) () -> mMainViewModel.square_post(true), mRvContent);
         mRvContent.setLayoutManager(new LinearLayoutManager(this));
         mRvContent.addItemDecoration(new VerticalItemDivider());
         mRvContent.setAdapter(mMainAdapter);
-        mSrlContent.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mMainViewModel.square_post(false);
-            }
-        });
+        mSrlContent.setOnRefreshListener(() -> mMainViewModel.square_post(false));
+        observerData();
+    }
+
+    private void observerData() {
         mMainViewModel.getListMutableLiveData().observe(this, new Observer<List<SquareListModel.DataBean.PostListBean>>() {
             @Override
             public void onChanged(List<SquareListModel.DataBean.PostListBean> postListBeans) {
