@@ -19,9 +19,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxy.demo.R;
+import com.zxy.demo.adapter.viewholder.MainViewHolder;
 import com.zxy.demo.model.SquareListModel;
 import com.zxy.demo.viewmodel.MainViewModel;
 import com.zxy.frame.adapter.BaseQuickRecyclerViewAdapter;
+import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.adapter.func.Func;
 import com.zxy.frame.adapter.item_decoration.VerticalItemDivider;
 import com.zxy.frame.base.BaseFragment;
@@ -51,7 +53,7 @@ public class MainFragment extends BaseFragment {
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mMainAdapter = new MainAdapter(getContext());
         mMainAdapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.view_empty, null));
-        mMainAdapter.setOnLoadMoreListener((Func.OnLoadMoreListener) () -> mMainViewModel.square_post(true), mRvContent);
+        mMainAdapter.setLoadMoreListener(mRvContent, () -> mMainViewModel.square_post(true));
         mRvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvContent.addItemDecoration(new VerticalItemDivider());
         mRvContent.setAdapter(mMainAdapter);
@@ -63,7 +65,7 @@ public class MainFragment extends BaseFragment {
         mMainViewModel.getListMutableLiveData().observe(this, new Observer<List<SquareListModel.DataBean.PostListBean>>() {
             @Override
             public void onChanged(List<SquareListModel.DataBean.PostListBean> postListBeans) {
-                mMainAdapter.setNewData(postListBeans);
+                mMainAdapter.getDataHolder().setList(postListBeans).notifyDataSetChanged();
             }
         });
         mMainViewModel.getRefreshLiveData().observe(this, new Observer<Boolean>() {
@@ -76,27 +78,34 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onChanged(MainViewModel.LoadMoreModel loadMoreModel) {
                 if(loadMoreModel.isCompleted()){
-                    mMainAdapter.loadMoreComplete();
+                    mMainAdapter.loadMoreLoading();
                 }else if(loadMoreModel.isEnd()){
                     mMainAdapter.loadMoreEnd();
                 }else{
-                    mMainAdapter.loadMoreFail();
+                    mMainAdapter.loadMoreError();
                 }
             }
         });
     }
 
-    public class MainAdapter extends BaseQuickRecyclerViewAdapter<SquareListModel.DataBean.PostListBean, BaseViewHolder> {
+    public class MainAdapter extends BaseRecyclerViewAdapter<SquareListModel.DataBean.PostListBean> {
 
         public MainAdapter(Context context) {
             super(context);
         }
 
         @Override
-        public void loadViewHolder(BaseViewHolder holder, SquareListModel.DataBean.PostListBean item) {
-            holder.setText(R.id.tv_name, item.getNickname())
-                    .setText(R.id.tv_content, item.getContent());
-            Glide.with(getContext()).load(item.getAvatar()).into((ImageView) holder.getView(R.id.iv_image));
+        public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+            return new MainViewHolder(parent,R.layout.viewholder_main);
         }
+
+        @Override
+        public void loadViewHolder(BaseViewHolder holder, int position) {
+            MainViewHolder holder1 = ((MainViewHolder)holder);
+            holder1.mTvName.setText(getDataHolder().getList().get(position).getNickname());
+            holder1.mTvName.setText(getDataHolder().getList().get(position).getNickname());
+            Glide.with(getContext()).load(getDataHolder().getList().get(position).getAvatar()).into(holder1.mIvImage);
+        }
+
     }
 }

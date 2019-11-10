@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -11,11 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxy.demo.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter<BaseRecyclerViewAdapter.BaseViewHolder> {
 
@@ -58,9 +61,30 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
 
     public abstract void loadViewHolder(BaseRecyclerViewAdapter.BaseViewHolder holder, int position);
 
-    public void setLoadMore(RecyclerView rv, OnLoadMoreListener listener) {
+    public void setLoadMoreListener(RecyclerView rv, OnLoadMoreListener listener) {
         mRecyclerView = rv;
         mOnLoadMoreListener = listener;
+    }
+
+    public void loadMoreLoading() {
+        if (mOnLoadMoreListener == null)
+            return;
+        mLoadMoreState = LOADING_STATE;
+        notifyItemChanged(getItemCount() - 1);
+    }
+
+    public void loadMoreError() {
+        if (mOnLoadMoreListener == null)
+            return;
+        mLoadMoreState = LOAD_ERROR_STATE;
+        notifyItemChanged(getItemCount() - 1);
+    }
+
+    public void loadMoreEnd() {
+        if (mOnLoadMoreListener == null)
+            return;
+        mLoadMoreState = LOAD_END_STATE;
+        notifyItemChanged(getItemCount() - 1);
     }
 
     public void setEmptyView(View emptyView) {
@@ -81,19 +105,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         BaseRecyclerViewAdapter.BaseViewHolder vh = null;
         switch (viewType) {
             case -2:
-                int layoutId = R.layout.view_loading;
-                switch (mLoadMoreState) {
-                    case LOADING_STATE:
-                        layoutId = R.layout.view_loading;
-                        break;
-                    case LOAD_END_STATE:
-                        layoutId = R.layout.view_load_end;
-                        break;
-                    case LOAD_ERROR_STATE:
-                        layoutId = R.layout.view_load_error;
-                        break;
-                }
-                vh = new LoadMoreViewHolder(parent, layoutId);
+                vh = new LoadMoreViewHolder(parent,0);
                 break;
             case -1:
                 vh = new EmptyViewHolder(mEmptyView);
@@ -117,6 +129,8 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                         mItemClickCallback.onItemClick(v, getDataHolder().getList().get(pos), pos);
                     }
                 });
+            } else {
+                holder.itemView.setOnClickListener(null);
             }
             if (mItemLongClickCallback != null) {
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -125,12 +139,44 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                         return mItemLongClickCallback.onItemLongClick(v, getDataHolder().getList().get(pos), pos);
                     }
                 });
+            } else {
+                holder.itemView.setOnLongClickListener(null);
             }
         } else {
-            if (mItemClickCallback != null) {
+            if (holder instanceof LoadMoreViewHolder) {
+                LoadMoreViewHolder holder1 = (LoadMoreViewHolder)holder;
+                switch (mLoadMoreState) {
+                    case LOADING_STATE:
+                        holder1.mFlLoading.setVisibility(View.VISIBLE);
+                        holder1.mFlError.setVisibility(View.GONE);
+                        holder1.mFlEnd.setVisibility(View.GONE);
+                        break;
+                    case LOAD_END_STATE:
+                        holder1.mFlLoading.setVisibility(View.GONE);
+                        holder1.mFlError.setVisibility(View.GONE);
+                        holder1.mFlEnd.setVisibility(View.VISIBLE);
+                        break;
+                    case LOAD_ERROR_STATE:
+                        holder1.mFlLoading.setVisibility(View.GONE);
+                        holder1.mFlError.setVisibility(View.VISIBLE);
+                        holder1.mFlEnd.setVisibility(View.GONE);
+                        break;
+                }
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mLoadMoreState == LOAD_ERROR_STATE && mOnLoadMoreListener != null) {
+                            mLoadMoreState = LOADING_STATE;
+                            holder1.mFlLoading.setVisibility(View.VISIBLE);
+                            holder1.mFlError.setVisibility(View.GONE);
+                            holder1.mFlEnd.setVisibility(View.GONE);
+                            mOnLoadMoreListener.onLoadMore();
+                        }
+                    }
+                });
+                holder.itemView.setOnLongClickListener(null);
+            } else {
                 holder.itemView.setOnClickListener(null);
-            }
-            if (mItemLongClickCallback != null) {
                 holder.itemView.setOnLongClickListener(null);
             }
         }
@@ -195,7 +241,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                                 ((StaggeredGridLayoutManager) manager).findLastVisibleItemPositions(lastPositions);
                                 lastItemPosition = findMax(lastPositions);
                             }
-                            if (lastItemPosition == (itemCount - 1) && isSlidingUpward) {
+                            if (lastItemPosition == (itemCount - 1) && isSlidingUpward && mLoadMoreState == LOADING_STATE) {
                                 mOnLoadMoreListener.onLoadMore();
                             }
                         }
@@ -290,8 +336,16 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
 
     public static class LoadMoreViewHolder extends BaseViewHolder {
 
+        @BindView(R.id.fl_loading)
+        FrameLayout mFlLoading;
+        @BindView(R.id.fl_error)
+        FrameLayout mFlError;
+        @BindView(R.id.fl_end)
+        FrameLayout mFlEnd;
+
         public LoadMoreViewHolder(ViewGroup parent, int layoutId) {
-            super(parent, layoutId);
+            super(parent, R.layout.view_load_more);
+            ButterKnife.bind(this,itemView);
         }
     }
 

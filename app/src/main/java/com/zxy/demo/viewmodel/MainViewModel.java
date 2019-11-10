@@ -50,6 +50,8 @@ public class MainViewModel extends ViewModel {
                     if (!isMore) {
                         if (model.getData().getHas_next_page() == 0) {
                             mLoadMoreLiveData.setValue(new LoadMoreModel(false, false, true));
+                        }else{
+                            mLoadMoreLiveData.setValue(new LoadMoreModel(true, false, false));
                         }
                     }else{
                         if (model.getData().getHas_next_page() == 0) {
