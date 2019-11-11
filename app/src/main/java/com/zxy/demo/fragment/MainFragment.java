@@ -52,7 +52,7 @@ public class MainFragment extends BaseFragment {
     protected void initView() {
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mMainAdapter = new MainAdapter(getContext());
-        mMainAdapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.view_empty, null));
+        mMainAdapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.view_empty, mSrlContent,false));
         mMainAdapter.setLoadMoreListener(mRvContent, () -> mMainViewModel.square_post(true));
         mRvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvContent.addItemDecoration(new VerticalItemDivider());
