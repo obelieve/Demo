@@ -32,12 +32,15 @@ public class HttpUtil {
     private static HttpUtil sHttpUtil = new HttpUtil();
 
     private Retrofit mRetrofit;
-    private OkHttpClient mOkHttpClient;
 
     private String mBaseUrl;
     private List<Interceptor> mInterceptors;
     private List<Interceptor> mNetInterceptors;
     private List<Converter.Factory> mConverterFactorys;
+
+    private HttpUtil() {
+
+    }
 
     public static HttpUtil build() {
         return sHttpUtil;

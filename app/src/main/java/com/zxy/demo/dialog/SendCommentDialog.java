@@ -31,8 +31,8 @@ public class SendCommentDialog extends BaseDialog {
         view = LayoutInflater.from(activity).inflate(R.layout.layout_comment_dialog, null);
         ButterKnife.bind(this,view);
         setContentView(view);
-        setWidth(SystemInfoUtil.screenWidth(activity));
-        setHeight((int) SystemInfoUtil.density(activity) * 50);
+        setWidth(SystemInfoUtil.screenWidth());
+        setHeight((int) SystemInfoUtil.density() * 50);
         setGravity(Gravity.BOTTOM);
         mEditComment.requestFocus();
         mEditComment.post(() -> {

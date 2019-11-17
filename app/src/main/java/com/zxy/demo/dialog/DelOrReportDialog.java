@@ -26,7 +26,7 @@ public class DelOrReportDialog extends BaseDialog {
         View view = LayoutInflater.from(activity).inflate(R.layout.layout_del_or_report, null);
         ButterKnife.bind(this, view);
         setContentView(view);
-        setWidth(SystemInfoUtil.screenWidth(activity));
+        setWidth(SystemInfoUtil.screenWidth());
         setGravity(Gravity.BOTTOM);
     }
 

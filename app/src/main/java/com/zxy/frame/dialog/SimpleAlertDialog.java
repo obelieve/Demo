@@ -35,7 +35,7 @@ public class SimpleAlertDialog extends BaseDialog {
         View view = LayoutInflater.from(activity).inflate(R.layout.dialog_simple_alert, null);
         ButterKnife.bind(this, view);
         setContentView(view);
-        float density = SystemInfoUtil.density(activity);
+        float density = SystemInfoUtil.density();
         setWidth(activity.getResources().getDisplayMetrics().widthPixels - (int) (30 * density));
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         setGravity(Gravity.CENTER);
