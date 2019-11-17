@@ -19,8 +19,12 @@ public class BaseDialog {
     protected Activity mActivity;
 
     public BaseDialog(Activity activity) {
+        this(activity, R.style.BaseDialog);
+    }
+
+    public BaseDialog(Activity activity, int style) {
         mActivity = activity;
-        mDialog = new Dialog(activity, R.style.BaseDialog);
+        mDialog = new Dialog(activity, style);
     }
 
     public Activity getActivity() {

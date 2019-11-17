@@ -14,6 +14,13 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.4</item>
     </style>
+    <style name="BaseBottomDialog" parent="BaseDialog">
+        <item name="android:windowAnimationStyle">@style/bottomAnim</item>
+    </style>
+    <style name="bottomAnim">
+        <item name="android:windowEnterAnimation">@anim/bottom_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/bottom_dialog_exit</item>
+    </style>
     <!--dialog 可选颜色-->
     <color name="baseDialogMainColor">@color/green</color>
     <color name="baseDialogBackgroundColor">@color/white</color>
