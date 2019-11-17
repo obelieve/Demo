@@ -4,18 +4,78 @@ android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
-        applicationId "com.zxy.demo"
+        applicationId "com.zxy.demo.app"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            storeFile file("zxy.jks")
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+        }
+    }
+
     buildTypes {
+
+        debug {
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+        }
         release {
             minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            //保存混淆映射文件
+            applicationVariants.all { variant ->
+                if (variant.getBuildType().isMinifyEnabled()) {
+                    variant.assemble.doLast {
+                        copy {
+                            from variant.mappingFile
+                            into "${rootDir}/mappings"
+                            rename { String fileName ->
+                                "mapping-${variant.name}.txt"
+                            }
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    flavorDimensions "default"
+
+    productFlavors {
+
+        app{
+            dimension "default"
+            applicationId "com.zxy.demo.app"
+            versionCode 0001
+            versionName "0.0.1"
+            //buildConfigField 'String', 'SERVER_URL_DOMAIN', '"https://www.xxx.com"'
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName = outputFile.name.replace(".apk", "_${variant.versionName}_${variant.versionCode}.apk")
+                outputFileName = fileName
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 }
 
