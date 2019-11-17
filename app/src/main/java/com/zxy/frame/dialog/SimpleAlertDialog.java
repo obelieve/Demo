@@ -1,5 +1,6 @@
 package com.zxy.frame.dialog;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,17 +30,15 @@ public class SimpleAlertDialog extends BaseDialog {
     View.OnClickListener mOkListener;
     View.OnClickListener mCancelListener;
 
-    public SimpleAlertDialog(@NonNull Context context) {
-        super(context);
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_simple_alert, null);
-        setContentView(view);
+    public SimpleAlertDialog(@NonNull Activity activity) {
+        super(activity);
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_simple_alert, null);
         ButterKnife.bind(this, view);
-        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        float density = SystemInfoUtil.density(context);
-        layoutParams.width = context.getResources().getDisplayMetrics().widthPixels - (int) (30 * density);
-        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        view.setLayoutParams(layoutParams);
-        gravity(Gravity.CENTER);
+        setContentView(view);
+        float density = SystemInfoUtil.density(activity);
+        setWidth(activity.getResources().getDisplayMetrics().widthPixels - (int) (30 * density));
+        setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        setGravity(Gravity.CENTER);
     }
 
     public SimpleAlertDialog setContent(String content) {
