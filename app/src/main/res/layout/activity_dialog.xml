@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+    <Button
+        android:id="@+id/btn_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="弹出警示窗" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="弹出底部窗" />
+        <Button
+            android:id="@+id/btn_bottom2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="弹出底部窗2" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="从当前位置弹出窗" />
+
+    <Button
+        android:id="@+id/btn_system"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="弹出系统样式警示窗" />
+</LinearLayout>
