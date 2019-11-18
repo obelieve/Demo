@@ -12,8 +12,6 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.tv)
-    TextView mTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +20,4 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.tv)
-    public void onViewClicked() {
-
-    }
 }
