@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mynotezxy.R;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

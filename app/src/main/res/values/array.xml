@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="drawer_items">
+        <item >首页</item>
+        <item >文件夹</item>
+        <item >个性主题</item>
+        <item >设置</item>
+        <item >关于</item>
+    </string-array>
+    <array name="drawer_icons">
+        <item>@drawable/ic_home</item>
+        <item>@drawable/ic_notefile</item>
+        <item>@drawable/ic_skin</item>
+        <item>@drawable/ic_setting</item>
+        <item>@drawable/ic_about</item>
+    </array>
+    <string-array name="notefile">
+        <item >全部文件</item>
+        <item >私人记事</item>
+        <item >笔记不</item>
+    </string-array>
+    <string-array name="paint_size">
+        <item >5</item>
+        <item >10</item>
+        <item >15</item>
+        <item >20</item>
+        <item >25</item>
+        <item >30</item>
+    </string-array>
+    <string-array name="paint_color">
+        <item >BLACK</item>
+        <item >RED</item>
+        <item >YELLOW</item>
+        <item >GREEN</item>
+        <item >BLUE</item>
+    </string-array>
+    <string-array name="itemOperation">
+        <item >编辑</item>
+        <item >删除</item>
+    </string-array>
+</resources>

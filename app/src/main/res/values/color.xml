@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="counter">#111</color>
+    <color name="list_background">#303030</color>
+    <color name="list_background_pressed">#7D7D7D</color>
+    <color name="list_item_title">#fff</color>
+    <color name="edittext_background">#ebebeb</color>
+    <color name="handwrite_edittext_background">#ebebeb</color>
+    <color name="bottom_menu_background">#ebebeb</color>
+    <color name="popupwindow_pencilsize_background">#ebebeb</color>
+    <color name="black">#605f5f</color>
+    <color name="blue">#6eb6c8</color>
+    <color name="yellow">#c6c76f</color>
+    <color name="red">#c16983</color>
+    <color name="green">#8bc27a</color>
+    <color name="write">#fff</color>
+</resources>

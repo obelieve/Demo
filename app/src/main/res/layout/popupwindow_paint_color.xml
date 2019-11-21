@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/color_Layout"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+    <LinearLayout
+            android:layout_width="match_parent"
+    		android:layout_height="60dp"
+    		android:orientation="horizontal">
+		   	<ImageView
+		   	    android:id="@+id/ivBlack"
+		        android:layout_width="wrap_content"
+		     	android:layout_height="wrap_content"
+		     	android:paddingLeft="20dp"
+		     	android:paddingRight="10dp"
+		     	android:paddingTop="10dp"
+		     	android:paddingBottom="10dp"
+		     	android:src="@drawable/paint_color_black" />
+		    <ImageView
+		        android:id="@+id/ivRed"
+		     	android:layout_width="wrap_content"
+		     	android:layout_height="wrap_content"
+		     	android:padding="10dp"
+		     	android:src="@drawable/paint_color_red" />
+		    <ImageView
+		        android:id="@+id/ivYellow"
+		     	android:layout_width="wrap_content"
+		     	android:layout_height="wrap_content"
+		     	android:padding="10dp"
+		     	android:src="@drawable/paint_color_yellow" />
+		    <ImageView
+		        android:id="@+id/ivGreen"
+		     	android:layout_width="wrap_content"
+		     	android:layout_height="wrap_content"
+		     	android:padding="10dp"
+		     	android:src="@drawable/paint_color_green" />
+		    <ImageView
+		        android:id="@+id/ivBlue"
+		     	android:layout_width="wrap_content"
+		     	android:layout_height="wrap_content"
+		     	android:padding="10dp"
+		     	android:src="@drawable/paint_color_blue" />
+		    </LinearLayout>
+</RelativeLayout>

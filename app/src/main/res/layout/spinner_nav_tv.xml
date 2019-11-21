@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 用于下拉导航里面textview设置 -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text1"
+    android:textColor="#fff"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceListItemSmall"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall" >
+</TextView>

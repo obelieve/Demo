@@ -1,3 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Demo</string>
+
+    <string name="app_name">MyNotezxy</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_search">查询</string>
+    <string name="action_back">返回</string>
+    <string name="action_accept">保存</string>
+    <string name="action_share">分享</string>
+    <string name="action_alarm">设置提醒</string>
 </resources>

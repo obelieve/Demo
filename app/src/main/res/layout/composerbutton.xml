@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="#fff">
+ 
+    <Button
+        android:id="@+id/btn_composer_write"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/composer_write" />
+
+    <Button
+        android:id="@+id/btn_composer_handwrite"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/composer_handwrite" />
+    
+    <Button
+        android:id="@+id/btn_composer_graffito"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/composer_graffito" />
+
+    <Button
+        android:id="@+id/btn_composer_camera"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/composer_camera" />
+
+    <Button
+        android:id="@+id/btn_composer_voice"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/composer_voice" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/composer_button" >
+
+        <Button
+            android:id="@+id/btn_composer"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/composer_icn_plus" />
+    </RelativeLayout>
+    
+
+</RelativeLayout>

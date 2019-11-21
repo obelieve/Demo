@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handwrite_edittext_background">
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/gvBottomMenu">
+	    <EditText
+	        android:id="@+id/etContent"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_marginLeft="10dp"
+		    android:inputType="textMultiLine"
+		    android:focusable="true"
+		    android:gravity="left|top"
+		    android:background="@color/handwrite_edittext_background"/>
+    </ScrollView>
+    <GridView 
+        android:id="@+id/gvBottomMenu"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:numColumns="auto_fit"
+        android:background="@color/bottom_menu_background"
+        android:horizontalSpacing="5dp"
+        android:layout_alignParentBottom="true"
+        ></GridView>   
+</RelativeLayout>
