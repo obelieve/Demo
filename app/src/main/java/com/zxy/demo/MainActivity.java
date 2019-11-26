@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.zxy.demo._issue.ForTAFragment;
 import com.zxy.demo.fragment.MainFragment;
 import com.zxy.frame.view.SlidingViewPager;
 
@@ -27,7 +28,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     private final String[] mStrings = new String[]{
-            "推荐", "精选", "Kindle"};
+            "推荐", "精选", "Kindle","@其他人"};
 
     @BindView(R.id.tl_tab)
     TabLayout mTlTab;
@@ -86,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             fragment = mFragmentSparseArray.get(2);
                         }
+                        break;
+                    case 3:
+                        fragment = new ForTAFragment();
+                        break;
                     default:
                         if (mFragmentSparseArray.get(position) == null) {
                             fragment = new MainFragment();
@@ -101,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public int getCount() {
-                return 3;
+                return mStrings.length;
             }
 
             @Nullable
