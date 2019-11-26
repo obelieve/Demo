@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.zxy.demo.R;
-import com.zxy.utility.SystemInfoUtil;
+import com.zxy.utility.SystemUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +35,7 @@ public class SimpleAlertDialog extends BaseDialog {
         View view = LayoutInflater.from(activity).inflate(R.layout.dialog_simple_alert, null);
         ButterKnife.bind(this, view);
         setContentView(view);
-        float density = SystemInfoUtil.density();
+        float density = SystemUtil.density();
         setWidth(activity.getResources().getDisplayMetrics().widthPixels - (int) (30 * density));
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         setGravity(Gravity.CENTER);
