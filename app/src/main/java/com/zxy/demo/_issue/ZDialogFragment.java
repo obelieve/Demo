@@ -3,6 +3,8 @@ package com.zxy.demo._issue;
 import android.content.DialogInterface;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -11,6 +13,7 @@ import com.zxy.demo.dialog.DelOrReportDialog;
 import com.zxy.demo.dialog.SendCommentDialog;
 import com.zxy.frame.base.BaseFragment;
 import com.zxy.frame.dialog.SimpleAlertDialog;
+import com.zxy.frame.utils.PopupMenuUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -51,6 +54,16 @@ public class ZDialogFragment extends BaseFragment {
                 new DelOrReportDialog(getActivity()).show();
                 break;
             case R.id.btn_location:
+                LinearLayout ll = new LinearLayout(getContext());
+                ll.setOrientation(LinearLayout.VERTICAL);
+                ll.setBackgroundResource(R.drawable.ic_bg_popup_left);
+                TextView tv = new TextView(getContext());
+                tv.setText("内容1");
+                TextView tv2 = new TextView(getContext());
+                tv2.setText("内容2");
+                ll.addView(tv);
+                ll.addView(tv2);
+                new PopupMenuUtil(getActivity()).showShadowPopup(mBtnLocation, ll);
                 break;
             case R.id.btn_system:
                 AlertDialog dialog = new AlertDialog.Builder(getActivity())
@@ -70,4 +83,5 @@ public class ZDialogFragment extends BaseFragment {
                 break;
         }
     }
+
 }
