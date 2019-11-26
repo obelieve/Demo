@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +36,8 @@ import butterknife.Unbinder;
  * @其他人 使用例子
  */
 public class ForTAFragment extends BaseFragment {
-    @BindView(R.id.tv)
-    TextView mTv;
+    @BindView(R.id.btn)
+    Button mBtn;
     @BindView(R.id.et)
     EditText mEt;
 
@@ -58,12 +59,12 @@ public class ForTAFragment extends BaseFragment {
         });
     }
 
-    @OnLongClick(R.id.tv)
+    @OnLongClick(R.id.btn)
     public void onViewLongClicked() {
         Toast.makeText(getContext(), mEt.getText().toString(), Toast.LENGTH_LONG).show();
     }
 
-    @OnClick(R.id.tv)
+    @OnClick(R.id.btn)
     public void onViewClicked() {
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#999999"));
         mEditTextForATHelper.insertSpan(colorSpan, "@【123】");
