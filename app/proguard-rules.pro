@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#屏蔽警告
+#Caused by: java.io.IOException: Please correct the above warnings first.
+#at proguard.Initializer.execute(Initializer.java:485)
+#at proguard.ProGuard.initialize(ProGuard.java:271)
+-ignorewarnings

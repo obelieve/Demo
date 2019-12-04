@@ -11,10 +11,65 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        release {
+            storeFile file("zxy.jks")
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+        }
+    }
+
     buildTypes {
+
+        debug {
+            minifyEnabled true
+            zipAlignEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
         release {
             minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    flavorDimensions "default"
+    productFlavors {
+
+        app{
+            dimension "default"
+            applicationId "com.zxy.demo"
+            versionCode 1
+            versionName "1.0"
+            //buildConfigField 'String', 'SERVER_URL_DOMAIN', '"https://www.xxx.com"'
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        //保存混淆映射文件
+        if (variant.getBuildType().isMinifyEnabled()) {
+            variant.assemble.doLast {
+                copy {
+                    from variant.mappingFile
+                    into "${projectDir}/mappings"
+                    rename { String fileName ->
+                        "mapping-${variant.name}.txt"
+                    }
+                }
+            }
+        }
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName = outputFile.name.replace(".apk", "_${variant.versionName}_${variant.versionCode}.apk")
+                outputFileName = fileName
+            }
         }
     }
 
