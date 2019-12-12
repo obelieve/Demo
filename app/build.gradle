@@ -72,6 +72,13 @@ android {
             }
         }
     }
+    buildscript {
+        configurations.all {
+            resolutionStrategy {
+                force("net.sf.proguard:proguard-base:6.2.0")
+            }
+        }
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
