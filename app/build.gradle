@@ -24,16 +24,16 @@ android {
     buildTypes {
 
         debug {
-            minifyEnabled true
+            minifyEnabled false
             zipAlignEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         release {
-            minifyEnabled false
-            zipAlignEnabled false
-            shrinkResources false
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -59,7 +59,7 @@ android {
                     from variant.mappingFile
                     into "${projectDir}/mappings"
                     rename { String fileName ->
-                        "mapping-${variant.name}.txt"
+                        "mapping-${variant.name}_${variant.versionName}_${variant.versionCode}.txt"
                     }
                 }
             }
