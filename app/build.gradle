@@ -4,15 +4,28 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "com.zxy.demo"
+        applicationId "com.news.project"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        config {
+            storeFile file('/keystore/test.jks')
+            storePassword 'plan123'
+            keyAlias 'key0'
+            keyPassword 'plan123'
+        }
+    }
     buildTypes {
         release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            signingConfig signingConfigs.config
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -31,9 +44,12 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.github.obelieve:utility:0.0.4'
+    implementation 'com.google.code.gson:gson:2.6.2'
     implementation 'com.jakewharton:butterknife:10.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    //微信支付
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 
 
 }
