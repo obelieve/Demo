@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,17 +33,22 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.tv)
     public void onViewClicked() {
-        String json = "{\"appid\":\"wx1e6b33f8d61a7cf5\",\"partnerid\":\"1572382431\",\"prepayid\":\"wx111558255600934787c734ee1445207700\",\"timestamp\":\"1578729505\",\"noncestr\":\"JLafAhNYkXZWSdwU\",\"package\":\"Sign=WXPay\",\"sign\":\"C80C395986E18F952E1E7DBE6BC2F945\"}";
-        WXPayBean bean = new Gson().fromJson(json,WXPayBean.class);
         IWXAPI api = WXAPIFactory.createWXAPI(this, Constant.WX_APPID,false);
-        PayReq request = new PayReq();
-        request.appId = bean.getAppid();
-        request.partnerId = bean.getPartnerid();
-        request.prepayId = bean.getPrepayid();
-        request.timeStamp = bean.getTimestamp();
-        request.nonceStr = bean.getNoncestr();
-        request.packageValue = bean.getPackageX();
-        request.sign = bean.getSign();
-        api.sendReq(request);
+        if(api.isWXAppInstalled()){
+            String json = "{\"appid\":\"wx1e6b33f8d61a7cf5\",\"partnerid\":\"1572382431\",\"prepayid\":\"wx111558255600934787c734ee1445207700\",\"timestamp\":\"1578729505\",\"noncestr\":\"JLafAhNYkXZWSdwU\",\"package\":\"Sign=WXPay\",\"sign\":\"C80C395986E18F952E1E7DBE6BC2F945\"}";
+            WXPayBean bean = new Gson().fromJson(json,WXPayBean.class);
+            PayReq request = new PayReq();
+            request.appId = bean.getAppid();
+            request.partnerId = bean.getPartnerid();
+            request.prepayId = bean.getPrepayid();
+            request.timeStamp = bean.getTimestamp();
+            request.nonceStr = bean.getNoncestr();
+            request.packageValue = bean.getPackageX();
+            request.sign = bean.getSign();
+            api.sendReq(request);
+        }else{
+            Toast.makeText(this,"请先安装微信",Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
