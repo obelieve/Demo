@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        ivIdentify.setImageBitmap(IdentifyingCode.getInstance().createBitmap(this, 80, 40));
+        ivIdentify.setImageBitmap(ImageVerificationCode.getInstance().createBitmap(this, 80, 40));
         captcha.setBitmap("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3203825941,2278025487&fm=26&gp=0.jpg");
         captcha.setCaptchaStrategy(new DefaultCaptchaStrategy(this));
         captcha.setSeekBarStyle(R.drawable.po_seekbar,R.drawable.thumb);
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv:
-                String code = IdentifyingCode.getInstance().getCode();
+                String code = ImageVerificationCode.getInstance().getCode();
                 String tips = "错误";
                 if (etIdentify.getText().toString().toLowerCase().equals(code.toLowerCase())) {
                     Toast.makeText(this, "正确", Toast.LENGTH_SHORT).show();
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.iv_identify:
-                ivIdentify.setImageBitmap(IdentifyingCode.getInstance().createBitmap(this, 80, 40));
+                ivIdentify.setImageBitmap(ImageVerificationCode.getInstance().createBitmap(this, 80, 40));
                 break;
         }
     }

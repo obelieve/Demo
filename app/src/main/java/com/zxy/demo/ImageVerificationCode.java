@@ -10,8 +10,10 @@ import android.util.DisplayMetrics;
 
 import java.util.Random;
 
-
-public class IdentifyingCode {
+/**
+ * 图形验证码
+ */
+public class ImageVerificationCode {
 
     //随机数数组，验证码上的数字和字母
     private static final char[] CHARS = {
@@ -23,11 +25,11 @@ public class IdentifyingCode {
     };
 
     //这是一个单例模式
-    private static IdentifyingCode IdentifyingCode = new IdentifyingCode();
+    private static ImageVerificationCode IMAGE_VERIFICATION_CODE = new ImageVerificationCode();
     ;
 
-    public static IdentifyingCode getInstance() {
-        return IdentifyingCode;
+    public static ImageVerificationCode getInstance() {
+        return IMAGE_VERIFICATION_CODE;
     }
 
     //验证码个数
