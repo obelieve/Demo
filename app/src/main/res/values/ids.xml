@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tv_red_count" type="id"/>
+    <item name="tv_water_count" type="id"/>
+    <item name="tv_black_count" type="id"/>
+</resources>
