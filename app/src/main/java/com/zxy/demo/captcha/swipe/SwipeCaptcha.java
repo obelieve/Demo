@@ -1,4 +1,4 @@
-package com.zxy.demo;
+package com.zxy.demo.captcha.swipe;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,49 +11,60 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.zxy.demo.R;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SwipeVerificationView extends LinearLayout {
+public class SwipeCaptcha extends LinearLayout {
 
     @BindView(R.id.iv_bg)
-    SwipeVerificationImageView ivBg;
+    CaptchaImageView ivBg;
     @BindView(R.id.sb_progress)
-    SeekBar sbProgress;
+    CaptchaSeekBar sbProgress;
     @BindView(R.id.btn_reset)
     Button btnReset;
     private boolean mTouch = false;
 
-    public SwipeVerificationView(Context context) {
+    public SwipeCaptcha(Context context) {
         super(context);
         init();
     }
 
-    public SwipeVerificationView(Context context, @Nullable AttributeSet attrs) {
+    public SwipeCaptcha(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
-        ivBg.setCallback(new SwipeVerificationImageView.Callback() {
+        ivBg.setEndCallback(new SwipeCaptchaHelper.EndCallback() {
             @Override
             public void onSuccess() {
-                Toast.makeText(getContext(),"成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "成功", Toast.LENGTH_SHORT).show();
                 sbProgress.setEnabled(false);
             }
 
             @Override
             public void onFailure() {
-                Toast.makeText(getContext(),"失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "失败", Toast.LENGTH_SHORT).show();
+                sbProgress.setProgress(0);
+                ivBg.resetBlock();
+            }
+
+            @Override
+            public void onMaxFailed() {
+                Toast.makeText(getContext(), "达到最大失败次数", Toast.LENGTH_SHORT).show();
+                sbProgress.setProgress(0);
+                ivBg.reset();
             }
         });
     }
 
     public void init() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_swipe_verification_code, this, true);
-        ButterKnife.bind(view);
+        ButterKnife.bind(this, view);
         sbProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(mTouch){
+                if (mTouch) {
                     ivBg.move(progress);
                 }
             }
@@ -66,7 +77,7 @@ public class SwipeVerificationView extends LinearLayout {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mTouch = false;
-                ivBg.up();
+                ivBg.end();
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.zxy.demo;
+package com.zxy.demo.captcha;
 
 
 import android.content.Context;
@@ -11,9 +11,9 @@ import android.util.DisplayMetrics;
 import java.util.Random;
 
 /**
- * 图形验证码
+ * 字符验证码
  */
-public class ImageVerificationCode {
+public class CharCaptcha {
 
     //随机数数组，验证码上的数字和字母
     private static final char[] CHARS = {
@@ -25,10 +25,10 @@ public class ImageVerificationCode {
     };
 
     //这是一个单例模式
-    private static ImageVerificationCode IMAGE_VERIFICATION_CODE = new ImageVerificationCode();
+    private static CharCaptcha IMAGE_VERIFICATION_CODE = new CharCaptcha();
     ;
 
-    public static ImageVerificationCode getInstance() {
+    public static CharCaptcha getInstance() {
         return IMAGE_VERIFICATION_CODE;
     }
 

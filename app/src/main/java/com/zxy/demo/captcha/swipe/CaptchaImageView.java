@@ -1,4 +1,4 @@
-package com.zxy.demo;
+package com.zxy.demo.captcha.swipe;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,7 +13,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import java.util.Random;
 
-public class SwipeVerificationImageView extends AppCompatImageView {
+public class CaptchaImageView extends AppCompatImageView {
 
     public final int BLOCK_SIZE = 50;
     public final int ACCURACY_VALUE = 10;
@@ -21,22 +21,28 @@ public class SwipeVerificationImageView extends AppCompatImageView {
     private int mBlockSize;
     private Paint mShadowPaint;
     private Paint mBlockPaint;
+    private SwipeCaptchaHelper.EndCallback mEndCallback;
+    //init
+    private int mFailedCount;
+    private Path mBlockShadowPath;
+    private Bitmap mBlockBitmap;
     private BlockPosition mBlockShadowPosition;
     private BlockPosition mBlockPosition;
-    private Callback mCallback;
+    private SwipeCaptchaHelper.Status mStatus = SwipeCaptchaHelper.Status.INIT;
 
-    public SwipeVerificationImageView(Context context) {
+
+    public CaptchaImageView(Context context) {
         super(context);
         init();
     }
 
-    public SwipeVerificationImageView(Context context, @Nullable AttributeSet attrs) {
+    public CaptchaImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public void setCallback(Callback callback) {
-        mCallback = callback;
+    public void setEndCallback(SwipeCaptchaHelper.EndCallback callback) {
+        mEndCallback = callback;
     }
 
     private void init() {
@@ -48,28 +54,32 @@ public class SwipeVerificationImageView extends AppCompatImageView {
         mShadowPaint.setStyle(Paint.Style.FILL);
     }
 
-    private void initPosition() {
-        mBlockShadowPosition = getShadowPosition();
-        mBlockPosition = getBlockPosition(true);
-        if (Math.abs(mBlockShadowPosition.x - mBlockPosition.x) <= BLOCK_SIZE) {
-            initPosition();
+    private void initCaptcha() {
+        mFailedCount = 0;
+        int offset = mBlockSize;
+        int border = ACCURACY_VALUE + 1;
+        int x = new Random().nextInt(getWidth() - offset - border) + border;
+        int y = new Random().nextInt(getHeight() - offset);
+        mBlockShadowPosition = new BlockPosition(x, y);
+        mBlockPosition = new BlockPosition(0, mBlockShadowPosition.getY());
+        mBlockShadowPath = getBlockShadowPath();
+        mBlockShadowPath.offset(mBlockShadowPosition.x, mBlockShadowPosition.y);
+        Bitmap lastBlockBitmap = mBlockBitmap;
+        mBlockBitmap = getBlockBitmap(mBlockShadowPath);
+        if (lastBlockBitmap != null) {//删除上一次滑块Bitmap
+            lastBlockBitmap.recycle();
         }
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        initPosition();
+        mStatus = SwipeCaptchaHelper.Status.START;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Path path = getBlockPath();
-        path.offset(mBlockShadowPosition.x, mBlockShadowPosition.y);
-        Bitmap blockBitmap = getBlockBitmap(path);
-        canvas.drawPath(path, mShadowPaint);
-        canvas.drawBitmap(blockBitmap, mBlockPosition.x, mBlockPosition.y, mBlockPaint);
+        if (mStatus == SwipeCaptchaHelper.Status.INIT) {
+            initCaptcha();
+        }
+        canvas.drawPath(mBlockShadowPath, mShadowPaint);
+        canvas.drawBitmap(mBlockBitmap, mBlockPosition.x, mBlockPosition.y, mBlockPaint);
     }
 
     public void move(int progress) {
@@ -77,25 +87,39 @@ public class SwipeVerificationImageView extends AppCompatImageView {
         int distance = (int) (progress / (100 * 1.0f) * (getWidth() - mBlockSize));
         mBlockPosition.setX(distance);
         invalidate();
+        mStatus = SwipeCaptchaHelper.Status.MOVE;
     }
 
-    public void up() {
+    public void end() {
         if (Math.abs((mBlockPosition.x - mBlockShadowPosition.x)) <= ACCURACY_VALUE && Math.abs(mBlockPosition.y - mBlockShadowPosition.y) <= ACCURACY_VALUE) {
             mBlockPosition.x = mBlockShadowPosition.x;
             mBlockPosition.y = mBlockShadowPosition.y;
             invalidate();
-            if(mCallback!=null){
-                mCallback.onSuccess();
+            if (mEndCallback != null) {
+                mEndCallback.onSuccess();
             }
-        }else{
-            if(mCallback!=null){
-                mCallback.onFailure();
+        } else {
+            mFailedCount++;
+            if (mFailedCount >= SwipeCaptchaHelper.MAX_FAILED_COUNT) {
+                if (mEndCallback != null) {
+                    mEndCallback.onMaxFailed();
+                }
+            } else {
+                if (mEndCallback != null) {
+                    mEndCallback.onFailure();
+                }
             }
         }
+        mStatus = SwipeCaptchaHelper.Status.END;
+    }
+
+    public void resetBlock() {
+        mBlockPosition.x = 0;
+        invalidate();
     }
 
     public void reset() {
-        initPosition();
+        initCaptcha();
         invalidate();
     }
 
@@ -122,42 +146,7 @@ public class SwipeVerificationImageView extends AppCompatImageView {
     }
 
 
-    /**
-     * 获取滑动块阴影位置（滑动块原有的位置）
-     *
-     * @return
-     */
-    private BlockPosition getShadowPosition() {
-        int offset = -mBlockSize;
-        int x = new Random().nextInt(getWidth() + offset);
-        int y = new Random().nextInt(getHeight() + offset);
-        return new BlockPosition(x, y);
-    }
-
-    /**
-     * 获取滑动块的位置
-     *
-     * @param swipe 是否滑动方式
-     * @return
-     */
-    private BlockPosition getBlockPosition(boolean swipe) {
-        if (mBlockShadowPosition == null) {
-            return new BlockPosition(0, 0);
-        }
-        int offset = -mBlockSize;
-        int x;
-        int y;
-        if (swipe) {
-            x = 0;
-            y = mBlockShadowPosition.getY();
-        } else {
-            x = new Random().nextInt(getWidth() + offset);
-            y = new Random().nextInt(getHeight() + offset);
-        }
-        return new BlockPosition(x, y);
-    }
-
-    private Path getBlockPath() {
+    private Path getBlockShadowPath() {
         Path path = new Path();
         int gap = mBlockSize / 3;
         path.moveTo(0, gap);
@@ -200,8 +189,4 @@ public class SwipeVerificationImageView extends AppCompatImageView {
         }
     }
 
-    public interface Callback{
-        void onSuccess();
-        void onFailure();
-    }
 }

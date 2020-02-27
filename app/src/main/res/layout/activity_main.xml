@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zxy.demo.MainActivity">
-    <com.zxy.demo.SwipeVerificationView
+    <com.zxy.demo.captcha.swipe.SwipeCaptcha
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <LinearLayout
