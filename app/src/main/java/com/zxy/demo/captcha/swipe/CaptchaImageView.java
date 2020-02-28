@@ -18,6 +18,15 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import java.util.Random;
 
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.B;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.B_2;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.L;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.L_2;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.R;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.R_2;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.T;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.T_2;
+
 public class CaptchaImageView extends AppCompatImageView {
 
     private final int BLOCK_SIZE = 50;
@@ -164,6 +173,8 @@ public class CaptchaImageView extends AppCompatImageView {
     }
 
     public void move(int progress) {
+        if (!(mStatus == SwipeCaptchaHelper.Status.START || mStatus == SwipeCaptchaHelper.Status.MOVE))
+            return;
         if (progress < 0 || progress > 100) return;
         int distance = (int) (progress / (100 * 1.0f) * (getWidth() - mBlockSize));
         mBlockPosition.setX(distance);
@@ -193,7 +204,6 @@ public class CaptchaImageView extends AppCompatImageView {
     }
 
     private void captchaFailure() {
-        releaseCaptcha();
         if (mFailedCount >= SwipeCaptchaHelper.MAX_FAILED_COUNT) {
             if (mEndCallback != null) {
                 mEndCallback.onMaxFailed();
@@ -207,6 +217,7 @@ public class CaptchaImageView extends AppCompatImageView {
 
     public void resetBlock() {
         mBlockPosition.x = 0;
+        mStatus = SwipeCaptchaHelper.Status.START;
         invalidate();
     }
 
@@ -214,7 +225,8 @@ public class CaptchaImageView extends AppCompatImageView {
         initCaptcha();
         invalidate();
     }
-    private void releaseCaptcha(){
+
+    private void releaseCaptcha() {
         mBlockPaint.setMaskFilter(null);
         mShadowPaint.setMaskFilter(null);
     }
@@ -229,7 +241,7 @@ public class CaptchaImageView extends AppCompatImageView {
         /**
          * 获取剪切后的图片bitmap（整个bitmap只有滑动块才有渲染）
          */
-        Bitmap tempBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap tempBitmap = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
         Canvas tempCanvas = new Canvas(tempBitmap);
         tempCanvas.clipPath(path);
         getDrawable().draw(tempCanvas);
@@ -239,22 +251,68 @@ public class CaptchaImageView extends AppCompatImageView {
         Bitmap bitmap = Bitmap.createBitmap(tempBitmap, mBlockShadowPosition.x, mBlockShadowPosition.y, mBlockSize, mBlockSize);
         tempBitmap.recycle();
         return bitmap;
+//        return tempBitmap;
     }
 
 
     private Path getBlockShadowPath() {
         Path path = new Path();
-        int gap = mBlockSize / 3;
-        path.moveTo(0, gap);
-        path.rLineTo(gap, 0);
-        path.rLineTo(0, -gap);
-        path.rLineTo(gap, 0);
-        path.rLineTo(0, gap);
-        path.rLineTo(gap, 0);
-        path.rLineTo(0, gap * 2);
-        path.rLineTo(-mBlockSize, 0);
-        path.rLineTo(0, -gap * 2);
+        int size = mBlockSize / 4;
+        path.moveTo(size / 2, size / 2);
+        Direction[] topBump = bump(T_2,B_2);
+        Direction[] rightBump = bump(R_2,L_2);
+        Direction[] bottomBump = bump(B_2,T_2);
+        Direction[] leftBump = bump(L_2,R_2);
+        lineTo(path, size,
+                R, topBump[0], R, topBump[1], R,
+                B, rightBump[0], B, rightBump[1], B,
+                L, bottomBump[0], L, bottomBump[1], L,
+                T, leftBump[0], T, leftBump[1], T);
         path.close();
+        return path;
+    }
+
+
+    public enum Direction {
+        L, T, R, B, L_2, T_2, R_2, B_2
+    }
+
+    public Direction[] bump(Direction left, Direction right) {
+        Random random = new Random();
+        return random.nextBoolean() ? new Direction[]{left, right} : new Direction[]{right, left};
+    }
+
+    public Path lineTo(Path path, int RADIUS, Direction... directions) {
+        if (directions.length > 0) {
+            for (Direction direction : directions) {
+                switch (direction) {
+                    case L:
+                        path.rLineTo(-RADIUS, 0);
+                        break;
+                    case L_2:
+                        path.rLineTo(-RADIUS / 2, 0);
+                        break;
+                    case T:
+                        path.rLineTo(0, -RADIUS);
+                        break;
+                    case T_2:
+                        path.rLineTo(0, -RADIUS / 2);
+                        break;
+                    case R:
+                        path.rLineTo(RADIUS, 0);
+                        break;
+                    case R_2:
+                        path.rLineTo(RADIUS / 2, 0);
+                        break;
+                    case B:
+                        path.rLineTo(0, RADIUS);
+                        break;
+                    case B_2:
+                        path.rLineTo(0, RADIUS / 2);
+                        break;
+                }
+            }
+        }
         return path;
     }
 
