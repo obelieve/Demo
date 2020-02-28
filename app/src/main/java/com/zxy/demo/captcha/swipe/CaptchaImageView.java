@@ -19,13 +19,17 @@ import androidx.appcompat.widget.AppCompatImageView;
 import java.util.Random;
 
 import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.B;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.B_2;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.B_ao;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.B_tu;
 import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.L;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.L_2;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.L_ao;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.L_tu;
 import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.R;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.R_2;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.R_ao;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.R_tu;
 import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.T;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.T_2;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.T_ao;
+import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.T_tu;
 
 public class CaptchaImageView extends AppCompatImageView {
 
@@ -251,28 +255,22 @@ public class CaptchaImageView extends AppCompatImageView {
         Bitmap bitmap = Bitmap.createBitmap(tempBitmap, mBlockShadowPosition.x, mBlockShadowPosition.y, mBlockSize, mBlockSize);
         tempBitmap.recycle();
         return bitmap;
-//        return tempBitmap;
     }
 
 
     private Path getBlockShadowPath() {
         Path path = new Path();
-        int size = mBlockSize / 4;
-        path.moveTo(size / 2, size / 2);
-        Direction[] topBump = bump(T_2, B_2);
-        Direction[] rightBump = bump(R_2, L_2);
-        Direction[] bottomBump = bump(B_2, T_2);
-        Direction[] leftBump = bump(L_2, R_2);
-//        lineTo(path, size,
-//                R, new Random().nextBoolean() ? T_ao : T_tu, R,
-//                B, new Random().nextBoolean() ? R_ao : R_tu, B,
-//                L, new Random().nextBoolean() ? B_ao : B_tu, L,
-//                T, new Random().nextBoolean() ? L_ao : L_tu, T);
+        int size = mBlockSize / 5;
+        path.moveTo(size, size);
+//        Direction[] topBump = bump(T_2, B_2);
+//        Direction[] rightBump = bump(R_2, L_2);
+//        Direction[] bottomBump = bump(B_2, T_2);
+//        Direction[] leftBump = bump(L_2, R_2);
         lineTo(path, size,
-                R, topBump[0], R, topBump[1], R,
-                B, rightBump[0], B, rightBump[1], B,
-                L, bottomBump[0], L, bottomBump[1], L,
-                T, leftBump[0], T, leftBump[1], T);
+                R, new Random().nextBoolean() ? T_ao : T_tu, R,
+                B, new Random().nextBoolean() ? R_ao : R_tu, B,
+                L, new Random().nextBoolean() ? B_ao : B_tu, L,
+                T, new Random().nextBoolean() ? L_ao : L_tu, T);
         path.close();
         return path;
     }
@@ -296,49 +294,49 @@ public class CaptchaImageView extends AppCompatImageView {
                         path.rLineTo(-RADIUS, 0);
                         break;
                     case L_2:
-                        path.rLineTo(-RADIUS / 2, 0);
+                        path.rLineTo(-RADIUS , 0);
                         break;
                     case T:
                         path.rLineTo(0, -RADIUS);
                         break;
                     case T_2:
-                        path.rLineTo(0, -RADIUS / 2);
+                        path.rLineTo(0, -RADIUS );
                         break;
                     case R:
                         path.rLineTo(RADIUS, 0);
                         break;
                     case R_2:
-                        path.rLineTo(RADIUS / 2, 0);
+                        path.rLineTo(RADIUS , 0);
                         break;
                     case B:
                         path.rLineTo(0, RADIUS);
                         break;
                     case B_2:
-                        path.rLineTo(0, RADIUS / 2);
+                        path.rLineTo(0, RADIUS );
                         break;
                     case T_ao:
-                        path.rCubicTo(0, 0, RADIUS / 2, -RADIUS /2, RADIUS, 0);
+                        path.rCubicTo(0, 0, RADIUS/2 , -RADIUS , RADIUS, 0);
                         break;
                     case T_tu:
-                        path.rCubicTo(0, 0, RADIUS / 2, RADIUS /2, RADIUS, 0);
+                        path.rCubicTo(0, 0, RADIUS/2 , RADIUS , RADIUS, 0);
                         break;
                     case R_ao:
-                        path.rCubicTo(0, 0, RADIUS / 2, RADIUS / 2, 0, RADIUS);
+                        path.rCubicTo(0, 0, RADIUS , RADIUS/2 , 0, RADIUS);
                         break;
                     case R_tu:
-                        path.rCubicTo(0, 0, -RADIUS / 2, RADIUS / 2, 0, RADIUS);
+                        path.rCubicTo(0, 0, -RADIUS , RADIUS/2 , 0, RADIUS);
                         break;
                     case B_ao:
-                        path.rCubicTo(0, 0, -RADIUS / 2, RADIUS / 2, -RADIUS, 0);
+                        path.rCubicTo(0, 0, -RADIUS/2 , RADIUS , -RADIUS, 0);
                         break;
                     case B_tu:
-                        path.rCubicTo(0, 0, -RADIUS / 2, -RADIUS / 2, -RADIUS, 0);
+                        path.rCubicTo(0, 0, -RADIUS/2 , -RADIUS , -RADIUS, 0);
                         break;
                     case L_ao:
-                        path.rCubicTo(0, 0, -RADIUS / 2, -RADIUS / 2, 0, -RADIUS);
+                        path.rCubicTo(0, 0, -RADIUS , -RADIUS/2 , 0, -RADIUS);
                         break;
                     case L_tu:
-                        path.rCubicTo(0, 0, RADIUS / 2, -RADIUS / 2, 0, -RADIUS);
+                        path.rCubicTo(0, 0, RADIUS , -RADIUS/2 , 0, -RADIUS);
                         break;
                 }
             }
