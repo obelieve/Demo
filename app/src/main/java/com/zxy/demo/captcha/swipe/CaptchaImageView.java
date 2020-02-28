@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -73,12 +74,15 @@ public class CaptchaImageView extends AppCompatImageView {
         mDrawSuccessPaint.setColor(Color.WHITE);
         mDrawSuccessPaint.setAlpha(165);
         mDrawSuccessPaint.setStyle(Paint.Style.FILL);
+        mDrawSuccessPaint.setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.SOLID));
     }
 
     private void initCaptcha() {
         mFailedCount = 0;
         mWidth = getWidth();
         mHeight = getHeight();
+        mBlockPaint.setMaskFilter(new BlurMaskFilter(20, BlurMaskFilter.Blur.SOLID));
+        mShadowPaint.setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.SOLID));
         int offset = mBlockSize;
         int border = ACCURACY_VALUE + 1;
         int x = new Random().nextInt(getWidth() - offset - border) + border;
@@ -182,12 +186,14 @@ public class CaptchaImageView extends AppCompatImageView {
     }
 
     private void captchaSuccess() {
+        releaseCaptcha();
         if (mEndCallback != null) {
             mEndCallback.onSuccess();
         }
     }
 
     private void captchaFailure() {
+        releaseCaptcha();
         if (mFailedCount >= SwipeCaptchaHelper.MAX_FAILED_COUNT) {
             if (mEndCallback != null) {
                 mEndCallback.onMaxFailed();
@@ -207,6 +213,10 @@ public class CaptchaImageView extends AppCompatImageView {
     public void reset() {
         initCaptcha();
         invalidate();
+    }
+    private void releaseCaptcha(){
+        mBlockPaint.setMaskFilter(null);
+        mShadowPaint.setMaskFilter(null);
     }
 
     /**
