@@ -33,7 +33,7 @@ import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.T_tu;
 
 public class CaptchaImageView extends AppCompatImageView {
 
-    private final int BLOCK_SIZE = 50;
+    private final int BLOCK_SIZE = 60;
     private final int DRAW_SUCCESS_AREA_SIZE = 100;
     private final int ACCURACY_VALUE = 10;
 
