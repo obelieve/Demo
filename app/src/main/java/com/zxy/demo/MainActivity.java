@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.luozm.captcha.Captcha;
 import com.luozm.captcha.DefaultCaptchaStrategy;
-import com.zxy.demo.captcha.CharCaptcha;
+import com.zxy.captchalib.CharCaptcha;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -1,4 +1,4 @@
-package com.zxy.demo.captcha.swipe;
+package com.zxy.captchalib;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -18,18 +18,18 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import java.util.Random;
 
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.B;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.B_ao;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.B_tu;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.L;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.L_ao;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.L_tu;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.R;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.R_ao;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.R_tu;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.T;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.T_ao;
-import static com.zxy.demo.captcha.swipe.CaptchaImageView.Direction.T_tu;
+import static com.zxy.captchalib.CaptchaImageView.Direction.B;
+import static com.zxy.captchalib.CaptchaImageView.Direction.B_ao;
+import static com.zxy.captchalib.CaptchaImageView.Direction.B_tu;
+import static com.zxy.captchalib.CaptchaImageView.Direction.L;
+import static com.zxy.captchalib.CaptchaImageView.Direction.L_ao;
+import static com.zxy.captchalib.CaptchaImageView.Direction.L_tu;
+import static com.zxy.captchalib.CaptchaImageView.Direction.R;
+import static com.zxy.captchalib.CaptchaImageView.Direction.R_ao;
+import static com.zxy.captchalib.CaptchaImageView.Direction.R_tu;
+import static com.zxy.captchalib.CaptchaImageView.Direction.T;
+import static com.zxy.captchalib.CaptchaImageView.Direction.T_ao;
+import static com.zxy.captchalib.CaptchaImageView.Direction.T_tu;
 
 public class CaptchaImageView extends AppCompatImageView {
 
@@ -94,14 +94,14 @@ public class CaptchaImageView extends AppCompatImageView {
         mFailedCount = 0;
         mWidth = getWidth();
         mHeight = getHeight();
-        mBlockPaint.setMaskFilter(new BlurMaskFilter(20, BlurMaskFilter.Blur.SOLID));
+        mBlockPaint.setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.SOLID));
         mShadowPaint.setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.SOLID));
         int offset = mBlockSize;
         int border = ACCURACY_VALUE + 1;
         int x = new Random().nextInt(getWidth() - offset - border) + border;
         int y = new Random().nextInt(getHeight() - offset);
         mBlockShadowPosition = new BlockPosition(x, y);
-        mBlockPosition = new BlockPosition(0, mBlockShadowPosition.getY());
+        mBlockPosition = new BlockPosition(-mBlockSize/5, mBlockShadowPosition.getY());
         mBlockShadowPath = getBlockShadowPath();
         mBlockShadowPath.offset(mBlockShadowPosition.x, mBlockShadowPosition.y);
         Bitmap lastBlockBitmap = mBlockBitmap;
@@ -220,7 +220,7 @@ public class CaptchaImageView extends AppCompatImageView {
     }
 
     public void resetBlock() {
-        mBlockPosition.x = 0;
+        mBlockPosition.x = -mBlockSize/5;
         mStatus = SwipeCaptchaHelper.Status.START;
         invalidate();
     }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="10dp"
+    android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.zxy.captchalib.CaptchaImageView
+            android:id="@+id/iv_bg"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/def"/>
+        <ImageView
+            android:id="@+id/refresh"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="right|top"
+            android:layout_margin="5dp"
+            android:src="@drawable/refresh"
+            android:stateListAnimator="@drawable/anim_refresh" />
+    </FrameLayout>
+    <com.zxy.captchalib.CaptchaSeekBar
+        android:id="@+id/sb_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:thumb="@drawable/thumb"
+        android:layout_marginTop="16dp"
+        android:thumbOffset="0dp"
+        android:progressDrawable="@drawable/po_seekbar"/>
+
+</LinearLayout>

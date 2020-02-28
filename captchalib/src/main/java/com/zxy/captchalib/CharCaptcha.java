@@ -1,4 +1,4 @@
-package com.zxy.demo.captcha;
+package com.zxy.captchalib;
 
 
 import android.content.Context;

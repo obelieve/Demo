@@ -1,4 +1,4 @@
-package com.zxy.demo.captcha.swipe;
+package com.zxy.captchalib;
 
 /**
  * 拼图

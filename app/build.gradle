@@ -35,5 +35,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.luozm.captcha:captcha:1.1.2'
+    implementation project(path: ':captchalib')
 
 }
