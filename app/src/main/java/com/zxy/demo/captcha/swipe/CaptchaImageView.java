@@ -259,10 +259,15 @@ public class CaptchaImageView extends AppCompatImageView {
         Path path = new Path();
         int size = mBlockSize / 4;
         path.moveTo(size / 2, size / 2);
-        Direction[] topBump = bump(T_2,B_2);
-        Direction[] rightBump = bump(R_2,L_2);
-        Direction[] bottomBump = bump(B_2,T_2);
-        Direction[] leftBump = bump(L_2,R_2);
+        Direction[] topBump = bump(T_2, B_2);
+        Direction[] rightBump = bump(R_2, L_2);
+        Direction[] bottomBump = bump(B_2, T_2);
+        Direction[] leftBump = bump(L_2, R_2);
+//        lineTo(path, size,
+//                R, new Random().nextBoolean() ? T_ao : T_tu, R,
+//                B, new Random().nextBoolean() ? R_ao : R_tu, B,
+//                L, new Random().nextBoolean() ? B_ao : B_tu, L,
+//                T, new Random().nextBoolean() ? L_ao : L_tu, T);
         lineTo(path, size,
                 R, topBump[0], R, topBump[1], R,
                 B, rightBump[0], B, rightBump[1], B,
@@ -274,7 +279,8 @@ public class CaptchaImageView extends AppCompatImageView {
 
 
     public enum Direction {
-        L, T, R, B, L_2, T_2, R_2, B_2
+        L, T, R, B, L_2, T_2, R_2, B_2,
+        T_ao, T_tu, R_ao, R_tu, B_ao, B_tu, L_ao, L_tu
     }
 
     public Direction[] bump(Direction left, Direction right) {
@@ -309,6 +315,30 @@ public class CaptchaImageView extends AppCompatImageView {
                         break;
                     case B_2:
                         path.rLineTo(0, RADIUS / 2);
+                        break;
+                    case T_ao:
+                        path.rCubicTo(0, 0, RADIUS / 2, -RADIUS /2, RADIUS, 0);
+                        break;
+                    case T_tu:
+                        path.rCubicTo(0, 0, RADIUS / 2, RADIUS /2, RADIUS, 0);
+                        break;
+                    case R_ao:
+                        path.rCubicTo(0, 0, RADIUS / 2, RADIUS / 2, 0, RADIUS);
+                        break;
+                    case R_tu:
+                        path.rCubicTo(0, 0, -RADIUS / 2, RADIUS / 2, 0, RADIUS);
+                        break;
+                    case B_ao:
+                        path.rCubicTo(0, 0, -RADIUS / 2, RADIUS / 2, -RADIUS, 0);
+                        break;
+                    case B_tu:
+                        path.rCubicTo(0, 0, -RADIUS / 2, -RADIUS / 2, -RADIUS, 0);
+                        break;
+                    case L_ao:
+                        path.rCubicTo(0, 0, -RADIUS / 2, -RADIUS / 2, 0, -RADIUS);
+                        break;
+                    case L_tu:
+                        path.rCubicTo(0, 0, RADIUS / 2, -RADIUS / 2, 0, -RADIUS);
                         break;
                 }
             }
