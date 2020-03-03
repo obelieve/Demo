@@ -35,8 +35,9 @@
         app:tabSelectedTextColor="#37BD42"
         app:tabTextAppearance="@style/TabLayoutTextSize_normal_17sp"
         android:layout_marginBottom="7dp"
-        app:tabPaddingStart="4dp"
-        app:tabPaddingEnd="4dp"
+        app:tabPaddingStart="0dp"
+        app:tabIndicatorGravity="center"
+        app:tabPaddingEnd="8dp"
         app:tabTextColor="#333333" />
     <!--
     android:layout_height 高度设置后

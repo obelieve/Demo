@@ -82,7 +82,7 @@ public class CommunityTabView extends FrameLayout {
 
     private int getSelectTextSize(boolean selected) {
         if (selected) {
-            return 25;
+            return 23;
         } else {
             return 17;
         }
