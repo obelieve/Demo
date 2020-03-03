@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll_tab1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_title1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="精选"
+            android:textStyle="bold"
+            android:textColor="#37BD42"
+            android:textSize="23sp"/>
+        <View
+            android:id="@+id/view_indicator1"
+            android:layout_width="7dp"
+            android:layout_height="3dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/sel_indicator_37bd42_00000000"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_tab2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_title2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="广场"
+            android:textStyle="bold"
+            android:textColor="#37BD42"
+            android:textSize="23sp"/>
+        <View
+            android:id="@+id/view_indicator2"
+            android:layout_width="7dp"
+            android:layout_height="3dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/sel_indicator_37bd42_00000000"/>
+    </LinearLayout>
+</LinearLayout>

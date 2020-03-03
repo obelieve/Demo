@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TabLayoutTextSize_normal_17sp">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+    <style name="TabLayoutTextSize_bold_23sp">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">23sp</item>
+    </style>
 </resources>

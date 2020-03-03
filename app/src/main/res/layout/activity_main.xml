@@ -1,14 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.zxy.demo.MainActivity">
+
     <TextView
         android:id="@+id/tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"/>
+        android:background="#fff"
+        android:text="@string/app_name" />
+    <com.zxy.demo.CommunityTabView
+        android:id="@+id/view_community_tab"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="7dp"
+        android:layout_height="wrap_content"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#FFFFFF"/>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_google"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        app:tabBackground="@drawable/sel_tab_background"
+        app:tabIndicatorColor="#37BD42"
+        app:tabIndicatorFullWidth="true"
+        app:tabMinWidth="55dp"
+        app:tabMode="fixed"
+        app:tabIndicatorHeight="0dp"
+        app:tabSelectedTextColor="#37BD42"
+        app:tabTextAppearance="@style/TabLayoutTextSize_normal_17sp"
+        android:layout_marginBottom="7dp"
+        app:tabPaddingStart="4dp"
+        app:tabPaddingEnd="4dp"
+        app:tabTextColor="#333333" />
+    <!--
+    android:layout_height 高度设置后
+    tl_indicator_margin_top，才有效
+    -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#FFFFFF"/>
+    <com.flyco.tablayout.SlidingTabLayout
+        android:id="@+id/tl_flyco_sliding"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        app:tl_indicator_color="#37BD42"
+        app:tl_indicator_height="3dp"
+        app:tl_indicator_width="7dp"
+        app:tl_indicator_width_equal_title="true"
+        app:tl_tab_space_equal="true"
+        app:tl_textSelectColor="#37BD42"
+        app:tl_textUnselectColor="#474747"
+        app:tl_tab_width="50dp"
+        app:tl_textBold="BOTH"
+        app:tl_textsize="16dp"
+        app:tl_indicator_margin_bottom="8dp"
+        app:tl_indicator_corner_radius="2dp"/>
+    <com.flyco.tablayout.CommonTabLayout
+        android:id="@+id/tl_flyco_common"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#FFFFFF"
+        app:tl_iconVisible="false"
+        app:tl_indicator_corner_radius="1.5dp"
+        app:tl_indicator_height="3dp"
+        app:tl_indicator_width="10dp"
+        app:tl_textsize="14sp"/>
+    <com.flyco.tablayout.SegmentTabLayout
+        android:id="@+id/tl_flyco_segment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
