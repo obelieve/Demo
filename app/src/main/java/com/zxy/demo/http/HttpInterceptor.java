@@ -22,7 +22,7 @@ public class HttpInterceptor implements Interceptor {
                 .addHeader("platform","android")
                 .addHeader("channel","2048_android")
                 .addHeader("version","1.1.0")
-                .addHeader("Authorization","Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkudGVzdC4yMDQ4LmNvbVwvYXBpXC9yZWZyZXNoIiwiaWF0IjoxNTczMDE4NzE5LCJleHAiOjE1NzM2MjY3ODcsIm5iZiI6MTU3MzAyMTk4NywianRpIjoiSThrdEZIWGJlWEQxaUhsZyIsInN1YiI6MjQ0LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.GgTpWFg1ay8RJD13Dj55UuoSjj8C_pdza27Fs0ZFVnI")
+                .addHeader("Authorization","Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkuZGV2LjIwNDguY29tXC9cL2FwaVwvcmVnX29yX2xvZyIsImlhdCI6MTU4NDU4MTQzNCwiZXhwIjoxNTg1MTg2MjM0LCJuYmYiOjE1ODQ1ODE0MzQsImp0aSI6ImJuYThhck1zWE5hZEVhaHEiLCJzdWIiOjI0NCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.h1mt3_AD3vurfSwAsE-GPoDf7bApMM0sytxzeFZ6C3o")
                 .addHeader("system","XiaoMi MIX2:0")
                 .addHeader("Accept","application/x.2048.v2+json")
                 .build();
