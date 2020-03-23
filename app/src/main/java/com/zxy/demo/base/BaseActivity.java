@@ -3,9 +3,10 @@ package com.zxy.demo.base;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 import com.zxy.demo.utils.StatusBarUtil;
 

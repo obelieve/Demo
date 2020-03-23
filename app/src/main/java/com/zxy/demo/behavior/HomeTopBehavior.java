@@ -1,19 +1,19 @@
 package com.zxy.demo.behavior;
 
 import android.content.Context;
-import android.support.animation.DynamicAnimation;
-import android.support.animation.FlingAnimation;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
+import androidx.dynamicanimation.animation.DynamicAnimation;
+import androidx.dynamicanimation.animation.FlingAnimation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.zxy.demo.view.HomeTopView;
-import com.zxy.utility.LogUtil;
 
 
 public class HomeTopBehavior extends CoordinatorLayout.Behavior<HomeTopView> {

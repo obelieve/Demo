@@ -10,13 +10,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/nav_text_selected">
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cv_head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:src="@drawable/default_avatar" />
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <ImageView
                 android:id="@+id/iv_qr_code"
@@ -197,7 +197,7 @@
                         android:textColor="@color/base_text_black" />
                 </LinearLayout>
             </LinearLayout>
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:layout_width="match_parent"

@@ -28,15 +28,15 @@
             android:src="@drawable/ic_search_black_bold" />
     </FrameLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.core.widget.SwipeRefreshLayout
         android:id="@+id/srl_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.core.widget.SwipeRefreshLayout>
 </LinearLayout>
 

@@ -10,7 +10,7 @@
         android:layout_height="10dp"
         android:background="@color/line_gray2"/>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -25,9 +25,9 @@
             android:layout_height="118dp"
             android:scaleType="centerCrop"
             android:src="@drawable/temp_banner_2" />
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

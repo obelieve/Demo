@@ -1,26 +1,22 @@
 package com.zxy.demo.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.zxy.demo.R;
-import com.zxy.demo.adapter.HomeCategory2Adapter;
-import com.zxy.demo.adapter.item_decoration.VerticalItemDivider;
 import com.zxy.demo.adapter.viewholder.CategoryViewHolder;
 import com.zxy.demo.base.BaseFragment;
 import com.zxy.demo.base.BaseRecyclerViewAdapter;
@@ -29,6 +25,8 @@ import com.zxy.demo.view.VerticalViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+;
 
 /**
  * Created by zxy on 2018/10/30 10:37.

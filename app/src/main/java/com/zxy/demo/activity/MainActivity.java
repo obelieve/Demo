@@ -1,22 +1,22 @@
 package com.zxy.demo.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.zxy.demo.R;
 import com.zxy.demo.base.BaseActivity;
 import com.zxy.demo.base.BaseFragment;
 import com.zxy.demo.fragment.CategoryFragment;
-import com.zxy.demo.fragment.MeFragment;
-import com.zxy.demo.fragment.ShoppingCartFragment;
 import com.zxy.demo.fragment.DiscoveryFragment;
 import com.zxy.demo.fragment.HomeFragment;
+import com.zxy.demo.fragment.MeFragment;
+import com.zxy.demo.fragment.ShoppingCartFragment;
 import com.zxy.demo.view.BottomTabView;
-import com.zxy.utility.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;

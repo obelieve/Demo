@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="144dp"
     android:layout_height="wrap_content"
@@ -79,4 +79,4 @@
         app:layout_constraintRight_toRightOf="@id/iv_img"
         app:layout_constraintTop_toBottomOf="@id/tv_ori_price"
         android:maxHeight="30dp"/>
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

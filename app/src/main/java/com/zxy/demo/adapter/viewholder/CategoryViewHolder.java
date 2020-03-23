@@ -1,9 +1,11 @@
 package com.zxy.demo.adapter.viewholder;
 
-import android.support.constraint.ConstraintLayout;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.zxy.demo.R;
 import com.zxy.demo.base.BaseRecyclerViewAdapter;
