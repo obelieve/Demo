@@ -1,24 +1,21 @@
 package com.zxy.demo.viewmodel;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.zxy.demo.App;
-import com.zxy.demo.model.SquareListModel;
-import com.zxy.frame.json.MGson;
+import com.zxy.demo.entity.SquarePostEntity;
+import com.zxy.frame.net.BaseResponse;
 
-import java.io.IOException;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainViewModel extends ViewModel {
 
-    private MutableLiveData<List<SquareListModel.DataBean.PostListBean>> mListMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<SquarePostEntity.PostListBean>> mListMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mRefreshLiveData = new MutableLiveData<>();
     private MutableLiveData<LoadMoreModel> mLoadMoreLiveData = new MutableLiveData<>();
 
@@ -30,59 +27,56 @@ public class MainViewModel extends ViewModel {
         }else{
             mCurPage++;
         }
-        App.getServiceInterface().square_post(mCurPage).enqueue(new Callback<ResponseBody>() {
+        App.getServiceInterface().square_post(mCurPage).enqueue(new Callback<BaseResponse<SquarePostEntity>>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    String json = response.body().string();
-                    SquareListModel model = MGson.newGson().fromJson(json, SquareListModel.class);
-                    List<SquareListModel.DataBean.PostListBean> beans = model.getData().getPost_list();
-                    if (!isMore) {
-                        mListMutableLiveData.setValue(model.getData().getPost_list());
-                    } else {
-                        List<SquareListModel.DataBean.PostListBean> oldBeans = mListMutableLiveData.getValue();
-                        if (oldBeans != null) {
-                            oldBeans.addAll(beans);
-                            beans = oldBeans;
-                        }
-                        mListMutableLiveData.setValue(beans);
-                    }
-                    if (!isMore) {
-                        if (model.getData().getHas_next_page() == 0) {
-                            mLoadMoreLiveData.setValue(new LoadMoreModel(false, false, true));
-                        }else{
-                            mLoadMoreLiveData.setValue(new LoadMoreModel(true, false, false));
-                        }
-                    }else{
-                        if (model.getData().getHas_next_page() == 0) {
-                            mLoadMoreLiveData.setValue(new LoadMoreModel(false, false, true));
-                        }else{
-                            mLoadMoreLiveData.setValue(new LoadMoreModel(true, false, false));
-                        }
-                    }
-                    mRefreshLiveData.setValue(false);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    if (!isMore) {
-                        mRefreshLiveData.setValue(false);
-                    }else{
-                        mLoadMoreLiveData.setValue(new LoadMoreModel(false, true, false));
-                    }
-                }
+            public void onResponse(Call<BaseResponse<SquarePostEntity>> call, Response<BaseResponse<SquarePostEntity>> response) {
+                success(response.body().getData(SquarePostEntity.class),isMore);
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                if (isMore) {
-                    mLoadMoreLiveData.setValue(new LoadMoreModel(false, true, false));
-                }else{
-                    mRefreshLiveData.setValue(false);
-                }
+            public void onFailure(Call<BaseResponse<SquarePostEntity>> call, Throwable t) {
+                failure(isMore);
             }
         });
     }
 
-    public MutableLiveData<List<SquareListModel.DataBean.PostListBean>> getListMutableLiveData() {
+    private void success(SquarePostEntity entity, boolean isMore) {
+        List<SquarePostEntity.PostListBean> beans = entity.getPost_list();
+        if (!isMore) {
+            mListMutableLiveData.setValue(entity.getPost_list());
+        } else {
+            List<SquarePostEntity.PostListBean> oldBeans = mListMutableLiveData.getValue();
+            if (oldBeans != null) {
+                oldBeans.addAll(beans);
+                beans = oldBeans;
+            }
+            mListMutableLiveData.setValue(beans);
+        }
+        if (!isMore) {
+            if (entity.getHas_next_page() == 0) {
+                mLoadMoreLiveData.setValue(new LoadMoreModel(false, false, true));
+            }else{
+                mLoadMoreLiveData.setValue(new LoadMoreModel(true, false, false));
+            }
+        }else{
+            if (entity.getHas_next_page() == 0) {
+                mLoadMoreLiveData.setValue(new LoadMoreModel(false, false, true));
+            }else{
+                mLoadMoreLiveData.setValue(new LoadMoreModel(true, false, false));
+            }
+        }
+        mRefreshLiveData.setValue(false);
+    }
+
+    private void failure(boolean isMore) {
+        if (isMore) {
+            mLoadMoreLiveData.setValue(new LoadMoreModel(false, true, false));
+        }else{
+            mRefreshLiveData.setValue(false);
+        }
+    }
+
+    public MutableLiveData<List<SquarePostEntity.PostListBean>> getListMutableLiveData() {
         return mListMutableLiveData;
     }
 

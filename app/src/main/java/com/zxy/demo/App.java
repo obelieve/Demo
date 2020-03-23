@@ -6,8 +6,11 @@ import com.zxy.demo.http.HttpInterceptor;
 import com.zxy.demo.http.LogInterceptor;
 import com.zxy.demo.http.ServiceInterface;
 import com.zxy.frame.net.HttpUtil;
+import com.zxy.frame.net.convert.CustomGsonConverterFactory;
 import com.zxy.frame.utils.ToastUtil;
 import com.zxy.utility.SystemUtil;
+
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 public class App extends Application {
 
@@ -21,6 +24,8 @@ public class App extends Application {
         mServiceInterface = HttpUtil.build().baseUrl(ServiceInterface.BASE_URL)
                 .addInterceptor(new HttpInterceptor())
                 .addInterceptor(new LogInterceptor())
+                .addConverterFactory(CustomGsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .create(ServiceInterface.class);
     }
 

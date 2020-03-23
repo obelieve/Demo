@@ -3,6 +3,7 @@ package com.zxy.demo.fragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,7 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.zxy.demo.R;
 import com.zxy.demo.adapter.viewholder.MainViewHolder;
-import com.zxy.demo.model.SquareListModel;
+import com.zxy.demo.entity.SquarePostEntity;
 import com.zxy.demo.viewmodel.MainViewModel;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.adapter.item_decoration.VerticalItemDivider;
@@ -52,9 +53,9 @@ public class MainFragment extends BaseFragment {
     }
 
     private void observerData() {
-        mMainViewModel.getListMutableLiveData().observe(this, new Observer<List<SquareListModel.DataBean.PostListBean>>() {
+        mMainViewModel.getListMutableLiveData().observe(this, new Observer<List<SquarePostEntity.PostListBean>>() {
             @Override
-            public void onChanged(List<SquareListModel.DataBean.PostListBean> postListBeans) {
+            public void onChanged(List<SquarePostEntity.PostListBean> postListBeans) {
                 mMainAdapter.getDataHolder().setList(postListBeans).notifyDataSetChanged();
             }
         });
@@ -78,7 +79,7 @@ public class MainFragment extends BaseFragment {
         });
     }
 
-    public class MainAdapter extends BaseRecyclerViewAdapter<SquareListModel.DataBean.PostListBean> {
+    public class MainAdapter extends BaseRecyclerViewAdapter<SquarePostEntity.PostListBean> {
 
         public MainAdapter(Context context) {
             super(context);

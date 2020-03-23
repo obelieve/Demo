@@ -1,5 +1,8 @@
 package com.zxy.demo.http;
 
+import com.zxy.demo.entity.SquarePostEntity;
+import com.zxy.frame.net.BaseResponse;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -23,5 +26,5 @@ public interface ServiceInterface {
      */
     @FormUrlEncoded
     @POST("api/square_post")
-    Call<ResponseBody> square_post(@Field("page")int page);
+    Call<BaseResponse<SquarePostEntity>> square_post(@Field("page")int page);
 }

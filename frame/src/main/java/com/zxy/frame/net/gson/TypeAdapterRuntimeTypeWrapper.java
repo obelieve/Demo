@@ -1,4 +1,4 @@
-package com.zxy.frame.json;
+package com.zxy.frame.net.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;

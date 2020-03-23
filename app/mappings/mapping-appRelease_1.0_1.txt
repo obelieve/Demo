@@ -36404,11 +36404,11 @@ com.zxy.demo.http.LogInterceptor -> com.zxy.demo.a.b:
     19:28:okhttp3.Response intercept(okhttp3.Interceptor$Chain) -> intercept
 com.zxy.demo.http.ServiceInterface -> com.zxy.demo.a.c:
     retrofit2.Call square_post(int) -> a
-com.zxy.demo.model.SquareListModel -> com.zxy.demo.model.SquareListModel:
+com.zxy.demo.model.SquarePostEntity -> com.zxy.demo.model.SquarePostEntity:
     boolean status -> status
     int code -> code
     java.lang.String message -> message
-    com.zxy.demo.model.SquareListModel$DataBean data -> data
+    com.zxy.demo.model.SquarePostEntity$DataBean data -> data
     5:5:void <init>() -> <init>
     20:20:boolean isStatus() -> isStatus
     24:25:void setStatus(boolean) -> setStatus
@@ -36416,10 +36416,10 @@ com.zxy.demo.model.SquareListModel -> com.zxy.demo.model.SquareListModel:
     32:33:void setCode(int) -> setCode
     36:36:java.lang.String getMessage() -> getMessage
     40:41:void setMessage(java.lang.String) -> setMessage
-    44:44:com.zxy.demo.model.SquareListModel$DataBean getData() -> getData
-    48:49:void setData(com.zxy.demo.model.SquareListModel$DataBean) -> setData
+    44:44:com.zxy.demo.model.SquarePostEntity$DataBean getData() -> getData
+    48:49:void setData(com.zxy.demo.model.SquarePostEntity$DataBean) -> setData
     387:387:java.lang.String toString() -> toString
-com.zxy.demo.model.SquareListModel$DataBean -> com.zxy.demo.model.SquareListModel$DataBean:
+com.zxy.demo.model.SquarePostEntity$DataBean -> com.zxy.demo.model.SquarePostEntity$DataBean:
     int current_page -> current_page
     int from -> from
     int last_page -> last_page
@@ -36446,14 +36446,14 @@ com.zxy.demo.model.SquareListModel$DataBean -> com.zxy.demo.model.SquareListMode
     129:129:java.util.List getPost_list() -> getPost_list
     133:134:void setPost_list(java.util.List) -> setPost_list
     372:372:java.lang.String toString() -> toString
-com.zxy.demo.model.SquareListModel$DataBean$PostListBean -> com.zxy.demo.model.SquareListModel$DataBean$PostListBean:
+com.zxy.demo.model.SquarePostEntity$DataBean$PostListBean -> com.zxy.demo.model.SquarePostEntity$DataBean$PostListBean:
     int user_id -> user_id
     java.lang.String nickname -> nickname
     java.lang.String avatar -> avatar
     int post_id -> post_id
     java.lang.String post_time -> post_time
     java.lang.String content -> content
-    com.zxy.demo.model.SquareListModel$DataBean$PostListBean$MediaBean media -> media
+    com.zxy.demo.model.SquarePostEntity$DataBean$PostListBean$MediaBean media -> media
     int pc_num -> pc_num
     int zan_num -> zan_num
     int is_top -> is_top
@@ -36473,8 +36473,8 @@ com.zxy.demo.model.SquareListModel$DataBean$PostListBean -> com.zxy.demo.model.S
     204:205:void setPost_time(java.lang.String) -> setPost_time
     208:208:java.lang.String getContent() -> getContent
     212:213:void setContent(java.lang.String) -> setContent
-    216:216:com.zxy.demo.model.SquareListModel$DataBean$PostListBean$MediaBean getMedia() -> getMedia
-    220:221:void setMedia(com.zxy.demo.model.SquareListModel$DataBean$PostListBean$MediaBean) -> setMedia
+    216:216:com.zxy.demo.model.SquarePostEntity$DataBean$PostListBean$MediaBean getMedia() -> getMedia
+    220:221:void setMedia(com.zxy.demo.model.SquarePostEntity$DataBean$PostListBean$MediaBean) -> setMedia
     224:224:int getPc_num() -> getPc_num
     228:229:void setPc_num(int) -> setPc_num
     232:232:int getZan_num() -> getZan_num
@@ -36488,7 +36488,7 @@ com.zxy.demo.model.SquareListModel$DataBean$PostListBean -> com.zxy.demo.model.S
     264:264:int getIs_report() -> getIs_report
     268:269:void setIs_report(int) -> setIs_report
     352:352:java.lang.String toString() -> toString
-com.zxy.demo.model.SquareListModel$DataBean$PostListBean$MediaBean -> com.zxy.demo.model.SquareListModel$DataBean$PostListBean$MediaBean:
+com.zxy.demo.model.SquarePostEntity$DataBean$PostListBean$MediaBean -> com.zxy.demo.model.SquarePostEntity$DataBean$PostListBean$MediaBean:
     java.lang.String media_type -> media_type
     java.util.List media_list -> media_list
     271:271:void <init>() -> <init>
@@ -36497,7 +36497,7 @@ com.zxy.demo.model.SquareListModel$DataBean$PostListBean$MediaBean -> com.zxy.de
     289:289:java.util.List getMedia_list() -> getMedia_list
     293:294:void setMedia_list(java.util.List) -> setMedia_list
     343:343:java.lang.String toString() -> toString
-com.zxy.demo.model.SquareListModel$DataBean$PostListBean$MediaBean$MediaListBean -> com.zxy.demo.model.SquareListModel$DataBean$PostListBean$MediaBean$MediaListBean:
+com.zxy.demo.model.SquarePostEntity$DataBean$PostListBean$MediaBean$MediaListBean -> com.zxy.demo.model.SquarePostEntity$DataBean$PostListBean$MediaBean$MediaListBean:
     java.lang.String scale -> scale
     java.lang.String original -> original
     java.lang.String thumbnail -> thumbnail

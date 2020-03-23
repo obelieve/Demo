@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
@@ -27,6 +28,7 @@ public class HttpUtil {
     private List<Interceptor> mInterceptors;
     private List<Interceptor> mNetInterceptors;
     private List<Converter.Factory> mConverterFactorys;
+    private List<CallAdapter.Factory> mCallAdapterFactorys;
 
     private HttpUtil() {
 
@@ -65,12 +67,25 @@ public class HttpUtil {
         return sHttpUtil;
     }
 
+    public HttpUtil addCallAdapterFactory(CallAdapter.Factory factory) {
+        if (sHttpUtil.mCallAdapterFactorys == null) {
+            sHttpUtil.mCallAdapterFactorys = new ArrayList<>();
+        }
+        sHttpUtil.mCallAdapterFactorys.add(factory);
+        return sHttpUtil;
+    }
+
     public <T> T create(Class<T> clazz) {
         if (mRetrofit == null) {
             Retrofit.Builder builder = new Retrofit.Builder().baseUrl(mBaseUrl);
             if (mConverterFactorys != null) {
                 for (Converter.Factory factory : mConverterFactorys) {
                     builder.addConverterFactory(factory);
+                }
+            }
+            if (mCallAdapterFactorys != null) {
+                for (CallAdapter.Factory factory : mCallAdapterFactorys) {
+                    builder.addCallAdapterFactory(factory);
                 }
             }
             OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
