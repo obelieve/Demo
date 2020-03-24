@@ -1,12 +1,6 @@
-package com.zxy.demo;
-
-import android.graphics.Rect;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-
-import com.zxy.utility.LogUtil;
-
+# 解决：当状态栏透明且虚拟键盘设置android:windowSoftInputMode="adjustResize"时，EditText被键盘挡住问题
+- 1.调用`AndroidBug5497Workaround.assistActivity(findViewById(android.R.id.content))`，进行重新计算高度;
+```
 public class AndroidBug5497Workaround {
     public static void assistActivity(View content) {
         new AndroidBug5497Workaround(content);
@@ -47,3 +41,36 @@ public class AndroidBug5497Workaround {
         return (r.bottom);
     }
 }
+```
+### 解决一个场景问题：CoordinatorLayout + AppBarLayout + CollapsingToolbarLayout +ViewPager 布局时，要求 ViewPager切换到某个position时，这个position固定高度.
+```
+   vp_content.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+		@Override
+		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+		}
+
+		@Override
+		public void onPageSelected(int position) {
+			collapsing(position != 1);//position ==1 固定高度
+		}
+
+		@Override
+		public void onPageScrollStateChanged(int state) {
+
+		}
+	});
+
+	public void collapsing(boolean collapsing) {
+		int i0 = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL;
+		int i1 = AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED;
+		View appBarChildAt = appbar.getChildAt(0);
+		AppBarLayout.LayoutParams appBarParams = (AppBarLayout.LayoutParams) appBarChildAt.getLayoutParams();
+		if (collapsing) {
+			appBarParams.setScrollFlags(i0 | i1);// 重置折叠效果
+		} else {
+			appBarParams.setScrollFlags(0);//不可滑动
+		}
+		appBarChildAt.setLayoutParams(appBarParams);
+	}
+```

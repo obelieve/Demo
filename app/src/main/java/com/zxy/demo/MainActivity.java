@@ -87,22 +87,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //2310 x 1080
-    //118  102
-    //2192
-
-//    public void fixedHeight(boolean fixed) {
-//        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ll_content.getLayoutParams();
-//        params.width = CoordinatorLayout.LayoutParams.MATCH_PARENT;
-//        if (fixed) {
-//            params.height = findViewById(android.R.id.content).getHeight() - Util.dp2px(getApplicationContext(), 210.0f);
-//        } else {
-//            params.height = findViewById(android.R.id.content).getHeight();
-//        }
-//        LogUtil.e("fixedHeight: content-height= " + findViewById(android.R.id.content).getHeight() + " ll-height: " + params.height);
-//        ll_content.setLayoutParams(params);
-//    }
-
 
     public void collapsing(boolean collapsing) {
         int i0 = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL;

@@ -11,26 +11,15 @@
             android:layout_height="match_parent"
             android:layout_marginTop="30dp">
 
-            <androidx.core.widget.NestedScrollView
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@id/et_content">
-                <FrameLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_content"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:id="@+id/tv_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="32sp"
-                        android:text="很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很
-        好很好很好很好很好很好很好\n\n\n\n\n\n\n很好很好很好很好很好很好很好很好很好
-        很好很好很好很好很好很好很好很好很好很好很好很好很好\n\n\n\n\n\n\n\n很好很好
-        很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好
-        很好"/>
-                </FrameLayout>
-            </androidx.core.widget.NestedScrollView>
-
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
             <EditText
                 android:id="@+id/et_content"
                 android:layout_width="match_parent"
