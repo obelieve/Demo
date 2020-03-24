@@ -21,7 +21,7 @@ public class LogInterceptor implements Interceptor {
         String data = response.body().string();
         response.body().close();
         String start = " \n\n =================================START HTTP/HTTPS==============================\n";
-        String requestStr = String.format("request: %s\nmethod: %s\n headers:\n%s body:%s length=%s\n",request.url().toString(), request.method(), request.headers(), request.body().contentType(), request.body().contentLength());
+        String requestStr = String.format("request: %s\nmethod: %s\n headers:\n%s body:%s length=%s\n",request.url().toString(), request.method(), request.headers(), request.body()!=null?request.body().contentType():"", request.body()!=null?request.body().contentLength():"");
         String responseStr = String.format("\n response: \n %s", data);
         String end = " \n\n ==================================END HTTP/HTTPS===============================\n";
         LogUtil.i(start + requestStr + responseStr + end);
