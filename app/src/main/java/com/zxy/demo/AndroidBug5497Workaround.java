@@ -4,6 +4,11 @@ import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import com.zxy.utility.LogUtil;
 
 public class AndroidBug5497Workaround {
     public static void assistActivity(View content) {
@@ -34,6 +39,7 @@ public class AndroidBug5497Workaround {
             frameLayoutParams.height = usableHeightNow;
             mChildOfContent.requestLayout();//请求重新布局
             usableHeightPrevious = usableHeightNow;
+            LogUtil.e("fixedHeight ResizeHeight:"+frameLayoutParams.height);
         }
     }
 
@@ -42,5 +48,19 @@ public class AndroidBug5497Workaround {
         Rect r = new Rect();
         mChildOfContent.getWindowVisibleDisplayFrame(r);
         return (r.bottom);
+    }
+
+    public void fixedHeight(View contentView,boolean fixed){
+        LinearLayout ll_content = contentView.findViewById(R.id.ll_content);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ll_content.getLayoutParams();
+
+        params.width = CoordinatorLayout.LayoutParams.MATCH_PARENT;
+        if (fixed) {
+            params.height = contentView.getHeight() - Util.dp2px(contentView.getContext(),210.0f);
+        } else {
+            params.height = contentView.getHeight();
+        }
+        LogUtil.e("fixedHeight: content-height= "+contentView.getHeight()+" ll-height: "+params.height);
+        ll_content.setLayoutParams(params);
     }
 }
