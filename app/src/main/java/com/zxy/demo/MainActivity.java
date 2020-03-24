@@ -1,6 +1,10 @@
 package com.zxy.demo;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initStatusBar(false);
         SystemUtil.init(getApplicationContext());
         LogUtil.e("windows width =" + getResources().getDisplayMetrics().widthPixels + "  windows Height=" + getResources().getDisplayMetrics().heightPixels);
         LogUtil.e("nav = " + SystemUtil.getNavigationHeight() + " statusBar = " + SystemUtil.getStatusBarHeight());
@@ -45,6 +50,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void initStatusBar(boolean show) {
+        if(show){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                // 设置状态栏底色白色
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                getWindow().setStatusBarColor(Color.WHITE);
+                // 设置状态栏字体黑色
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }
+        }
     }
 
     //2310 x 1080
