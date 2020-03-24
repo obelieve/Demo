@@ -34,7 +34,8 @@
             <EditText
                 android:id="@+id/et_content"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:background="#FFFFFF"
                 android:layout_alignParentBottom="true"
                 android:text="斯柯达"/>
