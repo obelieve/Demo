@@ -2,13 +2,13 @@ package com.zxy.demo;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 
 import com.zxy.utility.LogUtil;
 
-public class F2RootView extends LinearLayout {
+public class F2RootView extends NestedScrollView {
 
 
     public F2RootView(Context context) {

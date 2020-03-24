@@ -14,6 +14,7 @@ import com.zxy.utility.SystemUtil;
 public class MainActivity extends AppCompatActivity {
 
     ViewPager vp_content;
+    Class[] mClasses = new Class[]{MainFragment.class, Fragment2.class, Fragment3.class};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +29,19 @@ public class MainActivity extends AppCompatActivity {
             @NonNull
             @Override
             public Fragment getItem(int position) {
-                return position == 0 ? new MainFragment() : new Fragment2();
+                try {
+                    return (Fragment) mClasses[position].newInstance();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+                return new Fragment3();
             }
 
             @Override
             public int getCount() {
-                return 3;
+                return mClasses.length;
             }
         });
 

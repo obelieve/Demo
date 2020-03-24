@@ -1,9 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zxy.demo.F2RootView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccent">
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height ="match_parent"/>
-</com.zxy.demo.F2RootView>
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/et_content">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/tv_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="32sp"
+                        android:text="很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很
+        好很好很好很好很好很好很好\n\n\n\n\n\n\n很好很好很好很好很好很好很好很好很好
+        很好很好很好很好很好很好很好很好很好很好很好很好很好\n\n\n\n\n\n\n\n很好很好
+        很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好
+        很好"/>
+                </FrameLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <EditText
+                android:id="@+id/et_content"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#FFFFFF"
+                android:layout_alignParentBottom="true"
+                android:text="斯柯达"/>
+        </RelativeLayout>
+    </FrameLayout>
+</FrameLayout>
