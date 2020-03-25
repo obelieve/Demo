@@ -3,15 +3,12 @@ package com.zxy.demo.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.zxy.demo.App;
 import com.zxy.demo.entity.SquarePostEntity;
+import com.zxy.demo.http.ApiService;
 import com.zxy.frame.net.BaseResponse;
+import com.zxy.frame.net.BaseSubscribe;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainViewModel extends ViewModel {
 
@@ -24,21 +21,39 @@ public class MainViewModel extends ViewModel {
     public void square_post(boolean isMore) {
         if (!isMore) {
             mCurPage = 1;
-        }else{
+        } else {
             mCurPage++;
         }
-        App.getServiceInterface().square_post(mCurPage).enqueue(new Callback<BaseResponse<SquarePostEntity>>() {
+        ApiService.getInstance().square_post(1).subscribe(new BaseSubscribe<BaseResponse<SquarePostEntity>>() {
             @Override
-            public void onResponse(Call<BaseResponse<SquarePostEntity>> call, Response<BaseResponse<SquarePostEntity>> response) {
-                success(response.body().getData(SquarePostEntity.class),isMore);
+            public void onNext(BaseResponse<SquarePostEntity> response) {
+                success(response.getData(SquarePostEntity.class),isMore);
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<SquarePostEntity>> call, Throwable t) {
+            public void onError(Throwable e) {
                 failure(isMore);
             }
         });
     }
+
+//        (new Callback<BaseResponse<SquarePostEntity>>() {
+//        @Override
+//        public void onResponse(Call<BaseResponse<SquarePostEntity>> call, Response<BaseResponse<SquarePostEntity>> response) {
+//            LogUtil.e("onResponse->" + " " + Thread.currentThread());
+//            success(response.body().getData(SquarePostEntity.class), isMore);
+//        }
+//
+//        @Override
+//        public void onFailure(Call<BaseResponse<SquarePostEntity>> call, Throwable t) {
+//            LogUtil.e("onFailure->" + " " + Thread.currentThread());
+//            failure(isMore);
+//        }
+//    });
+
+    //success(response.body().getData(SquarePostEntity.class),isMore);
+    //failure(isMore);
+
 
     private void success(SquarePostEntity entity, boolean isMore) {
         List<SquarePostEntity.PostListBean> beans = entity.getPost_list();
@@ -55,13 +70,13 @@ public class MainViewModel extends ViewModel {
         if (!isMore) {
             if (entity.getHas_next_page() == 0) {
                 mLoadMoreLiveData.setValue(new LoadMoreModel(false, false, true));
-            }else{
+            } else {
                 mLoadMoreLiveData.setValue(new LoadMoreModel(true, false, false));
             }
-        }else{
+        } else {
             if (entity.getHas_next_page() == 0) {
                 mLoadMoreLiveData.setValue(new LoadMoreModel(false, false, true));
-            }else{
+            } else {
                 mLoadMoreLiveData.setValue(new LoadMoreModel(true, false, false));
             }
         }
@@ -71,7 +86,7 @@ public class MainViewModel extends ViewModel {
     private void failure(boolean isMore) {
         if (isMore) {
             mLoadMoreLiveData.setValue(new LoadMoreModel(false, true, false));
-        }else{
+        } else {
             mRefreshLiveData.setValue(false);
         }
     }
