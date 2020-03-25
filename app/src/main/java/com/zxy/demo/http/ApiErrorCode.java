@@ -1,5 +1,5 @@
 package com.zxy.demo.http;
 
-public interface ErrorCode {
+public interface ApiErrorCode {
     int SUCCESS = 200;
 }

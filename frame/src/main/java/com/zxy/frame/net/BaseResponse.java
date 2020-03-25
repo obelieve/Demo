@@ -46,12 +46,4 @@ public class BaseResponse<T>  {
     public void setData(String json) {
         this.data = json;
     }
-
-//    public boolean isSuccess() {
-//        return code == ErrorCode.CODE_OK;
-//    }
-//
-//    public boolean isTokenError() {
-//        return code == ErrorCode.CODE_TOKEN_ERROR;
-//    }
 }

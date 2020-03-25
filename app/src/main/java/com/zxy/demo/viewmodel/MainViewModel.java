@@ -37,23 +37,6 @@ public class MainViewModel extends ViewModel {
         });
     }
 
-//        (new Callback<BaseResponse<SquarePostEntity>>() {
-//        @Override
-//        public void onResponse(Call<BaseResponse<SquarePostEntity>> call, Response<BaseResponse<SquarePostEntity>> response) {
-//            LogUtil.e("onResponse->" + " " + Thread.currentThread());
-//            success(response.body().getData(SquarePostEntity.class), isMore);
-//        }
-//
-//        @Override
-//        public void onFailure(Call<BaseResponse<SquarePostEntity>> call, Throwable t) {
-//            LogUtil.e("onFailure->" + " " + Thread.currentThread());
-//            failure(isMore);
-//        }
-//    });
-
-    //success(response.body().getData(SquarePostEntity.class),isMore);
-    //failure(isMore);
-
 
     private void success(SquarePostEntity entity, boolean isMore) {
         List<SquarePostEntity.PostListBean> beans = entity.getPost_list();

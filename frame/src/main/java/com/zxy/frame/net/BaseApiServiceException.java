@@ -1,11 +1,11 @@
-package com.zxy.demo.http;
+package com.zxy.frame.net;
 
-public class ServerException extends Exception {
+public class BaseApiServiceException extends Exception {
 
     private int code;
     private String data;
 
-    public ServerException(String message, int code, String data) {
+    public BaseApiServiceException(String message, int code, String data) {
         super(message);
     }
 
