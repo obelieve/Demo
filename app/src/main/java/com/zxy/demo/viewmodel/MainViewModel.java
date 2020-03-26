@@ -24,7 +24,7 @@ public class MainViewModel extends ViewModel {
         } else {
             mCurPage++;
         }
-        ApiService.getInstance().square_post(1).subscribe(new BaseSubscribe<BaseResponse<SquarePostEntity>>() {
+        ApiService.getInstance().square_post(mCurPage).subscribe(new BaseSubscribe<BaseResponse<SquarePostEntity>>() {
             @Override
             public void onNext(BaseResponse<SquarePostEntity> response) {
                 success(response.getData(SquarePostEntity.class),isMore);
