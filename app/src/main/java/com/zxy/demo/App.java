@@ -3,13 +3,13 @@ package com.zxy.demo;
 import android.app.Application;
 
 import com.zxy.demo.http.HttpInterceptor;
-import com.zxy.demo.http.LogInterceptor;
 import com.zxy.demo.http.ServiceInterface;
 import com.zxy.frame.net.HttpUtil;
 import com.zxy.frame.net.convert.CustomGsonConverterFactory;
 import com.zxy.frame.utils.ToastUtil;
 import com.zxy.utility.SystemUtil;
 
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 public class App extends Application {
@@ -23,7 +23,7 @@ public class App extends Application {
         ToastUtil.init(this);
         mServiceInterface = HttpUtil.build().baseUrl(ServiceInterface.BASE_URL)
                 .addInterceptor(new HttpInterceptor())
-                .addInterceptor(new LogInterceptor())
+                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .addConverterFactory(CustomGsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .create(ServiceInterface.class);
