@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.bumptech.glide.Glide;
 import com.zxy.demo.R;
 import com.zxy.demo.adapter.viewholder.MainViewHolder;
 import com.zxy.demo.entity.SquarePostEntity;
@@ -18,6 +17,7 @@ import com.zxy.demo.viewmodel.MainViewModel;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.adapter.item_decoration.VerticalItemDivider;
 import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.utils.image.GlideUtil;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class MainFragment extends BaseFragment {
     protected void initView() {
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mMainAdapter = new MainAdapter(getContext());
-        mMainAdapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.view_empty, mSrlContent,false));
+        mMainAdapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.view_empty, mSrlContent, false));
         mMainAdapter.setLoadMoreListener(mRvContent, () -> mMainViewModel.square_post(true));
         mRvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvContent.addItemDecoration(new VerticalItemDivider());
@@ -68,11 +68,11 @@ public class MainFragment extends BaseFragment {
         mMainViewModel.getLoadMoreLiveData().observe(this, new Observer<MainViewModel.LoadMoreModel>() {
             @Override
             public void onChanged(MainViewModel.LoadMoreModel loadMoreModel) {
-                if(loadMoreModel.isCompleted()){
+                if (loadMoreModel.isCompleted()) {
                     mMainAdapter.loadMoreLoading();
-                }else if(loadMoreModel.isEnd()){
+                } else if (loadMoreModel.isEnd()) {
                     mMainAdapter.loadMoreEnd();
-                }else{
+                } else {
                     mMainAdapter.loadMoreError();
                 }
             }
@@ -87,15 +87,15 @@ public class MainFragment extends BaseFragment {
 
         @Override
         public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            return new MainViewHolder(parent,R.layout.viewholder_main);
+            return new MainViewHolder(parent, R.layout.viewholder_main);
         }
 
         @Override
         public void loadViewHolder(BaseViewHolder holder, int position) {
-            MainViewHolder holder1 = ((MainViewHolder)holder);
+            MainViewHolder holder1 = ((MainViewHolder) holder);
             holder1.mTvName.setText(getDataHolder().getList().get(position).getNickname());
             holder1.mTvName.setText(getDataHolder().getList().get(position).getNickname());
-            Glide.with(getContext()).load(getDataHolder().getList().get(position).getAvatar()).into(holder1.mIvImage);
+            GlideUtil.loadImage(getContext(), getDataHolder().getList().get(position).getAvatar(), holder1.mIvImage);
         }
 
     }
