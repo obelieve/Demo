@@ -1,5 +1,6 @@
 package com.zxy.frame.base;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,17 +14,31 @@ import com.zxy.frame.utils.StatusBarUtil;
 
 public class BaseActivity extends AppCompatActivity {
 
+    private boolean mStatusBarLight = true;
     private int mStatusBarColor = Color.TRANSPARENT;
-    private boolean mStatusBarLight;
+    protected boolean mNeedLightStatusBar = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        configStatusBar(defStatusBarLight(), defStatusBarColor());
+        setScreenOrientation();
+        if (mNeedLightStatusBar){
+            configStatusBar(defStatusBarLight(), defStatusBarColor());
+        }
+    }
+
+    protected void setScreenOrientation() {
+        if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
+            try{
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制竖屏
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     public boolean defStatusBarLight() {
-        return true;
+        return mStatusBarLight;
     }
 
     public int defStatusBarColor() {
