@@ -23,7 +23,7 @@ import java.security.MessageDigest;
 public class GlideRoundTransform extends BitmapTransformation {
 
     private final float radius;
-    private static final String ID = "com.bumptech.glide.transformations.FillSpace";
+    private static final String ID = "com.zxy.frame.utils";
     private static final byte[] ID_BYTES = ID.getBytes(CHARSET);
     boolean isGif;
     Context context;
