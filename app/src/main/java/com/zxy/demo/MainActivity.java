@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.zxy.demo._issue.ZDialogFragment;
 import com.zxy.demo._issue.ForTAFragment;
 import com.zxy.demo.fragment.MainFragment;
+import com.zxy.frame.view.BottomTabView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     TabLayout mTlTab;
     @BindView(R.id.vp_content)
     ViewPager mVpContent;
+
+    @BindView(R.id.view_bottom_tab)
+    BottomTabView mBottomTabView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mTlTab.setupWithViewPager(mVpContent);
+        mBottomTabView.setupWithViewPager(mVpContent);
     }
 
     public static abstract class MainAdapter extends FragmentStatePagerAdapter {

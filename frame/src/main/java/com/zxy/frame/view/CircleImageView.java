@@ -14,6 +14,9 @@ import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
+/**
+ * 圆角ImageView
+ */
 public class CircleImageView extends AppCompatImageView {
     private Paint mPaint; //画笔
 
