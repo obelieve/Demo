@@ -27,8 +27,8 @@ public class BaseActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 10240;
 
     private boolean mStatusBarLight = true;
-    private int mStatusBarColor = Color.TRANSPARENT;
-    protected boolean mNeedLightStatusBar = true;
+    private int mStatusBarColor = Color.WHITE;
+    protected boolean mNeedInsetStatusBar = false;
 
     /**
      * Activity 实例.
@@ -41,9 +41,12 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mActivity = this;
         setScreenOrientation();
-        if (mNeedLightStatusBar) {
-            configStatusBar(isStatusBarLight(), getStatusBarColor());
+        if (!mNeedInsetStatusBar) {
+            StatusBarUtil.setStatusBarColor(this, getStatusBarColor());
+        } else {
+            StatusBarUtil.setStatusBarTranslucentStatus(this);
         }
+        StatusBarUtil.setWindowLightStatusBar(this, isStatusBarLight());
     }
 
     protected void setScreenOrientation() {
@@ -63,20 +66,6 @@ public class BaseActivity extends AppCompatActivity {
     public boolean isStatusBarLight() {
         return mStatusBarLight;
     }
-
-    public void configStatusBar(boolean light, @ColorInt int color) {
-        mStatusBarLight = light;
-        mStatusBarColor = color;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            StatusBarUtil.setStatusBarColor(this, color);
-            StatusBarUtil.setWindowLightStatusBar(this, !light);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            StatusBarUtil.setStatusBarColor(this, Color.TRANSPARENT);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            StatusBarUtil.setStatusBarTranslucentStatus(this);
-        }
-    }
-
 
     /**
      * 请求权限

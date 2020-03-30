@@ -14,14 +14,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tabIndicatorColor="@color/green"
         app:tabIndicatorHeight="2dp"
+        app:tabMode="scrollable"
         app:tabPaddingEnd="15dp"
         app:tabPaddingStart="15dp"
         app:tabSelectedTextColor="@color/green"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="@color/cardview_dark_background" />
-<!--    app:tabMode="scrollable"-->
-<!--    app:tabMaxWidth="144dp"-->
-<!--    app:tabMinWidth="48dp"-->
+    <!--    app:tabMode="scrollable"-->
+    <!--    app:tabMaxWidth="144dp"-->
+    <!--    app:tabMinWidth="48dp"-->
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp_content"
         android:layout_width="0dp"
@@ -30,13 +31,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tl_tab" />
+
     <com.zxy.frame.view.BottomTabView
         android:id="@+id/view_bottom_tab"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-        <include layout="@layout/view_bottom_tab"/>
+        app:layout_constraintRight_toRightOf="parent">
+
+        <include layout="@layout/view_bottom_tab" />
     </com.zxy.frame.view.BottomTabView>
 </androidx.constraintlayout.widget.ConstraintLayout>
