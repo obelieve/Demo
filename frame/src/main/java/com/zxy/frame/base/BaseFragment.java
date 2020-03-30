@@ -1,6 +1,5 @@
 package com.zxy.frame.base;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +13,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public abstract class BaseFragment extends Fragment {
-
-    /**
-     * Fragment中，是否要更新状态栏
-     */
-    private boolean mDisableStatusBarUpdate = false;
 
     private Unbinder mUnbinder;
 
@@ -41,22 +35,6 @@ public abstract class BaseFragment extends Fragment {
         if (mUnbinder != null) {
             mUnbinder.unbind();
         }
-    }
-
-    public void setDisableStatusBarUpdate(boolean disable) {
-        mDisableStatusBarUpdate = disable;
-    }
-
-    public boolean isDisableStatusBarUpdate() {
-        return mDisableStatusBarUpdate;
-    }
-
-    public int settingStatusBarColor() {
-        return Color.TRANSPARENT;
-    }
-
-    public boolean settingStatusBarLight() {
-        return false;
     }
 
 }

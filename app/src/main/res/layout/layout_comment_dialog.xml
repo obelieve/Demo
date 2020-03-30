@@ -21,7 +21,7 @@
      <Button
          android:id="@+id/btn_ok"
          android:layout_width="60dp"
-         android:background="@drawable/btn_send_selector"
+         android:background="@drawable/bg_circle_37bd42_3dp"
          android:layout_marginRight="15dp"
          android:textColor="@color/white"
          android:text="发送"
