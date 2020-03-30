@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000">
+
+        <LinearLayout
+            android:id="@+id/ll_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_centerInParent="true"
+            android:paddingTop="100dp"
+            android:background="@drawable/bg_circle_ffffff_10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="15dp">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="发现新版本V%1$s"
+                    android:textStyle="bold"
+                    android:textColor="#161F29"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:maxHeight="200dp"
+                    android:textColor="#4D4D4D"
+                    android:textSize="15dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_update"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:clickable="false"
+                android:background="@drawable/bg_circle_main_50dp"
+                android:text="立即升级" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="178dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/ll_content"
+            android:layout_marginBottom="-60dp"
+            app:srcCompat="@drawable/ic_version_update" />
+
+        <RelativeLayout
+            android:id="@+id/rl_close"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/ll_content">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_white_circle_close"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>
