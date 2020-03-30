@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.zxy.demo._issue.ForTAFragment;
+import com.zxy.demo._issue.LoginFragment;
 import com.zxy.demo._issue.SplashFragment;
 import com.zxy.demo._issue.ZDialogFragment;
 import com.zxy.demo.fragment.MainFragment;
@@ -20,8 +21,8 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String[] mStrings = new String[]{"加载刷新", "Dialog", "@其他人","引导页"};
-    private final Class[] mClasses = new Class[]{MainFragment.class, ZDialogFragment.class, ForTAFragment.class,SplashFragment.class};
+    private final String[] mStrings = new String[]{"加载刷新", "Dialog", "@其他人","引导页","登录"};
+    private final Class[] mClasses = new Class[]{MainFragment.class, ZDialogFragment.class, ForTAFragment.class,SplashFragment.class, LoginFragment.class};
 
     @BindView(R.id.tl_tab)
     TabLayout mTlTab;
