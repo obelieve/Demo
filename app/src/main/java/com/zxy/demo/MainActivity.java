@@ -8,11 +8,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.zxy.demo._issue.ForTAFragment;
-import com.zxy.demo._issue.LoginFragment;
-import com.zxy.demo._issue.SplashFragment;
-import com.zxy.demo._issue.VersionUpdateFragment;
-import com.zxy.demo._issue.ZDialogFragment;
 import com.zxy.demo.fragment.MainFragment;
 import com.zxy.frame.base.BaseActivity;
 import com.zxy.frame.view.BottomTabView;
@@ -21,9 +16,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
-
-    private final String[] mStrings = new String[]{"加载刷新", "Dialog", "@其他人", "引导页", "登录", "版本升级"};
-    private final Class[] mClasses = new Class[]{MainFragment.class, ZDialogFragment.class, ForTAFragment.class, SplashFragment.class, LoginFragment.class, VersionUpdateFragment.class};
 
     @BindView(R.id.tl_tab)
     TabLayout mTlTab;
@@ -45,7 +37,7 @@ public class MainActivity extends BaseActivity {
             public Fragment getItem(int position) {
                 Fragment fragment;
                 try {
-                    fragment = (Fragment) mClasses[position].newInstance();
+                    fragment = (Fragment) MainEnum.values()[position].getClazz().newInstance();
                 } catch (Exception e) {
                     e.printStackTrace();
                     fragment = new MainFragment();
@@ -55,13 +47,13 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public int getCount() {
-                return mStrings.length;
+                return MainEnum.values().length;
             }
 
             @Nullable
             @Override
             public CharSequence getPageTitle(int position) {
-                return mStrings[position];
+                return MainEnum.values()[position].getName();
             }
         });
         mTlTab.setupWithViewPager(mVpContent);
