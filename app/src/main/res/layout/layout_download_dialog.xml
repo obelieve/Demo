@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_circle_ffffff_10dp"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="正在下载"
+        android:textColor="#161F29"
+        android:textSize="18dp" />
+
+    <com.daimajia.numberprogressbar.NumberProgressBar
+        android:id="@+id/download_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        custom:progress_reached_bar_height="6dp"
+        custom:progress_reached_color="#43CD80"
+        custom:progress_text_color="#43CD80"
+        custom:progress_text_size="12dp"
+        custom:progress_unreached_bar_height="6dp"
+        custom:progress_unreached_color="#666666" />
+
+    <TextView
+        android:id="@+id/download_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="15dp"
+        android:text="0MB/0MB"
+        android:textColor="#333A40"
+        android:textSize="12dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/download_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="取消下载"
+            android:textColor="#333A40"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/download_hide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="24dp"
+            android:text="后台下载"
+            android:textColor="#43CD80"
+            android:textSize="15dp" />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -13,7 +13,6 @@ import com.zxy.frame.base.BaseActivity;
 import com.zxy.frame.view.BottomTabView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
 
@@ -26,10 +25,12 @@ public class MainActivity extends BaseActivity {
     BottomTabView mBottomTabView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+    protected int layoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initCreateAfterView(Bundle savedInstanceState) {
         mVpContent.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
 
 

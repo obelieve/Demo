@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -21,8 +20,10 @@ import com.zxy.frame.utils.StatusBarUtil;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
 
-public class BaseActivity extends AppCompatActivity {
+
+public abstract class BaseActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CODE = 10240;
 
@@ -47,7 +48,16 @@ public class BaseActivity extends AppCompatActivity {
             StatusBarUtil.setStatusBarTranslucentStatus(this);
         }
         StatusBarUtil.setWindowLightStatusBar(this, isStatusBarLight());
+        if (layoutId() != 0) {
+            setContentView(layoutId());
+        }
+        ButterKnife.bind(this);
+        initCreateAfterView(savedInstanceState);
     }
+
+    protected abstract int layoutId();
+
+    protected abstract void initCreateAfterView(Bundle savedInstanceState);
 
     protected void setScreenOrientation() {
         if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {

@@ -3,7 +3,7 @@ package com.zxy.demo;
 import com.zxy.demo._issue.ForTAFragment;
 import com.zxy.demo._issue.LoginFragment;
 import com.zxy.demo._issue.SplashFragment;
-import com.zxy.demo._issue.VersionUpdateFragment;
+import com.zxy.demo._issue.VersionUpdateEntranceFragment;
 import com.zxy.demo._issue.ZDialogFragment;
 import com.zxy.demo.fragment.MainFragment;
 
@@ -15,7 +15,7 @@ public enum MainEnum {
     M4("@其他人", ForTAFragment.class),
     M5("引导页", SplashFragment.class),
     M6("登录", LoginFragment.class),
-    M7("版本升级", VersionUpdateFragment.class)
+    M7("版本升级", VersionUpdateEntranceFragment.class)
 
     ;
     private String mName;

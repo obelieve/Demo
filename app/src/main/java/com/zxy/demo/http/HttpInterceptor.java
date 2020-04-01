@@ -20,11 +20,12 @@ public class HttpInterceptor implements Interceptor {
         Request request = chain.request();
         request = request.newBuilder()
                 .addHeader("platform","android")
-                .addHeader("channel","2048_android")
-                .addHeader("version","1.1.0")
-                .addHeader("Authorization","Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkuZGV2LjIwNDguY29tXC9cL2FwaVwvcmVnX29yX2xvZyIsImlhdCI6MTU4NDU4MTQzNCwiZXhwIjoxNTg1MTg2MjM0LCJuYmYiOjE1ODQ1ODE0MzQsImp0aSI6ImJuYThhck1zWE5hZEVhaHEiLCJzdWIiOjI0NCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.h1mt3_AD3vurfSwAsE-GPoDf7bApMM0sytxzeFZ6C3o")
+                .addHeader("channel","_2048android")
+                .addHeader("version","1.6.2")
+                .addHeader("Authorization","Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkuZGV2LjIwNDguY29tXC9hcGlcL3JlZnJlc2giLCJpYXQiOjE1ODU2NTEwNzksImV4cCI6MTU4NjMxMTI2MywibmJmIjoxNTg1NzA2NDYzLCJqdGkiOiJmR1RnZTkycGphUExiU2pKIiwic3ViIjo5MzY3LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.q3_DWF7qu2GFU-e4Dtd96lbc279asX1GJGWY_E_KzJw")
                 .addHeader("system","XiaoMi MIX2:0")
                 .addHeader("Accept","application/x.2048.v2+json")
+                .addHeader("udidcode","24157e7e-f9f6-460f-a299-fe39ced9fe40")
                 .build();
         Response response = chain.proceed(request);
         return response;
