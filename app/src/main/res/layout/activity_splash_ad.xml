@@ -86,37 +86,4 @@
 
     </RelativeLayout>
 
-    <!--只加载广告接口，这里展示下加载结果-->
-    <LinearLayout
-        android:id="@+id/splash_load_ad_only"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="16dp"
-        android:visibility="gone">
-        <Button
-            android:id="@+id/splash_load_ad_close"
-            android:text="关闭"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:id="@+id/splash_load_ad_refresh"
-            android:text="刷新"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:id="@+id/splash_load_ad_display"
-            android:text="显示广告"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/splash_load_ad_status"
-            android:hint="当前状态"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
 </FrameLayout>

@@ -10,16 +10,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +32,7 @@ import java.util.List;
  *
  * 在调用SDK之前，如果您的App的targetSDKVersion >= 23，那么建议动态申请相关权限。
  */
-public class SplashADActivity extends Activity implements SplashADListener,View.OnClickListener {
+public class SplashADActivity extends Activity implements SplashADListener {
 
   private SplashAD splashAD;
   private ViewGroup container;
@@ -46,13 +43,6 @@ public class SplashADActivity extends Activity implements SplashADListener,View.
   public boolean canJump = false;
   private boolean needStartDemoList = true;
 
-  private boolean loadAdOnly = false;
-  private boolean showingAd = false;
-  private LinearLayout loadAdOnlyView;
-  private Button loadAdOnlyCloseButton;
-  private Button loadAdOnlyDisplayButton;
-  private Button loadAdOnlyRefreshButton;
-  private TextView loadAdOnlyStatusTextView;
 
   /**
    * 为防止无广告时造成视觉上类似于"闪退"的情况，设定无广告时页面跳转根据需要延迟一定时间，demo
@@ -79,22 +69,8 @@ public class SplashADActivity extends Activity implements SplashADListener,View.
     splashHolder = (ImageView) findViewById(R.id.splash_holder);
     boolean needLogo = getIntent().getBooleanExtra("need_logo", true);
     needStartDemoList = getIntent().getBooleanExtra("need_start_demo_list", true);
-    loadAdOnly = getIntent().getBooleanExtra("load_ad_only", false);
 
-    loadAdOnlyView = findViewById(R.id.splash_load_ad_only);
-    loadAdOnlyCloseButton = findViewById(R.id.splash_load_ad_close);
-    loadAdOnlyCloseButton.setOnClickListener(this);
-    loadAdOnlyDisplayButton = findViewById(R.id.splash_load_ad_display);
-    loadAdOnlyDisplayButton.setOnClickListener(this);
-    loadAdOnlyRefreshButton = findViewById(R.id.splash_load_ad_refresh);
-    loadAdOnlyRefreshButton.setOnClickListener(this);
-    loadAdOnlyStatusTextView = findViewById(R.id.splash_load_ad_status);
 
-    if(loadAdOnly){
-      loadAdOnlyView.setVisibility(View.VISIBLE);
-      loadAdOnlyStatusTextView.setText("广告加载中...");
-      loadAdOnlyDisplayButton.setEnabled(false);
-    }
     if (!needLogo) {
       findViewById(R.id.app_logo).setVisibility(View.GONE);
     }
@@ -195,11 +171,7 @@ public class SplashADActivity extends Activity implements SplashADListener,View.
                              String appId, String posId, SplashADListener adListener, int fetchDelay) {
     fetchSplashADTime = System.currentTimeMillis();
     splashAD = new SplashAD(activity, skipContainer, appId, posId, adListener, fetchDelay);
-    if(loadAdOnly) {
-      splashAD.fetchAdOnly();
-    }else{
-      splashAD.fetchAndShowIn(adContainer);
-    }
+    splashAD.fetchAndShowIn(adContainer);
   }
 
   @Override
@@ -236,13 +208,6 @@ public class SplashADActivity extends Activity implements SplashADListener,View.
   public void onADLoaded(long expireTimestamp) {
     Log.i("AD_DEMO", "SplashADFetch expireTimestamp:"+expireTimestamp);
 
-    if(loadAdOnly) {
-      loadAdOnlyDisplayButton.setEnabled(true);
-      long timeIntervalSec = (expireTimestamp-SystemClock.elapsedRealtime())/1000;
-      long min = timeIntervalSec/60;
-      long second = timeIntervalSec-(min*60);
-      loadAdOnlyStatusTextView.setText("加载成功,广告将在:"+min+"分"+second+"秒后过期，请在此之前展示(showAd)");
-    }
   }
 
   @Override
@@ -262,10 +227,8 @@ public class SplashADActivity extends Activity implements SplashADListener,View.
         Toast.makeText(SplashADActivity.this.getApplicationContext(), str, Toast.LENGTH_SHORT).show();
       }
     });
-    if(loadAdOnly && !showingAd) {
-      loadAdOnlyStatusTextView.setText(str);
-      return;//只拉取广告时，不终止activity
-    }    /**
+
+   /**
      * 为防止无广告时造成视觉上类似于"闪退"的情况，设定无广告时页面跳转根据需要延迟一定时间，demo
      * 给出的延时逻辑是从拉取广告开始算开屏最少持续多久，仅供参考，开发者可自定义延时逻辑，如果开发者采用demo
      * 中给出的延时逻辑，也建议开发者考虑自定义minSplashTimeWhenNoAD的值
@@ -325,7 +288,7 @@ public class SplashADActivity extends Activity implements SplashADListener,View.
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME) {
-      if(keyCode == KeyEvent.KEYCODE_BACK && loadAdOnlyView.getVisibility() == View.VISIBLE){
+      if(keyCode == KeyEvent.KEYCODE_BACK){
         return super.onKeyDown(keyCode, event);
       }
       return true;
@@ -333,24 +296,4 @@ public class SplashADActivity extends Activity implements SplashADListener,View.
     return super.onKeyDown(keyCode, event);
   }
 
-  @Override
-  public void onClick(View v) {
-    switch (v.getId()) {
-      case R.id.splash_load_ad_close:
-        this.finish();
-        break;
-      case R.id.splash_load_ad_refresh:
-        showingAd = false;
-        splashAD.fetchAdOnly();
-        this.loadAdOnlyStatusTextView.setText("广告加载中...");
-        loadAdOnlyDisplayButton.setEnabled(false);
-        break;
-      case R.id.splash_load_ad_display:
-        loadAdOnlyView.setVisibility(View.GONE);
-        showingAd = true;
-        splashAD.showAd(container);
-        break;
-      default:
-    }
-  }
 }
