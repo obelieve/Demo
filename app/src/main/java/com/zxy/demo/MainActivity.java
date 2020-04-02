@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         LogUtil.e("Android ID: " + ANDROID_ID);
         LogUtil.e("manufacturer: " + android.os.Build.MANUFACTURER);
         getIMEI(this);
+        LogUtil.e("OAID: " + DevicesUtil.getOaid());
     }
 
     public void getIMEI(Context context) {
