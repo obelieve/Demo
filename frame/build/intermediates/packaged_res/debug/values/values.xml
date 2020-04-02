@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="baseDialogBackgroundColor">@color/baseWhite</color>
+    <color name="baseDialogLineColor">#c9c9c9</color>
+    <color name="baseDialogMainColor">@color/baseGreen</color>
+    <color name="baseDialogNormalColor">@color/baseWhite</color>
+    <color name="baseDialogSelectedColor">#c9c9c9</color>
+    <color name="baseDialogTextColor">#333</color>
+    <color name="baseDialogTextColor2">#999999</color>
+    <color name="baseGreen">#1CC42F</color>
+    <color name="baseWhite">#ffffff</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorAliPay">#1b82d1</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorWeChat">#393a3f</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_bg">#22000000</color>
+    <dimen name="baseDialogContent">16sp</dimen>
+    <dimen name="baseDialogContent2">12sp</dimen>
+    <dimen name="baseDialogTitle">18sp</dimen>
+    <integer name="config_pop_duration">200</integer>
+    <string name="app_name">frame</string>
+    <style name="BaseBottomDialog" parent="BaseDialog">
+        <item name="android:windowAnimationStyle">@style/bottomAnim</item>
+    </style>
+    <style name="BaseDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">#333333</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.4</item>
+    </style>
+    <style name="bottomAnim">
+        <item name="android:windowEnterAnimation">@anim/bottom_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/bottom_dialog_exit</item>
+    </style>
+    <style name="popup_shadow_style">
+        <item name="android:windowEnterAnimation">@anim/popup_shadow_style_show</item>
+        <item name="android:windowExitAnimation">@anim/popup_shadow_style_hide</item>
+    </style>
+    <style name="popup_style">
+        <item name="android:windowEnterAnimation">@anim/popup_style_show</item>
+        <item name="android:windowExitAnimation">@anim/popup_style_hide</item>
+    </style>
+</resources>
