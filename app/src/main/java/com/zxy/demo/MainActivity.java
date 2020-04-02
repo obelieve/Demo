@@ -1,9 +1,7 @@
 package com.zxy.demo;
 
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +16,8 @@ import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.zxy.utility.LogUtil;
+
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     SegmentTabLayout tlFlycoSegment;
     @BindView(R.id.vp_content)
     ViewPager vpContent;
+    CustomTabLayoutHelper mTabLayoutHelper = new CustomTabLayoutHelper();
 
     Class[] mClasses = new Class[]{Fragment1.class,Fragment2.class};
     String[] mTitles = new String[]{"精选","广场"};
@@ -86,37 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initGoogleTab() {
         tlGoogle.setTabRippleColor(ColorStateList.valueOf(getResources().getColor(android.R.color.transparent)));
-        tlGoogle.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                View view = tab.getCustomView();
-                if (null == view) {
-                    tab.setCustomView(R.layout.tab_custom_view);
-                }
-                TextView textView = tab.getCustomView().findViewById(android.R.id.text1);
-                textView.setTextColor(Color.parseColor("#37BD42"));
-                LogUtil.e("h="+textView.getHeight()+" w:"+textView.getWidth()+" size="+textView.getTextSize());
-                textView.setTextAppearance(MainActivity.this, R.style.TabLayoutTextSize_bold_23sp);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                View view = tab.getCustomView();
-                if (null == view) {
-                    tab.setCustomView(R.layout.tab_custom_view);
-                }
-                TextView textView = tab.getCustomView().findViewById(android.R.id.text1);
-                textView.setTextColor(Color.parseColor("#333333"));
-                LogUtil.e("un h="+textView.getHeight()+" w:"+textView.getWidth()+" size="+textView.getTextSize());
-                textView.setTextAppearance(MainActivity.this, R.style.TabLayoutTextSize_normal_17sp);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        tlGoogle.setupWithViewPager(vpContent);
+        mTabLayoutHelper.init(vpContent,tlGoogle, Arrays.asList("tab1","tab2","tab3"),0);
     }
 
 
