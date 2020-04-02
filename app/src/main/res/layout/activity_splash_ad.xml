@@ -1,21 +1,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:layout_height="match_parent">
 
-    <!--这里模拟一张oneshot单的焦点图展示-->
-    <ImageView
-        android:id="@+id/oneshot_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="400px"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
     <RelativeLayout
         android:id="@+id/splash_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:background="@android:color/white">
 
         <!-- 广点通开屏广告支持“半屏/全屏”展示，开发者可以把Logo区域放在屏幕底部，然后在Logo上方提供一个容器来放置半开屏广告，请注意此容器高度不得小于400dp -->
@@ -41,7 +33,7 @@
             android:layout_height="match_parent"
             android:layout_above="@id/app_logo"
             android:scaleType="fitXY"
-            android:src="@drawable/splash_holder" />
+            />
 
         <!-- 3.开屏广告容器区域：-->
         <!-- 注意：该区域高度不得小于400dp。在本示例中没有写死splash_container的高度值，是因为第1部分的app_logo区域是一个高度很小的图片。 -->

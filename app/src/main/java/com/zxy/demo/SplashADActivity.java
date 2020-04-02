@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class SplashADActivity extends Activity implements SplashADListener {
   private ViewGroup container;
   private TextView skipView;
   private ImageView splashHolder;
+  private RelativeLayout splash_main;
   private static final String SKIP_TEXT = "点击跳过 %d";
 
   public boolean canJump = false;
@@ -67,6 +69,7 @@ public class SplashADActivity extends Activity implements SplashADListener {
       skipView.setVisibility(View.VISIBLE);
     }
     splashHolder = (ImageView) findViewById(R.id.splash_holder);
+    splash_main = findViewById(R.id.splash_main);
     boolean needLogo = getIntent().getBooleanExtra("need_logo", true);
     needStartDemoList = getIntent().getBooleanExtra("need_start_demo_list", true);
 
@@ -171,7 +174,7 @@ public class SplashADActivity extends Activity implements SplashADListener {
                              String appId, String posId, SplashADListener adListener, int fetchDelay) {
     fetchSplashADTime = System.currentTimeMillis();
     splashAD = new SplashAD(activity, skipContainer, appId, posId, adListener, fetchDelay);
-    splashAD.fetchAndShowIn(adContainer);
+    splashAD.fetchAdOnly();
   }
 
   @Override
@@ -207,7 +210,8 @@ public class SplashADActivity extends Activity implements SplashADListener {
   @Override
   public void onADLoaded(long expireTimestamp) {
     Log.i("AD_DEMO", "SplashADFetch expireTimestamp:"+expireTimestamp);
-
+    splash_main.setVisibility(View.VISIBLE);
+    splashAD.showAd(container);
   }
 
   @Override
