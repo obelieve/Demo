@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:contentDescription="@string/gdtslogan"
+            android:contentDescription="GDTslogan"
             android:src="@drawable/gdt_splash_logo" />
 
         <!-- 2.预设开屏图片区域： -->
@@ -64,7 +64,7 @@
             android:layout_margin="16dp"
             android:background="@drawable/background_circle"
             android:gravity="center"
-            android:text="@string/click_to_skip"
+            android:text="点击跳过"
             android:textColor="@android:color/white"
             android:textSize="14sp"/>
         <!-- 本示例省略了自定义的倒计时，和跳过按钮放在一起实现了。开发者也可以实现自己的倒计时View，方法是在onADTick回调中获得广告剩余的展示时间，并自由决定倒计时View的样式，SDK对倒计时的View没有要求。 -->
@@ -93,10 +93,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
         android:visibility="gone">
         <Button
             android:id="@+id/splash_load_ad_close"

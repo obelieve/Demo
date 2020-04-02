@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <string name="click_to_skip">点击跳过</string>
-    <string name="splash_loading">广告加载中...</string>
-    <string name="gdtslogan">GDTslogan</string>
-</resources>

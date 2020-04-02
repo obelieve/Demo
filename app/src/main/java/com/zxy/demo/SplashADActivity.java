@@ -92,7 +92,7 @@ public class SplashADActivity extends Activity implements SplashADListener,View.
 
     if(loadAdOnly){
       loadAdOnlyView.setVisibility(View.VISIBLE);
-      loadAdOnlyStatusTextView.setText(R.string.splash_loading);
+      loadAdOnlyStatusTextView.setText("广告加载中...");
       loadAdOnlyDisplayButton.setEnabled(false);
     }
     if (!needLogo) {
@@ -342,7 +342,7 @@ public class SplashADActivity extends Activity implements SplashADListener,View.
       case R.id.splash_load_ad_refresh:
         showingAd = false;
         splashAD.fetchAdOnly();
-        this.loadAdOnlyStatusTextView.setText(R.string.splash_loading);
+        this.loadAdOnlyStatusTextView.setText("广告加载中...");
         loadAdOnlyDisplayButton.setEnabled(false);
         break;
       case R.id.splash_load_ad_display:
