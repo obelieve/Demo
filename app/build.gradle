@@ -104,4 +104,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     api 'jp.wasabeef:glide-transformations:4.1.0'
     implementation project(path: ':frame')
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 }

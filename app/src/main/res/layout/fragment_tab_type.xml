@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!--若需要指定的padding，
+        需要设定app:tabPaddingStart和app:tabPaddingEnd，
+        还有tabMinWidth来重置默认MinWidth的值；-->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_tab1"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="scrollable"
+            app:tabMinWidth="20dp"
+            app:tabPaddingStart="10dp"
+            app:tabPaddingEnd="10dp"
+            android:background="#B7ECD3"
+            app:tabRippleColor="@color/transparent" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_tab2"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="scrollable"
+            app:tabMinWidth="20dp"
+            app:tabPaddingStart="10dp"
+            app:tabPaddingEnd="10dp"
+            app:tabRippleColor="@color/transparent" />
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
