@@ -1,10 +1,8 @@
 package com.zxy.frame.utils.tab;
 
-import android.content.Context;
 import android.widget.LinearLayout;
 
 import androidx.viewpager.widget.ViewPager;
-
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -15,21 +13,24 @@ public abstract class AbsTabLayoutHelper<T> implements ITabStatus<T> {
     protected ViewPager mViewPager;
     protected TabLayout mTabLayout;
     protected List<T> mList;
+    protected int mCurrentSelectedPosition;
 
     @Override
     public void init(ViewPager viewPager, TabLayout tabLayout, List<T> list, int index) {
         mViewPager = viewPager;
         mTabLayout = tabLayout;
         mList = list;
-        if (mViewPager == null || mViewPager.getAdapter() == null || mTabLayout == null || mList == null
-                || mViewPager.getAdapter().getCount() != mList.size() || index < 0 || index >= mList.size()) {
+        if (mViewPager == null || mTabLayout == null || mList == null || index < 0 || index >= mList.size()) {
             throw new IllegalArgumentException("初始化TabLayout 参数错误！");
         }
+        mCurrentSelectedPosition = index;
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 selectTab(tab, true);
                 if (tab.getPosition() >= 0 && tab.getPosition() < mList.size()) {
+                    mCurrentSelectedPosition = tab.getPosition();
                     mViewPager.setCurrentItem(tab.getPosition());
                 }
             }
@@ -51,29 +52,20 @@ public abstract class AbsTabLayoutHelper<T> implements ITabStatus<T> {
             }
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) tab.getCustomView().getLayoutParams();
             tab.getCustomView().setLayoutParams(layoutParams);
-            selectTab(tab, false);
             setData(tab.getCustomView(), mList.get(i));
             tabLayout.addTab(tab, i == index);
         }
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        for (int i = 0; i < mList.size(); i++) {
+            selectTab(tabLayout.getTabAt(i), i == mCurrentSelectedPosition);
+        }
+    }
 
-            }
+    public int getCurrentSelectedPosition() {
+        return mCurrentSelectedPosition;
+    }
 
-            @Override
-            public void onPageSelected(int position) {
-                TabLayout.Tab tab = mTabLayout.getTabAt(position);
-                if (tab != null) {
-                    tab.select();
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+    public T getCurrentSelectedData() {
+        return mList.get(mCurrentSelectedPosition);
     }
 
     @Override
