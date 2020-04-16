@@ -6,11 +6,12 @@
     android:layout_height="match_parent">
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
         android:scaleType="centerCrop"
         app:lottie_imageAssetsFolder="zan/images"
         app:lottie_fileName="zan/zan.json"
-        app:lottie_loop="true"
-        app:lottie_autoPlay="true" />
+        android:background="#999"
+        app:lottie_loop="false"
+        app:lottie_autoPlay="false" />
 </LinearLayout>
