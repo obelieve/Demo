@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/cl_content"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -105,5 +104,8 @@
         </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    <include layout="@layout/layout_page_load_status"/>
+    <com.zxy.demo.view.PageStatusView
+        android:id="@+id/view_page_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </FrameLayout>

@@ -1,8 +1,7 @@
 package com.zxy.demo._issue;
 
+import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -18,6 +17,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.zxy.demo.R;
 import com.zxy.demo.fragment.MainFragment;
+import com.zxy.demo.view.PageStatusView;
 import com.zxy.frame.base.BaseFragment;
 
 import butterknife.BindView;
@@ -45,10 +45,10 @@ public class StickyCoordinatorFragment extends BaseFragment {
     ViewPager vpContent;
     @BindView(R.id.ll_content)
     LinearLayout llContent;
-    @BindView(R.id.fl_page_load_status)
-    FrameLayout flPageLoadStatus;
-    @BindView(R.id.btn_refresh)
-    Button btnRefresh;
+    @BindView(R.id.view_page_status)
+    PageStatusView mViewPageStatus;
+
+    Handler mHandler = new Handler();
 
     @Override
     public int layoutId() {
@@ -57,6 +57,19 @@ public class StickyCoordinatorFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        mViewPageStatus.loading();
+        mViewPageStatus.setCallback(new PageStatusView.Callback() {
+            @Override
+            public void onClickRefresh() {
+                mViewPageStatus.success();
+            }
+        });
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mViewPageStatus.failure();
+            }
+        }, 500);
         tlTab.setupWithViewPager(vpContent);
         vpContent.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
@@ -76,9 +89,5 @@ public class StickyCoordinatorFragment extends BaseFragment {
                 return "POSITION " + position;
             }
         });
-    }
-
-    @OnClick(R.id.btn_refresh)
-    public void onViewClicked() {
     }
 }
