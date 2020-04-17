@@ -1,11 +1,14 @@
 package com.zxy.demo._issue;
 
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -18,6 +21,7 @@ import com.zxy.demo.fragment.MainFragment;
 import com.zxy.frame.base.BaseFragment;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator
@@ -25,6 +29,8 @@ import butterknife.BindView;
  */
 public class StickyCoordinatorFragment extends BaseFragment {
 
+    @BindView(R.id.cl_content)
+    CoordinatorLayout clContent;
     @BindView(R.id.common_index_activity_view_status_bar)
     View commonIndexActivityViewStatusBar;
     @BindView(R.id.toolbar)
@@ -39,6 +45,10 @@ public class StickyCoordinatorFragment extends BaseFragment {
     ViewPager vpContent;
     @BindView(R.id.ll_content)
     LinearLayout llContent;
+    @BindView(R.id.fl_page_load_status)
+    FrameLayout flPageLoadStatus;
+    @BindView(R.id.btn_refresh)
+    Button btnRefresh;
 
     @Override
     public int layoutId() {
@@ -66,5 +76,9 @@ public class StickyCoordinatorFragment extends BaseFragment {
                 return "POSITION " + position;
             }
         });
+    }
+
+    @OnClick(R.id.btn_refresh)
+    public void onViewClicked() {
     }
 }
