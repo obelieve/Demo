@@ -82,7 +82,6 @@ public class BottomTabView extends LinearLayout implements View.OnClickListener 
         mSelectionManage.setItems(mItemViews);
         mSelectionManage.setOnSelectChangeListener(new SelectionManage.OnSelectChangeListener() {
 
-
             @Override
             public void onSelectChange(int index, View view, boolean select) {
                 if (mViewPager != null && select) {
@@ -109,6 +108,9 @@ public class BottomTabView extends LinearLayout implements View.OnClickListener 
 
                 }
             });
+            if (curIndex == 0) {
+                mSelectionManage.setCurrentItem(0);
+            }
             mViewPager.setCurrentItem(curIndex);
         } else {
             mSelectionManage.setCurrentItem(curIndex);
