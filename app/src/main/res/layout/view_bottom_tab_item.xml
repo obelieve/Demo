@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lav_menu"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:scaleType="centerInside"
+        tools:src="@drawable/ic_nav_home_normal"
+        app:lottie_autoPlay="false"
+        app:lottie_fileName="me/me.json"
+        app:lottie_imageAssetsFolder="me/images"
+        app:lottie_loop="false" />
+
+    <TextView
+        android:id="@+id/tv_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        tools:text="我的"
+        android:textColor="@drawable/sel_bottom_nav_text"
+        android:textSize="10sp" />
+</merge>

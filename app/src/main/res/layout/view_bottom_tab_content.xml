@@ -8,6 +8,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center|bottom"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
         android:orientation="vertical">
 
         <ImageView
@@ -30,6 +32,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
         android:gravity="center|bottom"
         android:orientation="vertical">
 
@@ -53,6 +57,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
         android:gravity="center|bottom"
         android:orientation="vertical">
 
@@ -76,6 +82,8 @@
         android:id="@+id/ll_shoppingcart"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
         android:layout_weight="1"
         android:gravity="center|bottom"
         android:orientation="vertical">
@@ -101,6 +109,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
         android:gravity="center|bottom"
         android:orientation="vertical">
 
