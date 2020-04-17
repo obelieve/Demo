@@ -5,21 +5,20 @@ import com.zxy.demo._issue.ForTAFragment;
 import com.zxy.demo._issue.LoginFragment;
 import com.zxy.demo._issue.LottieAnimationFragment;
 import com.zxy.demo._issue.SplashFragment;
+import com.zxy.demo._issue.StickyCoordinatorFragment;
 import com.zxy.demo._issue.VersionUpdateEntranceFragment;
 import com.zxy.demo._issue.ZDialogFragment;
-import com.zxy.demo.fragment.MainFragment;
 
 public enum MainEnum {
 
-    M1("加载刷新", MainFragment.class),
+    M1("置顶&&加载刷新", StickyCoordinatorFragment.class),
     M2("Dialog", ZDialogFragment.class),
-    M3("加载刷新", ForTAFragment.class),
-    M4("@其他人", ForTAFragment.class),
-    M5("引导页", SplashFragment.class),
-    M6("登录", LoginFragment.class),
-    M7("版本升级", VersionUpdateEntranceFragment.class),
-    M8("自定义Tab", CustomTabFragment.class),
-    M9("Lottie动画", LottieAnimationFragment.class,true);
+    M3("@其他人", ForTAFragment.class),
+    M4("引导页", SplashFragment.class),
+    M5("登录", LoginFragment.class),
+    M6("版本升级", VersionUpdateEntranceFragment.class),
+    M7("自定义Tab", CustomTabFragment.class),
+    M8("Lottie动画", LottieAnimationFragment.class, true);
     private String mName;
     private Class mClazz;
     private boolean mCurrent;

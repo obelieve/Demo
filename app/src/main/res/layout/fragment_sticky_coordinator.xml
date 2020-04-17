@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/abl_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:elevation="0dp">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/ctl_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:expandedTitleMarginStart="100dp"
+                app:layout_collapseMode="parallax"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                <!--Header部分-->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:background="#12A883"
+                    android:layout_height="200dp">
+                    <TextView
+                        android:layout_gravity="center"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Header" />
+                </FrameLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:contentInsetStart="0dp"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+                        <!--状态栏-->
+                        <View
+                            android:id="@+id/common_index_activity_view_status_bar"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp" />
+                        <!--顶部固定部分-->
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp">
+                            <TextView
+                                android:layout_gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="固定部分"/>
+                        </FrameLayout>
+                    </LinearLayout>
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tl_tab"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabIndicatorColor="@color/green"
+                app:tabIndicatorHeight="2dp"
+                app:tabMode="scrollable"
+                app:tabPaddingEnd="15dp"
+                app:tabPaddingStart="15dp"
+                app:tabSelectedTextColor="@color/green"
+                app:tabTextAppearance="@style/TabLayoutTextStyle"
+                app:tabTextColor="@color/cardview_dark_background" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#999999" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vp_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</FrameLayout>
