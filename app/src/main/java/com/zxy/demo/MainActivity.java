@@ -66,6 +66,11 @@ public class MainActivity extends BaseActivity {
             }
         });
         mTlTab.setupWithViewPager(mVpContent);
+        initTab();
+        mVpContent.setCurrentItem(MainEnum.getCurrentIndex());
+    }
+
+    private void initTab() {
         if (mLoadXmlTab) {
             /**
              * XML加载tab
@@ -191,7 +196,6 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
-
 
 }
 

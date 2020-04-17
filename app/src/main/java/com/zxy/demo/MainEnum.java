@@ -19,14 +19,20 @@ public enum MainEnum {
     M6("登录", LoginFragment.class),
     M7("版本升级", VersionUpdateEntranceFragment.class),
     M8("自定义Tab", CustomTabFragment.class),
-    M9("Lottie动画", LottieAnimationFragment.class)
-    ;
+    M9("Lottie动画", LottieAnimationFragment.class,true);
     private String mName;
     private Class mClazz;
+    private boolean mCurrent;
 
     MainEnum(String name, Class aClass) {
         mName = name;
         mClazz = aClass;
+    }
+
+    MainEnum(String name, Class clazz, boolean current) {
+        mName = name;
+        mClazz = clazz;
+        mCurrent = current;
     }
 
     public String getName() {
@@ -43,5 +49,14 @@ public enum MainEnum {
                 "mName='" + mName + '\'' +
                 ", mClazz=" + mClazz +
                 '}';
+    }
+
+    public static int getCurrentIndex() {
+        for (int i = 0; i < MainEnum.values().length; i++) {
+            if (MainEnum.values()[i].mCurrent) {
+                return i;
+            }
+        }
+        return 0;
     }
 }
