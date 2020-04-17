@@ -19,6 +19,8 @@ public class BottomTabView extends LinearLayout implements View.OnClickListener 
 
     SelectionManage mSelectionManage = new SelectionManage();
 
+    private boolean mInitial;
+    private Callback mCallback;
     private View[] mItemViews;
     private ViewPager mViewPager;
 
@@ -35,7 +37,42 @@ public class BottomTabView extends LinearLayout implements View.OnClickListener 
         setOrientation(HORIZONTAL);
     }
 
-    private void init() {
+    public void setup(Callback callback) {
+        init(0, null, callback);
+    }
+
+    public void setup(int curIndex, Callback callback) {
+        init(curIndex, null, callback);
+    }
+
+    public void setupWithViewPager(ViewPager viewPager) {
+        init(0, viewPager, null);
+    }
+
+    public void setupWithViewPager(ViewPager viewPager, Callback callback) {
+        init(0, viewPager, callback);
+    }
+
+    public void setupWithViewPager(int curIndex, ViewPager viewPager, Callback callback) {
+        init(curIndex, viewPager, callback);
+    }
+
+    public void setCurrentIndex(int currentIndex) {
+        if (mItemViews != null && currentIndex >= 0 && currentIndex < mItemViews.length) {
+            mSelectionManage.setCurrentItem(mItemViews[currentIndex].getId());
+        }
+    }
+
+    private void init(int curIndex, ViewPager viewPager, Callback callback) {
+        if (mInitial) {
+            throw new IllegalStateException("BottomTabView is already initialized !");
+        }
+        mInitial = true;
+        if (curIndex < 0 || curIndex >= getChildCount()) {
+            curIndex = 0;
+        }
+        mViewPager = viewPager;
+        mCallback = callback;
         mItemViews = new View[getChildCount()];
         for (int i = 0; i < getChildCount(); i++) {
             mItemViews[i] = getChildAt(i);
@@ -43,38 +80,39 @@ public class BottomTabView extends LinearLayout implements View.OnClickListener 
         }
         mSelectionManage.setMode(SelectionManage.Mode.SINGLE_MUST_ONE);
         mSelectionManage.setItems(mItemViews);
-        mSelectionManage.setCurrentItem(0);
         mSelectionManage.setOnSelectChangeListener(new SelectionManage.OnSelectChangeListener() {
 
 
             @Override
             public void onSelectChange(int index, View view, boolean select) {
-                if (mViewPager != null && select == true) {
+                if (mViewPager != null && select) {
                     mViewPager.setCurrentItem(index);
                 }
-
+                if (mCallback != null)
+                    mCallback.onSelectChange(index, view, select);
             }
         });
-    }
+        if (mViewPager != null) {
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-    public void setupWithViewPager(ViewPager viewPager) {
-        mViewPager = viewPager;
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                }
 
-            }
+                @Override
+                public void onPageSelected(int position) {
+                    mSelectionManage.setCurrentItem(position);
+                }
 
-            @Override
-            public void onPageSelected(int position) {
-                mSelectionManage.setCurrentItem(position);
-            }
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+                }
+            });
+            mViewPager.setCurrentItem(curIndex);
+        } else {
+            mSelectionManage.setCurrentItem(curIndex);
+        }
     }
 
     @Override
@@ -87,9 +125,7 @@ public class BottomTabView extends LinearLayout implements View.OnClickListener 
         }
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        init();
+    public interface Callback {
+        void onSelectChange(int index, View view, boolean select);
     }
 }
