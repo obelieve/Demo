@@ -8,6 +8,7 @@ import com.zxy.demo._issue.SplashFragment;
 import com.zxy.demo._issue.StickyCoordinatorFragment;
 import com.zxy.demo._issue.VersionUpdateEntranceFragment;
 import com.zxy.demo._issue.ZDialogFragment;
+import com.zxy.demo._issue.ZWebViewFragment;
 
 public enum MainEnum {
 
@@ -18,7 +19,8 @@ public enum MainEnum {
     M5("登录", LoginFragment.class),
     M6("版本升级", VersionUpdateEntranceFragment.class),
     M7("自定义Tab", CustomTabFragment.class),
-    M8("Lottie动画", LottieAnimationFragment.class, true);
+    M8("Lottie动画", LottieAnimationFragment.class),
+    M9("加载WebView", ZWebViewFragment.class, true);
     private String mName;
     private Class mClazz;
     private boolean mCurrent;
