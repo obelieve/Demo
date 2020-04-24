@@ -15,7 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.tabs.TabLayout;
-import com.zxy.demo.fragment.MainFragment;
+import com.zxy.demo.fragment.LoadRefreshFragment;
 import com.zxy.frame.base.BaseActivity;
 import com.zxy.frame.view.BottomTabView;
 import com.zxy.utility.SystemUtil;
@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity {
                     fragment = (Fragment) MainEnum.values()[position].getClazz().newInstance();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    fragment = new MainFragment();
+                    fragment = new LoadRefreshFragment();
                 }
                 return fragment;
             }

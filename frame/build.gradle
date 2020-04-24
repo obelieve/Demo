@@ -36,6 +36,7 @@ dependencies {
     //Android
     api 'androidx.appcompat:appcompat:1.1.0'
     api 'androidx.recyclerview:recyclerview:1.1.0'
+    api 'com.google.android.material:material:1.1.0'
     //我的
     api 'com.github.obelieve:utility:0.0.8'
     api 'com.github.obelieve:json:0.0.1'
@@ -52,7 +53,4 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
-
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
-    api 'com.google.android.material:material:1.1.0'
 }

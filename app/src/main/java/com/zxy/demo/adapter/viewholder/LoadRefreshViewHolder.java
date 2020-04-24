@@ -10,7 +10,7 @@ import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainViewHolder extends BaseRecyclerViewAdapter.BaseViewHolder {
+public class LoadRefreshViewHolder extends BaseRecyclerViewAdapter.BaseViewHolder {
     @BindView(R.id.tv_name)
     public TextView mTvName;
     @BindView(R.id.tv_content)
@@ -18,8 +18,8 @@ public class MainViewHolder extends BaseRecyclerViewAdapter.BaseViewHolder {
     @BindView(R.id.iv_image)
     public ImageView mIvImage;
 
-    public MainViewHolder(ViewGroup parent, int layoutId) {
-        super(parent, R.layout.viewholder_main);
+    public LoadRefreshViewHolder(ViewGroup parent, int layoutId) {
+        super(parent, R.layout.viewholder_load_refresh);
         ButterKnife.bind(this,itemView);
     }
 }

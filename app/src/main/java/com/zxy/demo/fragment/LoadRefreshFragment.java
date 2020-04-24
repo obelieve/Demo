@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.zxy.demo.R;
-import com.zxy.demo.adapter.viewholder.MainViewHolder;
+import com.zxy.demo.adapter.viewholder.LoadRefreshViewHolder;
 import com.zxy.demo.entity.SquarePostEntity;
-import com.zxy.demo.viewmodel.MainViewModel;
+import com.zxy.demo.viewmodel.LoadRefreshViewModel;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.adapter.item_decoration.VerticalItemDivider;
 import com.zxy.frame.base.BaseFragment;
@@ -23,51 +23,51 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MainFragment extends BaseFragment {
+public class LoadRefreshFragment extends BaseFragment {
 
     @BindView(R.id.rv_content)
     RecyclerView mRvContent;
     @BindView(R.id.srl_content)
     SwipeRefreshLayout mSrlContent;
 
-    MainAdapter mMainAdapter;
+    LoadRefreshAdapter mMainAdapter;
 
-    MainViewModel mMainViewModel;
+    LoadRefreshViewModel mLoadRefreshViewModel;
 
     @Override
     public int layoutId() {
-        return R.layout.fragment_main;
+        return R.layout.fragment_load_refresh;
     }
 
     @Override
     protected void initView() {
-        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mMainAdapter = new MainAdapter(getContext());
+        mLoadRefreshViewModel = ViewModelProviders.of(this).get(LoadRefreshViewModel.class);
+        mMainAdapter = new LoadRefreshAdapter(getContext());
         mMainAdapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.view_empty, mSrlContent, false));
-        mMainAdapter.setLoadMoreListener(mRvContent, () -> mMainViewModel.square_post(true));
+        mMainAdapter.setLoadMoreListener(mRvContent, () -> mLoadRefreshViewModel.square_post(true));
         mRvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvContent.addItemDecoration(new VerticalItemDivider());
         mRvContent.setAdapter(mMainAdapter);
-        mSrlContent.setOnRefreshListener(() -> mMainViewModel.square_post(false));
+        mSrlContent.setOnRefreshListener(() -> mLoadRefreshViewModel.square_post(false));
         observerData();
     }
 
     private void observerData() {
-        mMainViewModel.getListMutableLiveData().observe(this, new Observer<List<SquarePostEntity.PostListBean>>() {
+        mLoadRefreshViewModel.getListMutableLiveData().observe(this, new Observer<List<SquarePostEntity.PostListBean>>() {
             @Override
             public void onChanged(List<SquarePostEntity.PostListBean> postListBeans) {
                 mMainAdapter.getDataHolder().setList(postListBeans).notifyDataSetChanged();
             }
         });
-        mMainViewModel.getRefreshLiveData().observe(this, new Observer<Boolean>() {
+        mLoadRefreshViewModel.getRefreshLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 mSrlContent.setRefreshing(aBoolean);
             }
         });
-        mMainViewModel.getLoadMoreLiveData().observe(this, new Observer<MainViewModel.LoadMoreModel>() {
+        mLoadRefreshViewModel.getLoadMoreLiveData().observe(this, new Observer<LoadRefreshViewModel.LoadMoreModel>() {
             @Override
-            public void onChanged(MainViewModel.LoadMoreModel loadMoreModel) {
+            public void onChanged(LoadRefreshViewModel.LoadMoreModel loadMoreModel) {
                 if (loadMoreModel.isCompleted()) {
                     mMainAdapter.loadMoreLoading();
                 } else if (loadMoreModel.isEnd()) {
@@ -79,20 +79,20 @@ public class MainFragment extends BaseFragment {
         });
     }
 
-    public class MainAdapter extends BaseRecyclerViewAdapter<SquarePostEntity.PostListBean> {
+    public class LoadRefreshAdapter extends BaseRecyclerViewAdapter<SquarePostEntity.PostListBean> {
 
-        public MainAdapter(Context context) {
+        public LoadRefreshAdapter(Context context) {
             super(context);
         }
 
         @Override
         public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            return new MainViewHolder(parent, R.layout.viewholder_main);
+            return new LoadRefreshViewHolder(parent, R.layout.viewholder_load_refresh);
         }
 
         @Override
         public void loadViewHolder(BaseViewHolder holder, int position) {
-            MainViewHolder holder1 = ((MainViewHolder) holder);
+            LoadRefreshViewHolder holder1 = ((LoadRefreshViewHolder) holder);
             holder1.mTvName.setText(getDataHolder().getList().get(position).getNickname());
             holder1.mTvName.setText(getDataHolder().getList().get(position).getNickname());
             GlideUtil.loadImage(getContext(), getDataHolder().getList().get(position).getAvatar(), holder1.mIvImage);

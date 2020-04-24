@@ -10,7 +10,7 @@ import com.zxy.frame.net.BaseSubscribe;
 
 import java.util.List;
 
-public class MainViewModel extends ViewModel {
+public class LoadRefreshViewModel extends ViewModel {
 
     private MutableLiveData<List<SquarePostEntity.PostListBean>> mListMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mRefreshLiveData = new MutableLiveData<>();
