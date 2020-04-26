@@ -1,4 +1,4 @@
-package com.zxy.demo._issue;
+package com.zxy.demo.fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.zxy.demo.R;

@@ -1,4 +1,4 @@
-package com.zxy.demo._issue;
+package com.zxy.demo.fragment;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;

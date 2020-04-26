@@ -1,14 +1,14 @@
 package com.zxy.demo;
 
-import com.zxy.demo._issue.CustomTabFragment;
-import com.zxy.demo._issue.ForTAFragment;
-import com.zxy.demo._issue.LoginFragment;
-import com.zxy.demo._issue.LottieAnimationFragment;
-import com.zxy.demo._issue.SplashFragment;
-import com.zxy.demo._issue.StickyCoordinatorFragment;
-import com.zxy.demo._issue.VersionUpdateEntranceFragment;
-import com.zxy.demo._issue.ZDialogFragment;
-import com.zxy.demo._issue.ZWebViewFragment;
+import com.zxy.demo.fragment.CustomTabFragment;
+import com.zxy.demo.fragment.ForTAFragment;
+import com.zxy.demo.fragment.LoginFragment;
+import com.zxy.demo.fragment.LottieAnimationFragment;
+import com.zxy.demo.fragment.SplashFragment;
+import com.zxy.demo.fragment.StickyCoordinatorFragment;
+import com.zxy.demo.fragment.VersionUpdateEntranceFragment;
+import com.zxy.demo.fragment.ZDialogFragment;
+import com.zxy.demo.fragment.ZWebViewFragment;
 
 public enum MainEnum {
 

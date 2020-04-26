@@ -1,4 +1,4 @@
-package com.zxy.demo._issue;
+package com.zxy.demo.fragment;
 
 import com.zxy.demo.R;
 import com.zxy.demo.view.SplashView;
