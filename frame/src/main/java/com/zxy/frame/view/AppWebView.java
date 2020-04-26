@@ -82,8 +82,8 @@ public class AppWebView extends WebView {
         settings.setUseWideViewPort(true);//使用html viewport提供显示区域,支持使用<meta name="viewport">标签限制显示区域
         settings.setLoadWithOverviewMode(false);//默认自适应内容屏幕
         //设置缩放
-        settings.setSupportZoom(true);//是否支持zoom
-        settings.setBuiltInZoomControls(true);//手势放大/缩小 控制
+        settings.setSupportZoom(false);//是否支持zoom
+        settings.setBuiltInZoomControls(false);//手势放大/缩小 控制
         settings.setDisplayZoomControls(false);//显示放大/缩小 按钮
         //Dom Storage
         settings.setDomStorageEnabled(true);//开启Dom Storage API 功能
