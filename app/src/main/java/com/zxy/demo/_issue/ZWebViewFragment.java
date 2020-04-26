@@ -21,7 +21,7 @@ public class ZWebViewFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        wvContent.loadUrl("https://www.baidu.com");
+        wvContent.loadUrl("https://developer.mozilla.org/zh-CN/");
 //        wvContent.addJavascriptInterface(new JSInvoke(),"Android");
 //        wvContent.setWebContentsDebuggingEnabled(true);
 //        wvContent.getSettings().setUserAgentString("Android");
