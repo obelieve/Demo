@@ -21,6 +21,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -46,6 +47,7 @@ public class AppWebView extends WebView {
     private ValueCallback<Uri> mValueCallbackAndroid4;
     private ValueCallback<Uri[]> mValueCallbackAndroid5;
     private String mCameraPicturePath;
+    private ProgressBar mProgressBar;
 
     private ExecutorService mExecutors;
 
@@ -70,6 +72,10 @@ public class AppWebView extends WebView {
         setWebViewClient(new AppWebViewClient());
         setWebChromeClient(new AppWebChromeClient());
         mExecutors = Executors.newSingleThreadExecutor();
+    }
+
+    public void setProgressBar(ProgressBar progressBar) {
+        mProgressBar = progressBar;
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -112,6 +118,14 @@ public class AppWebView extends WebView {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
+            if(mProgressBar!=null){
+                if(newProgress==100){
+                    mProgressBar.setVisibility(GONE);
+                }else{
+                    mProgressBar.setProgress(newProgress);
+                    mProgressBar.setVisibility(VISIBLE);
+                }
+            }
         }
 
         // For Android  > 4.1.1

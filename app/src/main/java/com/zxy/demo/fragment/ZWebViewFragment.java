@@ -1,6 +1,7 @@
 package com.zxy.demo.fragment;
 
 import android.webkit.JavascriptInterface;
+import android.widget.ProgressBar;
 
 import com.zxy.demo.R;
 import com.zxy.frame.base.BaseFragment;
@@ -13,6 +14,8 @@ public class ZWebViewFragment extends BaseFragment {
 
     @BindView(R.id.wv_content)
     AppWebView wvContent;
+    @BindView(R.id.pb_loading)
+    ProgressBar pbLoading;
 
     @Override
     public int layoutId() {
@@ -21,6 +24,7 @@ public class ZWebViewFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        wvContent.setProgressBar(pbLoading);
         wvContent.loadUrl("https://developer.mozilla.org/zh-CN/");
 //        wvContent.addJavascriptInterface(new JSInvoke(),"Android");
 //        wvContent.setWebContentsDebuggingEnabled(true);
@@ -28,9 +32,9 @@ public class ZWebViewFragment extends BaseFragment {
     }
 
 
-    public static class JSInvoke{
+    public static class JSInvoke {
         @JavascriptInterface
-        public void login(){
+        public void login() {
             ToastUtil.show("登录");
         }
     }
