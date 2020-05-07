@@ -33,7 +33,7 @@ import java.util.List;
  *
  * 在调用SDK之前，如果您的App的targetSDKVersion >= 23，那么建议动态申请相关权限。
  */
-public class SplashADActivity extends Activity implements SplashADListener {
+public class SplashADActivity extends Activity implements SplashADListener,ADSettable {
 
   private SplashAD splashAD;
   private ViewGroup container;
@@ -73,7 +73,10 @@ public class SplashADActivity extends Activity implements SplashADListener {
     boolean needLogo = getIntent().getBooleanExtra("need_logo", true);
     needStartDemoList = getIntent().getBooleanExtra("need_start_demo_list", true);
 
-
+    if(isSkipAD()){
+      skip();
+      return;
+    }
     if (!needLogo) {
       findViewById(R.id.app_logo).setVisibility(View.GONE);
     }
@@ -244,12 +247,16 @@ public class SplashADActivity extends Activity implements SplashADListener {
     handler.postDelayed(new Runnable() {
       @Override
       public void run() {
-        if (needStartDemoList) {
-          SplashADActivity.this.startActivity(new Intent(SplashADActivity.this, MainActivity.class));
-        }
-        SplashADActivity.this.finish();
+        skip();
       }
     }, shouldDelayMills);
+  }
+
+  private void skip() {
+    if (needStartDemoList) {
+      SplashADActivity.this.startActivity(new Intent(SplashADActivity.this, MainActivity.class));
+    }
+    SplashADActivity.this.finish();
   }
 
   /**
@@ -258,10 +265,7 @@ public class SplashADActivity extends Activity implements SplashADListener {
    */
   private void next() {
     if (canJump) {
-      if (needStartDemoList) {
-        this.startActivity(new Intent(this, MainActivity.class));
-      }
-      this.finish();
+      skip();
     } else {
       canJump = true;
     }
@@ -300,4 +304,8 @@ public class SplashADActivity extends Activity implements SplashADListener {
     return super.onKeyDown(keyCode, event);
   }
 
+  @Override
+  public boolean isSkipAD() {
+    return false;
+  }
 }

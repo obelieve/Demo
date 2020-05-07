@@ -31,4 +31,9 @@ public class SplashActivity extends SplashADActivity {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
+
+    @Override
+    public boolean isSkipAD() {
+        return true;
+    }
 }
