@@ -74,7 +74,9 @@ public class PopupMenuUtil {
 
     public void showDownPopup(View anchorView, View contentView) {
         int height = SystemUtil.getRealHeight((Activity) (anchorView.getContext()));
-        height -= (SystemUtil.getStatusBarHeight() + anchorView.getBottom());
+        int[] screenPosArr = new int[2];
+        anchorView.getLocationOnScreen(screenPosArr);
+        height -= (screenPosArr[1] + anchorView.getBottom());
         if (SystemUtil.isNavigationBarExist((Activity) (anchorView.getContext()))) {
             height -= SystemUtil.getNavigationHeight();
         }
