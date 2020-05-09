@@ -104,7 +104,10 @@ public class PopupMenuUtil {
         // 设置布局文件
         mPopupWindow.setContentView(contentView);
         // 为了避免部分机型不显示，我们需要重新设置一下宽高
-        mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentView.measure(View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED));
+        mPopupWindow.setWidth(contentView.getMeasuredWidth() > SystemUtil.screenWidth() ? SystemUtil.screenWidth() : contentView.getMeasuredWidth());
         mPopupWindow.setHeight(height);
         // 设置pop透明效果
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0x0000));
