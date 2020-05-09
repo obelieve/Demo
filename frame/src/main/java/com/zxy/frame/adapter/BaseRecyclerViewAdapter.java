@@ -300,19 +300,19 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             return mList;
         }
 
-        public BaseDataHolder setList(List<DATA> list) {
+        public void setList(List<DATA> list) {
             if (list == null) {
                 list = new ArrayList<>();
             }
             mList = list;
-            return this;
+            notifyDataSetChanged();
         }
 
-        public BaseDataHolder addAll(List<DATA> list) {
+        public void addAll(List<DATA> list) {
             if (list != null) {
                 mList.addAll(list);
             }
-            return this;
+            notifyDataSetChanged();
         }
 
         public void notifyItemChanged(int position) {

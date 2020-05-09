@@ -56,7 +56,7 @@ public class LoadRefreshFragment extends BaseFragment {
         mLoadRefreshViewModel.getListMutableLiveData().observe(this, new Observer<List<SquarePostEntity.PostListBean>>() {
             @Override
             public void onChanged(List<SquarePostEntity.PostListBean> postListBeans) {
-                mMainAdapter.getDataHolder().setList(postListBeans).notifyDataSetChanged();
+                mMainAdapter.getDataHolder().setList(postListBeans);
             }
         });
         mLoadRefreshViewModel.getRefreshLiveData().observe(this, new Observer<Boolean>() {
