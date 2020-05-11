@@ -84,8 +84,12 @@ public class PopupMenuUtil {
     }
 
     public void showShadowPopup(View anchorView, View contentView) {
+        showShadowPopup(anchorView,contentView,ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    public void showShadowPopup(View anchorView, View contentView, int height) {
         // 设置布局文件
-        showPopup(anchorView, contentView, ViewGroup.LayoutParams.WRAP_CONTENT);
+        showPopup(anchorView, contentView, height);
         // 设置pop关闭监听，用于改变背景透明度
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
