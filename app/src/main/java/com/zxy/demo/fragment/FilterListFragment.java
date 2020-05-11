@@ -77,11 +77,14 @@ public class FilterListFragment extends BaseFragment {
             List<ThreeLayerSelectView.Select1Entity> list = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 ThreeLayerSelectView.Select1Entity select1Entity = new ThreeLayerSelectView.Select1Entity();
-                select1Entity.setSelected(i == 0);
+                select1Entity.setSelected(false);
                 select1Entity.setName(ThreeLayerSelectView.Select1Entity.class.getSimpleName() + " " + i);
                 select1Entity.setList(getSelect2Entity(ThreeLayerSelectView.Select1Entity.class.getSimpleName() + "->" + i));
                 list.add(select1Entity);
             }
+            list.get(0).setSelected(true);
+            list.get(0).getList().get(0).setSelected(true);
+            list.get(0).getList().get(0).getList().get(0).setSelected(true);
             return list;
         }
 
@@ -89,7 +92,7 @@ public class FilterListFragment extends BaseFragment {
             List<ThreeLayerSelectView.Select2Entity> list = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 ThreeLayerSelectView.Select2Entity select2Entity = new ThreeLayerSelectView.Select2Entity();
-                select2Entity.setSelected(i == 0);
+                select2Entity.setSelected(false);
                 select2Entity.setName(tag + " " + ThreeLayerSelectView.Select2Entity.class.getSimpleName() + " " + i);
                 select2Entity.setList(getSelect3Entity(ThreeLayerSelectView.Select2Entity.class.getSimpleName() + "->" + i));
                 list.add(select2Entity);
@@ -101,7 +104,7 @@ public class FilterListFragment extends BaseFragment {
             List<ThreeLayerSelectView.Select3Entity> list = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 ThreeLayerSelectView.Select3Entity select3Entity = new ThreeLayerSelectView.Select3Entity();
-                select3Entity.setSelected(i == 0);
+                select3Entity.setSelected(false);
                 select3Entity.setName(tag + " " + ThreeLayerSelectView.Select3Entity.class.getSimpleName() + " " + i);
                 list.add(select3Entity);
             }

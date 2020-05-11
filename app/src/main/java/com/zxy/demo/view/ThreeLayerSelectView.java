@@ -40,10 +40,11 @@ public class ThreeLayerSelectView extends FrameLayout {
     Type3Adapter mType3Adapter;
 
     List<Select1Entity> mSelect1EntityList;
-    int mType1SelectedPosition;
-    int mType2SelectedPosition;
-    int mType3SelectedPosition;
+    int[] mType1SelectedPosition = new int[1];
+    int[] mType2SelectedPosition = new int[2];
+    int[] mType3SelectedPosition = new int[3];
     Callback mCallback;
+
     public ThreeLayerSelectView(@NonNull Context context) {
         this(context, null, 0);
     }
@@ -76,8 +77,9 @@ public class ThreeLayerSelectView extends FrameLayout {
         mType1Adapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<Select1Entity>() {
             @Override
             public void onItemClick(View view, Select1Entity entity, int position) {
-                if (mType1SelectedPosition != position) {
-                    resetSelectedPosition(position, 0, 0);
+                if (mSelect1EntityList.get(mType2SelectedPosition[0]) != null &&
+                        entity != mSelect1EntityList.get(mType1SelectedPosition[0])) {
+                    resetSelectedPosition(1, position, 0, 0);
                     mType1Adapter.notifyDataSetChanged();
                     if (entity.getList() != null && entity.getList().size() > 0) {
                         mType2Adapter.getDataHolder().setList(entity.getList());
@@ -91,8 +93,10 @@ public class ThreeLayerSelectView extends FrameLayout {
         mType2Adapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<Select2Entity>() {
             @Override
             public void onItemClick(View view, Select2Entity entity, int position) {
-                if (mType2SelectedPosition != position) {
-                    resetSelectedPosition(mType1SelectedPosition, position, 0);
+                if (mSelect1EntityList.get(mType2SelectedPosition[0]) != null &&
+                        mSelect1EntityList.get(mType2SelectedPosition[0]).getList() != null &&
+                        entity != mSelect1EntityList.get(mType2SelectedPosition[0]).getList().get(mType2SelectedPosition[1])) {
+                    resetSelectedPosition(2, mType1SelectedPosition[0], position, 0);
                     mType2Adapter.notifyDataSetChanged();
                     if (entity.getList() != null && entity.getList().size() > 0) {
                         mType3Adapter.getDataHolder().setList(entity.getList());
@@ -103,12 +107,16 @@ public class ThreeLayerSelectView extends FrameLayout {
         mType3Adapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<Select3Entity>() {
             @Override
             public void onItemClick(View view, Select3Entity entity, int position) {
-                if (mType3SelectedPosition != position) {
-                    resetSelectedPosition(mType1SelectedPosition, mType2SelectedPosition, position);
+                if (mSelect1EntityList.get(mType3SelectedPosition[0]) != null &&
+                        mSelect1EntityList.get(mType3SelectedPosition[0]).getList() != null &&
+                        mSelect1EntityList.get(mType3SelectedPosition[0]).getList().get(mType3SelectedPosition[1]) != null &&
+                        mSelect1EntityList.get(mType3SelectedPosition[0]).getList().get(mType3SelectedPosition[1]).getList() != null &&
+                        entity != mSelect1EntityList.get(mType3SelectedPosition[0]).getList().get(mType3SelectedPosition[1]).getList().get(mType3SelectedPosition[2])) {
+                    resetSelectedPosition(3, mType1SelectedPosition[0], mType2SelectedPosition[1], position);
                     mType3Adapter.notifyDataSetChanged();
                 }
-                if(mCallback!=null){
-                    mCallback.onSelectedItem(mType1SelectedPosition,mType2SelectedPosition,mType3SelectedPosition);
+                if (mCallback != null) {
+                    mCallback.onSelectedItem(mType1SelectedPosition[0], mType2SelectedPosition[1], mType3SelectedPosition[2]);
                 }
             }
         });
@@ -117,35 +125,59 @@ public class ThreeLayerSelectView extends FrameLayout {
     public void loadData(List<Select1Entity> list) {
         mSelect1EntityList = list;
         int[] posArr = getDefSelectedPosition(list);
-        mType1SelectedPosition = posArr[0];
-        mType2SelectedPosition = posArr[1];
-        mType3SelectedPosition = posArr[2];
+        int pos1 = posArr[0];
+        int pos2 = posArr[1];
+        int pos3 = posArr[2];
+        mType1SelectedPosition[0] = pos1;
+
+        mType2SelectedPosition[0] = pos1;
+        mType2SelectedPosition[1] = pos2;
+
+        mType3SelectedPosition[0] = pos1;
+        mType3SelectedPosition[1] = pos2;
+        mType3SelectedPosition[2] = pos3;
         mType1Adapter.getDataHolder().setList(list);
-        if (list != null && mType1SelectedPosition < list.size()) {
-            mType2Adapter.getDataHolder().setList(list.get(mType1SelectedPosition).getList());
-            if (list.get(mType1SelectedPosition).getList() != null && mType2SelectedPosition < list.get(mType1SelectedPosition).getList().size()) {
-                mType3Adapter.getDataHolder().setList(list.get(mType1SelectedPosition).getList().get(mType2SelectedPosition).getList());
+        if (list != null && mType2SelectedPosition[0] < list.size()) {
+            mType2Adapter.getDataHolder().setList(list.get(mType2SelectedPosition[0]).getList());
+            if (list.get(mType2SelectedPosition[0]).getList() != null && mType2SelectedPosition[1] < list.get(mType2SelectedPosition[0]).getList().size()) {
+                mType3Adapter.getDataHolder().setList(list.get(mType2SelectedPosition[0]).getList().get(mType2SelectedPosition[1]).getList());
             }
         }
     }
 
-    private void resetSelectedPosition(int pos1, int pos2, int pos3) {
+    private void resetSelectedPosition(int layer, int pos1, int pos2, int pos3) {
         if (mSelect1EntityList != null) {
             try {
-                mSelect1EntityList.get(mType1SelectedPosition).setSelected(false);
-                mSelect1EntityList.get(mType1SelectedPosition).getList().get(mType2SelectedPosition).setSelected(false);
-                mSelect1EntityList.get(mType1SelectedPosition).getList().get(mType2SelectedPosition).getList().get(mType3SelectedPosition).setSelected(false);
+                mSelect1EntityList.get(mType1SelectedPosition[0]).setSelected(false);
                 mSelect1EntityList.get(pos1).setSelected(true);
-                mSelect1EntityList.get(pos1).getList().get(pos2).setSelected(true);
-                mSelect1EntityList.get(pos1).getList().get(pos2).getList().get(pos3).setSelected(true);
-                mType1SelectedPosition = pos1;
-                mType2SelectedPosition = pos2;
-                mType3SelectedPosition = pos3;
+                mType1SelectedPosition[0] = pos1;
+                if (layer >= 2) {
+                    mSelect1EntityList.get(mType2SelectedPosition[0]).getList().get(mType2SelectedPosition[1]).setSelected(false);
+                    mSelect1EntityList.get(pos1).getList().get(pos2).setSelected(true);
+                    mType2SelectedPosition[0] = pos1;
+                    mType2SelectedPosition[1] = pos2;
+                }
+                if (layer >= 3) {
+                    mSelect1EntityList.get(mType3SelectedPosition[0]).getList().get(mType3SelectedPosition[1]).getList().get(mType3SelectedPosition[2]).setSelected(false);
+                    mSelect1EntityList.get(pos1).getList().get(pos2).getList().get(pos3).setSelected(true);
+                    mType3SelectedPosition[0] = pos1;
+                    mType3SelectedPosition[1] = pos2;
+                    mType3SelectedPosition[2] = pos3;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
-                mType1SelectedPosition = 0;
-                mType2SelectedPosition = 0;
-                mType3SelectedPosition = 0;
+                if (layer >= 1) {
+                    mType1SelectedPosition[0] = 0;
+                }
+                if (layer >= 2) {
+                    mType2SelectedPosition[0] = 0;
+                    mType2SelectedPosition[1] = 0;
+                }
+                if (layer >= 3) {
+                    mType3SelectedPosition[0] = 0;
+                    mType3SelectedPosition[1] = 0;
+                    mType3SelectedPosition[2] = 0;
+                }
             }
         }
     }
@@ -357,7 +389,7 @@ public class ThreeLayerSelectView extends FrameLayout {
         void setSelected(boolean selected);
     }
 
-    public interface Callback{
-        void onSelectedItem(int pos1,int pos2,int pos3);
+    public interface Callback {
+        void onSelectedItem(int pos1, int pos2, int pos3);
     }
 }
