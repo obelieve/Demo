@@ -83,8 +83,15 @@ public class ThreeLayerSelectView extends FrameLayout {
                     mType1Adapter.notifyDataSetChanged();
                     if (entity.getList() != null && entity.getList().size() > 0) {
                         mType2Adapter.getDataHolder().setList(entity.getList());
-                        if (entity.getList().get(0).getList() != null && entity.getList().get(0).getList().size() > 0) {
-                            mType3Adapter.getDataHolder().setList(entity.getList().get(0).getList());
+                        if(mType2SelectedPosition[0]==mType3SelectedPosition[0]&& mType2SelectedPosition[1]==mType3SelectedPosition[1]){
+                            if(entity.getList().get(mType3SelectedPosition[1])!=null&&entity.getList().get(mType3SelectedPosition[1]).getList()!=null
+                            &&entity.getList().get(mType3SelectedPosition[1]).getList().size()>0){
+                                mType3Adapter.getDataHolder().setList(entity.getList().get(mType3SelectedPosition[1]).getList());
+                            }
+                        }else{
+                            if (entity.getList().get(0).getList() != null && entity.getList().get(0).getList().size() > 0) {
+                                mType3Adapter.getDataHolder().setList(entity.getList().get(0).getList());
+                            }
                         }
                     }
                 }
@@ -218,7 +225,7 @@ public class ThreeLayerSelectView extends FrameLayout {
                 if (selected) {
                     list.get(i).setSelected(false);
                 } else {
-                    if (!list.get(list.size() - 1).isSelected()) {
+                    if (i == list.size() - 1) {
                         list.get(0).setSelected(true);
                     }
                 }
