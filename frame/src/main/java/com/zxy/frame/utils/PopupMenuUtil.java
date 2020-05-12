@@ -73,6 +73,10 @@ public class PopupMenuUtil {
     }
 
     public void showDownPopup(View anchorView, View contentView) {
+        showDownPopup(anchorView, contentView, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    public void showDownPopup(View anchorView, View contentView, int width) {
         int height = SystemUtil.getRealHeight((Activity) (anchorView.getContext()));
         int[] screenPosArr = new int[2];
         anchorView.getLocationOnScreen(screenPosArr);
@@ -80,16 +84,16 @@ public class PopupMenuUtil {
         if (SystemUtil.isNavigationBarExist((Activity) (anchorView.getContext()))) {
             height -= SystemUtil.getNavigationHeight();
         }
-        showPopup(anchorView, contentView, height);
+        showPopup(anchorView, contentView, width, height);
     }
 
     public void showShadowPopup(View anchorView, View contentView) {
-        showShadowPopup(anchorView,contentView,ViewGroup.LayoutParams.WRAP_CONTENT);
+        showShadowPopup(anchorView, contentView, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     public void showShadowPopup(View anchorView, View contentView, int height) {
         // 设置布局文件
-        showPopup(anchorView, contentView, height);
+        showPopup(anchorView, contentView, ViewGroup.LayoutParams.WRAP_CONTENT, height);
         // 设置pop关闭监听，用于改变背景透明度
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -101,17 +105,20 @@ public class PopupMenuUtil {
     }
 
     public void showPopup(View anchorView, View contentView) {
-        showPopup(anchorView, contentView, ViewGroup.LayoutParams.WRAP_CONTENT);
+        showPopup(anchorView, contentView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
-    private void showPopup(View anchorView, View contentView, int height) {
+    private void showPopup(View anchorView, View contentView, int width, int height) {
         // 设置布局文件
         mPopupWindow.setContentView(contentView);
-        // 为了避免部分机型不显示，我们需要重新设置一下宽高
-        contentView.measure(View.MeasureSpec.makeMeasureSpec(0,
-                View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0,
-                View.MeasureSpec.UNSPECIFIED));
-        mPopupWindow.setWidth(contentView.getMeasuredWidth() > SystemUtil.screenWidth() ? SystemUtil.screenWidth() : contentView.getMeasuredWidth());
+        if (width == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            // 为了避免部分机型不显示，我们需要重新设置一下宽高
+            contentView.measure(View.MeasureSpec.makeMeasureSpec(0,
+                    View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0,
+                    View.MeasureSpec.UNSPECIFIED));
+            width = contentView.getMeasuredWidth() > SystemUtil.screenWidth() ? SystemUtil.screenWidth() : contentView.getMeasuredWidth();
+        }
+        mPopupWindow.setWidth(width);
         mPopupWindow.setHeight(height);
         // 设置pop透明效果
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0x0000));

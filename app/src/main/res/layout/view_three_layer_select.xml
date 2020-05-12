@@ -8,25 +8,26 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_type1"
+            android:id="@+id/rv_layer1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="#F0F0F0"
             android:layout_weight="1"/>
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_type2"
+            android:id="@+id/rv_layer2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="#F7F7F7"
             android:layout_weight="1"/>
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_type3"
+            android:id="@+id/rv_layer3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
             android:layout_weight="1"/>
     </LinearLayout>
     <View
+        android:id="@+id/view_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#B2000000"/>
