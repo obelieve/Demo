@@ -77,7 +77,7 @@ public class ThreeLayerSelectView extends FrameLayout {
         mType1Adapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<Select1Entity>() {
             @Override
             public void onItemClick(View view, Select1Entity entity, int position) {
-                if (mSelect1EntityList.get(mType2SelectedPosition[0]) != null &&
+                if (mSelect1EntityList.get(mType1SelectedPosition[0]) != null &&
                         entity != mSelect1EntityList.get(mType1SelectedPosition[0])) {
                     resetSelectedPosition(1, position, 0, 0);
                     mType1Adapter.notifyDataSetChanged();
