@@ -217,6 +217,10 @@ public class ThreeLayerSelectView extends FrameLayout {
                 }
                 if (selected) {
                     list.get(i).setSelected(false);
+                } else {
+                    if (!list.get(list.size() - 1).isSelected()) {
+                        list.get(0).setSelected(true);
+                    }
                 }
             }
         }
