@@ -80,7 +80,7 @@ public class PopupMenuUtil {
         int height = SystemUtil.getRealHeight((Activity) (anchorView.getContext()));
         int[] screenPosArr = new int[2];
         anchorView.getLocationOnScreen(screenPosArr);
-        height -= (screenPosArr[1] + anchorView.getBottom());
+        height -= (screenPosArr[1] + anchorView.getHeight());
         if (SystemUtil.isNavigationBarExist((Activity) (anchorView.getContext()))) {
             height -= SystemUtil.getNavigationHeight();
         }
