@@ -122,17 +122,17 @@ public class ThreeLayerSelectView extends FrameLayout {
                         entity != mSelect1EntityList.get(mPos3[0]).getList().get(mPos3[1]).getList().get(mPos3[2])) {
                     resetSelectedPosition(3, mPos1[0], mPos2[1], position);
                     mLayer3Adapter.notifyDataSetChanged();
-                }
-                if (mCallback != null) {
-                    Select1Entity select1Entity = mSelect1EntityList.get(mPos3[0]);
-                    Select2Entity select2Entity = mSelect1EntityList.get(mPos3[0]).getList().get(mPos3[1]);
-                    Select3Entity select3Entity = mSelect1EntityList.get(mPos3[0])
-                            .getList().get(mPos3[1])
-                            .getList().get(mPos3[2]);
-                    mCallback.onSelectedItem(
-                            select1Entity.getId(),select1Entity.getName(),
-                            select2Entity.getId(),select2Entity.getName(),
-                            select3Entity.getId(),select3Entity.getName());
+                    if (mCallback != null) {
+                        Select1Entity select1Entity = mSelect1EntityList.get(mPos3[0]);
+                        Select2Entity select2Entity = mSelect1EntityList.get(mPos3[0]).getList().get(mPos3[1]);
+                        Select3Entity select3Entity = mSelect1EntityList.get(mPos3[0])
+                                .getList().get(mPos3[1])
+                                .getList().get(mPos3[2]);
+                        mCallback.onSelectedItem(
+                                select1Entity.getId(),select1Entity.getName(),
+                                select2Entity.getId(),select2Entity.getName(),
+                                select3Entity.getId(),select3Entity.getName());
+                    }
                 }
             }
         });
@@ -158,6 +158,31 @@ public class ThreeLayerSelectView extends FrameLayout {
             if (list.get(mPos2[0]).getList() != null && mPos2[1] < list.get(mPos2[0]).getList().size()) {
                 mLayer3Adapter.getDataHolder().setList(list.get(mPos2[0]).getList().get(mPos2[1]).getList());
             }
+        }
+    }
+
+    public void setCurSelectedPosition(int pos1, int pos2, int pos3){
+        try{
+            mSelect1EntityList.get(mPos1[0]).setSelected(false);
+            mSelect1EntityList.get(mPos2[0]).getList().get(mPos2[1]).setSelected(false);
+            mSelect1EntityList.get(mPos3[0]).getList().get(mPos3[1]).getList().get(mPos3[2]).setSelected(false);
+            Select1Entity select1Entity = mSelect1EntityList.get(pos1);
+            Select2Entity select2Entity = mSelect1EntityList.get(pos1).getList().get(pos2);
+            Select3Entity select3Entity = mSelect1EntityList.get(pos1).getList().get(pos2).getList().get(pos3);
+            select1Entity.setSelected(true);
+            select2Entity.setSelected(true);
+            select3Entity.setSelected(true);
+            mLayer1Adapter.notifyDataSetChanged();
+            mLayer2Adapter.getDataHolder().setList(select1Entity.getList());
+            mLayer3Adapter.getDataHolder().setList(select2Entity.getList());
+            mPos1[0] = pos1;
+            mPos2[0] = pos1;
+            mPos2[1] = pos2;
+            mPos3[0] = pos1;
+            mPos3[1] = pos2;
+            mPos3[2] = pos3;
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
