@@ -10,4 +10,6 @@
     <color name="three_layer_bg_1_selected">#F7F7F7</color>
     <color name="three_layer_bg_2_nor">#F7F7F7</color>
     <color name="three_layer_bg_2_selected">#FFFFFF</color>
+    <color name="three_layer_text_color_nor">#333333</color>
+    <color name="three_layer_text_color_selected">#0077FF</color>
 </resources>

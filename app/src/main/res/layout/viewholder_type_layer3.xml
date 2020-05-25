@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="44dp"
         tools:text="名字"
-        android:textColor="#ff333333"
+        android:textColor="@drawable/sel_three_layer_text_color"
         android:paddingLeft="12dp"
         android:textSize="14sp"
         android:layout_gravity="center_vertical"

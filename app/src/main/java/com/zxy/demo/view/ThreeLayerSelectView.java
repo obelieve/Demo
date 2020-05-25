@@ -345,6 +345,7 @@ public class ThreeLayerSelectView extends FrameLayout {
         public void loadViewHolder(BaseViewHolder holder, int position) {
             TypeLayer3ViewHolder viewHolder = (TypeLayer3ViewHolder) holder;
             viewHolder.tvName.setText(getDataHolder().getList().get(position).getName());
+            viewHolder.tvName.setSelected(getDataHolder().getList().get(position).isSelected());
             if (getDataHolder().getList().get(position).isSelected()) {
                 viewHolder.ivSelect.setVisibility(VISIBLE);
             } else {
