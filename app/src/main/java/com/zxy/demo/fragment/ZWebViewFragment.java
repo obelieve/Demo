@@ -1,5 +1,7 @@
 package com.zxy.demo.fragment;
 
+import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.widget.ProgressBar;
 
@@ -29,6 +31,18 @@ public class ZWebViewFragment extends BaseFragment {
 //        wvContent.addJavascriptInterface(new JSInvoke(),"Android");
 //        wvContent.setWebContentsDebuggingEnabled(true);
 //        wvContent.getSettings().setUserAgentString("Android");
+        wvContent.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_BACK&&event.getAction()==KeyEvent.ACTION_DOWN){
+                    if(wvContent.canGoBack()){
+                        wvContent.goBack();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
 
