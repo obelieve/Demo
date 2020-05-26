@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
-                android:text="单选列表"
+                android:text="列表选择"
                 android:textColor="#333333"
                 android:textSize="13sp" />
         </LinearLayout>

@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.zxy.demo.R;
+import com.zxy.demo.view.ListSelectView;
 import com.zxy.demo.view.ThreeLayerSelectView;
 import com.zxy.frame.base.BaseFragment;
 import com.zxy.frame.utils.PopupMenuUtil;
@@ -32,7 +33,10 @@ public class FilterListFragment extends BaseFragment {
     LinearLayout llType3;
 
     PopupMenuUtil mPopupMenuType1;
+    PopupMenuUtil mPopupMenuType2;
+
     ThreeLayerSelectView mThreeLayerSelectView;
+    ListSelectView mListSelectView;
 
     @Override
     public int layoutId() {
@@ -72,6 +76,24 @@ public class FilterListFragment extends BaseFragment {
                 mPopupMenuType1.showDownPopup(llType1, mThreeLayerSelectView, SystemUtil.screenWidth());
                 break;
             case R.id.ll_type2:
+                if (mPopupMenuType2 == null) {
+                    mListSelectView = new ListSelectView(view.getContext());
+                    mListSelectView.loadData(MockData.getIListSelectViewDataList(), ListSelectView.SINGLE_TYPE);
+                    mListSelectView.setCallback(new ListSelectView.Callback() {
+                        @Override
+                        public void onClickEmpty() {
+                            mPopupMenuType2.dismiss();
+                        }
+
+                        @Override
+                        public void onSingleSelected(ListSelectView.IListSelectViewData data) {
+                            ToastUtil.show(data.getName());
+                            mPopupMenuType2.dismiss();
+                        }
+                    });
+                    mPopupMenuType2 = new PopupMenuUtil(getActivity());
+                }
+                mPopupMenuType2.showDownPopup(llType2, mListSelectView, SystemUtil.screenWidth());
                 break;
             case R.id.ll_type3:
                 break;
@@ -100,7 +122,7 @@ public class FilterListFragment extends BaseFragment {
             for (int i = 0; i < 10; i++) {
                 ThreeLayerSelectView.Select2Entity select2Entity = new ThreeLayerSelectView.Select2Entity();
                 select2Entity.setSelected(false);
-                select2Entity.setName(tag + " "+ i);
+                select2Entity.setName(tag + " " + i);
                 select2Entity.setList(getSelect3Entity(""));
                 list.add(select2Entity);
             }
@@ -112,10 +134,51 @@ public class FilterListFragment extends BaseFragment {
             for (int i = 0; i < 10; i++) {
                 ThreeLayerSelectView.Select3Entity select3Entity = new ThreeLayerSelectView.Select3Entity();
                 select3Entity.setSelected(false);
-                select3Entity.setName(tag + " "+ i);
+                select3Entity.setName(tag + " " + i);
                 list.add(select3Entity);
             }
             return list;
+        }
+
+        public static List<ListSelectView.IListSelectViewData> getIListSelectViewDataList() {
+            List<ListSelectView.IListSelectViewData> list = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                list.add(new ListSelectData(i, "i:" + i, false));
+            }
+            return list;
+        }
+
+        public static class ListSelectData implements ListSelectView.IListSelectViewData {
+
+            private int id;
+            private String name;
+            private boolean selected;
+
+            public ListSelectData(int id, String name, boolean selected) {
+                this.id = id;
+                this.name = name;
+                this.selected = selected;
+            }
+
+            @Override
+            public int getId() {
+                return id;
+            }
+
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public boolean isSelected() {
+                return selected;
+            }
+
+            @Override
+            public void setSelected(boolean selected) {
+                this.selected = selected;
+            }
         }
     }
 }
