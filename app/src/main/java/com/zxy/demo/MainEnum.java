@@ -8,6 +8,7 @@ import com.zxy.demo.fragment.LottieAnimationFragment;
 import com.zxy.demo.fragment.SplashFragment;
 import com.zxy.demo.fragment.StickyCoordinatorFragment;
 import com.zxy.demo.fragment.VersionUpdateEntranceFragment;
+import com.zxy.demo.fragment.ViewRenderFragment;
 import com.zxy.demo.fragment.ZDialogFragment;
 import com.zxy.demo.fragment.ZWebViewFragment;
 
@@ -22,7 +23,8 @@ public enum MainEnum {
     M7("自定义Tab", CustomTabFragment.class),
     M8("Lottie动画", LottieAnimationFragment.class),
     M9("加载WebView", ZWebViewFragment.class),
-    M10("列表筛选", FilterListFragment.class,true);
+    M10("列表筛选", FilterListFragment.class),
+    M11("控件效果", ViewRenderFragment.class,true);
     private String mName;
     private Class mClazz;
     private boolean mCurrent;
