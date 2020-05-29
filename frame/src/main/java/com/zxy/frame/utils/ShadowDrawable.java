@@ -19,31 +19,32 @@ import androidx.annotation.Nullable;
  */
 public class ShadowDrawable extends Drawable {
 
-    private static Builder sBuilder = new Builder();
+    private Builder mBuilder;
 
-    private ShadowDrawable() {
+    private ShadowDrawable(Builder builder) {
+        mBuilder = builder;
     }
 
     @Override
     public void setBounds(int left, int top, int right, int bottom) {
         super.setBounds(left, top, right, bottom);
-        sBuilder.mRectF = new RectF(left + sBuilder.mShadowRadius, top + sBuilder.mShadowRadius, right - sBuilder.mShadowRadius, bottom - sBuilder.mShadowRadius);
+        mBuilder.mRectF = new RectF(left + mBuilder.mShadowRadius, top + mBuilder.mShadowRadius, right - mBuilder.mShadowRadius, bottom - mBuilder.mShadowRadius);
     }
 
     @Override
     public void draw(@NonNull Canvas canvas) {
-        canvas.drawRoundRect(sBuilder.mRectF, sBuilder.mRadius, sBuilder.mRadius, sBuilder.mShadowPaint);
-        canvas.drawRoundRect(sBuilder.mRectF, sBuilder.mRadius, sBuilder.mRadius, sBuilder.mBgPaint);
+        canvas.drawRoundRect(mBuilder.mRectF, mBuilder.mRadius, mBuilder.mRadius, mBuilder.mShadowPaint);
+        canvas.drawRoundRect(mBuilder.mRectF, mBuilder.mRadius, mBuilder.mRadius, mBuilder.mBgPaint);
     }
 
     @Override
     public void setAlpha(int alpha) {
-        sBuilder.mShadowPaint.setAlpha(alpha);
+        mBuilder.mShadowPaint.setAlpha(alpha);
     }
 
     @Override
     public void setColorFilter(@Nullable ColorFilter colorFilter) {
-        sBuilder.mShadowPaint.setColorFilter(colorFilter);
+        mBuilder.mShadowPaint.setColorFilter(colorFilter);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ShadowDrawable extends Drawable {
     }
 
     public static Builder gen() {
-        return sBuilder;
+        return new Builder();
     }
 
     public static class Builder {
@@ -74,28 +75,28 @@ public class ShadowDrawable extends Drawable {
         }
 
         public Builder radius(int radiusDp) {
-            sBuilder.mRadius = radiusDp;
-            return sBuilder;
+            mRadius = radiusDp;
+            return this;
         }
 
         public Builder shadowRadius(int radiusDp) {
-            sBuilder.mShadowRadius = radiusDp;
-            return sBuilder;
+            mShadowRadius = radiusDp;
+            return this;
         }
 
         public Builder shadowColor(int shadowColor) {
-            sBuilder.mShadowColor = shadowColor;
-            return sBuilder;
+            mShadowColor = shadowColor;
+            return this;
         }
 
         public Builder backgroundColor(int bgColor) {
-            sBuilder.mBgColor = bgColor;
-            return sBuilder;
+            mBgColor = bgColor;
+            return this;
         }
 
         public ShadowDrawable build(Context context) {
             init(context);
-            return new ShadowDrawable();
+            return new ShadowDrawable(this);
         }
 
         private void init(Context context) {
