@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="134dp">
+
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="#99333333" />
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@mipmap/ic_launcher" />
+
+    <ImageView
+        android:id="@+id/iv_brand"
+        android:layout_width="30dp"
+        android:layout_height="18dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="26dp"
+        android:src="@drawable/brand"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/tv_delivery"
+        app:layout_constraintLeft_toRightOf="@id/iv_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="24dp"
+        android:singleLine="true"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_brand"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toRightOf="@id/iv_brand"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_brand"
+        tools:text="粥品香坊（大运村）" />
+
+    <TextView
+        android:id="@+id/tv_delivery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="24dp"
+        android:singleLine="true"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/iv_tag"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="@id/iv_brand"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_brand"
+        tools:text="蜂鸟专送 / 38分钟送达" />
+
+    <ImageView
+        android:id="@+id/iv_tag"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_image"
+        app:layout_constraintLeft_toLeftOf="@id/iv_brand"
+        app:layout_constraintTop_toBottomOf="@id/tv_delivery"
+        tools:src="@drawable/decrease_white" />
+
+    <TextView
+        android:id="@+id/tv_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:singleLine="true"
+        android:textColor="@color/colorWhite"
+        android:textSize="10sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/iv_tag"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintLeft_toRightOf="@id/iv_tag"
+        app:layout_constraintRight_toLeftOf="@id/tv_num"
+        app:layout_constraintTop_toTopOf="@id/iv_tag"
+        tools:text="在线支付满28减5，满50减10" />
+
+    <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginRight="24dp"
+        android:background="@drawable/bg_circle_33000000_12dp"
+        android:drawableRight="@drawable/ic_arrow_white_right"
+        android:drawablePadding="2dp"
+        android:gravity="center"
+        android:maxWidth="100dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="8dp"
+        android:singleLine="true"
+        android:textColor="@color/colorWhite"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_tag"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintLeft_toRightOf="@id/tv_tag"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_tag"
+        tools:text="5个" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        android:background="#3307111b"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="12dp"
+            android:layout_marginLeft="12dp"
+            android:src="@drawable/bulletin" />
+
+        <TextView
+            android:id="@+id/tv_bulletin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="4dp"
+            android:singleLine="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="10sp"
+            tools:text="粥品香坊其烹饪粥料的秘方源于中国千年古法，再融和现代制作工艺" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_arrow_white_right"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
