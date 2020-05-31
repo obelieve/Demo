@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        tools:text="单人特色套餐"
+        android:paddingLeft="14dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:textColor="#93999f"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="18dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="57dp"
+            android:layout_height="57dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_shopping_cart_gray"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:textColor="#07111b"
+                android:maxLines="2"
+                android:textSize="14sp"
+                android:layout_height="wrap_content"
+                tools:text="皮蛋瘦肉粥配包子套餐" />
+
+            <TextView
+                android:id="@+id/tv_info"
+                android:textColor="#93999f"
+                android:textSize="10sp"
+                android:layout_marginTop="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="咸粥" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_sell_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#93999f"
+                    android:singleLine="true"
+                    android:textSize="10sp"
+                    android:maxWidth="200dp"
+                    tools:text="月售1132份" />
+
+                <TextView
+                    android:id="@+id/tv_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="#93999f"
+                    android:layout_marginLeft="12dp"
+                    android:textSize="10sp"
+                    android:text="好评率100%" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    android:textColor="#f01414"
+                    android:text="￥" />
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#f01414"
+                    tools:text="24" />
+
+                <TextView
+                    android:id="@+id/tv_old_price"
+                    android:layout_gravity="top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="10sp"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="#93999f"
+                    tools:text="￥28" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <com.zxy.mall.view.BuyView
+                    android:id="@+id/view_buy"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

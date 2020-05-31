@@ -3,6 +3,9 @@ import java.util.List;
 
 public class FoodEntity {
 
+    private boolean top;
+    private int goods_type;
+    private String goods_type_name;
     private String name;
     private int price;
     private String oldPrice;
@@ -13,6 +16,31 @@ public class FoodEntity {
     private List<RatingEntity> ratings;
     private String icon;
     private String image;
+
+    public boolean isTop() {
+        return top;
+    }
+
+    public void setTop(boolean top) {
+        this.top = top;
+    }
+
+    public int getGoods_type() {
+        return goods_type;
+    }
+
+    public void setGoods_type(int goods_type) {
+        this.goods_type = goods_type;
+    }
+
+    public String getGoods_type_name() {
+        return goods_type_name;
+    }
+
+    public void setGoods_type_name(String goods_type_name) {
+        this.goods_type_name = goods_type_name;
+    }
+
     public void setName(String name) {
          this.name = name;
      }
