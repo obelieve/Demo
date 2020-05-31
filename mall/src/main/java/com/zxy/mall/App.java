@@ -6,6 +6,7 @@ import com.zxy.frame.net.HttpUtil;
 import com.zxy.frame.net.convert.CustomGsonConverterFactory;
 import com.zxy.frame.utils.LogInterceptor;
 import com.zxy.frame.utils.ToastUtil;
+import com.zxy.mall.entity.mock.MockRepository;
 import com.zxy.mall.http.HttpInterceptor;
 import com.zxy.mall.http.ServiceInterface;
 import com.zxy.utility.SystemUtil;
@@ -21,6 +22,7 @@ public class App extends Application {
         super.onCreate();
         SystemUtil.init(this);
         ToastUtil.init(this);
+        MockRepository.init(this);
         mServiceInterface = HttpUtil.build().baseUrl(ServiceInterface.BASE_URL)
                 .addInterceptor(new HttpInterceptor())
                 .addInterceptor(new LogInterceptor())

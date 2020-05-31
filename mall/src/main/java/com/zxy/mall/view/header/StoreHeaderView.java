@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.zxy.mall.R;
+import com.zxy.utility.LogUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +57,7 @@ public class StoreHeaderView extends FrameLayout {
     public void init(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_store_header, this, true);
         ButterKnife.bind(this,view);
+        LogUtil.e("mTvBulletin绑定："+mTvBulletin);
     }
 
     @OnClick(R.id.tv_num)
