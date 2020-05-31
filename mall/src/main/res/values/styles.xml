@@ -5,10 +5,10 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#1CC42F</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="windowNoTitle">true</item>
     </style>
     <style name="TabLayoutTextStyle">
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 </resources>

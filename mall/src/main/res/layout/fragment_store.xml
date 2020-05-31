@@ -16,10 +16,15 @@
         android:layout_width="match_parent"
         android:layout_height="42dp"
         app:tabIndicatorHeight="0dp"
-        app:tabMode="auto"
+        app:tabMode="fixed"
         app:tabSelectedTextColor="@color/red"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabRippleColor="@color/transparent"
         app:tabTextColor="@color/color_4d555d" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#20000000"/>
 
     <FrameLayout
         android:layout_width="match_parent"

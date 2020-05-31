@@ -3,8 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="134dp">
-
+    android:layout_height="wrap_content">
+    <View
+        android:id="@+id/view_statusBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
     <ImageView
         android:id="@+id/iv_bg"
         android:layout_width="0dp"
@@ -12,6 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         tools:background="#99333333" />
 
@@ -21,8 +28,9 @@
         android:layout_height="64dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
+        android:scaleType="centerCrop"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_statusBar"
         tools:src="@mipmap/ic_launcher" />
 
     <ImageView
@@ -30,12 +38,11 @@
         android:layout_width="30dp"
         android:layout_height="18dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="26dp"
         android:src="@drawable/brand"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/tv_delivery"
         app:layout_constraintLeft_toRightOf="@id/iv_image"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_image"
         app:layout_constraintVertical_chainStyle="spread"
         tools:visibility="visible" />
 
@@ -100,7 +107,7 @@
         android:id="@+id/tv_num"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginRight="12dp"
         android:background="@drawable/bg_circle_33000000_12dp"
         android:drawableRight="@drawable/ic_arrow_white_right"
         android:drawablePadding="2dp"
@@ -124,6 +131,8 @@
         android:background="#3307111b"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">

@@ -28,20 +28,34 @@
         android:id="@+id/civ_shopping_cart"
         android:layout_width="44dp"
         android:layout_height="44dp"
-        android:background="@drawable/bg_circle_00a0dc_22dp"
-        android:padding="12dp"
-        android:src="@drawable/ic_shopping_cart"
+        android:background="@drawable/sel_circle_33ffffff_00a0dc_22dp"
         app:layout_constraintBottom_toBottomOf="@id/civ_circle_bg"
         app:layout_constraintLeft_toLeftOf="@id/civ_circle_bg"
         app:layout_constraintRight_toRightOf="@id/civ_circle_bg" />
+    <ImageView
+        android:id="@+id/iv_shopping_cart_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/sel_shopping_cart"
+        app:layout_constraintTop_toTopOf="@id/civ_shopping_cart"
+        app:layout_constraintBottom_toBottomOf="@id/civ_shopping_cart"
+        app:layout_constraintLeft_toLeftOf="@id/civ_shopping_cart"
+        app:layout_constraintRight_toRightOf="@id/civ_shopping_cart" />
 
     <TextView
+        android:id="@+id/tv_num_dot"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
         android:background="@drawable/bg_circle_f01414_8dp"
         android:gravity="center"
         android:minWidth="16dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:textColor="@color/colorWhite"
+        android:textSize="9sp"
         app:layout_constraintCircle="@id/civ_shopping_cart"
         app:layout_constraintCircleAngle="45"
         app:layout_constraintCircleRadius="25dp"
@@ -60,10 +74,11 @@
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:text="￥0"
         app:layout_constraintBottom_toBottomOf="@id/view_bg"
         app:layout_constraintLeft_toRightOf="@id/civ_shopping_cart"
         app:layout_constraintTop_toTopOf="@id/view_bg"
-        tools:text="￥40" />
+        tools:text="￥0" />
 
     <View
         android:layout_width="1dp"

@@ -1,6 +1,8 @@
 package com.zxy.mall.entity.mock;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.zxy.frame.net.gson.MGson;
 import com.zxy.mall.entity.GoodEntity;
@@ -16,6 +18,8 @@ import java.util.List;
 public class MockRepository {
 
     static MockEntity sMockEntity;
+
+    private static Handler sHandler = new Handler(Looper.myLooper());
 
     public static void init(Context context){
         String json = AssetsUtil.getAssetsContent(context,"data.json");
@@ -35,4 +39,8 @@ public class MockRepository {
         return sMockEntity.getRatings();
     }
 
+
+    public static Handler getHandler() {
+        return sHandler;
+    }
 }

@@ -5,13 +5,14 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.zxy.mall.R;
-import com.zxy.utility.LogUtil;
+import com.zxy.mall.entity.SellerEntity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +28,10 @@ public class ShoppingCartView extends FrameLayout {
     CircleImageView mCivCircleBg;
     @BindView(R.id.civ_shopping_cart)
     CircleImageView mCivShoppingCart;
+    @BindView(R.id.iv_shopping_cart_icon)
+    ImageView mIvShoppingCartIcon;
+    @BindView(R.id.tv_num_dot)
+    TextView mTvNumDot;
     @BindView(R.id.tv_price)
     TextView mTvPrice;
     @BindView(R.id.tv_append_price)
@@ -49,8 +54,7 @@ public class ShoppingCartView extends FrameLayout {
 
     private void init(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_shopping_cart, this, true);
-        ButterKnife.bind(this,view);
-        LogUtil.e("mTvConfirm 绑定："+mTvConfirm);
+        ButterKnife.bind(this, view);
     }
 
     @OnClick({R.id.civ_shopping_cart, R.id.tv_confirm})
@@ -62,4 +66,14 @@ public class ShoppingCartView extends FrameLayout {
                 break;
         }
     }
+
+    public void loadData(SellerEntity entity) {
+        mTvNumDot.setVisibility(GONE);
+        mCivShoppingCart.setSelected(false);
+        mIvShoppingCartIcon.setSelected(false);
+        mTvPrice.setText("￥0");
+        mTvAppendPrice.setText("另需配送费￥" + entity.getDeliveryPrice() + "元");
+        mTvConfirm.setText("￥" + entity.getMinPrice() + "起送");
+    }
+
 }

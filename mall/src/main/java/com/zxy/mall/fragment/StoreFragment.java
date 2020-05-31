@@ -4,13 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.zxy.frame.base.BaseActivity;
 import com.zxy.frame.base.BaseFragment;
 import com.zxy.mall.R;
+import com.zxy.mall.entity.SellerEntity;
 import com.zxy.mall.view.ShoppingCartView;
 import com.zxy.mall.view.header.StoreHeaderView;
+import com.zxy.mall.viewmodel.StoreViewModel;
 
 import butterknife.BindView;
 
@@ -66,5 +71,30 @@ public class StoreFragment extends BaseFragment {
                 return mTitleArr[position];
             }
         });
+        initViewModel();
+    }
+
+    private void initViewModel() {
+        StoreViewModel viewModel = ViewModelProviders.of(this).get(StoreViewModel.class);
+        viewModel.getShowProgressLiveData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(getActivity() instanceof BaseActivity){
+                    if(aBoolean){
+                        ((BaseActivity) getActivity()).showLoading();
+                    }else{
+                        ((BaseActivity) getActivity()).dismissLoading();
+                    }
+                }
+            }
+        });
+        viewModel.getSellerEntityLiveData().observe(this, new Observer<SellerEntity>() {
+            @Override
+            public void onChanged(SellerEntity entity) {
+                mViewStoreHeader.loadData(entity);
+                mViewShoppingCart.loadData(entity);
+            }
+        });
+        viewModel.storeInfo();
     }
 }
