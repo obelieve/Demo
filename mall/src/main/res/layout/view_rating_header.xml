@@ -13,7 +13,8 @@
         android:padding="20dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="3"
             android:layout_height="wrap_content"
             android:layout_marginRight="25dp"
             android:orientation="vertical">
@@ -23,15 +24,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:textColor="#ff9900"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 tools:text="3.9" />
 
             <TextView
                 android:id="@+id/tv_sum_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:text="综合评分"
                 android:textColor="#07111b"
@@ -41,10 +43,10 @@
                 android:id="@+id/tv_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:gravity="center"
-                android:text="高于周边商家69.2%"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                tools:text="高于周边商家69.2%" />
         </LinearLayout>
 
         <View
@@ -54,7 +56,8 @@
             android:background="#3307111b" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="5"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:orientation="vertical">
@@ -73,6 +76,17 @@
                     android:textColor="#07111b"
                     android:textSize="12sp" />
 
+                <RatingBar
+                    android:id="@+id/rb_rating1"
+                    style="@style/RatingStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:rating="0"
+                    android:stepSize="0.5" />
+
                 <TextView
                     android:id="@+id/tv_rating1"
                     android:layout_width="wrap_content"
@@ -86,7 +100,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -97,6 +111,17 @@
                     android:text="服务态度"
                     android:textColor="#07111b"
                     android:textSize="12sp" />
+
+                <RatingBar
+                    android:id="@+id/rb_rating2"
+                    style="@style/RatingStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:rating="0"
+                    android:stepSize="0.5" />
 
                 <TextView
                     android:id="@+id/tv_rating2"
@@ -111,7 +136,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -124,7 +149,7 @@
                 <TextView
                     android:id="@+id/tv_delivery_time"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="12dp"
                     android:textColor="#93999f"
                     android:textSize="12sp"
@@ -136,64 +161,50 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="16dp"
-        android:background="#3307111b"/>
+        android:background="#F3F5F7" />
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_rating_category"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        tools:layout_height="30dp" />
 
     <View
-        android:id="@+id/view3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#3307111b" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:orientation="horizontal">
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/cb_select_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="CheckBox" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
+            android:drawableStart="@drawable/sel_select"
+            android:button="@null"
+            android:drawablePadding="6dp"
+            android:background="@null"
+            android:textColor="#93999f"
+            android:text="只看有内容的评价" />
 
     </LinearLayout>
 
     <View
-        android:id="@+id/view4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#3307111b" />
 </LinearLayout>
