@@ -39,7 +39,7 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
     LeftViewHolderFactory<LData> mLeftViewHolderFactory;
     RightViewHolderFactory<RData> mRightViewHolderFactory;
 
-    Callback mCallback;
+    Callback<RData> mCallback;
 
     public LeftRightRecyclerView(@NonNull Context context) {
         this(context, null, 0);
@@ -82,7 +82,7 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
         });
         mRightAdapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<RData>() {
             @Override
-            public void onItemClick(View view, IRightData data, int position) {
+            public void onItemClick(View view, RData data, int position) {
                 if (mCallback != null) {
                     mCallback.onRightItemClick(view, data, position);
                 }
@@ -104,7 +104,7 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
         });
     }
 
-    public void setCallback(Callback callback) {
+    public void setCallback(Callback<RData> callback) {
         mCallback = callback;
     }
 
@@ -236,8 +236,8 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
         public abstract void bind(DATA data);
     }
 
-    public interface Callback {
-        void onRightItemClick(View view, IRightData data, int position);
+    public interface Callback<DATA extends IRightData> {
+        void onRightItemClick(View view, DATA data, int position);
     }
 
 

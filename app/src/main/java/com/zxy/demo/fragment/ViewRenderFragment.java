@@ -25,7 +25,7 @@ public class ViewRenderFragment extends BaseFragment {
     @BindView(R.id.view_shadow)
     View viewShadow;
     @BindView(R.id.view_lr_recycler_view)
-    LeftRightRecyclerView mViewLrRecyclerView;
+    LeftRightRecyclerView<LeftData,RightData> mViewLrRecyclerView;
 
     @Override
     public int layoutId() {
@@ -35,9 +35,9 @@ public class ViewRenderFragment extends BaseFragment {
     @Override
     protected void initView() {
         ViewUtil.setShadowBackground(viewShadow, ShadowDrawable.gen().radius(10).shadowColor(Color.parseColor("#332995FF")).build(getContext()));
-        mViewLrRecyclerView.setCallback(new LeftRightRecyclerView.Callback() {
+        mViewLrRecyclerView.setCallback(new LeftRightRecyclerView.Callback<RightData>() {
             @Override
-            public void onRightItemClick(View view, LeftRightRecyclerView.IRightData data, int position) {
+            public void onRightItemClick(View view, RightData data, int position) {
 
             }
         });
