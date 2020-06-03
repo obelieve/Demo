@@ -1,8 +1,11 @@
 package com.zxy.mall.entity;
+import com.zxy.frame.view.LeftRightRecyclerView;
+
 import java.util.List;
 
-public class GoodEntity {
+public class GoodEntity implements LeftRightRecyclerView.ILeftData {
 
+    private boolean selected;
     private String name;
     private int type;
     private List<FoodEntity> foods;
@@ -27,4 +30,18 @@ public class GoodEntity {
          return foods;
      }
 
+    @Override
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
+
+    @Override
+    public String LRRVTag() {
+        return type+"";
+    }
 }

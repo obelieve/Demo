@@ -1,7 +1,9 @@
 package com.zxy.mall.entity;
+import com.zxy.frame.view.LeftRightRecyclerView;
+
 import java.util.List;
 
-public class FoodEntity {
+public class FoodEntity implements LeftRightRecyclerView.IRightData {
 
     private boolean top;
     private int goods_type;
@@ -17,8 +19,15 @@ public class FoodEntity {
     private String icon;
     private String image;
 
+
+    @Override
     public boolean isTop() {
         return top;
+    }
+
+    @Override
+    public String LRRVTag() {
+        return goods_type+"";
     }
 
     public void setTop(boolean top) {

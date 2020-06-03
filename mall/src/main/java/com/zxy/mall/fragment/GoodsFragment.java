@@ -8,12 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.BaseFragment;
 import com.zxy.frame.utils.image.GlideUtil;
+import com.zxy.frame.view.LeftRightRecyclerView;
 import com.zxy.mall.R;
 import com.zxy.mall.entity.FoodEntity;
 import com.zxy.mall.entity.GoodEntity;
@@ -25,13 +22,9 @@ import butterknife.ButterKnife;
 
 public class GoodsFragment extends BaseFragment {
 
-    @BindView(R.id.rv_left)
-    RecyclerView mRvLeft;
-    @BindView(R.id.rv_right)
-    RecyclerView mRvRight;
+    @BindView(R.id.view_lrrv)
+    LeftRightRecyclerView<GoodEntity,FoodEntity> mViewLrrv;
 
-    GoodsLeftAdapter mGoodsLeftAdapter;
-    GoodsRightAdapter mGoodsRightAdapter;
     @Override
     public int layoutId() {
         return R.layout.fragment_goods;
@@ -39,129 +32,98 @@ public class GoodsFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        mRvLeft.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRvRight.setLayoutManager(new LinearLayoutManager(getContext()));
-        mGoodsLeftAdapter = new GoodsLeftAdapter(getContext());
-        mGoodsRightAdapter = new GoodsRightAdapter(getContext());
-        mRvLeft.setAdapter(mGoodsLeftAdapter);
-        mRvRight.setAdapter(mGoodsRightAdapter);
-        mGoodsLeftAdapter.getDataHolder().setList(MockRepository.getGoodList());
-        mGoodsRightAdapter.getDataHolder().setList(MockRepository.getFoodList());
-        mGoodsLeftAdapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<GoodEntity>() {
+        mViewLrrv.init(new LeftRightRecyclerView.LeftViewHolderFactory<GoodEntity>() {
             @Override
-            public void onItemClick(View view, GoodEntity entity, int position) {
+            public LeftRightRecyclerView.LeftViewHolder<GoodEntity> genLeftViewHolder(ViewGroup parent) {
+                return new GoodsLeftViewHolder(parent);
+            }
+        }, new LeftRightRecyclerView.RightViewHolderFactory<FoodEntity>() {
+            @Override
+            public LeftRightRecyclerView.RightViewHolder<FoodEntity> genRightViewHolder(ViewGroup parent) {
+                return new FoodRightViewHolder(parent);
+            }
+        });
+        mViewLrrv.setLeftRightData(MockRepository.getGoodList(),MockRepository.getFoodList());
+        mViewLrrv.setCallback(new LeftRightRecyclerView.Callback<FoodEntity>() {
+            @Override
+            public void onRightItemClick(View view, FoodEntity data, int position) {
 
             }
         });
     }
 
 
-    public static class GoodsLeftAdapter extends BaseRecyclerViewAdapter<GoodEntity> {
+    public static class GoodsLeftViewHolder extends LeftRightRecyclerView.LeftViewHolder<GoodEntity>{
 
+        @BindView(R.id.tv_name)
+        TextView mTvName;
 
-        public GoodsLeftAdapter(Context context) {
-            super(context);
+        public GoodsLeftViewHolder(ViewGroup parent) {
+            super(parent, R.layout.viewholder_goods_left);
+            ButterKnife.bind(this, itemView);
         }
 
         @Override
-        public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            return new GoodsLeftViewHolder(parent, R.layout.viewholder_goods_left);
-        }
-
-        @Override
-        public void loadViewHolder(BaseViewHolder holder, int position) {
-            GoodsLeftViewHolder holder1 = ((GoodsLeftViewHolder) holder);
-            holder1.mTvName.setText(getDataHolder().getList().get(position).getName());
-        }
-
-
-        public class GoodsLeftViewHolder extends BaseViewHolder {
-
-            @BindView(R.id.tv_name)
-            TextView mTvName;
-
-
-            public GoodsLeftViewHolder(ViewGroup parent, int layoutId) {
-                super(parent, layoutId);
-                ButterKnife.bind(this, itemView);
-            }
+        public void bind(GoodEntity data) {
+            mTvName.setText(data.getName());
+            mTvName.setSelected(data.isSelected());
         }
     }
 
+    public static class FoodRightViewHolder extends LeftRightRecyclerView.RightViewHolder<FoodEntity>{
 
-    public static class GoodsRightAdapter extends BaseRecyclerViewAdapter<FoodEntity> {
+        @BindView(R.id.tv_type)
+        TextView mTvType;
+        @BindView(R.id.iv_image)
+        ImageView mIvImage;
+        @BindView(R.id.tv_name)
+        TextView mTvName;
+        @BindView(R.id.tv_info)
+        TextView mTvInfo;
+        @BindView(R.id.tv_sell_count)
+        TextView mTvSellCount;
+        @BindView(R.id.tv_rating)
+        TextView mTvRating;
+        @BindView(R.id.tv_price)
+        TextView mTvPrice;
+        @BindView(R.id.tv_old_price)
+        TextView mTvOldPrice;
+        @BindView(R.id.view_buy)
+        BuyView mViewBuy;
 
-
-        public GoodsRightAdapter(Context context) {
-            super(context);
+        private Context mContext;
+        public FoodRightViewHolder(ViewGroup parent) {
+            super(parent, R.layout.viewholder_goods_right);
+            ButterKnife.bind(this, itemView);
+            mContext = parent.getContext();
         }
 
         @Override
-        public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            return new GoodsRightViewHolder(parent, R.layout.viewholder_goods_right);
-        }
-
-        @Override
-        public void loadViewHolder(BaseViewHolder holder, int position) {
-            GoodsRightViewHolder holder1 = ((GoodsRightViewHolder) holder);
-            FoodEntity foodEntity = getDataHolder().getList().get(position);
-           holder1.bind(foodEntity);
-
-        }
-
-
-        public class GoodsRightViewHolder extends BaseViewHolder {
-
-            @BindView(R.id.tv_type)
-            TextView mTvType;
-            @BindView(R.id.iv_image)
-            ImageView mIvImage;
-            @BindView(R.id.tv_name)
-            TextView mTvName;
-            @BindView(R.id.tv_info)
-            TextView mTvInfo;
-            @BindView(R.id.tv_sell_count)
-            TextView mTvSellCount;
-            @BindView(R.id.tv_rating)
-            TextView mTvRating;
-            @BindView(R.id.tv_price)
-            TextView mTvPrice;
-            @BindView(R.id.tv_old_price)
-            TextView mTvOldPrice;
-            @BindView(R.id.view_buy)
-            BuyView mViewBuy;
-
-            public GoodsRightViewHolder(ViewGroup parent, int layoutId) {
-                super(parent, layoutId);
-                ButterKnife.bind(this, itemView);
+        public void bind(FoodEntity data) {
+            if (data.isTop()) {
+                mTvType.setVisibility(View.VISIBLE);
+                mTvType.setText(data.getGoods_type_name());
+            } else {
+                mTvType.setVisibility(View.GONE);
             }
-
-            public void bind(FoodEntity foodEntity) {
-                if(foodEntity.isTop()){
-                    mTvType.setVisibility(View.VISIBLE);
-                    mTvType.setText(foodEntity.getGoods_type_name());
-                }else{
-                    mTvType.setVisibility(View.GONE);
-                }
-                GlideUtil.loadImage(getContext(),foodEntity.getIcon(),mIvImage);
-                mTvName.setText(foodEntity.getName());
-                if(!TextUtils.isEmpty(foodEntity.getDescription())){
-                    mTvInfo.setVisibility(View.VISIBLE);
-                    mTvInfo.setText(foodEntity.getDescription());
-                }else{
-                    mTvInfo.setVisibility(View.GONE);
-                }
-                mTvSellCount.setText("月售"+foodEntity.getSellCount()+"份");
-                mTvRating.setText("好评率"+foodEntity.getRating()+"%");
-                mTvPrice.setText(foodEntity.getPrice()+"");
-                if(!TextUtils.isEmpty(foodEntity.getOldPrice())){
-                    mTvOldPrice.setVisibility(View.VISIBLE);
-                    mTvOldPrice.setText("￥"+foodEntity.getOldPrice()+"");
-                }else{
-                    mTvOldPrice.setVisibility(View.GONE);
-                }
-                mTvOldPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            GlideUtil.loadImage(mContext, data.getIcon(), mIvImage);
+            mTvName.setText(data.getName());
+            if (!TextUtils.isEmpty(data.getDescription())) {
+                mTvInfo.setVisibility(View.VISIBLE);
+                mTvInfo.setText(data.getDescription());
+            } else {
+                mTvInfo.setVisibility(View.GONE);
             }
+            mTvSellCount.setText("月售" + data.getSellCount() + "份");
+            mTvRating.setText("好评率" + data.getRating() + "%");
+            mTvPrice.setText(data.getPrice() + "");
+            if (!TextUtils.isEmpty(data.getOldPrice())) {
+                mTvOldPrice.setVisibility(View.VISIBLE);
+                mTvOldPrice.setText("￥" + data.getOldPrice() + "");
+            } else {
+                mTvOldPrice.setVisibility(View.GONE);
+            }
+            mTvOldPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }
 }

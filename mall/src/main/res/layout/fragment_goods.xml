@@ -4,13 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_left"
-        android:layout_width="80dp"
-        android:layout_height="match_parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_right"
+    <com.zxy.frame.view.LeftRightRecyclerView
+        android:id="@+id/view_lrrv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 </LinearLayout>

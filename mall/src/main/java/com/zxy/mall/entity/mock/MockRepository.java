@@ -3,6 +3,7 @@ package com.zxy.mall.entity.mock;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.SparseArray;
 
 import com.zxy.frame.net.gson.MGson;
 import com.zxy.mall.entity.FoodEntity;
@@ -12,9 +13,7 @@ import com.zxy.mall.entity.SellerEntity;
 import com.zxy.utility.AssetsUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 数据模拟
@@ -45,16 +44,16 @@ public class MockRepository {
 
     public static List<FoodEntity> getFoodList(){
         List<FoodEntity> list = new ArrayList<>();
-        Map<String,List<FoodEntity>> map = new HashMap<>();
+        SparseArray<List<FoodEntity>> array= new SparseArray<>();
         if(sMockEntity.getGoods()!=null){
+            int key =0;
             for(GoodEntity entity:sMockEntity.getGoods()){
-                String key = entity.getType()+"@"+entity.getName();
                 List<FoodEntity> cList;
-                if(!map.containsKey(key)){
+                if(array.get(key)==null){
                     cList = new ArrayList<>();
-                    map.put(key,cList);
+                    array.put(key,cList);
                 }
-                cList= map.get(key);
+                cList= array.get(key);
                 if(entity.getFoods()!=null){
                     for(int i=0;i<entity.getFoods().size();i++){
                         FoodEntity foodEntity = entity.getFoods().get(i);
@@ -66,9 +65,10 @@ public class MockRepository {
                         cList.add(foodEntity);
                     }
                 }
+                key++;
             }
-            for(Map.Entry<String,List<FoodEntity>> entry:map.entrySet()){
-                list.addAll(entry.getValue());
+            for(int i=0;i<array.size();i++){
+                list.addAll(array.get(i));
             }
         }
         return list;
