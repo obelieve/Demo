@@ -35,8 +35,8 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     private RecyclerView.OnScrollListener mOnScrollListener;
 
     private BaseDataHolder<DATA> mDataHolder;
-    private OnItemClickCallback<DATA> mItemClickCallback;
-    private OnItemLongClickCallback<DATA> mItemLongClickCallback;
+    protected OnItemClickCallback<DATA> mItemClickCallback;
+    protected OnItemLongClickCallback<DATA> mItemLongClickCallback;
     private OnLoadMoreListener mOnLoadMoreListener;
 
     public BaseRecyclerViewAdapter(Context context) {
@@ -118,7 +118,6 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
         final int pos = position;
         if (!(holder instanceof EmptyViewHolder) && !(holder instanceof LoadMoreViewHolder)) {
-            loadViewHolder(holder, position);
             if (mItemClickCallback != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -139,6 +138,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             } else {
                 holder.itemView.setOnLongClickListener(null);
             }
+            loadViewHolder(holder, position);
         } else {
             if (holder instanceof LoadMoreViewHolder) {
                 LoadMoreViewHolder holder1 = (LoadMoreViewHolder) holder;
