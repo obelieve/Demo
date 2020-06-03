@@ -1,4 +1,4 @@
-package com.zxy.demo.view;
+package com.zxy.frame.view;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -13,13 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.zxy.demo.R;
+import com.zxy.frame.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 左右RecyclerView联动 View
@@ -28,9 +25,7 @@ import butterknife.ButterKnife;
  */
 public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData,RData extends LeftRightRecyclerView.IRightData> extends FrameLayout {
 
-    @BindView(R.id.rv_left)
     RecyclerView mRvLeft;
-    @BindView(R.id.rv_right)
     RecyclerView mRvRight;
 
     LeftAdapter<LData> mLeftAdapter;
@@ -52,7 +47,8 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
     public LeftRightRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         View view = LayoutInflater.from(context).inflate(R.layout.view_left_right_recyclerview, this, true);
-        ButterKnife.bind(this, view);
+        mRvLeft = view.findViewById(R.id.rv_left);
+        mRvRight = view.findViewById(R.id.rv_right);
     }
 
     public void init(LeftViewHolderFactory<LData> leftViewHolderFactory, RightViewHolderFactory<RData> rightViewHolderFactory) {
