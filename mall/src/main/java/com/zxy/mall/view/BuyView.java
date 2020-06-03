@@ -32,7 +32,7 @@ public class BuyView extends FrameLayout implements View.OnClickListener {
     private ConstraintLayout mClContent;
     private FrameLayout mFlAdd;
 
-    private int mMaxNum = 1;
+    private int mMaxNum = 10;
     private boolean mAnimating;
     private AnimatorSet mAnimatorSet;
 
