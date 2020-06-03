@@ -20,7 +20,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_name"
+                android:id="@+id/tv_score"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -30,7 +30,7 @@
                 tools:text="3.9" />
 
             <TextView
-                android:id="@+id/tv_sum_rating"
+                android:id="@+id/tv_score_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -40,7 +40,7 @@
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/tv_info"
+                android:id="@+id/tv_rank_rate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
@@ -70,14 +70,14 @@
 
                 <TextView
                     android:id="@+id/tv_title1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:text="服务态度"
                     android:textColor="#07111b"
                     android:textSize="12sp" />
 
                 <RatingBar
-                    android:id="@+id/rb_rating1"
+                    android:id="@+id/rb_service_score"
                     style="@style/RatingStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                     android:stepSize="0.5" />
 
                 <TextView
-                    android:id="@+id/tv_rating1"
+                    android:id="@+id/tv_service_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
@@ -106,14 +106,14 @@
 
                 <TextView
                     android:id="@+id/tv_title2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:text="服务态度"
+                    android:text="口味"
                     android:textColor="#07111b"
                     android:textSize="12sp" />
 
                 <RatingBar
-                    android:id="@+id/rb_rating2"
+                    android:id="@+id/rb_food_score"
                     style="@style/RatingStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
                     android:stepSize="0.5" />
 
                 <TextView
-                    android:id="@+id/tv_rating2"
+                    android:id="@+id/tv_food_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
@@ -140,7 +140,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:text="送达时间"
                     android:textColor="#07111b"
@@ -207,4 +207,9 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="#3307111b" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 </LinearLayout>

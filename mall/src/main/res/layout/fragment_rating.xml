@@ -6,5 +6,5 @@
     <com.zxy.mall.view.header.RatingHeaderView
         android:id="@+id/view_rating_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 </LinearLayout>
