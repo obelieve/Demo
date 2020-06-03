@@ -6,10 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zxy.demo.R;
-import com.zxy.demo.view.LeftRightRecyclerView;
 import com.zxy.frame.base.BaseFragment;
 import com.zxy.frame.utils.ShadowDrawable;
 import com.zxy.frame.utils.ViewUtil;
+import com.zxy.frame.view.LeftRightRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
