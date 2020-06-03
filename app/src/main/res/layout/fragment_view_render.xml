@@ -7,4 +7,8 @@
         android:id="@+id/view_shadow"
         android:layout_width="100dp"
         android:layout_height="100dp" />
+    <com.zxy.demo.view.LeftRightRecyclerView
+        android:id="@+id/view_lr_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
 </LinearLayout>
