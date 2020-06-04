@@ -1,16 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_content"
-    android:layout_width="wrap_content"
+    android:id="@+id/cl_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:padding="20dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_head"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_error" />
+
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/sel_4d555d_ffffff"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="1dp"
+        android:singleLine="true"
+        android:textColor="#07111b"
         android:textSize="10sp"
-        tools:text="全部"/>
+        app:layout_constraintLeft_toRightOf="@id/civ_head"
+        app:layout_constraintTop_toTopOf="@id/civ_head"
+        tools:text="聚***家" />
 
-</LinearLayout>
+    <RatingBar
+        android:id="@+id/rb_score"
+        style="@style/Rating2Style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="2dp"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:rating="0"
+        android:stepSize="0.5"
+        app:layout_constraintBottom_toBottomOf="@id/civ_head"
+        app:layout_constraintLeft_toRightOf="@id/civ_head"
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+    <TextView
+        android:id="@+id/tv_delivery_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:singleLine="true"
+        android:textColor="#93999f"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/rb_score"
+        app:layout_constraintLeft_toRightOf="@id/rb_score"
+        app:layout_constraintTop_toTopOf="@id/rb_score"
+        tools:text="10分钟送达" />
+
+    <TextView
+        android:id="@+id/tv_rate_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2016-07-13 20:33" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="#07111b"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toLeftOf="@id/rb_score"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rb_score"
+        tools:text="油条凉了，而且没有酱。75分钟才到。很慢。送餐员态度不错，但毕竟好晚了啊。" />
+
+    <ImageView
+        android:id="@+id/iv_like"
+        android:layout_width="12dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="3dp"
+        android:src="@drawable/sel_unlike_like"
+        app:layout_constraintLeft_toLeftOf="@id/tv_content"
+        app:layout_constraintTop_toTopOf="@id/rv_recommend" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_recommend"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginRight="10dp"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/iv_like"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_content" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
