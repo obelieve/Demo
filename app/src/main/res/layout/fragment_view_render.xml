@@ -11,4 +11,8 @@
         android:id="@+id/view_lr_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="200dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_auto_fix_width"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>
