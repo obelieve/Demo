@@ -11,9 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.zxy.frame.R;
-import com.zxy.utility.SystemUtil;
-
-import butterknife.ButterKnife;
 
 public class SimpleAlertDialog extends BaseDialog implements View.OnClickListener {
 
@@ -28,7 +25,7 @@ public class SimpleAlertDialog extends BaseDialog implements View.OnClickListene
         super(activity);
         View view = LayoutInflater.from(activity).inflate(R.layout.dialog_simple_alert, null);
         setContentView(view);
-        float density = SystemUtil.density();
+        float density = activity.getResources().getDisplayMetrics().density;
         setWidth(activity.getResources().getDisplayMetrics().widthPixels - (int) (30 * density));
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         setGravity(Gravity.CENTER);

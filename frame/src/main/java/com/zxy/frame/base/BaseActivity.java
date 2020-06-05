@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.zxy.frame.dialog.LoadDialog;
 import com.zxy.frame.utils.ActivityUtil;
 import com.zxy.frame.utils.StatusBarUtil;
 
@@ -27,10 +28,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CODE = 10240;
 
-    private boolean mStatusBarLight = true;
     private int mStatusBarColor = Color.WHITE;
-    protected boolean mNeedInsetStatusBar = false;
+    protected boolean mNeedInsetStatusBar = true;
+    protected boolean mLightStatusBar = true;
 
+    private LoadDialog mLoadDialog;
     /**
      * Activity 实例.
      */
@@ -42,12 +44,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mActivity = this;
         setScreenOrientation();
-        if (!mNeedInsetStatusBar) {
+        if (mNeedInsetStatusBar) {
             StatusBarUtil.setStatusBarColor(this, getStatusBarColor());
         } else {
             StatusBarUtil.setStatusBarTranslucentStatus(this);
         }
-        StatusBarUtil.setWindowLightStatusBar(this, isStatusBarLight());
+        StatusBarUtil.setWindowLightStatusBar(this, isLightStatusBar());
         if (layoutId() != 0) {
             setContentView(layoutId());
         }
@@ -73,12 +75,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mStatusBarColor;
     }
 
-    public boolean isStatusBarLight() {
-        return mStatusBarLight;
+    public boolean isLightStatusBar() {
+        return mLightStatusBar;
     }
 
+    public void showLoading(){
+        if(mLoadDialog==null){
+            mLoadDialog = new LoadDialog(this);
+        }
+        mLoadDialog.show();
+    }
+    public void dismissLoading(){
+        if(mLoadDialog!=null){
+            mLoadDialog.dismiss();
+        }
+    }
     /**
-     * 请求权限
+     * 请求权限BaseActivity$OnRequestPermissionListener
      *
      * @param permissions
      * @param listener
