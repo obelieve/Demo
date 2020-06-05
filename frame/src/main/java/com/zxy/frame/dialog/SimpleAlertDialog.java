@@ -11,9 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.zxy.frame.R;
-import com.zxy.utility.SystemUtil;
-
-import butterknife.ButterKnife;
 
 public class SimpleAlertDialog extends BaseDialog implements View.OnClickListener {
 
