@@ -81,10 +81,10 @@
         android:id="@+id/iv_like"
         android:layout_width="12dp"
         android:layout_height="10dp"
-        android:layout_marginTop="3dp"
-        android:src="@drawable/sel_unlike_like"
-        app:layout_constraintLeft_toLeftOf="@id/tv_content"
-        app:layout_constraintTop_toTopOf="@id/rv_recommend" />
+        android:src="@drawable/sel_like_unlike"
+        android:layout_marginTop="14dp"
+        app:layout_constraintLeft_toLeftOf="@id/tv_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_content" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_recommend"
@@ -94,7 +94,6 @@
         android:layout_marginTop="14dp"
         android:layout_marginRight="10dp"
         android:nestedScrollingEnabled="false"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/iv_like"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_content" />

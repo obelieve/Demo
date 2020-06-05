@@ -2,6 +2,7 @@ package com.zxy.mall.view.header;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -333,6 +334,11 @@ public class RatingHeaderView extends FrameLayout {
                 mTvDeliveryTime.setText(entity.getDeliveryTime()+"分钟送达");
                 mTvRateTime.setText(mFormat.format(new Date(entity.getRateTime())));
                 mTvContent.setText(entity.getText());
+                if(TextUtils.isEmpty(entity.getText())){
+                    mTvContent.setVisibility(GONE);
+                }else{
+                    mTvContent.setVisibility(VISIBLE);
+                }
                 mRecommendAdapter.getDataHolder().setList(entity.getRecommend());
             }
 
