@@ -17,9 +17,11 @@ public class LoadDialog extends BaseDialog {
         super(activity,R.style.LoadingDialog);
         View view = LayoutInflater.from(activity).inflate(R.layout.dialog_loading, null);
         setContentView(view);
+        setCancelable(false);
+        setCanceledOnTouchOutside(false);
         SystemUtil.init(activity.getApplicationContext());
-        setWidth(SystemUtil.screenWidth());
-        setHeight(SystemUtil.getRealHeight(activity));
+//        setWidth(SystemUtil.screenWidth());
+//        setHeight(SystemUtil.getRealHeight(activity));
         setGravity(Gravity.CENTER);
     }
 
