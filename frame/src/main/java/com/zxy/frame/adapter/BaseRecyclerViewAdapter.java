@@ -17,10 +17,12 @@ import com.zxy.frame.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter<BaseRecyclerViewAdapter.BaseViewHolder> {
 
-    private final int LOAD_MORE_TYPE = -2;
-    private final int EMPTY_TYPE = -1;
+    private final int LOAD_MORE_TYPE = 9999;
+    private final int EMPTY_TYPE = 9998;
     private final int NORMAL_TYPE = 0;
 
 
@@ -57,6 +59,10 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     public abstract BaseViewHolder getViewHolder(ViewGroup parent, int viewType);
 
     public abstract void loadViewHolder(BaseViewHolder holder, int position);
+
+    public int loadItemViewType(int position){
+        return NORMAL_TYPE;
+    }
 
     public void setLoadMoreListener(RecyclerView rv, OnLoadMoreListener listener) {
         mRecyclerView = rv;
@@ -101,10 +107,10 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         BaseViewHolder vh = null;
         switch (viewType) {
-            case -2:
+            case LOAD_MORE_TYPE:
                 vh = new LoadMoreViewHolder(parent, 0);
                 break;
-            case -1:
+            case EMPTY_TYPE:
                 vh = new EmptyViewHolder(mEmptyView);
                 break;
             default:
@@ -203,7 +209,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             return EMPTY_TYPE;
         } else {
             if (position < size) {
-                return NORMAL_TYPE;
+                return loadItemViewType(position);
             } else {
                 return LOAD_MORE_TYPE;
             }
@@ -346,7 +352,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         }
     }
 
-    public static class BaseViewHolder extends RecyclerView.ViewHolder {
+    public static class BaseViewHolder<DATA> extends RecyclerView.ViewHolder {
 
         private BaseViewHolder(View view) {
             super(view);
@@ -354,7 +360,10 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
 
         public BaseViewHolder(ViewGroup parent, int layoutId) {
             super(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
+            ButterKnife.bind(this,itemView);
         }
+
+        public void bind(DATA data){}
     }
 
 

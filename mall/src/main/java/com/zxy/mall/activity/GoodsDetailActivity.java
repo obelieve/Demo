@@ -1,31 +1,36 @@
-package com.zxy.mall.fragment;
+package com.zxy.mall.activity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
-import com.zxy.frame.adapter.item_decoration.HorizontalItemDivider;
-import com.zxy.frame.adapter.item_decoration.VerticalItemDivider;
-import com.zxy.frame.adapter.layout_manager.AutoFixWidthLayoutManager;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.BaseActivity;
+import com.zxy.frame.utils.StatusBarUtil;
 import com.zxy.frame.utils.image.GlideUtil;
 import com.zxy.mall.R;
+import com.zxy.mall.entity.FoodEntity;
 import com.zxy.mall.entity.RatingEntity;
 import com.zxy.mall.entity.mock.MockRepository;
-import com.zxy.mall.view.header.RatingHeaderView;
+import com.zxy.mall.view.header.GoodsDetailHeaderView;
 import com.zxy.utility.SystemUtil;
 
 import java.text.SimpleDateFormat;
@@ -36,13 +41,30 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RatingFragment extends BaseFragment {
+public class GoodsDetailActivity extends BaseActivity {
 
-    @BindView(R.id.view_rating_header)
-    RatingHeaderView mViewRatingHeader;
 
+    private static final String EXTRA_NAME = "name";
+    private static final String EXTRA_FOOD_NAME = "food_name";
+
+
+    @BindView(R.id.view_goods_detail_header)
+    GoodsDetailHeaderView mViewGoodsDetailHeader;
+    @BindView(R.id.view_statusBar)
+    View mViewStatusBar;
+    @BindView(R.id.rl_left)
+    RelativeLayout mRlLeft;
+    @BindView(R.id.iv_left)
+    ImageView mIvLeft;
+    @BindView(R.id.tv_nav_title)
+    TextView mTvNavTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.abl_content)
+    AppBarLayout mAblContent;
     @BindView(R.id.rv_rating_category)
     RecyclerView mRvRatingCategory;
     @BindView(R.id.cb_select_content)
@@ -51,48 +73,50 @@ public class RatingFragment extends BaseFragment {
     RecyclerView mRvContent;
 
     RatingCategoryAdapter mRatingCategoryAdapter;
-    RatingAdapter mRatingAdapter;
+    GoodsDetailAdapter mGoodsDetailAdapter;
+
+
 
     @Override
-    public int layoutId() {
-        return R.layout.fragment_rating;
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        mNeedInsetStatusBar = false;
+        mLightStatusBar = false;
+        super.onCreate(savedInstanceState);
     }
 
     @Override
-    protected void initView() {
-        mViewRatingHeader.loadData(MockRepository.getSeller());
+    protected int layoutId() {
+        return R.layout.activity_goods_detail;
+    }
 
-        LinearLayoutManager lm = new LinearLayoutManager(getActivity());
+
+    public static void start(Activity activity, String name, String foodName) {
+        Intent intent = new Intent(activity, GoodsDetailActivity.class);
+        intent.putExtra(EXTRA_NAME, name);
+        intent.putExtra(EXTRA_FOOD_NAME, foodName);
+        activity.startActivity(intent);
+    }
+
+    @Override
+    protected void initCreateAfterView(Bundle savedInstanceState) {
+        String name = getIntent().getStringExtra(EXTRA_NAME);
+        String foodName = getIntent().getStringExtra(EXTRA_FOOD_NAME);
+        FoodEntity foodEntity = MockRepository.getFoodEntity(name, foodName);
+        mViewStatusBar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, SystemUtil.getStatusBarHeight()));
+        mTvNavTitle.setText(foodEntity.getName());
+        mViewGoodsDetailHeader.loadData(foodEntity);
+        mRatingCategoryAdapter = new RatingCategoryAdapter(this);
+        LinearLayoutManager lm = new LinearLayoutManager(this);
         lm.setOrientation(RecyclerView.HORIZONTAL);
         mRvRatingCategory.setLayoutManager(lm);
-        mRvContent.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRatingCategoryAdapter = new RatingCategoryAdapter(getActivity());
-        mRatingAdapter = new RatingAdapter(getActivity());
-        VerticalItemDivider divider = new VerticalItemDivider(false,1, Color.parseColor("#2007111b"));
-        divider.marginLR(SystemUtil.dp2px(20),SystemUtil.dp2px(20));
-        mRvContent.addItemDecoration(divider);
         mRvRatingCategory.setAdapter(mRatingCategoryAdapter);
-        mRvContent.setAdapter(mRatingAdapter);
         mRatingCategoryAdapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<RatingCategoryEntity>() {
             @Override
             public void onItemClick(View view, RatingCategoryEntity entity, int position) {
-                mRatingAdapter.getDataHolder().setList(entity.getEntityList());
+                mGoodsDetailAdapter.getDataHolder().setList(entity.getEntityList());
             }
         });
-        mRatingAdapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<RatingEntity>() {
-            @Override
-            public void onItemClick(View view, RatingEntity t, int position) {
-
-            }
-        });
-        mCbSelectContent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-            }
-        });
-        List<RatingEntity> entityList =MockRepository.getRatingList();
-        if (entityList != null) {
+        if (foodEntity.getRatings() != null) {
             RatingCategoryEntity all = new RatingCategoryEntity();
             all.setSelected(true);
             all.setType(0);
@@ -106,7 +130,7 @@ public class RatingFragment extends BaseFragment {
             unsatisfaction.setType(1);
             unsatisfaction.setName("不满意");
             unsatisfaction.setEntityList(new ArrayList<>());
-            for (RatingEntity ratingEntity : entityList) {
+            for (RatingEntity ratingEntity : foodEntity.getRatings()) {
                 if (ratingEntity.getRateType() == 0) {
                     all.getEntityList().add(ratingEntity);
                     satisfaction.getEntityList().add(ratingEntity);
@@ -116,8 +140,61 @@ public class RatingFragment extends BaseFragment {
                 }
             }
             mRatingCategoryAdapter.getDataHolder().setList(Arrays.asList(all, satisfaction, unsatisfaction));
-            mRatingAdapter.getDataHolder().setList(all.getEntityList());
         }
+        mRvContent.setLayoutManager(new LinearLayoutManager(this));
+        mGoodsDetailAdapter = new GoodsDetailAdapter(this);
+        mRvContent.setAdapter(mGoodsDetailAdapter);
+        mGoodsDetailAdapter.getDataHolder().setList(foodEntity.getRatings());
+
+        mAblContent.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                int finalValue = SystemUtil.dp2px(25);
+                if (Math.abs(verticalOffset) > finalValue) {
+                    StatusBarUtil.setWindowLightStatusBar(mActivity,true);
+                    StatusBarUtil.setStatusBarColor(mActivity, getStatusBarColor());
+                } else {
+                    StatusBarUtil.setWindowLightStatusBar(mActivity,false);
+                    StatusBarUtil.setStatusBarTranslucentStatus(mActivity);
+
+                }
+                int bgColor = 0;
+                if (Math.abs(verticalOffset) > finalValue) {
+                    setToolbarBg(true);
+                    bgColor = Color.argb(255, 255, 255, 255);
+                } else if (Math.abs(verticalOffset) == 0) {
+                    setToolbarBg(false);
+                    bgColor = Color.argb(0, 0, 0, 0);
+                } else {
+                    int aColor = (int) ((Math.abs(verticalOffset) / (finalValue * 1.0f) * 255) * 0.8f);
+                    if (aColor > 255 * 0.7f) {
+                        setToolbarBg(true);
+                    } else {
+                        setToolbarBg(false);
+                    }
+                    bgColor = Color.argb(aColor, 255, 255, 255);
+                }
+                mToolbar.setBackgroundColor(bgColor);
+            }
+        });
+    }
+
+    private void setToolbarBg(boolean dark) {
+        if (!dark) {
+            mIvLeft.setImageResource(R.drawable.ic_arrow_left_white);
+            mTvNavTitle.setTextColor(getResources().getColor(R.color.colorWhite));
+            mTvNavTitle.setVisibility(View.GONE);
+        } else {
+            mIvLeft.setImageResource(R.drawable.ic_arrow_left_black);
+            mTvNavTitle.setTextColor(getResources().getColor(R.color.color_07111b));
+            mTvNavTitle.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    @OnClick(R.id.rl_left)
+    public void onViewClicked() {
+        finish();
     }
 
     public static class RatingCategoryEntity {
@@ -226,25 +303,25 @@ public class RatingFragment extends BaseFragment {
         }
     }
 
-    public static class RatingAdapter extends BaseRecyclerViewAdapter<RatingEntity> {
+    public static class GoodsDetailAdapter extends BaseRecyclerViewAdapter<RatingEntity> {
 
-        public RatingAdapter(Context context) {
+
+        public GoodsDetailAdapter(Context context) {
             super(context);
         }
 
         @Override
         public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            return new RatingViewHolder(parent, R.layout.viewholder_rating);
+            return new RatingViewHolder(parent, R.layout.viewholder_goods_detail_rating);
         }
 
         @Override
         public void loadViewHolder(BaseViewHolder holder, int position) {
-            if (holder instanceof RatingViewHolder) {
-                ((RatingViewHolder) holder).bind(getDataHolder().getList().get(position));
-            }
+            holder.bind(getDataHolder().getList().get(position));
         }
 
-        public class RatingViewHolder extends BaseViewHolder {
+
+        public class RatingViewHolder extends BaseViewHolder<RatingEntity> {
 
             @BindView(R.id.civ_head)
             CircleImageView mCivHead;
@@ -260,56 +337,31 @@ public class RatingFragment extends BaseFragment {
             TextView mTvContent;
             @BindView(R.id.iv_like)
             ImageView mIvLike;
-            @BindView(R.id.rv_recommend)
-            RecyclerView mRvRecommend;
             @BindView(R.id.cl_content)
             ConstraintLayout mClContent;
 
             SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-            RecommendAdapter mRecommendAdapter;
+
             public RatingViewHolder(ViewGroup parent, int layoutId) {
                 super(parent, layoutId);
-                ButterKnife.bind(this, itemView);
-                mRecommendAdapter = new RecommendAdapter(parent.getContext());
-                mRvRecommend.setLayoutManager(new AutoFixWidthLayoutManager());
-                mRvRecommend.addItemDecoration(new HorizontalItemDivider(true,8, Color.TRANSPARENT));
-                mRvRecommend.addItemDecoration(new VerticalItemDivider(true,8, Color.TRANSPARENT));
-                mRvRecommend.setAdapter(mRecommendAdapter);
             }
 
-            public void bind(RatingEntity entity){
-                GlideUtil.loadImage(itemView.getContext(),entity.getAvatar(),mCivHead);
-                mTvName.setText(entity.getUsername());
-                mRbScore.setRating(entity.getScore());
-                mIvLike.setSelected(entity.getRateType()==1);
-                mTvDeliveryTime.setText(entity.getDeliveryTime()+"分钟送达");
-                mTvRateTime.setText(mFormat.format(new Date(entity.getRateTime())));
-                mTvContent.setText(entity.getText());
-                if(TextUtils.isEmpty(entity.getText())){
+            @Override
+            public void bind(RatingEntity bean) {
+                GlideUtil.loadImage(itemView.getContext(), bean.getAvatar(), mCivHead);
+                mTvName.setText(bean.getUsername());
+                mRbScore.setRating(bean.getScore());
+                mIvLike.setSelected(bean.getRateType() == 1);
+                mTvDeliveryTime.setText(bean.getDeliveryTime() + "分钟送达");
+                mTvRateTime.setText(mFormat.format(new Date(bean.getRateTime())));
+                mTvContent.setText(bean.getText());
+                if (TextUtils.isEmpty(bean.getText())) {
                     mTvContent.setVisibility(View.GONE);
-                }else{
+                } else {
                     mTvContent.setVisibility(View.VISIBLE);
-                }
-                mRecommendAdapter.getDataHolder().setList(entity.getRecommend());
-            }
-
-            public class RecommendAdapter extends BaseRecyclerViewAdapter<String>{
-
-                public RecommendAdapter(Context context) {
-                    super(context);
-                }
-
-                @Override
-                public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-                    return new BaseViewHolder(parent,R.layout.viewholder_rating_recommend);
-                }
-
-                @Override
-                public void loadViewHolder(BaseViewHolder holder, int position) {
-                    TextView tv = holder.itemView.findViewById(R.id.tv_name);
-                    tv.setText(getDataHolder().getList().get(position));
                 }
             }
         }
     }
+
 }

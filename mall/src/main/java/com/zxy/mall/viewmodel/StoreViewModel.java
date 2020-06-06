@@ -3,10 +3,8 @@ package com.zxy.mall.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.zxy.mall.entity.GoodEntity;
 import com.zxy.mall.entity.SellerEntity;
 import com.zxy.mall.entity.mock.MockRepository;
-import com.zxy.mall.http.ApiService;
 
 public class StoreViewModel extends ViewModel {
 

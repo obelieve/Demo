@@ -3,7 +3,7 @@ import com.zxy.frame.view.LeftRightRecyclerView;
 
 import java.util.List;
 
-public class GoodEntity implements LeftRightRecyclerView.ILeftData {
+public class GoodsEntity implements LeftRightRecyclerView.ILeftData {
 
     private boolean selected;
     private String name;
