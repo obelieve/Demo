@@ -5,6 +5,7 @@ import com.zxy.demo.fragment.FilterListFragment;
 import com.zxy.demo.fragment.ForTAFragment;
 import com.zxy.demo.fragment.LoginFragment;
 import com.zxy.demo.fragment.LottieAnimationFragment;
+import com.zxy.demo.fragment.PayFragment;
 import com.zxy.demo.fragment.SplashFragment;
 import com.zxy.demo.fragment.StickyCoordinatorFragment;
 import com.zxy.demo.fragment.VersionUpdateEntranceFragment;
@@ -20,11 +21,12 @@ public enum MainEnum {
     M4("引导页", SplashFragment.class),
     M5("登录", LoginFragment.class),
     M6("版本升级", VersionUpdateEntranceFragment.class),
-    M7("自定义Tab", CustomTabFragment.class),
+    M7("支付页面", PayFragment.class),
     M8("Lottie动画", LottieAnimationFragment.class),
     M9("加载WebView", ZWebViewFragment.class),
     M10("列表筛选", FilterListFragment.class),
-    M11("控件效果", ViewRenderFragment.class,true);
+    M11("自定义Tab", CustomTabFragment.class),
+    M12("控件效果", ViewRenderFragment.class,true);
     private String mName;
     private Class mClazz;
     private boolean mCurrent;
