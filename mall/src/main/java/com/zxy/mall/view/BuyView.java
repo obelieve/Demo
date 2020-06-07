@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.zxy.mall.R;
+import com.zxy.utility.SystemUtil;
 
 
 public class BuyView extends FrameLayout implements View.OnClickListener {
@@ -32,9 +33,11 @@ public class BuyView extends FrameLayout implements View.OnClickListener {
     private ConstraintLayout mClContent;
     private FrameLayout mFlAdd;
 
-    private int mMaxNum = 10;
+    private int mNum;
+    private int mMaxNum;
     private boolean mAnimating;
     private AnimatorSet mAnimatorSet;
+    private Callback mCallback;
 
     public BuyView(Context context) {
         this(context, null, 0);
@@ -64,12 +67,33 @@ public class BuyView extends FrameLayout implements View.OnClickListener {
         mTvNum.setVisibility(GONE);
     }
 
+    public void setCallback(Callback callback) {
+        mCallback = callback;
+    }
+
     public void setMaxNum(int maxNum) {
         mMaxNum = maxNum;
     }
 
     public int getMaxNum() {
         return mMaxNum;
+    }
+
+    public int getNum() {
+        return mNum;
+    }
+
+    public void setNum(int num) {
+        mNum = num;
+        mLastState = State.INITIAL;
+        if(mNum==getMaxNum()){
+            setState(State.FULL_GOODS,false);
+        }else if(mNum == 0){
+            setState(State.INITIAL,false);
+        }else{
+            setState(State.ADD_GOODS,false);
+        }
+        mTvNum.setText(mNum+"");
     }
 
     @Override
@@ -83,7 +107,11 @@ public class BuyView extends FrameLayout implements View.OnClickListener {
                 } else {
                     setState(State.ADD_GOODS);
                 }
+                mNum = 1;
                 mTvNum.setText(String.valueOf(1));
+                if (mCallback != null) {
+                    mCallback.onAdd(mNum);
+                }
                 break;
             case R.id.iv_add:
                 if (!TextUtils.isEmpty(mTvNum.getText().toString())) {
@@ -91,6 +119,10 @@ public class BuyView extends FrameLayout implements View.OnClickListener {
                         setState(State.FULL_GOODS);
                     }
                     mTvNum.setText(String.valueOf(Integer.valueOf(mTvNum.getText().toString()) + 1));
+                    mNum = mNum + 1;
+                    if (mCallback != null) {
+                        mCallback.onAdd(mNum);
+                    }
                 }
                 break;
             case R.id.iv_sub:
@@ -103,6 +135,10 @@ public class BuyView extends FrameLayout implements View.OnClickListener {
                     } else {
                         mTvNum.setText(String.valueOf(Integer.valueOf(mTvNum.getText().toString()) - 1));
                     }
+                    mNum = mNum - 1;
+                    if (mCallback != null) {
+                        mCallback.onRemove(mNum);
+                    }
                 }
                 break;
         }
@@ -112,11 +148,14 @@ public class BuyView extends FrameLayout implements View.OnClickListener {
 
         INITIAL, ADD_GOODS, FULL_GOODS
     }
-
     public void setState(State state) {
+        setState(state,true);
+    }
+
+    public void setState(State state,boolean anim) {
         switch (state) {
             case INITIAL:
-                moveAnimation(TURN_LEFT_MODE);
+                moveAnimation(TURN_LEFT_MODE,anim);
                 mClContent.setClickable(true);
                 mIvSub.setClickable(false);
                 mIvAdd.setSelected(false);
@@ -124,7 +163,7 @@ public class BuyView extends FrameLayout implements View.OnClickListener {
                 break;
             case ADD_GOODS:
                 if (mLastState == State.INITIAL) {
-                    moveAnimation(TURN_RIGHT_MODE);
+                    moveAnimation(TURN_RIGHT_MODE,anim);
                 }
                 mClContent.setClickable(false);
                 mIvSub.setClickable(true);
@@ -133,7 +172,7 @@ public class BuyView extends FrameLayout implements View.OnClickListener {
                 break;
             case FULL_GOODS:
                 if (mLastState == State.INITIAL) {
-                    moveAnimation(TURN_RIGHT_MODE);
+                    moveAnimation(TURN_RIGHT_MODE,anim);
                 }
                 mClContent.setClickable(false);
                 mIvSub.setClickable(true);
@@ -147,7 +186,7 @@ public class BuyView extends FrameLayout implements View.OnClickListener {
     /**
      * @param mode TURN_LEFT_MODE, TURN_RIGHT_MODE
      */
-    private void moveAnimation(final int mode) {
+    private void moveAnimation(final int mode,boolean anim) {
         float subLeft = mIvSub.getLeft();
         float addX = mIvAdd.getX();
         float subX = mIvSub.getX();
@@ -160,47 +199,70 @@ public class BuyView extends FrameLayout implements View.OnClickListener {
                 mTvTitle.setVisibility(GONE);
                 break;
         }
-        PropertyValuesHolder rotateHolder = PropertyValuesHolder.ofFloat("rotation", 0.0f, 360.0f);
-        PropertyValuesHolder addHolder = PropertyValuesHolder.ofFloat("translationX", addX, subX);
-        PropertyValuesHolder subHolder = PropertyValuesHolder.ofFloat("translationX", subX - subLeft, addX - subLeft);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(mFlAdd, addHolder);
-        ObjectAnimator animator1 = ObjectAnimator.ofPropertyValuesHolder(mIvAdd, rotateHolder, addHolder);
-        ObjectAnimator animator2 = ObjectAnimator.ofPropertyValuesHolder(mIvSub, rotateHolder, subHolder);
-        mAnimatorSet = new AnimatorSet();
-        mAnimatorSet.setDuration(300);
-        mAnimatorSet.addListener(new AnimatorListenerAdapter() {
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                mAnimating = true;
+        if(!anim){
+            if(mode == TURN_LEFT_MODE){
+                mFlAdd.setTranslationX(0);
+                mIvAdd.setRotation(0);
+                mIvAdd.setTranslationX(0);
+                mIvSub.setRotation(0);
+                mIvSub.setTranslationX(0);
+            }else if (mode == TURN_RIGHT_MODE) {
+                mFlAdd.setTranslationX(SystemUtil.dp2px(50));
+                mTvNum.setVisibility(VISIBLE);
+                mIvAdd.setRotation(360.0f);
+                mIvAdd.setTranslationX(SystemUtil.dp2px(50));
+                mIvSub.setRotation(360.0f);
+                mIvSub.setTranslationX(-SystemUtil.dp2px(50));
             }
+        }else{
+            PropertyValuesHolder rotateHolder = PropertyValuesHolder.ofFloat("rotation", 0.0f, 360.0f);
+            PropertyValuesHolder addHolder = PropertyValuesHolder.ofFloat("translationX", addX, subX);
+            PropertyValuesHolder subHolder = PropertyValuesHolder.ofFloat("translationX", subX - subLeft, addX - subLeft);
+            ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(mFlAdd, addHolder);
+            ObjectAnimator animator1 = ObjectAnimator.ofPropertyValuesHolder(mIvAdd, rotateHolder, addHolder);
+            ObjectAnimator animator2 = ObjectAnimator.ofPropertyValuesHolder(mIvSub, rotateHolder, subHolder);
+            mAnimatorSet = new AnimatorSet();
+            mAnimatorSet.setDuration(300);
+            mAnimatorSet.addListener(new AnimatorListenerAdapter() {
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                mAnimating = false;
-               if(mode == TURN_RIGHT_MODE){
-                   mTvNum.setVisibility(VISIBLE);
-               }
-            }
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                    mAnimating = true;
+                }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                super.onAnimationCancel(animation);
-                mAnimating = false;
-            }
-        });
-        mAnimatorSet.playTogether(animator, animator1, animator2);
-        mAnimatorSet.start();
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    mAnimating = false;
+                    if (mode == TURN_RIGHT_MODE) {
+                        mTvNum.setVisibility(VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    super.onAnimationCancel(animation);
+                    mAnimating = false;
+                }
+            });
+            mAnimatorSet.playTogether(animator, animator1, animator2);
+            mAnimatorSet.start();
+        }
+
     }
 
-    public void stopAnimation(){
-        if(mAnimatorSet!=null){
+    public void stopAnimation() {
+        if (mAnimatorSet != null) {
             mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
             mAnimatorSet = null;
         }
+    }
+
+    public interface Callback {
+        void onAdd(int num);
+        void onRemove(int num);
     }
 
 }

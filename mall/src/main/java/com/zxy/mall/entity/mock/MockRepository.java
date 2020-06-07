@@ -11,6 +11,7 @@ import com.zxy.mall.entity.FoodEntity;
 import com.zxy.mall.entity.GoodsEntity;
 import com.zxy.mall.entity.RatingEntity;
 import com.zxy.mall.entity.SellerEntity;
+import com.zxy.mall.utils.ShoppingCartManager;
 import com.zxy.utility.AssetsUtil;
 
 import java.util.ArrayList;
@@ -36,7 +37,20 @@ public class MockRepository {
     }
 
     public static List<GoodsEntity> getGoodList(){
-        return sMockEntity.getGoods();
+        List<GoodsEntity> list = sMockEntity.getGoods();
+        for(GoodsEntity entity:list){
+            if(entity!=null&&entity.getFoods()!=null){
+                for(FoodEntity foodEntity:entity.getFoods()){
+                    if(foodEntity!=null){
+                        ShoppingCartManager.GoodsBean bean= ShoppingCartManager.getInstance().findGoods(foodEntity.getId());
+                        if(bean!=null){
+                            foodEntity.setShoppingCartCount(bean.getCount());
+                        }
+                    }
+                }
+            }
+        }
+        return list;
     }
 
     public static List<RatingEntity> getRatingList(){

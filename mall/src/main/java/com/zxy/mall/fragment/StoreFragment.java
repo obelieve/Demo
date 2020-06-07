@@ -13,9 +13,12 @@ import com.zxy.frame.base.BaseActivity;
 import com.zxy.frame.base.BaseFragment;
 import com.zxy.mall.R;
 import com.zxy.mall.entity.SellerEntity;
+import com.zxy.mall.utils.ShoppingCartManager;
 import com.zxy.mall.view.ShoppingCartView;
 import com.zxy.mall.view.header.StoreHeaderView;
 import com.zxy.mall.viewmodel.StoreViewModel;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -31,7 +34,7 @@ public class StoreFragment extends BaseFragment {
     ShoppingCartView mViewShoppingCart;
 
     String[] mTitleArr=new String[]{"商品","评价","商家"};
-
+    ShoppingCartListener mShoppingCartListener;
     @Override
     public int layoutId() {
         return R.layout.fragment_store;
@@ -39,6 +42,8 @@ public class StoreFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        mShoppingCartListener = new ShoppingCartListener();
+        ShoppingCartManager.getInstance().addListener(mShoppingCartListener);
         mTlTab.setupWithViewPager(mVpContent);
         mVpContent.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
@@ -96,5 +101,29 @@ public class StoreFragment extends BaseFragment {
             }
         });
         viewModel.storeInfo();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ShoppingCartManager.getInstance().removeListener(mShoppingCartListener);
+    }
+
+
+    public class ShoppingCartListener implements ShoppingCartManager.Listener{
+
+        @Override
+        public void onGoodsNotifyChanged(String id, String name, float price, int count,int maxCount) {
+            if(mViewShoppingCart!=null){
+                mViewShoppingCart.setCountAndPrice(ShoppingCartManager.getInstance().getCount(),ShoppingCartManager.getInstance().getSumPrice());
+            }
+        }
+
+        @Override
+        public void onClearAll(List<String> list) {
+            if(mViewShoppingCart!=null){
+                mViewShoppingCart.setCountAndPrice(ShoppingCartManager.getInstance().getCount(),ShoppingCartManager.getInstance().getSumPrice());
+            }
+        }
     }
 }

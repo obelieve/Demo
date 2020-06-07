@@ -5,11 +5,12 @@ import java.util.List;
 
 public class FoodEntity implements LeftRightRecyclerView.IRightData {
 
+    private String id;
     private boolean top;
     private int goods_type;
     private String goods_type_name;
     private String name;
-    private int price;
+    private float price;
     private String oldPrice;
     private String description;
     private int sellCount;
@@ -19,6 +20,33 @@ public class FoodEntity implements LeftRightRecyclerView.IRightData {
     private String icon;
     private String image;
 
+    //shoppingCart
+    private int shoppingCartCount;
+    private int maxShoppingCartCount = 10;
+
+    public int getShoppingCartCount() {
+        return shoppingCartCount;
+    }
+
+    public void setShoppingCartCount(int shoppingCartCount) {
+        this.shoppingCartCount = shoppingCartCount;
+    }
+
+    public int getMaxShoppingCartCount() {
+        return maxShoppingCartCount;
+    }
+
+    public void setMaxShoppingCartCount(int maxShoppingCartCount) {
+        this.maxShoppingCartCount = maxShoppingCartCount;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @Override
     public boolean isTop() {
@@ -57,10 +85,10 @@ public class FoodEntity implements LeftRightRecyclerView.IRightData {
          return name;
      }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
          this.price = price;
      }
-     public int getPrice() {
+     public float getPrice() {
          return price;
      }
 

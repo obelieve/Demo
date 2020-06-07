@@ -30,6 +30,7 @@ import com.zxy.mall.R;
 import com.zxy.mall.entity.FoodEntity;
 import com.zxy.mall.entity.RatingEntity;
 import com.zxy.mall.entity.mock.MockRepository;
+import com.zxy.mall.utils.ShoppingCartManager;
 import com.zxy.mall.view.header.GoodsDetailHeaderView;
 import com.zxy.utility.SystemUtil;
 
@@ -75,7 +76,7 @@ public class GoodsDetailActivity extends BaseActivity {
     RatingCategoryAdapter mRatingCategoryAdapter;
     GoodsDetailAdapter mGoodsDetailAdapter;
 
-
+    ShoppingCartListener mShoppingCartListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +100,8 @@ public class GoodsDetailActivity extends BaseActivity {
 
     @Override
     protected void initCreateAfterView(Bundle savedInstanceState) {
+        mShoppingCartListener = new ShoppingCartListener();
+        ShoppingCartManager.getInstance().addListener(mShoppingCartListener);
         String name = getIntent().getStringExtra(EXTRA_NAME);
         String foodName = getIntent().getStringExtra(EXTRA_FOOD_NAME);
         FoodEntity foodEntity = MockRepository.getFoodEntity(name, foodName);
@@ -195,6 +198,25 @@ public class GoodsDetailActivity extends BaseActivity {
     @OnClick(R.id.rl_left)
     public void onViewClicked() {
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ShoppingCartManager.getInstance().addListener(mShoppingCartListener);
+    }
+
+    public class ShoppingCartListener implements ShoppingCartManager.Listener{
+
+        @Override
+        public void onGoodsNotifyChanged(String id, String name, float price, int count,int maxCount) {
+            mViewGoodsDetailHeader.setBuyNum(id,count,maxCount);
+        }
+
+        @Override
+        public void onClearAll(List<String> list) {
+            mViewGoodsDetailHeader.setBuyEmpty();
+        }
     }
 
     public static class RatingCategoryEntity {
