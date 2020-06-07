@@ -29,7 +29,7 @@
 
             <RatingBar
                 android:id="@+id/rb_score"
-                style="@style/RatingStyle"
+                style="@style/RatingStyle_15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

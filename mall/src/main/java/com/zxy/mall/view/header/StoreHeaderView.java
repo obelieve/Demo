@@ -1,5 +1,6 @@
 package com.zxy.mall.view.header;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
@@ -17,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.zxy.frame.utils.ViewUtil;
 import com.zxy.frame.utils.image.GlideApp;
 import com.zxy.mall.R;
+import com.zxy.mall.activity.BulletinActivity;
 import com.zxy.mall.entity.SellerEntity;
 import com.zxy.mall.entity.SupportEntity;
 import com.zxy.mall.utils.MallUtil;
@@ -73,7 +75,7 @@ public class StoreHeaderView extends FrameLayout {
 
     @OnClick(R.id.tv_num)
     public void onViewClicked() {
-
+        BulletinActivity.start((Activity) getContext());
     }
 
     public void loadData(SellerEntity entity) {
