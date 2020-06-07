@@ -110,6 +110,14 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
         mRightAdapter.getDataHolder().setList(rightData);
     }
 
+    public void leftNotifyItemChanged(int position){
+        mRightAdapter.notifyItemChanged(position);
+    }
+
+    public void rightNotifyItemChanged(int position){
+        mRightAdapter.notifyItemChanged(position);
+    }
+
     public static class LeftAdapter<LData extends ILeftData> extends BaseRecyclerViewAdapter<LData> {
 
         private int mCurPosition = 0;
