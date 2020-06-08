@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +57,8 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
         mRightViewHolderFactory = rightViewHolderFactory;
         mRvLeft.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvRight.setLayoutManager(new LinearLayoutManager(getContext()));
+        ((DefaultItemAnimator) mRvLeft.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((DefaultItemAnimator) mRvRight.getItemAnimator()).setSupportsChangeAnimations(false);
         mLeftAdapter = new LeftAdapter(getContext(), mLeftViewHolderFactory);
         mRightAdapter = new RightAdapter(getContext(), mRightViewHolderFactory);
         mRvLeft.setAdapter(mLeftAdapter);
