@@ -2,6 +2,7 @@ package com.zxy.demo;
 
 import com.zxy.demo.fragment.CustomTabFragment;
 import com.zxy.demo.fragment.FilterListFragment;
+import com.zxy.demo.fragment.FontFragment;
 import com.zxy.demo.fragment.ForTAFragment;
 import com.zxy.demo.fragment.LoginFragment;
 import com.zxy.demo.fragment.LottieAnimationFragment;
@@ -26,7 +27,8 @@ public enum MainEnum {
     M9("加载WebView", ZWebViewFragment.class),
     M10("列表筛选", FilterListFragment.class),
     M11("自定义Tab", CustomTabFragment.class),
-    M12("控件效果", ViewRenderFragment.class,true);
+    M12("控件效果", ViewRenderFragment.class),
+    M13("字体显示", FontFragment.class,true);
     private String mName;
     private Class mClazz;
     private boolean mCurrent;
