@@ -1,128 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="58dp">
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:orientation="vertical">
 
-    <View
-        android:id="@+id/view_bg"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:background="#07111b"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civ_circle_bg"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="18dp"
-        android:layout_marginBottom="8dp"
-        android:src="@color/color_07111b"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civ_shopping_cart"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:background="@drawable/sel_circle_33ffffff_00a0dc_22dp"
-        app:layout_constraintBottom_toBottomOf="@id/civ_circle_bg"
-        app:layout_constraintLeft_toLeftOf="@id/civ_circle_bg"
-        app:layout_constraintRight_toRightOf="@id/civ_circle_bg" />
-    <ImageView
-        android:id="@+id/iv_shopping_cart_icon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/sel_shopping_cart"
-        app:layout_constraintTop_toTopOf="@id/civ_shopping_cart"
-        app:layout_constraintBottom_toBottomOf="@id/civ_shopping_cart"
-        app:layout_constraintLeft_toLeftOf="@id/civ_shopping_cart"
-        app:layout_constraintRight_toRightOf="@id/civ_shopping_cart" />
-
-    <TextView
-        android:id="@+id/tv_num_dot"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:background="@drawable/bg_circle_f01414_8dp"
-        android:gravity="center"
-        android:minWidth="16dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:textColor="@color/colorWhite"
-        android:textSize="9sp"
-        app:layout_constraintCircle="@id/civ_shopping_cart"
-        app:layout_constraintCircleAngle="45"
-        app:layout_constraintCircleRadius="25dp"
-        app:layout_constraintLeft_toLeftOf="@id/civ_shopping_cart"
-        app:layout_constraintTop_toTopOf="@id/civ_shopping_cart"
-        tools:text="1" />
-
-    <TextView
-        android:id="@+id/tv_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:maxWidth="150dp"
-        android:maxLength="10"
-        android:singleLine="true"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:text="￥0"
-        app:layout_constraintBottom_toBottomOf="@id/view_bg"
-        app:layout_constraintLeft_toRightOf="@id/civ_shopping_cart"
-        app:layout_constraintTop_toTopOf="@id/view_bg"
-        tools:text="￥0" />
-
-    <View
-        android:layout_width="1dp"
-        android:layout_height="24dp"
-        android:layout_marginLeft="12dp"
-        android:background="#2b333b"
-        app:layout_constraintBottom_toBottomOf="@id/view_bg"
-        app:layout_constraintLeft_toRightOf="@id/tv_price"
-        app:layout_constraintTop_toTopOf="@id/view_bg" />
-
-    <TextView
-        android:id="@+id/tv_append_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:maxWidth="150dp"
-        android:singleLine="true"
-        android:textColor="#66ffffff"
-        android:textSize="10sp"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="@id/view_bg"
-        app:layout_constraintLeft_toRightOf="@id/tv_price"
-        app:layout_constraintTop_toTopOf="@id/view_bg"
-        tools:text="另需配送费￥4元 " />
-
-    <TextView
-        android:id="@+id/tv_confirm"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/fl_empty"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="15dp"
-        android:background="@drawable/sel_2b333b_00a0dc"
-        android:enabled="false"
-        android:gravity="center"
-        android:minWidth="120dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:singleLine="true"
-        android:textColor="@color/sel_66ffffff_ffffff"
-        android:textStyle="bold"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="@id/view_bg"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintLeft_toRightOf="@id/tv_append_price"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/view_bg"
-        tools:text="还差￥10起送" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_weight="1"
+        android:background="#B2000000"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/ll_shopping_cart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#f3f5f7"
+            android:orientation="horizontal"
+            android:paddingLeft="18dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="购物车"
+                android:textColor="#07111b"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:gravity="center_vertical"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:text="清空"
+                android:textColor="#00a0dc"
+                android:textSize="14sp" />
+        </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_content"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:minHeight="100dp" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_shopping_cart_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@color/transparent">
+
+        <View
+            android:id="@+id/view_bg"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:background="#07111b"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_circle_bg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginBottom="8dp"
+            android:src="@color/color_07111b"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_shopping_cart"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/sel_circle_33ffffff_00a0dc_22dp"
+            app:layout_constraintBottom_toBottomOf="@id/civ_circle_bg"
+            app:layout_constraintLeft_toLeftOf="@id/civ_circle_bg"
+            app:layout_constraintRight_toRightOf="@id/civ_circle_bg" />
+
+        <ImageView
+            android:id="@+id/iv_shopping_cart_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/sel_shopping_cart"
+            app:layout_constraintBottom_toBottomOf="@id/civ_shopping_cart"
+            app:layout_constraintLeft_toLeftOf="@id/civ_shopping_cart"
+            app:layout_constraintRight_toRightOf="@id/civ_shopping_cart"
+            app:layout_constraintTop_toTopOf="@id/civ_shopping_cart" />
+
+        <TextView
+            android:id="@+id/tv_num_dot"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:background="@drawable/bg_circle_f01414_8dp"
+            android:gravity="center"
+            android:minWidth="16dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="9sp"
+            android:visibility="gone"
+            app:layout_constraintCircle="@id/civ_shopping_cart"
+            app:layout_constraintCircleAngle="45"
+            app:layout_constraintCircleRadius="25dp"
+            app:layout_constraintLeft_toLeftOf="@id/civ_shopping_cart"
+            app:layout_constraintTop_toTopOf="@id/civ_shopping_cart"
+            tools:text="1"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:maxWidth="150dp"
+            android:maxLength="10"
+            android:singleLine="true"
+            android:text="￥0"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/view_bg"
+            app:layout_constraintLeft_toRightOf="@id/civ_shopping_cart"
+            app:layout_constraintTop_toTopOf="@id/view_bg"
+            tools:text="￥0" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="12dp"
+            android:background="#2b333b"
+            app:layout_constraintBottom_toBottomOf="@id/view_bg"
+            app:layout_constraintLeft_toRightOf="@id/tv_price"
+            app:layout_constraintTop_toTopOf="@id/view_bg" />
+
+        <TextView
+            android:id="@+id/tv_append_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:maxWidth="150dp"
+            android:singleLine="true"
+            android:textColor="#66ffffff"
+            android:textSize="10sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@id/view_bg"
+            app:layout_constraintLeft_toRightOf="@id/tv_price"
+            app:layout_constraintTop_toTopOf="@id/view_bg"
+            tools:text="另需配送费￥4元 " />
+
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/sel_2b333b_00a0dc"
+            android:enabled="false"
+            android:gravity="center"
+            android:minWidth="120dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"
+            android:textColor="@color/sel_66ffffff_ffffff"
+            android:textStyle="bold"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@id/view_bg"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintLeft_toRightOf="@id/tv_append_price"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_bg"
+            tools:text="还差￥10起送" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
+

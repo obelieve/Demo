@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <com.zxy.mall.view.header.StoreHeaderView
-        android:id="@+id/view_store_header"
+    android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tl_tab"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        app:tabIndicatorHeight="0dp"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/red"
-        app:tabTextAppearance="@style/TabLayoutTextStyle"
-        app:tabRippleColor="@color/transparent"
-        app:tabTextColor="@color/color_4d555d" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#20000000"/>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vp_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.zxy.mall.view.header.StoreHeaderView
+            android:id="@+id/view_store_header"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="48dp" />
+            android:layout_height="wrap_content" />
 
-        <com.zxy.mall.view.ShoppingCartView
-            android:id="@+id/view_shopping_cart"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_tab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"/>
-    </FrameLayout>
-</LinearLayout>
+            android:layout_height="42dp"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/red"
+            app:tabTextAppearance="@style/TabLayoutTextStyle"
+            app:tabRippleColor="@color/transparent"
+            app:tabTextColor="@color/color_4d555d" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#20000000"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vp_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="48dp" />
+        </FrameLayout>
+    </LinearLayout>
+    <com.zxy.mall.view.ShoppingCartView
+        android:id="@+id/view_shopping_cart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"/>
+</FrameLayout>
