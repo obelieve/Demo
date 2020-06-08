@@ -63,10 +63,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void setScreenOrientation() {
         if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制竖屏
+        } else {
             try {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制竖屏
             } catch (Exception e) {
-                e.printStackTrace();
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_BEHIND);
             }
         }
     }
