@@ -15,18 +15,18 @@ import com.zxy.demo.fragment.ZWebViewFragment;
 
 public enum MainEnum {
 
-    M1("置顶&&加载刷新", StickyCoordinatorFragment.class),
-    M2("Dialog", ZDialogFragment.class),
-    M3("@其他人", ForTAFragment.class),
-    M4("引导页", SplashFragment.class),
-    M5("登录", LoginFragment.class),
-    M6("版本升级", VersionUpdateEntranceFragment.class),
-    M7("支付页面", PayFragment.class),
-    M8("Lottie动画", LottieAnimationFragment.class),
-    M9("加载WebView", ZWebViewFragment.class),
-    M10("列表筛选", FilterListFragment.class),
+    M12("控件效果", ViewRenderFragment.class,true),
     M11("自定义Tab", CustomTabFragment.class),
-    M12("控件效果", ViewRenderFragment.class,true);
+    M10("列表筛选", FilterListFragment.class),
+    M9("加载WebView", ZWebViewFragment.class),
+    M8("Lottie动画", LottieAnimationFragment.class),
+    M7("支付页面", PayFragment.class),
+    M6("版本升级", VersionUpdateEntranceFragment.class),
+    M5("登录", LoginFragment.class),
+    M4("引导页", SplashFragment.class),
+    M3("@其他人", ForTAFragment.class),
+    M2("Dialog", ZDialogFragment.class),
+    M1("置顶&&加载刷新", StickyCoordinatorFragment.class);
     private String mName;
     private Class mClazz;
     private boolean mCurrent;
