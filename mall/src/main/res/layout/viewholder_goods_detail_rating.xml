@@ -1,89 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cl_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp">
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civ_head"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_error" />
-
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
+    android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="1dp"
-        android:singleLine="true"
-        android:textColor="#07111b"
-        android:textSize="10sp"
-        app:layout_constraintLeft_toRightOf="@id/civ_head"
-        app:layout_constraintTop_toTopOf="@id/civ_head"
-        tools:text="聚***家" />
+        android:padding="20dp">
+        <TextView
+            android:id="@+id/tv_rate_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#93999f"
+            android:textSize="10sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2016-07-13 20:33" />
 
-    <RatingBar
-        android:id="@+id/rb_score"
-        style="@style/RatingStyle_10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginBottom="2dp"
-        android:isIndicator="true"
-        android:numStars="5"
-        android:rating="0"
-        android:stepSize="0.5"
-        app:layout_constraintBottom_toBottomOf="@id/civ_head"
-        app:layout_constraintLeft_toRightOf="@id/civ_head"
-        app:layout_constraintTop_toBottomOf="@id/tv_name" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_head"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_error" />
 
-    <TextView
-        android:id="@+id/tv_delivery_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:singleLine="true"
-        android:textColor="#93999f"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@id/rb_score"
-        app:layout_constraintLeft_toRightOf="@id/rb_score"
-        app:layout_constraintTop_toTopOf="@id/rb_score"
-        tools:text="10分钟送达" />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:singleLine="true"
+            android:textColor="#93999f"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@id/civ_head"
+            app:layout_constraintRight_toLeftOf="@id/civ_head"
+            app:layout_constraintTop_toTopOf="@id/civ_head"
+            tools:text="聚***家" />
 
-    <TextView
-        android:id="@+id/tv_rate_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="2016-07-13 20:33" />
 
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:textColor="#07111b"
-        android:textSize="12sp"
-        app:layout_constraintLeft_toLeftOf="@id/rb_score"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rb_score"
-        tools:text="油条凉了，而且没有酱。75分钟才到。很慢。送餐员态度不错，但毕竟好晚了啊。" />
+        <ImageView
+            android:id="@+id/iv_like"
+            android:layout_width="12dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/sel_like_unlike"
+            app:layout_constraintLeft_toLeftOf="@id/tv_rate_time"
+            app:layout_constraintTop_toBottomOf="@id/tv_rate_time" />
 
-    <ImageView
-        android:id="@+id/iv_like"
-        android:layout_width="12dp"
-        android:layout_height="10dp"
-        android:src="@drawable/sel_like_unlike"
-        android:layout_marginTop="14dp"
-        app:layout_constraintLeft_toLeftOf="@id/tv_name"
-        app:layout_constraintTop_toBottomOf="@id/tv_content" />
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#07111b"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@id/iv_like"
+            app:layout_constraintRight_toLeftOf="@id/civ_head"
+            app:layout_constraintTop_toBottomOf="@id/tv_rate_time"
+            tools:text="油条凉了，而且没有酱。75分钟才到。很慢。送餐员态度不错，但毕竟好晚了啊。" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <RatingBar
+            android:id="@+id/rb_score"
+            style="@style/RatingStyle_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="0"
+            android:stepSize="0.5"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_delivery_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:singleLine="true"
+            android:textColor="#93999f"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/rb_score"
+            app:layout_constraintLeft_toRightOf="@id/rb_score"
+            app:layout_constraintTop_toTopOf="@id/rb_score"
+            tools:text="10分钟送达" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#2007111b"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+</LinearLayout>
