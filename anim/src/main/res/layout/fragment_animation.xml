@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            style="@style/TvTitleStyle"
+            android:text="帧动画（Frame Animation）"/>
+        <ImageView
+            android:id="@+id/iv_frame"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:oneshot="true"
+            android:background="@drawable/frame_anim" />
+        <TextView
+            style="@style/TvTitleStyle"
+            android:text="补间动画（Tweened Animation）"/>
+        <Button
+            android:id="@+id/btn_alpha"
+            style="@style/BtnTitleStyle"
+            android:text=" alpha（淡入淡出）"/>
+        <Button
+            android:id="@+id/btn_translate"
+            style="@style/BtnTitleStyle"
+            android:text="translate（位移）"/>
+        <Button
+            android:id="@+id/btn_scale"
+            style="@style/BtnTitleStyle"
+            android:text="scale（缩放大小）"/>
+        <Button
+            android:id="@+id/btn_rotate"
+            style="@style/BtnTitleStyle"
+            android:text="rotate（旋转）"/>
+        <Button
+            android:id="@+id/btn_set"
+            style="@style/BtnTitleStyle"
+            android:text="set(补间组合)"/>
+        <ImageView
+            android:id="@+id/iv_tweened"
+            android:layout_gravity="center"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_gif"/>
+        <TextView
+            android:id="@+id/btn_object_animator"
+            style="@style/TvTitleStyle"
+            android:text="属性动画 ObjectAnimator "/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

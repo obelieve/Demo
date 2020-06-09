@@ -1,6 +1,6 @@
 package com.zxy.demo;
 
-import com.zxy.demo.fragment.AnimationFragment;
+import com.news.anim.AnimationFragment;
 import com.zxy.demo.fragment.CustomTabFragment;
 import com.zxy.demo.fragment.FilterListFragment;
 import com.zxy.demo.fragment.ForTAFragment;
