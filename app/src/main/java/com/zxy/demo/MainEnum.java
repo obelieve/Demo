@@ -1,5 +1,6 @@
 package com.zxy.demo;
 
+import com.zxy.demo.fragment.AnimationFragment;
 import com.zxy.demo.fragment.CustomTabFragment;
 import com.zxy.demo.fragment.FilterListFragment;
 import com.zxy.demo.fragment.ForTAFragment;
@@ -16,7 +17,8 @@ import com.zxy.demo.fragment.ZWebViewFragment;
 
 public enum MainEnum {
 
-    M13("控件效果", ViewRenderFragment.class,true),
+    M14("动画", AnimationFragment.class,true),
+    M13("控件效果", ViewRenderFragment.class),
     M12("自定义Tab", CustomTabFragment.class),
     M11("列表显示", ListContainerFragment.class),
     M10("列表筛选", FilterListFragment.class),
