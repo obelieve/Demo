@@ -8,6 +8,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.dynamicanimation.animation.SpringAnimation;
+import androidx.dynamicanimation.animation.SpringForce;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
@@ -19,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by Admin
@@ -29,8 +32,11 @@ public class RvAnimationFragment extends BaseFragment {
 
     @BindView(R.id.rv_content)
     RecyclerView rvContent;
+    @BindView(R.id.view_bottom)
+    View viewBottom;
 
     RvAdapter mRvAdapter;
+    SpringAnimation mSpringAnimation;
 
     @Override
     public int layoutId() {
@@ -54,12 +60,22 @@ public class RvAnimationFragment extends BaseFragment {
                 "ffffffffffffffffffffffff", "gggggggggggggggggggggggg", "hhhhhhhhhhhhhhhhhhhhhhhh", "iiiiiiiiiiiiiiiiiiiiiiii",
                 "jjjjjjjjjjjjjjjjjjjjjjjj", "kkkkkkkkkkkkkkkkkkkkkkkk", "llllllllllllllllllllllll", "mmmmmmmmmmmmmmmmmmmmmmmm", "nnnnnnnnnnnnnnnnnnnnnnnn",
                 "oooooooooooooooooooooooooooooo", "pppppppppppppppppppppppp", "qqqqqqqqqqqqqqqqqqqqqqqq", "rrrrrrrrrrrrrrrrrrrrrrrr"));
+        mSpringAnimation = new SpringAnimation(viewBottom, SpringAnimation.TRANSLATION_Y, 0);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mRvAdapter.release();
+    }
+
+    @OnClick(R.id.view_bottom)
+    public void onViewClicked() {
+        mSpringAnimation.cancel();
+        mSpringAnimation.getSpring().setStiffness(SpringForce.STIFFNESS_MEDIUM);
+        mSpringAnimation.getSpring().setDampingRatio(SpringForce.DAMPING_RATIO_LOW_BOUNCY);
+        mSpringAnimation.setStartVelocity(10000);
+        mSpringAnimation.start();
     }
 
     public static class RvAdapter extends BaseRecyclerViewAdapter<String> {
@@ -98,27 +114,28 @@ public class RvAnimationFragment extends BaseFragment {
 
         boolean isOnlyFirst = false;
         private int lastPosition = -1;
-        private Map<Object,ObjectAnimator> mObjectAnimatorMap = new HashMap<>();
-        private Map<Object,ObjectAnimator> mObjectAnimator2Map = new HashMap<>();
+        private Map<Object, ObjectAnimator> mObjectAnimatorMap = new HashMap<>();
+        private Map<Object, ObjectAnimator> mObjectAnimator2Map = new HashMap<>();
+
         protected void setAnimation(View viewToAnimate, int position) {
-            if ((!isOnlyFirst||position > lastPosition)) {
+            if ((!isOnlyFirst || position > lastPosition)) {
                 ObjectAnimator animator;
                 ObjectAnimator animator2;
-                if(mObjectAnimatorMap.get(viewToAnimate)==null){
-                    animator = ObjectAnimator.ofFloat(viewToAnimate,"scaleX",0.90f,1);
+                if (mObjectAnimatorMap.get(viewToAnimate) == null) {
+                    animator = ObjectAnimator.ofFloat(viewToAnimate, "scaleX", 0.90f, 1);
                     animator.setDuration(300);
                     animator.setInterpolator(new DecelerateInterpolator());
-                    mObjectAnimatorMap.put(viewToAnimate,animator);
-                }else{
+                    mObjectAnimatorMap.put(viewToAnimate, animator);
+                } else {
                     animator = mObjectAnimatorMap.get(viewToAnimate);
                 }
                 animator.start();
-                if(mObjectAnimator2Map.get(viewToAnimate)==null){
-                    animator2 = ObjectAnimator.ofFloat(viewToAnimate,"scaleY",0.90f,1);
+                if (mObjectAnimator2Map.get(viewToAnimate) == null) {
+                    animator2 = ObjectAnimator.ofFloat(viewToAnimate, "scaleY", 0.90f, 1);
                     animator2.setDuration(300);
                     animator2.setInterpolator(new DecelerateInterpolator());
-                    mObjectAnimator2Map.put(viewToAnimate,animator2);
-                }else{
+                    mObjectAnimator2Map.put(viewToAnimate, animator2);
+                } else {
                     animator2 = mObjectAnimator2Map.get(viewToAnimate);
                 }
                 animator2.start();
@@ -127,16 +144,16 @@ public class RvAnimationFragment extends BaseFragment {
         }
 
 
-        public void release(){
-            for(Map.Entry<Object,ObjectAnimator> map :mObjectAnimatorMap.entrySet()){
+        public void release() {
+            for (Map.Entry<Object, ObjectAnimator> map : mObjectAnimatorMap.entrySet()) {
                 ObjectAnimator animator = map.getValue();
-                if(animator!=null){
+                if (animator != null) {
                     animator.cancel();
                 }
             }
-            for(Map.Entry<Object,ObjectAnimator> map :mObjectAnimator2Map.entrySet()){
+            for (Map.Entry<Object, ObjectAnimator> map : mObjectAnimator2Map.entrySet()) {
                 ObjectAnimator animator = map.getValue();
-                if(animator!=null){
+                if (animator != null) {
                     animator.cancel();
                 }
             }
