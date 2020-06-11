@@ -16,6 +16,7 @@
         app:tabMode="scrollable"
         app:tabPaddingEnd="15dp"
         app:tabPaddingStart="15dp"
+        app:tabTextAppearance="@style/TabTitleStyle"
         app:tabTextColor="@color/cardview_dark_background" />
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp_content"

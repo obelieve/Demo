@@ -128,8 +128,8 @@ public class RvAnimationFragment extends BaseFragment {
                     mObjectAnimatorMap.put(viewToAnimate, animator);
                 } else {
                     animator = mObjectAnimatorMap.get(viewToAnimate);
+                    animator.start();
                 }
-                animator.start();
                 if (mObjectAnimator2Map.get(viewToAnimate) == null) {
                     animator2 = ObjectAnimator.ofFloat(viewToAnimate, "scaleY", 0.90f, 1);
                     animator2.setDuration(300);
@@ -137,8 +137,8 @@ public class RvAnimationFragment extends BaseFragment {
                     mObjectAnimator2Map.put(viewToAnimate, animator2);
                 } else {
                     animator2 = mObjectAnimator2Map.get(viewToAnimate);
+                    animator2.start();
                 }
-                animator2.start();
                 lastPosition = position;
             }
         }
