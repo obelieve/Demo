@@ -90,6 +90,10 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         notifyItemChanged(getItemCount() - 1);
     }
 
+    public void onSetListAfter(){
+
+    }
+
     public void setEmptyView(View emptyView) {
         mEmptyView = emptyView;
     }
@@ -296,9 +300,9 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     public static class BaseDataHolder<DATA> {
 
         private List<DATA> mList = new ArrayList<>();
-        private RecyclerView.Adapter mAdapter;
+        private BaseRecyclerViewAdapter<DATA> mAdapter;
 
-        public BaseDataHolder(RecyclerView.Adapter adapter) {
+        public BaseDataHolder(BaseRecyclerViewAdapter adapter) {
             mAdapter = adapter;
         }
 
@@ -311,6 +315,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                 list = new ArrayList<>();
             }
             mList = list;
+            mAdapter.onSetListAfter();
             notifyDataSetChanged();
         }
 

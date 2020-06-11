@@ -18,9 +18,9 @@ import butterknife.OnClick;
  */
 public class AnimationFragment extends BaseFragment {
 
-    @BindView(R2.id.iv_frame)
+    @BindView(R.id.iv_frame)
     ImageView ivFrame;
-    @BindView(R2.id.iv_tweened)
+    @BindView(R.id.iv_tweened)
     ImageView ivTweened;
 
     boolean mStartFrameAnim = true;
@@ -35,7 +35,7 @@ public class AnimationFragment extends BaseFragment {
     protected void initView() {
     }
 
-    @OnClick(R2.id.iv_frame)
+    @OnClick(R.id.iv_frame)
     public void onViewClicked() {
         final AnimationDrawable animationDrawable = (AnimationDrawable) ivFrame.getBackground();
         animationDrawable.setOneShot(false);//执行一次 或 循环
@@ -49,7 +49,7 @@ public class AnimationFragment extends BaseFragment {
     }
 
 
-    @OnClick({R2.id.btn_alpha, R2.id.btn_translate, R2.id.btn_scale, R2.id.btn_rotate, R2.id.btn_set})
+    @OnClick({R.id.btn_alpha, R.id.btn_translate, R.id.btn_scale, R.id.btn_rotate, R.id.btn_set})
     public void onViewClicked(View view) {
         int anim = R.anim.rotate ;
         int id = view.getId();
