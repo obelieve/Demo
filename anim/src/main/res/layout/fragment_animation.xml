@@ -45,8 +45,34 @@
             android:layout_height="100dp"
             android:src="@drawable/ic_gif"/>
         <TextView
-            android:id="@+id/btn_object_animator"
+            android:id="@+id/tv_object_animator"
             style="@style/TvTitleStyle"
             android:text="属性动画 ObjectAnimator "/>
+        <Button
+            android:id="@+id/btn_object_alpha"
+            style="@style/BtnTitleStyle"
+            android:text=" alpha（淡入淡出）"/>
+        <Button
+            android:id="@+id/btn_object_translate"
+            style="@style/BtnTitleStyle"
+            android:text="translate（位移）"/>
+        <Button
+            android:id="@+id/btn_object_scale"
+            style="@style/BtnTitleStyle"
+            android:text="scale（缩放大小）"/>
+        <Button
+            android:id="@+id/btn_object_rotate"
+            style="@style/BtnTitleStyle"
+            android:text="rotate（旋转）"/>
+        <Button
+            android:id="@+id/btn_object_set"
+            style="@style/BtnTitleStyle"
+            android:text="set(补间组合)"/>
+        <ImageView
+            android:id="@+id/iv_object"
+            android:layout_gravity="center"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_gif"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
