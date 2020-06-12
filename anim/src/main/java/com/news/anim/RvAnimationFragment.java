@@ -69,12 +69,14 @@ public class RvAnimationFragment extends BaseFragment {
         mRvAdapter.release();
     }
 
+    int mClickNum = 5;
     @OnClick(R.id.view_bottom)
     public void onViewClicked() {
         mSpringAnimation.cancel();
         mSpringAnimation.getSpring().setStiffness(SpringForce.STIFFNESS_MEDIUM);
         mSpringAnimation.getSpring().setDampingRatio(SpringForce.DAMPING_RATIO_LOW_BOUNCY);
-        mSpringAnimation.setStartVelocity(10000);
+        mClickNum++;
+        mSpringAnimation.setStartVelocity(1 << mClickNum);
         mSpringAnimation.start();
     }
 
