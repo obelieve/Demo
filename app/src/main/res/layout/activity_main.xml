@@ -12,8 +12,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"/>
-    <SurfaceView
-        android:id="@+id/sv_content"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="300dp">
+        <SurfaceView
+            android:id="@+id/sv_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <com.zxy.demo.CustomMediaControllerView
+            android:id="@+id/view_custom_media_controller"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
 </LinearLayout>

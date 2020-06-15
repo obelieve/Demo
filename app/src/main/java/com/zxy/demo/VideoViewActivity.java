@@ -43,7 +43,7 @@ public class VideoViewActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        vvContent.setMediaController(new MediaController(this));
+        vvContent.setMediaController(new MediaController(this));//内部通过View#post({hide()}) 隐藏进度条
         vvContent.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
