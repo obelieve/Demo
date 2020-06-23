@@ -5,9 +5,11 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -154,11 +157,21 @@ public class CustomMediaControllerView extends FrameLayout {
     }
 
     public void setVideoCoverImage(String path) {
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        mmr.setDataSource(path);
-        Bitmap bitmap = mmr.getFrameAtTime();
-        ivBg.setImageBitmap(bitmap);
-        mmr.release();
+        if (TextUtils.isEmpty(path))
+            return;
+        try{
+            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+            if (path.contains("http")) {
+                mmr.setDataSource(path, new HashMap<>());
+            } else {
+                mmr.setDataSource(path);
+            }
+            Bitmap bitmap = mmr.getFrameAtTime();
+            ivBg.setImageBitmap(bitmap);
+            mmr.release();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void setDuration(int duration) {
@@ -273,13 +286,13 @@ public class CustomMediaControllerView extends FrameLayout {
 
     private void stateAnimation() {
         if (mRotateAnimation == null) {
-            mRotateAnimation = new RotateAnimation(0, 360);
+            mRotateAnimation = new RotateAnimation(0, 360,Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT,0.5f);
             mRotateAnimation.setRepeatCount(-1);
             mRotateAnimation.setDuration(1000);
         }
-        mRotateAnimation.cancel();
+        ivState.clearAnimation();
         if (mState == State.LOADING) {
-            mRotateAnimation.start();
+            ivState.startAnimation(mRotateAnimation);
         }
     }
 

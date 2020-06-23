@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
     defaultConfig {
         applicationId "com.zxy.demo"
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion 21
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -34,5 +34,12 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
 
-
+    //ijkplayer dependency
+    implementation "tv.danmaku.ijk.media:ijkplayer-java:${rootProject.ext.ijkMediaPlayerVersion}"
+//    implementation "tv.danmaku.ijk.media:ijkplayer-armv7a:${rootProject.ext.ijkMediaPlayerVersion}"
+//
+//    implementation "tv.danmaku.ijk.media:ijkplayer-armv5:${rootProject.ext.ijkMediaPlayerVersion}"
+//    implementation "tv.danmaku.ijk.media:ijkplayer-arm64:${rootProject.ext.ijkMediaPlayerVersion}"
+//    implementation "tv.danmaku.ijk.media:ijkplayer-x86:${rootProject.ext.ijkMediaPlayerVersion}"
+//    implementation "tv.danmaku.ijk.media:ijkplayer-x86_64:${rootProject.ext.ijkMediaPlayerVersion}"
 }

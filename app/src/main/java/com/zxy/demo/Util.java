@@ -3,9 +3,6 @@ package com.zxy.demo;
 import android.Manifest;
 import android.app.Activity;
 import android.os.Build;
-import android.os.Environment;
-
-import java.io.File;
 
 /**
  * Created by Admin
@@ -23,6 +20,7 @@ public class Util {
      * @return
      */
     public static String getVideoPath() {
-        return Environment.getExternalStorageDirectory() + File.separator + "Download" + File.separator + "1.mp4";
+//        return Environment.getExternalStorageDirectory() + File.separator + "Download" + File.separator + "1.avi";
+        return "https://image.imjihua.com/video/video_1.avi";
     }
 }

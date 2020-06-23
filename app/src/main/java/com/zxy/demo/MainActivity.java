@@ -1,12 +1,14 @@
 package com.zxy.demo;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.zxy.demo.mediaplayer.ICommonMediaPlayerWrapper;
+import com.zxy.demo.mediaplayer.IjkMediaPlayerWrapper;
 
 import java.io.IOException;
 
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.view_custom_media_controller)
     CustomMediaControllerView viewCustomMediaController;
 
-    MediaPlayer mMediaPlayer;
+    ICommonMediaPlayerWrapper mMediaPlayerWrapper;
     SurfaceCallback mSurfaceCallback;
 
     @Override
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mMediaPlayer = new MediaPlayer();
+        mMediaPlayerWrapper = new IjkMediaPlayerWrapper();
         mSurfaceCallback = new SurfaceCallback();
         svContent.getHolder().addCallback(mSurfaceCallback);
         viewCustomMediaController.setVideoCoverImage(Util.getVideoPath());
@@ -73,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStart() {
                 try {
-                    mMediaPlayer.setDataSource(Util.getVideoPath());
-                    mMediaPlayer.prepareAsync();
+                    mMediaPlayerWrapper.setDataSource(Util.getVideoPath());
+                    mMediaPlayerWrapper.prepareAsync();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -82,27 +84,27 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPause() {
-                mMediaPlayer.pause();
+                mMediaPlayerWrapper.pause();
             }
 
             @Override
             public void onResume() {
-                mMediaPlayer.start();
+                mMediaPlayerWrapper.start();
             }
 
             @Override
             public void onStop() {
-                mMediaPlayer.stop();
+                mMediaPlayerWrapper.stop();
             }
 
             @Override
             public void onRestart() {
-                mMediaPlayer.start();
+                mMediaPlayerWrapper.start();
             }
 
             @Override
             public void onProgressChanged(int curDuration) {
-                mMediaPlayer.seekTo(curDuration);
+                mMediaPlayerWrapper.seekTo(curDuration);
             }
 
             @Override
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public int getCurrentPosition() {
-                return mMediaPlayer.getCurrentPosition();
+                return (int) mMediaPlayerWrapper.getCurrentPosition();
             }
         });
     }
@@ -132,19 +134,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
-            mMediaPlayer.setSurface(holder.getSurface());
-            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            mMediaPlayerWrapper.setSurface(holder.getSurface());
+            mMediaPlayerWrapper.setOnCompletionListener(new ICommonMediaPlayerWrapper.OnCompletionListener() {
                 @Override
-                public void onCompletion(MediaPlayer mp) {
+                public void onCompletion(ICommonMediaPlayerWrapper mp) {
                     viewCustomMediaController.completedState();
                 }
             });
-            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            mMediaPlayerWrapper.setOnPreparedListener(new ICommonMediaPlayerWrapper.OnPreparedListener() {
                 @Override
-                public void onPrepared(MediaPlayer mp) {
-                    viewCustomMediaController.setDuration(mMediaPlayer.getDuration());
+                public void onPrepared(ICommonMediaPlayerWrapper mp) {
+                    viewCustomMediaController.setDuration((int) mMediaPlayerWrapper.getDuration());
                     viewCustomMediaController.startState();
-                    mMediaPlayer.start();
+                    mMediaPlayerWrapper.start();
                 }
             });
         }
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
-            mMediaPlayer.stop();
+            mMediaPlayerWrapper.stop();
         }
     }
 }
