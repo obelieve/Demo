@@ -1,9 +1,11 @@
 package com.zxy.demo.fragment;
 
+import android.content.Intent;
+
 import com.zxy.demo.R;
+import com.zxy.demo.activity.SplashActivity;
 import com.zxy.demo.view.SplashView;
 import com.zxy.frame.base.BaseFragment;
-import com.zxy.frame.utils.ToastUtil;
 
 import butterknife.BindView;
 
@@ -22,7 +24,7 @@ public class SplashFragment extends BaseFragment {
         viewSplash.setCallback(new SplashView.Callback() {
             @Override
             public void onNext() {
-                ToastUtil.show("Next");
+                startActivity(new Intent(getActivity(), SplashActivity.class));
             }
         });
     }

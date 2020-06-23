@@ -4,6 +4,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.zxy.demo.R;
+import com.zxy.demo.activity.VersionUpdateActivity;
 import com.zxy.demo.entity.VersionUpdateEntity;
 import com.zxy.demo.viewmodel.VersionUpdateViewModel;
 import com.zxy.frame.base.BaseFragment;

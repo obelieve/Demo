@@ -1,4 +1,4 @@
-package com.zxy.demo.fragment;
+package com.zxy.demo.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.zxy.demo.R;
 import com.zxy.demo.entity.VersionUpdateEntity;
+import com.zxy.demo.fragment.VersionUpdateFragment;
 import com.zxy.frame.base.BaseActivity;
 
 import butterknife.BindView;
