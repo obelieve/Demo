@@ -8,6 +8,8 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -21,6 +23,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.zxy.demo.mediaplayer.ICommonMediaPlayerWrapper;
+
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
@@ -34,6 +39,8 @@ import butterknife.OnClick;
  */
 public class CustomMediaControllerView extends FrameLayout {
 
+    @BindView(R.id.sv_content)
+    SurfaceView svContent;
     @BindView(R.id.iv_bg)
     ImageView ivBg;
     @BindView(R.id.ll_state)
@@ -67,6 +74,8 @@ public class CustomMediaControllerView extends FrameLayout {
     Thread mThread;
     Handler mHandler;
     boolean mLoop = true;
+    ICommonMediaPlayerWrapper mMediaPlayerWrapper;
+    SurfaceCallback mSurfaceCallback;
 
     public CustomMediaControllerView(@NonNull Context context) {
         super(context);
@@ -86,6 +95,7 @@ public class CustomMediaControllerView extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        svContent.getHolder().removeCallback(mSurfaceCallback);
         mLoop = false;
     }
 
@@ -155,10 +165,68 @@ public class CustomMediaControllerView extends FrameLayout {
             }
         });
         mHandler = new CustomHandler(this);
+        mSurfaceCallback = new SurfaceCallback();
+        svContent.getHolder().addCallback(mSurfaceCallback);
+        setCallback(new CustomMediaControllerView.Callback() {
+            @Override
+            public void onReset() {
+                mMediaPlayerWrapper.reset();
+                mMediaPlayerWrapper.setDisplay(svContent.getHolder());
+            }
+
+            @Override
+            public void onStart() {
+                try {
+                    mMediaPlayerWrapper.setDataSource(Util.getVideoPath());
+                    mMediaPlayerWrapper.prepareAsync();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onPause() {
+                mMediaPlayerWrapper.pause();
+            }
+
+            @Override
+            public void onResume() {
+                mMediaPlayerWrapper.start();
+            }
+
+            @Override
+            public void onStop() {
+                mMediaPlayerWrapper.stop();
+            }
+
+            @Override
+            public void onRestart() {
+                mMediaPlayerWrapper.start();
+            }
+
+            @Override
+            public void onProgressChanged(int curDuration) {
+                mMediaPlayerWrapper.seekTo(curDuration);
+            }
+
+            @Override
+            public void onSwitchOrientation() {
+
+            }
+
+            @Override
+            public int getCurrentPosition() {
+                return (int) mMediaPlayerWrapper.getCurrentPosition();
+            }
+        });
     }
 
     public void setCallback(Callback callback) {
         mCallback = callback;
+    }
+
+    public void setMediaPlayerWrapper(ICommonMediaPlayerWrapper mediaPlayerWrapper) {
+        mMediaPlayerWrapper = mediaPlayerWrapper;
     }
 
     public void setVideoCoverImage(String path) {
@@ -320,6 +388,57 @@ public class CustomMediaControllerView extends FrameLayout {
             }
         } else {
             flController.setVisibility(GONE);
+        }
+    }
+
+    public void pause() {
+        if (mState == State.START && mMediaPlayerWrapper.isPlaying()) {
+            mMediaPlayerWrapper.pause();
+            setState(State.PAUSE);
+        }
+    }
+
+    public void release() {
+        mMediaPlayerWrapper.release();
+        mState = State.PREPARE;
+    }
+
+    public class SurfaceCallback implements SurfaceHolder.Callback {
+
+        @Override
+        public void surfaceCreated(SurfaceHolder holder) {
+            mMediaPlayerWrapper.setSurface(holder.getSurface());
+            mMediaPlayerWrapper.setOnErrorListener(new ICommonMediaPlayerWrapper.OnErrorListener() {
+                @Override
+                public boolean onError(ICommonMediaPlayerWrapper mp, int what, int extra) {
+                    errorState();
+                    return true;
+                }
+            });
+            mMediaPlayerWrapper.setOnCompletionListener(new ICommonMediaPlayerWrapper.OnCompletionListener() {
+                @Override
+                public void onCompletion(ICommonMediaPlayerWrapper mp) {
+                    completedState();
+                }
+            });
+            mMediaPlayerWrapper.setOnPreparedListener(new ICommonMediaPlayerWrapper.OnPreparedListener() {
+                @Override
+                public void onPrepared(ICommonMediaPlayerWrapper mp) {
+                    setDuration((int) mMediaPlayerWrapper.getDuration());
+                    startState();
+                    mMediaPlayerWrapper.start();
+                }
+            });
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder holder) {
+            mMediaPlayerWrapper.stop();
         }
     }
 

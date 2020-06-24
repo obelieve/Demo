@@ -1,90 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fl_controller"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#33000000">
-    <ImageView
-        android:id="@+id/iv_bg"
+    android:layout_height="match_parent">
+
+    <SurfaceView
+        android:id="@+id/sv_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/fl_controller"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:scaleType="centerCrop"/>
-    <LinearLayout
-        android:id="@+id/ll_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:background="#33000000">
 
         <ImageView
-            android:id="@+id/iv_state"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_play_normal" />
+            android:id="@+id/iv_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tv_restart"
+        <LinearLayout
+            android:id="@+id/ll_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="重播"
-            android:textColor="#ffffff"
-            android:visibility="gone"
-            tools:visibility="visible" />
-    </LinearLayout>
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        tools:visibility="visible">
+            <ImageView
+                android:id="@+id/iv_state"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_play_normal" />
 
-        <TextView
-            android:id="@+id/tv_current_time"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_restart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="重播"
+                android:textColor="#ffffff"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="00:00"
-            android:textColor="#ffffff" />
-
-        <SeekBar
-            android:id="@+id/sb_progress"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:max="100"
-            android:maxHeight="1dp"
-            android:minHeight="1dp"
-            android:paddingLeft="12dp"
-            android:paddingTop="8dp"
-            android:paddingRight="12dp"
-            android:paddingBottom="8dp"
-            android:progress="0"
-            android:progressDrawable="@drawable/progress_drawable"
-            android:thumb="@drawable/progress_drawable_thumb" />
+            android:layout_marginRight="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/tv_total_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00:50"
-            android:textColor="#ffffff" />
+            <TextView
+                android:id="@+id/tv_current_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="#ffffff" />
 
-        <ImageView
-            android:id="@+id/iv_switch_orientation"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:padding="5dp"
-            android:src="@drawable/ic_enlarge" />
-    </LinearLayout>
+            <SeekBar
+                android:id="@+id/sb_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:max="100"
+                android:maxHeight="1dp"
+                android:minHeight="1dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="8dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="8dp"
+                android:progress="0"
+                android:progressDrawable="@drawable/progress_drawable"
+                android:thumb="@drawable/progress_drawable_thumb" />
+
+            <TextView
+                android:id="@+id/tv_total_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:50"
+                android:textColor="#ffffff" />
+
+            <ImageView
+                android:id="@+id/iv_switch_orientation"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:padding="5dp"
+                android:src="@drawable/ic_enlarge" />
+        </LinearLayout>
+    </FrameLayout>
 </FrameLayout>

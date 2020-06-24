@@ -1,16 +1,12 @@
 package com.zxy.demo;
 
 import android.os.Bundle;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.zxy.demo.mediaplayer.ICommonMediaPlayerWrapper;
-import com.zxy.demo.mediaplayer.IjkMediaPlayerWrapper;
-
-import java.io.IOException;
+import com.zxy.demo.mediaplayer.MediaPlayerWrapper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,81 +50,32 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.tv)
     TextView mTv;
-    @BindView(R.id.sv_content)
-    SurfaceView svContent;
     @BindView(R.id.view_custom_media_controller)
     CustomMediaControllerView viewCustomMediaController;
 
     ICommonMediaPlayerWrapper mMediaPlayerWrapper;
-    SurfaceCallback mSurfaceCallback;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mMediaPlayerWrapper = new IjkMediaPlayerWrapper();
-        mSurfaceCallback = new SurfaceCallback();
-        svContent.getHolder().addCallback(mSurfaceCallback);
+        mMediaPlayerWrapper = new MediaPlayerWrapper();
+        viewCustomMediaController.setMediaPlayerWrapper(mMediaPlayerWrapper);
         viewCustomMediaController.setVideoCoverImage(Util.getVideoPath());
-        viewCustomMediaController.setCallback(new CustomMediaControllerView.Callback() {
-            @Override
-            public void onReset() {
-                mMediaPlayerWrapper.reset();
-                mMediaPlayerWrapper.setDisplay(svContent.getHolder());
-            }
+    }
 
-            @Override
-            public void onStart() {
-                try {
-                    mMediaPlayerWrapper.setDataSource(Util.getVideoPath());
-                    mMediaPlayerWrapper.prepareAsync();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onPause() {
-                mMediaPlayerWrapper.pause();
-            }
-
-            @Override
-            public void onResume() {
-                mMediaPlayerWrapper.start();
-            }
-
-            @Override
-            public void onStop() {
-                mMediaPlayerWrapper.stop();
-            }
-
-            @Override
-            public void onRestart() {
-                mMediaPlayerWrapper.start();
-            }
-
-            @Override
-            public void onProgressChanged(int curDuration) {
-                mMediaPlayerWrapper.seekTo(curDuration);
-            }
-
-            @Override
-            public void onSwitchOrientation() {
-
-            }
-
-            @Override
-            public int getCurrentPosition() {
-                return (int) mMediaPlayerWrapper.getCurrentPosition();
-            }
-        });
+    @Override
+    protected void onPause() {
+        super.onPause();
+        viewCustomMediaController.pause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        svContent.getHolder().removeCallback(mSurfaceCallback);
+        viewCustomMediaController.release();
     }
 
     @OnClick(R.id.tv)
@@ -136,42 +83,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public class SurfaceCallback implements SurfaceHolder.Callback {
 
-        @Override
-        public void surfaceCreated(SurfaceHolder holder) {
-            mMediaPlayerWrapper.setSurface(holder.getSurface());
-            mMediaPlayerWrapper.setOnErrorListener(new ICommonMediaPlayerWrapper.OnErrorListener() {
-                @Override
-                public boolean onError(ICommonMediaPlayerWrapper mp, int what, int extra) {
-                    viewCustomMediaController.errorState();
-                    return true;
-                }
-            });
-            mMediaPlayerWrapper.setOnCompletionListener(new ICommonMediaPlayerWrapper.OnCompletionListener() {
-                @Override
-                public void onCompletion(ICommonMediaPlayerWrapper mp) {
-                    viewCustomMediaController.completedState();
-                }
-            });
-            mMediaPlayerWrapper.setOnPreparedListener(new ICommonMediaPlayerWrapper.OnPreparedListener() {
-                @Override
-                public void onPrepared(ICommonMediaPlayerWrapper mp) {
-                    viewCustomMediaController.setDuration((int) mMediaPlayerWrapper.getDuration());
-                    viewCustomMediaController.startState();
-                    mMediaPlayerWrapper.start();
-                }
-            });
-        }
-
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-        }
-
-        @Override
-        public void surfaceDestroyed(SurfaceHolder holder) {
-            mMediaPlayerWrapper.stop();
-        }
-    }
 }
