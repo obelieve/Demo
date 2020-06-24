@@ -6,7 +6,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.zxy.demo.mediaplayer.ICommonMediaPlayerWrapper;
-import com.zxy.demo.mediaplayer.MediaPlayerWrapper;
+import com.zxy.demo.mediaplayer.IjkMediaPlayerWrapper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mMediaPlayerWrapper = new MediaPlayerWrapper();
+        mMediaPlayerWrapper = new IjkMediaPlayerWrapper();
         viewCustomMediaController.setMediaPlayerWrapper(mMediaPlayerWrapper);
         viewCustomMediaController.setVideoCoverImage(Util.getVideoPath());
     }
