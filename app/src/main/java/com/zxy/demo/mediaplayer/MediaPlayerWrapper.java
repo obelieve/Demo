@@ -197,7 +197,7 @@ public class MediaPlayerWrapper implements ICommonMediaPlayerWrapper,IMediaplaye
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
                 if(listener!=null){
-                    listener.onError(MediaPlayerWrapper.this,what,extra);
+                    return listener.onError(MediaPlayerWrapper.this,what,extra);
                 }
                 return false;
             }
@@ -210,7 +210,7 @@ public class MediaPlayerWrapper implements ICommonMediaPlayerWrapper,IMediaplaye
             @Override
             public boolean onInfo(MediaPlayer mp, int what, int extra) {
                 if(listener!=null){
-                    listener.onInfo(MediaPlayerWrapper.this,what,extra);
+                    return listener.onInfo(MediaPlayerWrapper.this,what,extra);
                 }
                 return false;
             }

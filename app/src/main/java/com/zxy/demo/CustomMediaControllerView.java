@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -96,6 +97,10 @@ public class CustomMediaControllerView extends FrameLayout {
                     if (mState == State.PREPARE) {
                         mCallback.onStart();
                         setState(State.LOADING);
+                    } else if (mState == State.ERROR) {
+                        mCallback.onReset();
+                        mCallback.onStart();
+                        setState(State.LOADING);
                     } else if (mState == State.START) {
                         mCallback.onPause();
                         setState(State.PAUSE);
@@ -159,7 +164,7 @@ public class CustomMediaControllerView extends FrameLayout {
     public void setVideoCoverImage(String path) {
         if (TextUtils.isEmpty(path))
             return;
-        try{
+        try {
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
             if (path.contains("http")) {
                 mmr.setDataSource(path, new HashMap<>());
@@ -169,7 +174,7 @@ public class CustomMediaControllerView extends FrameLayout {
             Bitmap bitmap = mmr.getFrameAtTime();
             ivBg.setImageBitmap(bitmap);
             mmr.release();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -203,6 +208,11 @@ public class CustomMediaControllerView extends FrameLayout {
         return sb.toString();
     }
 
+    public void errorState() {
+        setState(State.ERROR);
+        Toast.makeText(getContext(), "播放失败", Toast.LENGTH_SHORT).show();
+    }
+
     public void startState() {
         setState(State.START);
     }
@@ -220,6 +230,7 @@ public class CustomMediaControllerView extends FrameLayout {
         mState = state;
         switch (mState) {
             case PREPARE:
+            case ERROR:
                 ivBg.setVisibility(VISIBLE);
                 tvRestart.setVisibility(GONE);
                 ivState.setImageResource(R.drawable.ic_play_normal);
@@ -286,9 +297,9 @@ public class CustomMediaControllerView extends FrameLayout {
 
     private void stateAnimation() {
         if (mRotateAnimation == null) {
-            mRotateAnimation = new RotateAnimation(0, 360,Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT,0.5f);
+            mRotateAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT, 0.5f);
             mRotateAnimation.setRepeatCount(-1);
-            mRotateAnimation.setDuration(1000);
+            mRotateAnimation.setDuration(500);
         }
         ivState.clearAnimation();
         if (mState == State.LOADING) {
@@ -313,7 +324,7 @@ public class CustomMediaControllerView extends FrameLayout {
     }
 
     public enum State {
-        PREPARE, LOADING, START, PAUSE, STOP, COMPLETED
+        PREPARE, LOADING, START, PAUSE, STOP, COMPLETED, ERROR
     }
 
     public class GoneRunnable implements Runnable {
@@ -350,6 +361,8 @@ public class CustomMediaControllerView extends FrameLayout {
     }
 
     public interface Callback {
+
+        void onReset();
 
         void onStart();
 

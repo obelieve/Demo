@@ -26,6 +26,7 @@ public class IjkMediaPlayerWrapper implements ICommonMediaPlayerWrapper, IjkMedi
 
     public IjkMediaPlayerWrapper() {
         mIjkMediaPlayer = new IjkMediaPlayer();
+        mIjkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "dns_cache_clear", 1);
     }
 
     @Override
@@ -120,6 +121,10 @@ public class IjkMediaPlayerWrapper implements ICommonMediaPlayerWrapper, IjkMedi
 
     @Override
     public void reset() {
+        /**
+         * ijkplayer提供了与MediaPlayer相同的一套封装IjkMediaPlayer，但调用reset方法同时会释放掉surface.
+         * 如果还复用之前的SurfaceView，需要在reset之后调用IjkMediaPlayer的setDisplay方法，设置SurfaceHolder.
+         */
         mIjkMediaPlayer.reset();
     }
 
@@ -199,7 +204,7 @@ public class IjkMediaPlayerWrapper implements ICommonMediaPlayerWrapper, IjkMedi
             @Override
             public boolean onError(IMediaPlayer iMediaPlayer, int i, int i1) {
                 if (listener != null) {
-                    listener.onError(IjkMediaPlayerWrapper.this, i, i1);
+                    return listener.onError(IjkMediaPlayerWrapper.this, i, i1);
                 }
                 return false;
             }
@@ -212,7 +217,7 @@ public class IjkMediaPlayerWrapper implements ICommonMediaPlayerWrapper, IjkMedi
             @Override
             public boolean onInfo(IMediaPlayer iMediaPlayer, int i, int i1) {
                 if (listener != null) {
-                    listener.onInfo(IjkMediaPlayerWrapper.this, i, i1);
+                    return listener.onInfo(IjkMediaPlayerWrapper.this, i, i1);
                 }
                 return false;
             }

@@ -73,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
         viewCustomMediaController.setVideoCoverImage(Util.getVideoPath());
         viewCustomMediaController.setCallback(new CustomMediaControllerView.Callback() {
             @Override
+            public void onReset() {
+                mMediaPlayerWrapper.reset();
+                mMediaPlayerWrapper.setDisplay(svContent.getHolder());
+            }
+
+            @Override
             public void onStart() {
                 try {
                     mMediaPlayerWrapper.setDataSource(Util.getVideoPath());
@@ -135,6 +141,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
             mMediaPlayerWrapper.setSurface(holder.getSurface());
+            mMediaPlayerWrapper.setOnErrorListener(new ICommonMediaPlayerWrapper.OnErrorListener() {
+                @Override
+                public boolean onError(ICommonMediaPlayerWrapper mp, int what, int extra) {
+                    viewCustomMediaController.errorState();
+                    return true;
+                }
+            });
             mMediaPlayerWrapper.setOnCompletionListener(new ICommonMediaPlayerWrapper.OnCompletionListener() {
                 @Override
                 public void onCompletion(ICommonMediaPlayerWrapper mp) {
