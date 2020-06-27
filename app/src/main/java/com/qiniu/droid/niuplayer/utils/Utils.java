@@ -133,7 +133,8 @@ public class Utils {
         options.setInteger(AVOptions.KEY_LIVE_STREAMING, 0);
         // 1 -> hw codec enable, 0 -> disable [recommended]
         options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_SW_DECODE);
-        options.setInteger(AVOptions.KEY_PREFER_FORMAT, AVOptions.PREFER_FORMAT_MP4);
+        //设置偏好的视频格式，设置后会加快对应格式视频流的打开速度，但播放其他格式会出错
+        options.setInteger(AVOptions.KEY_PREFER_FORMAT, AVOptions.PREFER_FORMAT_M3U8);//AVOptions.PREFER_FORMAT_MP4
         boolean disableLog = false;
         options.setInteger(AVOptions.KEY_LOG_LEVEL, disableLog ? 5 : 0);
         return options;

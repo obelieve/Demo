@@ -42,14 +42,14 @@
             android:name="com.qiniu.droid.niuplayer.PLVideoTextureActivity"
             android:theme="@style/AppThemeFullscreen" />
         <activity
-            android:name=".ScanActivity"
+            android:name="com.qiniu.droid.niuplayer.ScanActivity"
             android:theme="@style/AppThemeFullscreen" />
         <service
-            android:name=".utils.DownloadService"
+            android:name="com.qiniu.droid.niuplayer.utils.DownloadService"
             android:exported="false" />
 
         <provider
-            android:name=".utils.UpgradeApkFileProvider"
+            android:name="com.qiniu.droid.niuplayer.utils.UpgradeApkFileProvider"
             android:authorities="${applicationId}.update.provider"
             android:exported="false"
             android:grantUriPermissions="true">

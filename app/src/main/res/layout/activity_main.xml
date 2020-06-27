@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"></com.qiniu.droid.niuplayer.widget.ScrollEnableViewPager>
 
-    <android.support.design.widget.TabLayout
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,5 +23,5 @@
         app:tabIndicatorColor="@android:color/white"
         app:tabIndicatorHeight="2.5dp"
         app:tabSelectedTextColor="@android:color/white"
-        app:tabTextColor="@android:color/white"></android.support.design.widget.TabLayout>
+        app:tabTextColor="@android:color/white"></com.google.android.material.tabs.TabLayout>
 </FrameLayout>
