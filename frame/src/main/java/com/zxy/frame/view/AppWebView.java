@@ -105,7 +105,7 @@ public class AppWebView extends WebView {
         settings.setGeolocationEnabled(true);
         settings.setGeolocationDatabasePath(databaseDir.getAbsolutePath());
         //设置APPCache
-        settings.setAppCacheEnabled(true);
+        settings.setAppCacheEnabled(false);
         settings.setAppCachePath(databaseDir.getAbsolutePath());
         settings.setAppCacheMaxSize(1024 * 1024 * 8);
         //设置UserAgent 请求头加入这个值，用于不同的设备显示不同内容
