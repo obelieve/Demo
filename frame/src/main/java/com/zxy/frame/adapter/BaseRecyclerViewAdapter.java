@@ -23,6 +23,8 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
 
     private final int LOAD_MORE_TYPE = 9999;
     private final int EMPTY_TYPE = 9998;
+    private final int HEADER_TYPE = 9997;
+    private final int FOOTER_TYPE = 9996;
     private final int NORMAL_TYPE = 0;
 
 
@@ -32,6 +34,10 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
 
     private Context mContext;
     private View mEmptyView;
+    private View mHeaderView;
+    private View mFooterView;
+    private boolean mEnableHeader;
+    private boolean mEnableFooter;
     private int mLoadMoreState = 0;
     private RecyclerView mRecyclerView;
     private RecyclerView.OnScrollListener mOnScrollListener;
@@ -60,7 +66,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
 
     public abstract void loadViewHolder(BaseViewHolder holder, int position);
 
-    public int loadItemViewType(int position){
+    public int loadItemViewType(int position) {
         return NORMAL_TYPE;
     }
 
@@ -90,12 +96,28 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         notifyItemChanged(getItemCount() - 1);
     }
 
-    public void onSetListAfter(){
+    public void onSetListAfter() {
 
     }
 
     public void setEmptyView(View emptyView) {
         mEmptyView = emptyView;
+    }
+
+    public void setHeaderView(View headerView) {
+        mHeaderView = headerView;
+    }
+
+    public void setFooterView(View footerView) {
+        mFooterView = footerView;
+    }
+
+    public void setEnableHeader(boolean enableHeader) {
+        mEnableHeader = enableHeader;
+    }
+
+    public void setEnableFooter(boolean enableFooter) {
+        mEnableFooter = enableFooter;
     }
 
     public void setItemClickCallback(OnItemClickCallback<DATA> itemClickCallback) {
@@ -115,7 +137,13 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                 vh = new LoadMoreViewHolder(parent, 0);
                 break;
             case EMPTY_TYPE:
-                vh = new EmptyViewHolder(mEmptyView);
+                vh = new SimpleViewHolder(mEmptyView);
+                break;
+            case HEADER_TYPE:
+                vh = new SimpleViewHolder(mHeaderView);
+                break;
+            case FOOTER_TYPE:
+                vh = new SimpleViewHolder(mFooterView);
                 break;
             default:
                 vh = getViewHolder(parent, viewType);
@@ -127,7 +155,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
         final int pos = position;
-        if (!(holder instanceof EmptyViewHolder) && !(holder instanceof LoadMoreViewHolder)) {
+        if (!(holder instanceof SimpleViewHolder) && !(holder instanceof LoadMoreViewHolder)) {
             if (mItemClickCallback != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -209,14 +237,36 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     @Override
     public int getItemViewType(int position) {
         int size = getDataHolder().getList().size();
+        boolean header = mEnableHeader && mHeaderView != null;
+        boolean footer = mEnableFooter && mFooterView != null;
         if (size == 0) {
-            return EMPTY_TYPE;
-        } else {
-            if (position < size) {
-                return loadItemViewType(position);
-            } else {
-                return LOAD_MORE_TYPE;
+            switch (position) {
+                case 0:
+                    if (header) {
+                        return HEADER_TYPE;
+                    } else if (footer) {
+                        return FOOTER_TYPE;
+                    } else {
+                        return EMPTY_TYPE;
+                    }
+                case 1:
+                    return FOOTER_TYPE;
+                default:
+                    return EMPTY_TYPE;
             }
+        } else {
+            if(position==0){
+
+            }else if(position==size){
+
+            }else{
+
+            }
+//            if (position < size) {
+//                return loadItemViewType(position);
+//            } else {
+//                return LOAD_MORE_TYPE;
+//            }
         }
     }
 
@@ -335,9 +385,9 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         }
     }
 
-    public static class EmptyViewHolder extends BaseViewHolder {
+    public static class SimpleViewHolder extends BaseViewHolder {
 
-        public EmptyViewHolder(View view) {
+        public SimpleViewHolder(View view) {
             super(view);
         }
     }
@@ -365,10 +415,11 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
 
         public BaseViewHolder(ViewGroup parent, int layoutId) {
             super(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
 
-        public void bind(DATA data){}
+        public void bind(DATA data) {
+        }
     }
 
 
