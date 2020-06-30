@@ -2,6 +2,7 @@ package com.zxy.demo.test;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -9,8 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.zxy.demo.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
+import com.zxy.frame.adapter.item_decoration.VerticalItemDivider;
 import com.zxy.frame.base.BaseFragment;
-import com.zxy.utility.LogUtil;
+import com.zxy.frame.utils.ToastUtil;
 import com.zxy.utility.SystemUtil;
 
 import java.util.ArrayList;
@@ -38,7 +40,18 @@ public class TestFragment extends BaseFragment {
     @Override
     protected void initView() {
         mTestAdapter = new TestAdapter(getActivity());
+        mTestAdapter.setLoadMoreListener(rvContent, new BaseRecyclerViewAdapter.OnLoadMoreListener() {
 
+            @Override
+            public void onLoadMore() {
+                rvContent.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mTestAdapter.loadMoreEnd();
+                    }
+                }, 2000);
+            }
+        });
         TextView tv = new TextView(getActivity());
         tv.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, SystemUtil.dp2px(100)));
         tv.setBackgroundColor(Color.GREEN);
@@ -55,25 +68,29 @@ public class TestFragment extends BaseFragment {
         tv3.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, SystemUtil.dp2px(100)));
         tv3.setBackgroundColor(Color.RED);
         tv3.setText("Footer");
-        //mTestAdapter.setFooterView(tv3);
+        mTestAdapter.setFooterView(tv3);
+        rvContent.addItemDecoration(new VerticalItemDivider());
         rvContent.setAdapter(mTestAdapter);
-        List<String> l =new ArrayList<>();
-        int i=100;
-        while (i>0){
-            l.add(i+"");
+        List<String> l = new ArrayList<>();
+        int i = 100;
+        while (i > 0) {
+            l.add(i + "");
             i--;
         }
+        mTestAdapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<String>() {
+            @Override
+            public void onItemClick(View view, String t, int position) {
+                ToastUtil.show(t);
+            }
+        });
         mTestAdapter.getDataHolder().setList(l);
-//        mTestAdapter.setLoadMoreListener(rvContent,new BaseRecyclerViewAdapter.OnLoadMoreListener(){
-//
-//            @Override
-//            public void onLoadMore() {
-//
-//            }
-//        });
+
     }
 
     public static class TestAdapter extends BaseRecyclerViewAdapter<String> {
+
+        private static final int TYPE1 = 0;
+        private static final int TYPE2 = 1;
 
         public TestAdapter(Context context) {
             super(context);
@@ -81,20 +98,54 @@ public class TestFragment extends BaseFragment {
 
         @Override
         public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            return new BaseViewHolder(parent,R.layout.item_test);
+            if(viewType==TYPE1){
+                return new T1(parent);
+            }else{
+                return new T2(parent);
+            }
         }
 
         @Override
         public void loadViewHolder(BaseViewHolder holder, int position) {
-            TextView tv = holder.itemView.findViewById(R.id.textView);
-            tv.setText(getDataHolder().getList().get(position));
+            holder.bind(getDataHolder().getList().get(position));
+        }
+
+        public static class T1 extends BaseViewHolder<String> {
+
+            @BindView(R.id.textView)
+            TextView mTextView;
+
+            public T1(ViewGroup parent) {
+                super(parent, R.layout.item_test);
+            }
+
+            @Override
+            public void bind(String s) {
+                super.bind(s);
+                mTextView.setBackgroundColor(Color.GREEN);
+                mTextView.setText(s);
+            }
+        }
+
+        public static class T2 extends BaseViewHolder<String> {
+
+            @BindView(R.id.textView)
+            TextView mTextView;
+
+            public T2(ViewGroup parent) {
+                super(parent, R.layout.item_test);
+            }
+
+            @Override
+            public void bind(String s) {
+                super.bind(s);
+                mTextView.setText(s);
+            }
         }
 
         @Override
-        public int getItemCount() {
-            int a = super.getItemCount();
-            LogUtil.e("count=" + a);
-            return a;
+        public int loadItemViewType(int position) {
+            return getDataHolder().getList().get(position).contains("1") ? TYPE1 : TYPE2;
         }
     }
 }
