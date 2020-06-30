@@ -9,6 +9,7 @@ import com.zxy.demo.fragment.LottieAnimationFragment;
 import com.zxy.demo.fragment.PayFragment;
 import com.zxy.demo.fragment.SplashFragment;
 import com.zxy.demo.fragment.StickyCoordinatorFragment;
+import com.zxy.demo.fragment.TestFragment;
 import com.zxy.demo.fragment.VersionUpdateEntranceFragment;
 import com.zxy.demo.fragment.ViewRenderFragment;
 import com.zxy.demo.fragment.ZDialogFragment;
@@ -16,6 +17,7 @@ import com.zxy.demo.fragment.ZWebViewFragment;
 
 public enum MainEnum {
 
+    M14("TestFragment", TestFragment.class,true),
     M13("控件效果", ViewRenderFragment.class),
     M12("自定义Tab", CustomTabFragment.class),
     M11("列表显示", ListContainerFragment.class),
