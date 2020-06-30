@@ -36,8 +36,8 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     private View mEmptyView;
     private View mHeaderView;
     private View mFooterView;
-    private boolean mEnableHeader;
-    private boolean mEnableFooter;
+    private boolean mEnableHeader = true;
+    private boolean mEnableFooter = true;
     private int mLoadMoreState = 0;
     private RecyclerView mRecyclerView;
     private RecyclerView.OnScrollListener mOnScrollListener;
@@ -154,7 +154,8 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
-        final int pos = position;
+        boolean header = mEnableHeader && mHeaderView != null;
+        final int pos = header ? position - 1 : position;
         if (!(holder instanceof SimpleViewHolder) && !(holder instanceof LoadMoreViewHolder)) {
             if (mItemClickCallback != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +177,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             } else {
                 holder.itemView.setOnLongClickListener(null);
             }
-            loadViewHolder(holder, position);
+            loadViewHolder(holder, pos);
         } else {
             if (holder instanceof LoadMoreViewHolder) {
                 LoadMoreViewHolder holder1 = (LoadMoreViewHolder) holder;
@@ -220,17 +221,18 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     @Override
     public int getItemCount() {
         int size = getDataHolder().getList().size();
+        int empty = mEmptyView != null ? 1 : 0;
+        int header = (mEnableHeader && mHeaderView != null) ? 1 : 0;
+        int footer = (mEnableFooter && mFooterView != null) ? 1 : 0;
+        int loadMore = mOnLoadMoreListener != null ? 1 : 0;
         if (size == 0) {
-            if (mEmptyView != null) {
-                return 1;//空视图
+            if (header + footer > 0) {
+                return header + footer;
             } else {
-                return 0;//无
+                return empty;
             }
         } else {
-            if (mOnLoadMoreListener != null)
-                return size + 1;//加载更多
-            else
-                return size;//普通
+            return header + size + footer + loadMore;
         }
     }
 
@@ -255,18 +257,29 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                     return EMPTY_TYPE;
             }
         } else {
-            if(position==0){
-
-            }else if(position==size){
-
-            }else{
-
+            if (position == 0 && header) {
+                return HEADER_TYPE;
+            } else if (position == size && !header) {
+                if (footer) {
+                    return FOOTER_TYPE;
+                } else {
+                    return LOAD_MORE_TYPE;
+                }
+            } else if (position == size + 1) {
+                if (header) {
+                    if (footer) {
+                        return FOOTER_TYPE;
+                    } else {
+                        return LOAD_MORE_TYPE;
+                    }
+                } else {
+                    return LOAD_MORE_TYPE;
+                }
+            } else if (position == size + 2) {
+                return LOAD_MORE_TYPE;
+            } else {
+                return loadItemViewType(header ? position - 1 : position);
             }
-//            if (position < size) {
-//                return loadItemViewType(position);
-//            } else {
-//                return LOAD_MORE_TYPE;
-//            }
         }
     }
 
