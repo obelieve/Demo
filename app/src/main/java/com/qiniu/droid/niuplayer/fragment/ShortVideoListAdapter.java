@@ -123,7 +123,8 @@ public class ShortVideoListAdapter extends RecyclerView.Adapter<ShortVideoListAd
 
     @Override
     public void onViewDetachedFromWindow(ViewHolder holder) {
-        holder.videoView.stopPlayback();
+//        holder.videoView.stopPlayback();
+        holder.videoView.pause();
     }
 
     public void setCurViewHolder(ViewHolder viewHolder) {
@@ -146,7 +147,8 @@ public class ShortVideoListAdapter extends RecyclerView.Adapter<ShortVideoListAd
 
     public void stopCurVideoView() {
         if (mCurViewHolder != null) {
-            mCurViewHolder.videoView.stopPlayback();
+          //  mCurViewHolder.videoView.stopPlayback();
+            mCurViewHolder.videoView.pause();
             mCurViewHolder.coverImage.setVisibility(View.VISIBLE);
         }
     }

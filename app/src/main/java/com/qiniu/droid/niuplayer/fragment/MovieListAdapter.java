@@ -184,7 +184,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     public void stopCurVideoView() {
         if (mCurViewHolder != null) {
             resetConfig();
-            mCurViewHolder.videoView.stopPlayback();
+            //mCurViewHolder.videoView.stopPlayback();
+            mCurViewHolder.videoView.pause();
             mCurViewHolder.loadingView.setVisibility(View.GONE);
             mCurViewHolder.coverImage.setVisibility(View.VISIBLE);
             mCurViewHolder.stopPlayImage.setVisibility(View.VISIBLE);
