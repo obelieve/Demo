@@ -391,6 +391,13 @@ public class CustomMediaControllerView extends FrameLayout {
         }
     }
 
+    public void start() {
+        if (mState == State.PAUSE && !mMediaPlayerWrapper.isPlaying()) {
+            mMediaPlayerWrapper.start();
+            setState(State.START);
+        }
+    }
+
     public void pause() {
         if (mState == State.START && mMediaPlayerWrapper.isPlaying()) {
             mMediaPlayerWrapper.pause();
@@ -403,32 +410,41 @@ public class CustomMediaControllerView extends FrameLayout {
         mState = State.PREPARE;
     }
 
+    private boolean mIsFirst = true;
     public class SurfaceCallback implements SurfaceHolder.Callback {
 
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
-            mMediaPlayerWrapper.setSurface(holder.getSurface());
-            mMediaPlayerWrapper.setOnErrorListener(new ICommonMediaPlayerWrapper.OnErrorListener() {
-                @Override
-                public boolean onError(ICommonMediaPlayerWrapper mp, int what, int extra) {
-                    errorState();
-                    return true;
-                }
-            });
-            mMediaPlayerWrapper.setOnCompletionListener(new ICommonMediaPlayerWrapper.OnCompletionListener() {
-                @Override
-                public void onCompletion(ICommonMediaPlayerWrapper mp) {
-                    completedState();
-                }
-            });
-            mMediaPlayerWrapper.setOnPreparedListener(new ICommonMediaPlayerWrapper.OnPreparedListener() {
-                @Override
-                public void onPrepared(ICommonMediaPlayerWrapper mp) {
-                    setDuration((int) mMediaPlayerWrapper.getDuration());
-                    startState();
-                    mMediaPlayerWrapper.start();
-                }
-            });
+
+            if(mIsFirst){
+                mIsFirst = false;
+                mMediaPlayerWrapper.setSurface(holder.getSurface());
+                mMediaPlayerWrapper.setOnErrorListener(new ICommonMediaPlayerWrapper.OnErrorListener() {
+                    @Override
+                    public boolean onError(ICommonMediaPlayerWrapper mp, int what, int extra) {
+                        errorState();
+                        return true;
+                    }
+                });
+                mMediaPlayerWrapper.setOnCompletionListener(new ICommonMediaPlayerWrapper.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(ICommonMediaPlayerWrapper mp) {
+                        completedState();
+                    }
+                });
+                mMediaPlayerWrapper.setOnPreparedListener(new ICommonMediaPlayerWrapper.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(ICommonMediaPlayerWrapper mp) {
+                        setDuration((int) mMediaPlayerWrapper.getDuration());
+                        startState();
+                        mMediaPlayerWrapper.start();
+                    }
+                });
+            }else{
+                mMediaPlayerWrapper.setSurface(holder.getSurface());
+                start();
+            }
+
         }
 
         @Override
@@ -438,7 +454,7 @@ public class CustomMediaControllerView extends FrameLayout {
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
-            mMediaPlayerWrapper.stop();
+            pause();
         }
     }
 

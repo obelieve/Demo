@@ -67,12 +67,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        viewCustomMediaController.pause();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         viewCustomMediaController.release();
