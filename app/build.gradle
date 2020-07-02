@@ -44,13 +44,12 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
 
-    implementation files('libs/pldroid-player-2.1.9.jar')
     implementation 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
     implementation 'com.google.zxing:core:3.2.0'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'com.squareup.okhttp3:okhttp:3.9.1'
     api 'com.google.android.material:material:1.0.0'
-    api 'com.github.bumptech.glide:glide:4.9.0'
+    compile project(path: ':mediaplayer')
 
 
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppThemeProgress">
+        <item name="colorAccent">#dfdfdf</item>
+    </style>
+
+    <style name="AppThemeSeekBar">
+        <item name="colorAccent">#dfdfdf</item>
+    </style>
+</resources>
