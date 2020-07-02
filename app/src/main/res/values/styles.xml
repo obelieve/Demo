@@ -44,6 +44,10 @@
     </style>
 
     <style name="AppThemeProgress">
-        <item name="colorAccent">@color/colorDialogLine</item> <!-- Whatever color you want-->
+        <item name="colorAccent">@color/colorDialogLine</item>
+    </style>
+
+    <style name="AppThemeSeekBar">
+        <item name="colorAccent">@color/colorDialogLine</item>
     </style>
 </resources>

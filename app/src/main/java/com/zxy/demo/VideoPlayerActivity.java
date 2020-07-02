@@ -2,6 +2,7 @@ package com.zxy.demo;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -21,6 +22,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.pili.pldroid.player.PLOnInfoListener;
 import com.pili.pldroid.player.widget.PLVideoTextureView;
+import com.pili.pldroid.player.widget.PLVideoView;
 import com.qiniu.droid.niuplayer.widget.MediaController;
 
 import java.io.File;
@@ -39,8 +41,8 @@ public class VideoPlayerActivity extends Activity {
 
     @BindView(R.id.fl_video_player)
     FrameLayout flVideoPlayer;
-    @BindView(R.id.video_texture_view)
-    PLVideoTextureView videoView;
+    @BindView(R.id.view_video_player)
+    PLVideoView videoPlayerView;
     @BindView(R.id.controller_stop_play)
     ImageButton controllerStopPlay;
     @BindView(R.id.controller_current_time)
@@ -55,24 +57,24 @@ public class VideoPlayerActivity extends Activity {
     MediaController mediaController;
     @BindView(R.id.cover_image)
     ImageView coverImage;
-    @BindView(R.id.cover_stop_play)
-    ImageButton stopPlayImage;
+//    @BindView(R.id.cover_stop_play)
+//    ImageButton stopPlayImage;
     @BindView(R.id.loading_view)
     LinearLayout loadingView;
-
-    String videoPath = "https://yy.hongbaoguoji.com/live/p5u77stream.m3u8?txSecret=c0fe2173626bc39ed0b058b4ce8149ec&txTime=5efcaac2";
-    String coverPath;
-
-    OnFullScreenListener mOnFullScreenListener;
     @BindView(R.id.fl_normal)
     FrameLayout flNormal;
     @BindView(R.id.fl_full)
     FrameLayout flFull;
 
+    String videoPath = "https://yy.hongbaoguoji.com/live/yuyanstream1542825.m3u8?txSecret=5b52fd558479ec684a2caa6beb47daf6&txTime=5efd88d8"; //"http://demo-videos.qnsdk.com/shortvideo/nike.mp4";
+    String coverPath;
+
+    OnFullScreenListener mOnFullScreenListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtil.setStatusBarColor(this, Color.BLACK);
         setContentView(R.layout.activity_video_player);
         ButterKnife.bind(this);
         DisplayImageOptions mDisplayImageOptions = new DisplayImageOptions.Builder()
@@ -94,17 +96,17 @@ public class VideoPlayerActivity extends Activity {
                 .build();
         ImageLoader.getInstance().init(config);
         ImageLoader.getInstance().displayImage(coverPath, coverImage, mDisplayImageOptions);
-        videoView.setAVOptions(createAVOptions());
-        videoView.setBufferingIndicator(loadingView);
-        videoView.setMediaController(mediaController);
-        videoView.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_PAVED_PARENT);
-        videoView.setLooping(true);
-        videoView.setOnInfoListener(new PLOnInfoListener() {
+        videoPlayerView.setAVOptions(createAVOptions());
+        videoPlayerView.setBufferingIndicator(loadingView);
+        videoPlayerView.setMediaController(mediaController);
+        videoPlayerView.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_PAVED_PARENT);
+        videoPlayerView.setLooping(true);
+        videoPlayerView.setOnInfoListener(new PLOnInfoListener() {
             @Override
             public void onInfo(int i, int i1) {
                 if (i == PLOnInfoListener.MEDIA_INFO_VIDEO_RENDERING_START) {
                     coverImage.setVisibility(View.GONE);
-                    stopPlayImage.setVisibility(View.GONE);
+                    //stopPlayImage.setVisibility(View.GONE);
                     mediaController.hide();
                 }
             }
@@ -123,14 +125,14 @@ public class VideoPlayerActivity extends Activity {
             @Override
             public void onClick(View view) {
                 if (mOnFullScreenListener != null) {
-                    mOnFullScreenListener.onFullScreen(videoView, mediaController);
+                    mOnFullScreenListener.onFullScreen(videoPlayerView, mediaController);
                 }
             }
         });
     }
 
     public interface OnFullScreenListener {
-        void onFullScreen(PLVideoTextureView videoView, MediaController mediaController);
+        void onFullScreen(PLVideoView videoView, MediaController mediaController);
     }
 
     public void setOnFullScreenListener(OnFullScreenListener listener) {
@@ -138,46 +140,53 @@ public class VideoPlayerActivity extends Activity {
     }
 
     private void startCurVideoView() {
-        videoView.setVideoPath(videoPath);
-        videoView.start();
+        videoPlayerView.setVideoPath(videoPath);
+        videoPlayerView.start();
         loadingView.setVisibility(View.VISIBLE);
-        stopPlayImage.setVisibility(View.GONE);
+        //stopPlayImage.setVisibility(View.GONE);
     }
 
     private void resetConfig() {
-        videoView.setRotation(0);
-        videoView.setMirror(false);
-        videoView.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_PAVED_PARENT);
+        videoPlayerView.setRotation(0);
+        videoPlayerView.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_PAVED_PARENT);
     }
 
     public void stopCurVideoView() {
         resetConfig();
         //videoView.stopPlayback();
-        videoView.pause();
+        videoPlayerView.pause();
         loadingView.setVisibility(View.GONE);
         coverImage.setVisibility(View.VISIBLE);
-        stopPlayImage.setVisibility(View.VISIBLE);
+        //stopPlayImage.setVisibility(View.VISIBLE);
     }
 
     public class FullImpl implements OnFullScreenListener {
         @Override
-        public void onFullScreen(PLVideoTextureView videoView, MediaController mediaController) {
+        public void onFullScreen(PLVideoView videoView, MediaController mediaController) {
             if (videoView == null) {
                 return;
             }
+
             if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                StatusBarUtil.setFullScreen(VideoPlayerActivity.this);
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//                flNormal.removeAllViews();
-//                flNormal.setVisibility(View.GONE);
-//                flFull.setVisibility(View.VISIBLE);
-//                flFull.addView(flVideoPlayer);
+//                int height = ViewGroup.LayoutParams.MATCH_PARENT;
+//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+//                flNormal.setLayoutParams(params);
+                flNormal.setVisibility(View.GONE);
+                flNormal.removeView(flVideoPlayer);
+                flFull.setVisibility(View.VISIBLE);
+                flFull.addView(flVideoPlayer);
             } else {
+                StatusBarUtil.setStatusBarColor(VideoPlayerActivity.this, Color.BLACK);
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                int height = (int) (getResources().getDisplayMetrics().density * 200);
-//                flFull.removeAllViews();
-//                flFull.setVisibility(View.GONE);
-//                flNormal.setVisibility(View.VISIBLE);
-//                flNormal.addView(flVideoPlayer);
+//                int height = (int) (getResources().getDisplayMetrics().density * 200);
+//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+//                flNormal.setLayoutParams(params);
+                flFull.setVisibility(View.GONE);
+                flFull.removeView(flVideoPlayer);
+                flNormal.setVisibility(View.VISIBLE);
+                flNormal.addView(flVideoPlayer);
             }
         }
     }

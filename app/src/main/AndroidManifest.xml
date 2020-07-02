@@ -57,7 +57,9 @@
                 android:resource="@xml/paths" />
         </provider>
 
-        <activity android:name=".VideoPlayerActivity">
+        <activity android:name=".VideoPlayerActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
