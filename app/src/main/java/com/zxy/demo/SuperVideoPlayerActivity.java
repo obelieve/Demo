@@ -29,6 +29,7 @@ public class SuperVideoPlayerActivity extends Activity {
 
     String[] videoPaths = new String[]
             {
+                    "http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8",
                     "http://demo-videos.qnsdk.com/shortvideo/nike.mp4",
                     "https://yy.hongbaoguoji.com/live/p5u14stream.m3u8?txSecret=5042d8f1e6def3a399043cd7da8f2f10&txTime=5efdfb65",
                     "https://yy.hongbaoguoji.com/live/p5u7658stream.m3u8?txSecret=21bfb04dc9a5ab7acd83e44d23ac5e36&txTime=5efdf07e",
