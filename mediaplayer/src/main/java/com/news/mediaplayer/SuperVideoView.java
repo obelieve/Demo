@@ -254,6 +254,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             flNormal.setLayoutParams(params);*/
             StatusBarUtil.setFullScreen(mActivity);
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            fullScreenImage.setImageResource(R.drawable.small_screen);
             mNormalScreenContainer.setVisibility(View.GONE);
             mNormalScreenContainer.removeView(SuperVideoView.this);
             mFullScreenContainer.setVisibility(View.VISIBLE);
@@ -264,6 +265,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             flNormal.setLayoutParams(params);*/
             StatusBarUtil.setStatusBarColor(mActivity, Color.BLACK);
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            fullScreenImage.setImageResource(R.drawable.full_screen);
             mFullScreenContainer.setVisibility(View.GONE);
             mFullScreenContainer.removeView(SuperVideoView.this);
             mNormalScreenContainer.setVisibility(View.VISIBLE);
