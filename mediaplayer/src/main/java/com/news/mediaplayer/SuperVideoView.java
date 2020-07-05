@@ -205,6 +205,10 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
         coverImage.performClick();
     }
 
+    public void stop(){
+        stopVideoView();
+    }
+
     public void setOnFullScreenListener(OnFullScreenListener listener) {
         mOnFullScreenListener = listener;
     }

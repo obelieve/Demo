@@ -1,7 +1,10 @@
 package com.zxy.demo;
 
 import android.app.Activity;
+import android.app.PictureInPictureParams;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Rational;
 import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
@@ -46,6 +49,22 @@ public class SuperVideoPlayerActivity extends Activity {
         viewSuperVideo.loadData(Arrays.asList(videoPaths), coverPath);
         viewSuperVideo.setContainer(flNormal, flFull);
         viewSuperVideo.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        viewSuperVideo.stop();
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
+            builder.setAspectRatio(new Rational(16,9));
+            enterPictureInPictureMode(builder.build());
+        }
     }
 
     @Override
