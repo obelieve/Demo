@@ -2,6 +2,7 @@ package com.zxy.demo;
 
 import android.app.Activity;
 import android.app.PictureInPictureParams;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Rational;
@@ -48,6 +49,11 @@ public class SuperVideoPlayerActivity extends Activity {
         viewSuperVideo.setLive(true);
         viewSuperVideo.loadData(Arrays.asList(videoPaths), coverPath);
         viewSuperVideo.setContainer(flNormal, flFull);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         viewSuperVideo.start();
     }
 
@@ -60,7 +66,7 @@ public class SuperVideoPlayerActivity extends Activity {
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O&& getRequestedOrientation()== ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
             builder.setAspectRatio(new Rational(16,9));
             enterPictureInPictureMode(builder.build());

@@ -251,7 +251,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
         }
     }
 
-    private void switchFullScreen(boolean fullScreen) {
+    public void switchFullScreen(boolean fullScreen) {
         if (fullScreen) {
 /*            int height = ViewGroup.LayoutParams.MATCH_PARENT;
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
