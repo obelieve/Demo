@@ -72,10 +72,16 @@ public class SuperVideoPlayerActivity extends Activity {
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O&& getRequestedOrientation()== ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
-            builder.setAspectRatio(new Rational(16,9));
-            enterPictureInPictureMode(builder.build());
+            builder.setAspectRatio(new Rational(16, 9));
+            try {
+                enterPictureInPictureMode(builder.build());
+            } catch (Exception e) {
+                /*异常情况
+                java.lang.IllegalStateException: enterPictureInPictureMode: Device doesn't support picture-in-picture mode.*/
+                e.printStackTrace();
+            }
         }
     }
 
