@@ -118,7 +118,6 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
                         i == ERROR_CODE_OPEN_FAILED ||
                         i == ERROR_CODE_HW_DECODE_FAILURE) {
                     flSwitchLine.setVisibility(VISIBLE);
-                    loadingView.setVisibility(GONE);
                     mediaController.setVisibility(GONE);
                     return true;
                 }
@@ -129,14 +128,11 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             @Override
             public void onInfo(int i, int i1) {
                 if (i == PLOnInfoListener.MEDIA_INFO_VIDEO_RENDERING_START) {
-                    coverImage.setVisibility(View.GONE);
-                    mediaController.hide();
                 }
             }
         });
-
+        viewVideoPlayer.setCoverView(coverImage);
         ibBack.setOnClickListener(this);
-        coverImage.setOnClickListener(this);
         fullScreenImage.setOnClickListener(this);
         tvLine1.setOnClickListener(this);
         tvLine2.setOnClickListener(this);
@@ -150,10 +146,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             } else {
                 mActivity.finish();
             }
-        } else if (v == coverImage) {
-            stopVideoView();
-            startVideoView();
-        } else if (v == fullScreenImage) {
+        } if (v == fullScreenImage) {
             if (mOnFullScreenListener != null) {
                 mOnFullScreenListener.onFullScreen(viewVideoPlayer, mediaController);
             }
@@ -163,7 +156,8 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             if (mVideoPathList.size() > 1) {
                 mCurVideoPath = mVideoPathList.get(1);
             }
-            stopVideoView();
+            viewVideoPlayer.setVideoPath(mCurVideoPath);
+            pauseVideoView();
             startVideoView();
         } else if (v == tvLine2) {
             flSwitchLine.setVisibility(GONE);
@@ -171,7 +165,8 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             if (mVideoPathList.size() > 2) {
                 mCurVideoPath = mVideoPathList.get(2);
             }
-            stopVideoView();
+            viewVideoPlayer.setVideoPath(mCurVideoPath);
+            pauseVideoView();
             startVideoView();
         }
     }
@@ -194,6 +189,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
         mCurVideoPath = mVideoPathList.size() > 0 ? mVideoPathList.get(0) : "";
         mCoverPath = coverPath;
         Glide.with(getContext()).load(coverPath).placeholder(R.drawable.defualt_bg).error(R.drawable.defualt_bg).into(coverImage);
+        viewVideoPlayer.setVideoPath(mCurVideoPath);
     }
 
     public void setContainer(ViewGroup normalScreenContainer, ViewGroup fullScreenContainer) {
@@ -202,11 +198,20 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
     }
 
     public void start() {
-        coverImage.performClick();
+        if(mActivity.getRequestedOrientation()==ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
+            StatusBarUtil.setFullScreen(mActivity);
+        }else{
+            StatusBarUtil.setStatusBarColor(mActivity, Color.BLACK);
+        }
+        startVideoView();
     }
 
-    public void stop(){
-        stopVideoView();
+    public void pause() {
+        pauseVideoView();
+    }
+
+    public void release() {
+        viewVideoPlayer.stopPlayback();
     }
 
     public void setOnFullScreenListener(OnFullScreenListener listener) {
@@ -214,21 +219,14 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
     }
 
     private void startVideoView() {
-        viewVideoPlayer.setVideoPath(mCurVideoPath);
         viewVideoPlayer.start();
-        loadingView.setVisibility(View.VISIBLE);
     }
 
-    private void stopVideoView() {
+    private void pauseVideoView() {
         viewVideoPlayer.setRotation(0);
         viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_PAVED_PARENT);
         viewVideoPlayer.pause();
-        loadingView.setVisibility(View.GONE);
-        coverImage.setVisibility(View.VISIBLE);
-    }
-
-    public void release() {
-        viewVideoPlayer.stopPlayback();
+        mediaController.hide();
     }
 
 

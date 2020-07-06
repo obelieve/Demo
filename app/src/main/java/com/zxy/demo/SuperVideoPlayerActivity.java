@@ -52,15 +52,21 @@ public class SuperVideoPlayerActivity extends Activity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         viewSuperVideo.start();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        viewSuperVideo.stop();
+    protected void onPause() {
+        super.onPause();
+        viewSuperVideo.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewSuperVideo.release();
     }
 
     @Override
@@ -73,9 +79,5 @@ public class SuperVideoPlayerActivity extends Activity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        viewSuperVideo.release();
-    }
+
 }
