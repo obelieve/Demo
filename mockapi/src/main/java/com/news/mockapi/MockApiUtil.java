@@ -44,7 +44,7 @@ public class MockApiUtil {
      */
     public static String getMockApiDataTag(String url) {
         if (!TextUtils.isEmpty(url)) {
-            int start = url.indexOf("api/");
+            int start = url.indexOf(MockApi.API_PREFIX_TAG);
             if (start != -1) {
                 String tag = url.substring(start);
                 if (MockApiUtil.ALL_URL.contains(tag)) {
