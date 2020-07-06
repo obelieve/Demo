@@ -58,8 +58,8 @@ public class SuperVideoPlayerActivity extends Activity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         viewSuperVideo.pause();
     }
 
