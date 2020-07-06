@@ -1,0 +1,62 @@
+{
+  "status": true,
+  "code": 200,
+  "toast": 0,
+  "window": 0,
+  "message": "请求成功",
+  "data": {
+    "match_info": {
+      "match_id": 2757422,
+      "competition_id": 730,
+      "home_team_id": 14525,
+      "away_team_id": 14809,
+      "status_id": 8,
+      "home_scores": 4,
+      "away_scores": 0,
+      "half_home_scores": 1,
+      "half_away_scores": 0,
+      "home_corner": 5,
+      "away_corner": 7,
+      "home_red": 0,
+      "away_red": 0,
+      "home_yellow": 1,
+      "away_yellow": 3,
+      "match_time_zh": "12-24 01:30",
+      "match_status": "12-24 01:30 完场",
+      "competition_name": "埃及超",
+      "home_team_logo": "https://cdn.sportnanoapi.com/football/team/a0e67915f4841f238886f9ac5503770e.png",
+      "away_team_logo": "https://cdn.sportnanoapi.com/football/team/e05e4f3d3ccc4fa6c4ac884dbefbcfa3.png",
+      "home_team_name": "阿尔阿赫利",
+      "away_team_name": "伊蒂哈德伊斯坎达里",
+      "is_push": 0,
+      "vs_exp": [
+        {
+          "name": "进攻",
+          "home": "85",
+          "away": "83"
+        },
+        {
+          "name": "危险进攻",
+          "home": "52",
+          "away": "52"
+        },
+        {
+          "name": "控球率",
+          "home": "48",
+          "away": "52"
+        },
+        {
+          "name": "射正门球",
+          "home": "3",
+          "away": "1"
+        }
+      ],
+      "home_substitution": "0",
+      "away_substitution": "0"
+    },
+    "room_id": 0,
+    "room_status": 1,
+    "mute_time": "",
+    "jump_tab": "tlive"
+  }
+}

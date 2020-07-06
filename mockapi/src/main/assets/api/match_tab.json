@@ -1,0 +1,65 @@
+{
+  "status": true,
+  "code": 200,
+  "message": "请求成功",
+  "data": {
+    "menu_list": [
+      {
+        "menu_ident": "tlive",
+        "menu_name": "直播",
+        "menu_ico_name": "",
+        "menu_is_hit": 1,
+        "menu_need_login": 0,
+        "menu_url": ""
+      },
+      {
+        "menu_ident": "imlive",
+        "menu_name": "聊天",
+        "menu_ico_name": "",
+        "menu_is_hit": 1,
+        "menu_need_login": 1,
+        "menu_url": ""
+      },
+      {
+        "menu_ident": "realtime",
+        "menu_name": "统计",
+        "menu_ico_name": "",
+        "menu_is_hit": 1,
+        "menu_need_login": 0,
+        "menu_url": ""
+      },
+      {
+        "menu_ident": "lineup",
+        "menu_name": "阵容",
+        "menu_ico_name": "",
+        "menu_is_hit": 1,
+        "menu_need_login": 0,
+        "menu_url": ""
+      },
+      {
+        "menu_ident": "analysis",
+        "menu_name": "分析",
+        "menu_ico_name": "",
+        "menu_is_hit": 1,
+        "menu_need_login": 0,
+        "menu_url": ""
+      },
+      {
+        "menu_ident": "plan",
+        "menu_name": "方案",
+        "menu_ico_name": "",
+        "menu_is_hit": 1,
+        "menu_need_login": 1,
+        "menu_url": ""
+      },
+      {
+        "menu_ident": "odds",
+        "menu_name": "指数",
+        "menu_ico_name": "",
+        "menu_is_hit": 1,
+        "menu_need_login": 0,
+        "menu_url": ""
+      }
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "status": true,
+  "code": 200,
+  "message": "请求成功",
+  "data": {
+    "menus": [
+      {
+        "menu_ident": "tab_match",
+        "menu_name": "赛事",
+        "menu_ico_name": "ss_event",
+        "menu_is_hit": 1,
+        "menu_need_login": 0,
+        "menu_url": "",
+        "menu_number": 0
+      },
+      {
+        "menu_ident": "tab_table",
+        "menu_name": "数据",
+        "menu_ico_name": "ss_data",
+        "menu_is_hit": 1,
+        "menu_need_login": 0,
+        "menu_url": "",
+        "menu_number": 0
+      },
+      {
+        "menu_ident": "tab_plan",
+        "menu_name": "推荐",
+        "menu_ico_name": "tj_ecommend",
+        "menu_is_hit": 1,
+        "menu_need_login": 0,
+        "menu_url": "",
+        "menu_number": 0
+      },
+      {
+        "menu_ident": "tab_bbs",
+        "menu_name": "社区",
+        "menu_ico_name": "ss_community",
+        "menu_is_hit": 1,
+        "menu_need_login": 0,
+        "menu_url": "",
+        "menu_number": 0
+      },
+      {
+        "menu_ident": "tab_user",
+        "menu_name": "我的",
+        "menu_ico_name": "ss_my",
+        "menu_is_hit": 1,
+        "menu_need_login": 0,
+        "menu_url": "",
+        "menu_number": 0
+      }
+    ]
+  }
+}

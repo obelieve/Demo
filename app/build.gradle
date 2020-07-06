@@ -106,5 +106,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
     implementation 'com.airbnb.android:lottie:3.4.0'
+    compile project(path: ':mockapi')
 
 }
