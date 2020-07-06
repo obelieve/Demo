@@ -41,7 +41,6 @@ public class MockApiInterceptor implements Interceptor {
         String tag = MockApiUtil.getMockApiDataTag(request.url().toString());
         if (responseBody != null) {
             if (responseBody.contentLength() < MAX_CONTENT_LENGTH) {
-                responseBody.close();
                 response.protocol();
                 response.code();
                 response.message();
@@ -50,6 +49,7 @@ public class MockApiInterceptor implements Interceptor {
                 }else{
                     rBody = MockApiUtil.getData(tag);
                 }
+                responseBody.close();
                 responseBody = ResponseBody.create(rBody, responseBody.contentType());
             } else {
                 rBody = "body >= 8KB  contentType:" + responseBody.contentType();
