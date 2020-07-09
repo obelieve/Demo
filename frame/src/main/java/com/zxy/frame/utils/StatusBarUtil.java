@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.annotation.RequiresApi;
-
 public class StatusBarUtil {
 
 
@@ -27,6 +25,23 @@ public class StatusBarUtil {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
+    }
+
+    /**
+     * 设置全屏
+     *
+     * @param activity
+     */
+    public static void setFullScreen(Activity activity) {
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;//window 允许显示到刘海区域
+        activity.getWindow().setAttributes(lp);
+        activity.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     /**
