@@ -3,8 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_content"
+    <com.zxy.demo.view.ListSelectView
+        android:id="@+id/lsv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white" />

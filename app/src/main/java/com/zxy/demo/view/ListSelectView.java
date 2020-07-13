@@ -2,7 +2,6 @@ package com.zxy.demo.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -12,13 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.zxy.demo.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.OnClick;
 
 /**
  * Created by Admin
@@ -35,7 +31,6 @@ public class ListSelectView extends FrameLayout {
     public static final int MULTI_TYPE = 1;
 
     RecyclerView rvContent;
-    View viewEmpty;
 
     List<IListSelectViewData> mList = new ArrayList<>();
     Callback mCallback;
@@ -60,9 +55,9 @@ public class ListSelectView extends FrameLayout {
     }
 
     private void init(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.view_list_select, this, true);
-        rvContent = view.findViewById(R.id.rv_content);
-        viewEmpty = view.findViewById(R.id.view_empty);
+        rvContent = new RecyclerView(context);
+        rvContent.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        addView(rvContent);
     }
 
     public void setCallback(Callback callback) {
@@ -139,13 +134,6 @@ public class ListSelectView extends FrameLayout {
         return list;
     }
 
-    @OnClick(R.id.view_empty)
-    public void onViewClicked() {
-        if (mCallback != null) {
-            mCallback.onClickEmpty();
-        }
-    }
-
     public class ListSelectAdapter extends BaseRecyclerViewAdapter<IListSelectViewData> {
 
 
@@ -188,8 +176,6 @@ public class ListSelectView extends FrameLayout {
     }
 
     public interface Callback {
-
-        void onClickEmpty();
 
         void onSingleSelected(IListSelectViewData data);
     }
