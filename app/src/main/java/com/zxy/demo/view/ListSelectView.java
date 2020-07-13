@@ -43,8 +43,9 @@ public class ListSelectView extends FrameLayout {
 
     List<IListSelectViewData> mList = new ArrayList<>();
     Callback mCallback;
-    ListSelectAdapter mAdapter;
     IListSelectView mIListSelectView;
+
+    ListSelectAdapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     int mSelectType;
     int mCurSelectedPosition;
@@ -72,21 +73,36 @@ public class ListSelectView extends FrameLayout {
     }
 
     public void loadData(IListSelectView selectView, List<IListSelectViewData> list, int selectType) {
-        loadData(new LinearLayoutManager(getContext()), selectView, list, selectType);
+        loadData(null, new LinearLayoutManager(getContext()), selectView, list, selectType);
+    }
+
+    public void loadData(RecyclerView.LayoutManager layoutManager, IListSelectView selectView, List<IListSelectViewData> list, int selectType) {
+        loadData(null, layoutManager, selectView, list, selectType);
     }
 
     /**
+     * @param decorations
      * @param layoutManager
-     * @param selectView    ListSelectView#SINGLE_TYPE,ListSelectView#MULTI_TYPE
+     * @param selectView
      * @param list
-     * @param selectType
+     * @param selectType    ListSelectView#SINGLE_TYPE,ListSelectView#MULTI_TYPE
      */
-    public void loadData(RecyclerView.LayoutManager layoutManager, IListSelectView selectView, List<IListSelectViewData> list, int selectType) {
+    public void loadData(RecyclerView.ItemDecoration[] decorations, RecyclerView.LayoutManager layoutManager, IListSelectView selectView, List<IListSelectViewData> list, int selectType) {
         mLayoutManager = layoutManager;
         mIListSelectView = selectView;
         mCurSelectedPosition = -1;
         mSelectType = selectType;
         mList = list != null ? list : new ArrayList<>();
+        if (rvContent.getItemDecorationCount() > 0) {
+            for (int i = 0; i < rvContent.getItemDecorationCount(); i++) {
+                rvContent.removeItemDecorationAt(i);
+            }
+        }
+        if (decorations != null) {
+            for (RecyclerView.ItemDecoration decoration : decorations) {
+                rvContent.addItemDecoration(decoration);
+            }
+        }
         rvContent.setLayoutManager(mLayoutManager);
         mAdapter = new ListSelectAdapter(getContext());
         mAdapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<IListSelectViewData>() {
