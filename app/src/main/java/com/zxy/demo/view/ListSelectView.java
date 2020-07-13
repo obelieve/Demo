@@ -18,8 +18,6 @@ import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -36,9 +34,7 @@ public class ListSelectView extends FrameLayout {
      */
     public static final int MULTI_TYPE = 1;
 
-    @BindView(R.id.rv_content)
     RecyclerView rvContent;
-    @BindView(R.id.view_empty)
     View viewEmpty;
 
     List<IListSelectViewData> mList = new ArrayList<>();
@@ -65,7 +61,8 @@ public class ListSelectView extends FrameLayout {
 
     private void init(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_list_select, this, true);
-        ButterKnife.bind(this, view);
+        rvContent = view.findViewById(R.id.rv_content);
+        viewEmpty = view.findViewById(R.id.view_empty);
     }
 
     public void setCallback(Callback callback) {
