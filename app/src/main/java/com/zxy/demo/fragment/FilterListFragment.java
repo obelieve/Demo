@@ -1,11 +1,15 @@
 package com.zxy.demo.fragment;
 
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.zxy.demo.R;
 import com.zxy.demo.view.ListSelectView;
 import com.zxy.demo.view.ThreeLayerSelectView;
+import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.BaseFragment;
 import com.zxy.frame.utils.PopupMenuUtil;
 import com.zxy.frame.utils.ToastUtil;
@@ -16,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -78,7 +83,7 @@ public class FilterListFragment extends BaseFragment {
             case R.id.ll_type2:
                 if (mPopupMenuType2 == null) {
                     mListSelectView = new ListSelectView(view.getContext());
-                    mListSelectView.loadData(MockData.getIListSelectViewDataList(), ListSelectView.SINGLE_TYPE);
+                    mListSelectView.loadData(new MockData.ListSelectViewImpl(), MockData.getIListSelectViewDataList(), ListSelectView.SINGLE_TYPE);
                     mListSelectView.setCallback(new ListSelectView.Callback() {
                         @Override
                         public void onClickEmpty() {
@@ -146,6 +151,61 @@ public class FilterListFragment extends BaseFragment {
                 list.add(new ListSelectData(i, "i:" + i, false));
             }
             return list;
+        }
+
+        public static class ListSelectViewImpl implements ListSelectView.IListSelectView {
+
+            @Override
+            public BaseRecyclerViewAdapter.BaseViewHolder genViewHolder(ViewGroup parent) {
+                return new ListSelectViewHolder(parent);
+            }
+
+            @Override
+            public void select(View view, boolean selected) {
+                TextView tvName = view.findViewById(R.id.tv_name);
+                ImageView ivSelect = view.findViewById(R.id.iv_select);
+                if (tvName != null) {
+                    tvName.setSelected(selected);
+                }
+                if (ivSelect != null) {
+                    if (selected) {
+                        ivSelect.setVisibility(View.VISIBLE);
+                    } else {
+                        ivSelect.setVisibility(View.GONE);
+                    }
+                }
+            }
+        }
+
+        public static class ListSelectViewHolder extends BaseRecyclerViewAdapter.BaseViewHolder<ListSelectView.IListSelectViewData> {
+
+            @BindView(R.id.tv_name)
+            TextView tvName;
+            @BindView(R.id.iv_select)
+            ImageView ivSelect;
+
+            public ListSelectViewHolder(ViewGroup parent) {
+                super(parent, R.layout.view_list_select_item);
+                ButterKnife.bind(this, itemView);
+            }
+
+            @Override
+            public void bind(ListSelectView.IListSelectViewData data) {
+                super.bind(data);
+                if (data != null) {
+                    tvName.setText(data.getName());
+                    setSelectView(data.isSelected());
+                }
+            }
+
+            private void setSelectView(boolean selected) {
+                tvName.setSelected(selected);
+                if (selected) {
+                    ivSelect.setVisibility(View.VISIBLE);
+                } else {
+                    ivSelect.setVisibility(View.GONE);
+                }
+            }
         }
 
         public static class ListSelectData implements ListSelectView.IListSelectViewData {

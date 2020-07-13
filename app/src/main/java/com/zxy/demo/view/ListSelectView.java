@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,8 +42,10 @@ public class ListSelectView extends FrameLayout {
     View viewEmpty;
 
     List<IListSelectViewData> mList = new ArrayList<>();
-    ListSelectAdapter mAdapter;
     Callback mCallback;
+    ListSelectAdapter mAdapter;
+    IListSelectView mIListSelectView;
+    RecyclerView.LayoutManager mLayoutManager;
     int mSelectType;
     int mCurSelectedPosition;
 
@@ -71,15 +71,23 @@ public class ListSelectView extends FrameLayout {
         mCallback = callback;
     }
 
+    public void loadData(IListSelectView selectView, List<IListSelectViewData> list, int selectType) {
+        loadData(new LinearLayoutManager(getContext()), selectView, list, selectType);
+    }
+
     /**
+     * @param layoutManager
+     * @param selectView    ListSelectView#SINGLE_TYPE,ListSelectView#MULTI_TYPE
      * @param list
-     * @param selectType ListSelectView#SINGLE_TYPE,ListSelectView#MULTI_TYPE
+     * @param selectType
      */
-    public void loadData(List<IListSelectViewData> list, int selectType) {
+    public void loadData(RecyclerView.LayoutManager layoutManager, IListSelectView selectView, List<IListSelectViewData> list, int selectType) {
+        mLayoutManager = layoutManager;
+        mIListSelectView = selectView;
         mCurSelectedPosition = -1;
         mSelectType = selectType;
         mList = list != null ? list : new ArrayList<>();
-        rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvContent.setLayoutManager(mLayoutManager);
         mAdapter = new ListSelectAdapter(getContext());
         mAdapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<IListSelectViewData>() {
             @Override
@@ -98,7 +106,7 @@ public class ListSelectView extends FrameLayout {
                     }
                 } else if (mSelectType == MULTI_TYPE) {
                     data.setSelected(!data.isSelected());
-                    displaySelectView(view, data);
+                    mIListSelectView.select(view, data.isSelected());
                 }
             }
         });
@@ -118,21 +126,6 @@ public class ListSelectView extends FrameLayout {
         return list;
     }
 
-    private void displaySelectView(View view, IListSelectViewData data) {
-        TextView tvName = view.findViewById(R.id.tv_name);
-        ImageView ivSelect = view.findViewById(R.id.iv_select);
-        if (tvName != null) {
-            tvName.setSelected(data.isSelected());
-        }
-        if (ivSelect != null) {
-            if (data.isSelected()) {
-                ivSelect.setVisibility(VISIBLE);
-            } else {
-                ivSelect.setVisibility(GONE);
-            }
-        }
-    }
-
     @OnClick(R.id.view_empty)
     public void onViewClicked() {
         if (mCallback != null) {
@@ -140,7 +133,7 @@ public class ListSelectView extends FrameLayout {
         }
     }
 
-    public static class ListSelectAdapter extends BaseRecyclerViewAdapter<IListSelectViewData> {
+    public class ListSelectAdapter extends BaseRecyclerViewAdapter<IListSelectViewData> {
 
 
         public ListSelectAdapter(Context context) {
@@ -149,45 +142,29 @@ public class ListSelectView extends FrameLayout {
 
         @Override
         public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            return new ListSelectViewHolder(parent);
+            return mIListSelectView.genViewHolder(parent);
         }
 
         @Override
         public void loadViewHolder(BaseViewHolder holder, int position) {
-            ListSelectViewHolder viewHolder = (ListSelectViewHolder) holder;
-            viewHolder.bind(getDataHolder().getList().get(position));
-        }
-
-        public class ListSelectViewHolder extends BaseViewHolder {
-
-            @BindView(R.id.tv_name)
-            TextView tvName;
-            @BindView(R.id.iv_select)
-            ImageView ivSelect;
-
-            public ListSelectViewHolder(ViewGroup parent) {
-                super(parent, R.layout.view_list_select_item);
-                ButterKnife.bind(this, itemView);
-            }
-
-            public void bind(IListSelectViewData data) {
-                if (data != null) {
-                    tvName.setText(data.getName());
-                    setSelectView(data);
-                }
-            }
-
-            private void setSelectView(IListSelectViewData data) {
-                tvName.setSelected(data.isSelected());
-                if (data.isSelected()) {
-                    ivSelect.setVisibility(VISIBLE);
-                } else {
-                    ivSelect.setVisibility(GONE);
-                }
-            }
+            holder.bind(getDataHolder().getList().get(position));
         }
     }
 
+
+    /**
+     * 显示 选中/取消选中 视图接口
+     */
+    public interface IListSelectView {
+
+        BaseRecyclerViewAdapter.BaseViewHolder genViewHolder(ViewGroup parent);
+
+        void select(View view, boolean selected);
+    }
+
+    /**
+     * 数据接口
+     */
     public interface IListSelectViewData {
 
         int getId();
