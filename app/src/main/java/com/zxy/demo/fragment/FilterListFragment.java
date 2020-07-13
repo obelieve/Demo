@@ -177,7 +177,7 @@ public class FilterListFragment extends BaseFragment {
             }
         }
 
-        public static class ListSelectViewHolder extends BaseRecyclerViewAdapter.BaseViewHolder<ListSelectView.IListSelectViewData> {
+        public static class ListSelectViewHolder extends BaseRecyclerViewAdapter.BaseViewHolder<ListSelectData> {
 
             @BindView(R.id.tv_name)
             TextView tvName;
@@ -190,7 +190,7 @@ public class FilterListFragment extends BaseFragment {
             }
 
             @Override
-            public void bind(ListSelectView.IListSelectViewData data) {
+            public void bind(ListSelectData data) {
                 super.bind(data);
                 if (data != null) {
                     tvName.setText(data.getName());
@@ -220,12 +220,10 @@ public class FilterListFragment extends BaseFragment {
                 this.selected = selected;
             }
 
-            @Override
             public int getId() {
                 return id;
             }
 
-            @Override
             public String getName() {
                 return name;
             }

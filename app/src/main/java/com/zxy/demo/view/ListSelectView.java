@@ -183,8 +183,6 @@ public class ListSelectView extends FrameLayout {
      */
     public interface IListSelectViewData {
 
-        int getId();
-
         String getName();
 
         boolean isSelected();
