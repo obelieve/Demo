@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,85 +15,176 @@
         android:id="@+id/media_controller"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical|bottom"
-            android:background="#40000000"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+        <FrameLayout
+            android:id="@+id/fl_more"
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="@drawable/ic_more_container_bg"
+            android:visibility="gone"
+            tools:visibility="visible">
 
-            <ImageButton
-                android:id="@+id/controller_stop_play"
-                android:layout_width="42dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:paddingLeft="18dp"
-                android:paddingRight="5dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/play_player" />
-
-            <View
-                android:id="@+id/view_live"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/controller_current_time"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_vertical"
-                android:paddingStart="4dip"
-                android:paddingEnd="4dip"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <SeekBar
-                android:id="@+id/controller_progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dip"
-                android:layout_height="32dip"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_weight="1"
-                android:theme="@style/AppThemeSeekBar" />
-
-            <TextView
-                android:id="@+id/controller_end_time"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_vertical"
-                android:paddingStart="4dip"
-                android:paddingEnd="4dip"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <ImageButton
-                android:id="@+id/full_screen_image"
+            <com.news.mediaplayer.view.ListSelectView
+                android:id="@+id/lsv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_media_controller"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#40000000">
+
+            <ImageButton
+                android:id="@+id/ib_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/full_screen" />
-        </LinearLayout>
+                android:src="@drawable/ic_left_back"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/ib_back"
+                app:layout_constraintLeft_toRightOf="@id/ib_back"
+                app:layout_constraintRight_toLeftOf="@id/ib_close"
+                app:layout_constraintTop_toTopOf="@id/ib_back"
+                app:layout_goneMarginRight="22dp"
+                tools:text="主队队名主队队名 2-1 客队队名客" />
+
+
+            <ImageButton
+                android:id="@+id/ib_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_close"
+                android:visibility="gone"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/ib_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_more"
+                android:visibility="gone"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <ImageButton
+                    android:id="@+id/controller_stop_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/play_player" />
+
+                <View
+                    android:id="@+id/view_live"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/controller_current_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4dip"
+                    android:paddingEnd="4dip"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <SeekBar
+                    android:id="@+id/controller_progress_bar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="0dip"
+                    android:layout_height="32dip"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_weight="1"
+                    android:theme="@style/AppThemeSeekBar" />
+
+                <TextView
+                    android:id="@+id/controller_end_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4dip"
+                    android:paddingEnd="4dip"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/full_screen_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/full_screen" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.news.mediaplayer.MediaController>
 
-    <ImageView
-        android:id="@+id/cover_image"
+    <LinearLayout
+        android:id="@+id/ll_cover"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop" />
+        android:background="#28293D"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:visibility="gone">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:scaleType="fitXY"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="loading.json"
+            app:lottie_loop="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:visibility="gone"
+            android:text="正在努力抢救中..."
+            android:textColor="#ffffffff"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/loading_view"
@@ -100,71 +192,118 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:visibility="gone">
 
-        <ProgressBar
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:scaleType="fitXY"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="loading.json"
+            app:lottie_loop="true" />
+
+        <TextView
+            android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/AppThemeProgress" />
+            android:text="正在努力抢救中..."
+            android:textColor="#ffffffff"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/fl_switch_line"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/darker_gray"
+        android:background="#28293D"
         android:visibility="gone">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
+        <LinearLayout
+            android:id="@+id/ll_switch_no_line"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_line_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="切换直播源"
-                android:textColor="#333333"
+                android:text="暂无直播源"
+                android:textColor="#ff999999"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_switch_has_line"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <ImageButton
+                android:id="@+id/ib_line_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_left_back"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_line1"
+                android:id="@+id/tv_line_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/ib_line_back"
+                app:layout_constraintLeft_toRightOf="@id/ib_line_back"
+                app:layout_constraintRight_toLeftOf="@id/ib_line_close"
+                app:layout_constraintTop_toTopOf="@id/ib_line_back"
+                app:layout_goneMarginRight="22dp"
+                tools:text="主队队名主队队名 2-1 客队队名客" />
+
+            <ImageButton
+                android:id="@+id/ib_line_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/white"
-                android:padding="5dp"
-                android:text="直播1"
-                app:layout_constraintLeft_toLeftOf="@id/tv_line_title"
-                app:layout_constraintRight_toLeftOf="@id/tv_line2"
-                app:layout_constraintTop_toBottomOf="@id/tv_line_title" />
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_close"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/full_line_screen_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/full_screen"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
-                android:id="@+id/tv_line2"
+                android:id="@+id/tv_line_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/white"
-                android:padding="5dp"
-                android:text="直播2"
-                app:layout_constraintLeft_toRightOf="@id/tv_line1"
-                app:layout_constraintRight_toRightOf="@id/tv_line_title"
-                app:layout_constraintTop_toBottomOf="@id/tv_line_title" />
+                android:text="切换直播源"
+                android:textColor="#999999"
+                app:layout_constraintBottom_toTopOf="@id/lsv_hor_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ib_line_back" />
+
+            <com.news.mediaplayer.view.ListSelectView
+                android:id="@+id/lsv_hor_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                app:layout_constraintBottom_toTopOf="@id/full_line_screen_image"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_line_tip" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
-
-    <ImageButton
-        android:id="@+id/ib_back"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/transparent"
-        android:layout_gravity="top|left"
-        android:src="@drawable/ic_left_back" />
 </FrameLayout>

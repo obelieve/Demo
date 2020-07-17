@@ -2,9 +2,13 @@ package com.news.mediaplayer.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -28,7 +32,6 @@ public class StatusBarUtil {
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-
     }
 
     public static void setFullScreen(Activity activity) {
@@ -88,6 +91,21 @@ public class StatusBarUtil {
             result = context.getResources().getDimensionPixelOffset(resId);
         }
         return result;
+    }
+
+    public static int getNavigationBarHeight(Context context) {
+        int height=0;
+        boolean hasMenuKey = ViewConfiguration.get(context)
+                .hasPermanentMenuKey();
+        boolean hasBackKey = KeyCharacterMap
+                .deviceHasKey(KeyEvent.KEYCODE_BACK);
+        if (!hasMenuKey && !hasBackKey) {
+            Resources resources = context.getResources();
+            int resourceId = resources.getIdentifier("navigation_bar_height","dimen", "android");
+            //获取NavigationBar的高度
+            height = resources.getDimensionPixelSize(resourceId);
+        }
+        return height;
     }
 
     /**

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="125dp"
+    android:layout_height="41dp"
+    android:background="@drawable/bg_circle_19ffffff_4dp"
+    android:orientation="vertical"
+    tools:background="@android:color/darker_gray">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:duplicateParentState="true"
+        android:textColor="@color/sel_text_title"
+        android:textSize="15sp"
+        tools:text="直播 1" />
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_alignLeft="@id/tv_title"
+        android:layout_alignRight="@id/tv_title"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/sel_line"
+        android:duplicateParentState="true" />
+</RelativeLayout>

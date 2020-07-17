@@ -7,21 +7,28 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.news.mediaplayer.utils.StatusBarUtil;
 import com.news.mediaplayer.utils.Utils;
+import com.news.mediaplayer.view.HorizontalItemDivider;
+import com.news.mediaplayer.view.HorizontalListSelectViewImpl;
+import com.news.mediaplayer.view.ListSelectView;
+import com.news.mediaplayer.view.VerticalItemDivider;
+import com.news.mediaplayer.view.VerticalListSelectViewImpl;
 import com.pili.pldroid.player.PLOnErrorListener;
 import com.pili.pldroid.player.PLOnInfoListener;
 import com.pili.pldroid.player.widget.PLVideoTextureView;
@@ -45,24 +52,41 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
     private TextView controllerEndTime;
     private ImageButton fullScreenImage;
     private MediaController mediaController;
+    private ConstraintLayout clMediaController;
+    private ListSelectView lsvContent;
+    private FrameLayout flMore;
 
+    private TextView tvTitle;
     private ImageButton ibBack;
-    private ImageView coverImage;
+    private ImageButton ibClose;
+    private ImageButton ibMore;
+    private LinearLayout llCover;
     private LinearLayout loadingView;
-    //切换线路
-    private TextView tvLineTitle;
-    private TextView tvLine1;
-    private TextView tvLine2;
-    private FrameLayout flSwitchLine;
 
-    private List<String> mVideoPathList;//视频地址列表
-    private String mCurVideoPath;//当前视频播放地址
-    private String mCoverPath;//封面地址
-    private ViewGroup mNormalScreenContainer;//小屏幕播放的容器
-    private ViewGroup mFullScreenContainer;//全屏播放的容器
+    //切换线路
+    private FrameLayout flSwitchLine;
+    private LinearLayout llSwitchNoLine;
+    private ConstraintLayout clSwitchHasLine;
+    private ImageButton ibLineBack;
+    private TextView tvLineTitle;
+    private ImageButton ibLineClose;
+    private ImageButton fullLineScreenImage;
+    private TextView tvLineTip;
+    private ListSelectView lsvHorContent;
+
+    private List<VideoBean> mVideoBeanList;
+    private VideoBean mCurVideoBean;
+    private String mCoverPath;
+    private ViewGroup mNormalScreenContainer;
+    private ViewGroup mFullScreenContainer;
     private Activity mActivity;
     private OnFullScreenListener mOnFullScreenListener;
     private boolean mIsLive;
+
+    private int mStatusBarHeight;
+    private int mNavigationBarHeight;
+
+    private Callback mCallback;
 
     public SuperVideoView(@NonNull Context context) {
         this(context, null, 0);
@@ -89,26 +113,39 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
         controllerEndTime = view.findViewById(R.id.controller_end_time);
         fullScreenImage = view.findViewById(R.id.full_screen_image);
         mediaController = view.findViewById(R.id.media_controller);
+        clMediaController = view.findViewById(R.id.cl_media_controller);
+        lsvContent = view.findViewById(R.id.lsv_content);
+        flMore = view.findViewById(R.id.fl_more);
 
+        tvTitle = findViewById(R.id.tv_title);
         ibBack = findViewById(R.id.ib_back);
-        coverImage = view.findViewById(R.id.cover_image);
+        ibClose = findViewById(R.id.ib_close);
+        ibMore = findViewById(R.id.ib_more);
+        llCover = view.findViewById(R.id.ll_cover);
         loadingView = view.findViewById(R.id.loading_view);
 
-        tvLineTitle = view.findViewById(R.id.tv_line_title);
-        tvLine1 = view.findViewById(R.id.tv_line1);
-        tvLine2 = view.findViewById(R.id.tv_line2);
         flSwitchLine = view.findViewById(R.id.fl_switch_line);
+        llSwitchNoLine = view.findViewById(R.id.ll_switch_no_line);
+        clSwitchHasLine = findViewById(R.id.cl_switch_has_line);
+
+        ibLineBack = findViewById(R.id.ib_line_back);
+        tvLineTitle = findViewById(R.id.tv_line_title);
+        ibLineClose = findViewById(R.id.ib_line_close);
+        fullLineScreenImage = findViewById(R.id.full_line_screen_image);
+        tvLineTip = findViewById(R.id.tv_line_tip);
+        lsvHorContent = findViewById(R.id.lsv_hor_content);
     }
 
     private void init(Context context) {
         initView(context);
         mActivity = (Activity) context;
-        StatusBarUtil.setStatusBarColor(mActivity, Color.BLACK);
+        mStatusBarHeight = StatusBarUtil.getStatusBarHeight(mActivity);
+        mNavigationBarHeight = StatusBarUtil.getNavigationBarHeight(mActivity);
+        setStatusBar(false);
         setOnFullScreenListener(new FullImpl());
         viewVideoPlayer.setAVOptions(Utils.createAVOptions());
         viewVideoPlayer.setBufferingIndicator(loadingView);
         viewVideoPlayer.setMediaController(mediaController);
-        viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_PAVED_PARENT);
         viewVideoPlayer.setLooping(false);
         viewVideoPlayer.setOnErrorListener(new PLOnErrorListener() {
             @Override
@@ -118,6 +155,13 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
                         i == ERROR_CODE_OPEN_FAILED ||
                         i == ERROR_CODE_HW_DECODE_FAILURE) {
                     flSwitchLine.setVisibility(VISIBLE);
+                    if (mVideoBeanList.size() <= 1) {
+                        llSwitchNoLine.setVisibility(VISIBLE);
+                        clSwitchHasLine.setVisibility(GONE);
+                    } else {
+                        llSwitchNoLine.setVisibility(GONE);
+                        clSwitchHasLine.setVisibility(VISIBLE);
+                    }
                     mediaController.setVisibility(GONE);
                     return true;
                 }
@@ -131,44 +175,54 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
                 }
             }
         });
-        viewVideoPlayer.setCoverView(coverImage);
+        viewVideoPlayer.setCoverView(llCover);
+        setControllerLayout(false);
         ibBack.setOnClickListener(this);
+        ibClose.setOnClickListener(this);
+        ibMore.setOnClickListener(this);
         fullScreenImage.setOnClickListener(this);
-        tvLine1.setOnClickListener(this);
-        tvLine2.setOnClickListener(this);
+        ibLineBack.setOnClickListener(this);
+        ibLineClose.setOnClickListener(this);
+        fullLineScreenImage.setOnClickListener(this);
+    }
+
+    public void setCallback(Callback callback) {
+        mCallback = callback;
     }
 
     @Override
     public void onClick(View v) {
-        if (v == ibBack) {
-            if (mActivity.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+        if (v == ibBack || v == ibLineBack) {
+            if (getParent() == mFullScreenContainer) {
                 switchFullScreen(false);
             } else {
                 mActivity.finish();
             }
-        } if (v == fullScreenImage) {
+        } else if (v == ibClose || v == ibLineClose) {
+            if (getParent() == mFullScreenContainer) {
+                switchFullScreen(false);
+            }
+            pauseVideoView();
+            if (mCallback != null) {
+                mCallback.onClose();
+            }
+        } else if (v == ibMore) {
+            if (flMore.getVisibility() == View.VISIBLE) {
+                flMore.setVisibility(View.GONE);
+            } else {
+                flMore.setVisibility(View.VISIBLE);
+            }
+        } else if (v == fullScreenImage || v == fullLineScreenImage) {
             if (mOnFullScreenListener != null) {
                 mOnFullScreenListener.onFullScreen(viewVideoPlayer, mediaController);
             }
-        } else if (v == tvLine1) {
-            flSwitchLine.setVisibility(GONE);
-            mediaController.setVisibility(VISIBLE);
-            if (mVideoPathList.size() > 1) {
-                mCurVideoPath = mVideoPathList.get(1);
-            }
-            viewVideoPlayer.setVideoPath(mCurVideoPath);
-            pauseVideoView();
-            startVideoView();
-        } else if (v == tvLine2) {
-            flSwitchLine.setVisibility(GONE);
-            mediaController.setVisibility(VISIBLE);
-            if (mVideoPathList.size() > 2) {
-                mCurVideoPath = mVideoPathList.get(2);
-            }
-            viewVideoPlayer.setVideoPath(mCurVideoPath);
-            pauseVideoView();
-            startVideoView();
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
+        return true;
     }
 
     public void setLive(boolean live) {
@@ -184,12 +238,77 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
         }
     }
 
-    public void loadData(List<String> videoPaths, String coverPath) {
-        mVideoPathList = videoPaths != null ? videoPaths : new ArrayList<String>();
-        mCurVideoPath = mVideoPathList.size() > 0 ? mVideoPathList.get(0) : "";
+    public void loadData(String title, List<VideoBean> videoBeanList, String coverPath) {
+        tvTitle.setText(title);
+        mVideoBeanList = videoBeanList != null ? videoBeanList : new ArrayList<VideoBean>();
+        int curVideoPosition = 0;
+        if (videoBeanList != null) {
+            for (int i = 0; i < videoBeanList.size(); i++) {
+                if (videoBeanList.get(i).isSelected()) {
+                    mCurVideoBean = videoBeanList.get(i);
+                    curVideoPosition = i;
+                }
+            }
+        }
+        if (mCurVideoBean == null) {
+            return;
+        }
         mCoverPath = coverPath;
-        Glide.with(getContext()).load(coverPath).placeholder(R.drawable.defualt_bg).error(R.drawable.defualt_bg).into(coverImage);
-        viewVideoPlayer.setVideoPath(mCurVideoPath);
+        viewVideoPlayer.setVideoPath(mCurVideoBean.getUrl());
+        if (mCurVideoBean.getOrientation() == VideoBean.VIDEO_LANDSCAPE) {
+            viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_PAVED_PARENT);
+        } else {
+            viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_FIT_PARENT);
+        }
+        lsvContent.loadData(new RecyclerView.ItemDecoration[]{new VerticalItemDivider(true, 25, Color.TRANSPARENT).dividerExceptTop(true).dividerToTop(true)},
+                new LinearLayoutManager(mActivity), new VerticalListSelectViewImpl(), (List) mVideoBeanList, curVideoPosition, ListSelectView.SINGLE_TYPE);
+        lsvContent.setCallback(new ListSelectView.Callback() {
+            @Override
+            public void onSingleSelected(ListSelectView.IListSelectViewData data, int position) {
+                lsvHorContent.setCurSelectedPosition(position);
+                switchLineToPlayer(data, position);
+            }
+        });
+        lsvHorContent.loadData(new RecyclerView.ItemDecoration[]{new HorizontalItemDivider(true, 10, Color.TRANSPARENT)},
+                new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false), new HorizontalListSelectViewImpl(), (List) mVideoBeanList, curVideoPosition, ListSelectView.SINGLE_TYPE);
+        lsvHorContent.setCallback(new ListSelectView.Callback() {
+            @Override
+            public void onSingleSelected(ListSelectView.IListSelectViewData data, int position) {
+                lsvContent.setCurSelectedPosition(position);
+                switchLineToPlayer(data, position);
+            }
+        });
+    }
+
+    /**
+     * 切换线路 播放
+     *
+     * @param data
+     * @param position
+     */
+    private void switchLineToPlayer(ListSelectView.IListSelectViewData data, int position) {
+        flMore.setVisibility(GONE);
+        flSwitchLine.setVisibility(GONE);
+        mediaController.setVisibility(VISIBLE);
+        if (data instanceof VideoBean) {
+            if (getParent() == mFullScreenContainer) {
+                int orientation = ((VideoBean) data).getOrientation() == VideoBean.VIDEO_LANDSCAPE ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+                if (orientation != mActivity.getRequestedOrientation()) {
+                    mActivity.setRequestedOrientation(orientation);
+                    setControllerLayout(true);
+                }
+            } else {
+                if (((VideoBean) data).getOrientation() == VideoBean.VIDEO_LANDSCAPE) {
+                    viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_PAVED_PARENT);
+                } else {
+                    viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_FIT_PARENT);
+                }
+            }
+        }
+        mCurVideoBean = mVideoBeanList.get(position);
+        viewVideoPlayer.setVideoPath(mCurVideoBean.getUrl());
+        pauseVideoView();
+        startVideoView();
     }
 
     public void setContainer(ViewGroup normalScreenContainer, ViewGroup fullScreenContainer) {
@@ -198,10 +317,10 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
     }
 
     public void start() {
-        if(mActivity.getRequestedOrientation()==ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
-            StatusBarUtil.setFullScreen(mActivity);
-        }else{
-            StatusBarUtil.setStatusBarColor(mActivity, Color.BLACK);
+        if (mActivity.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            setStatusBar(true);
+        } else {
+            setStatusBar(false);
         }
         startVideoView();
     }
@@ -223,8 +342,6 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
     }
 
     private void pauseVideoView() {
-        viewVideoPlayer.setRotation(0);
-        viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_PAVED_PARENT);
         viewVideoPlayer.pause();
         mediaController.hide();
     }
@@ -241,7 +358,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             if (videoView == null) {
                 return;
             }
-            if (mActivity.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            if (getParent() != mFullScreenContainer) {
                 switchFullScreen(true);
             } else {
                 switchFullScreen(false);
@@ -250,12 +367,18 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
     }
 
     public void switchFullScreen(boolean fullScreen) {
+        setStatusBar(fullScreen);
         if (fullScreen) {
 /*            int height = ViewGroup.LayoutParams.MATCH_PARENT;
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
             flNormal.setLayoutParams(params);*/
-            StatusBarUtil.setFullScreen(mActivity);
-            mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            if (mCurVideoBean.getOrientation() == VideoBean.VIDEO_LANDSCAPE) {
+                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_FIT_PARENT);
+            } else {
+                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_FIT_PARENT);
+            }
             fullScreenImage.setImageResource(R.drawable.small_screen);
             mNormalScreenContainer.setVisibility(View.GONE);
             mNormalScreenContainer.removeView(SuperVideoView.this);
@@ -265,14 +388,54 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
 /*            int height = (int) (getResources().getDisplayMetrics().density * 200);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
             flNormal.setLayoutParams(params);*/
-            StatusBarUtil.setStatusBarColor(mActivity, Color.BLACK);
-            mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            if (mCurVideoBean.getOrientation() == VideoBean.VIDEO_LANDSCAPE) {
+                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_PAVED_PARENT);
+            } else {
+                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_FIT_PARENT);
+            }
             fullScreenImage.setImageResource(R.drawable.full_screen);
             mFullScreenContainer.setVisibility(View.GONE);
             mFullScreenContainer.removeView(SuperVideoView.this);
             mNormalScreenContainer.setVisibility(View.VISIBLE);
             mNormalScreenContainer.addView(SuperVideoView.this);
         }
+        setControllerLayout(fullScreen);
+        if (mCallback != null) {
+            mCallback.onSwitchFullScreen(fullScreen);
+        }
+    }
 
+    public void setControllerLayout(boolean fullScreen) {
+        if (fullScreen) {
+            ibMore.setVisibility(VISIBLE);
+            ibClose.setVisibility(GONE);
+            if (mActivity.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                clMediaController.setPadding(Utils.dip2px(mActivity, 25), Utils.dip2px(mActivity, 30), Utils.dip2px(mActivity, 25), Utils.dip2px(mActivity, 35));
+            } else {
+                clMediaController.setPadding(Utils.dip2px(mActivity, 10), mStatusBarHeight, Utils.dip2px(mActivity, 15), mNavigationBarHeight);
+            }
+        } else {
+            flMore.setVisibility(GONE);
+            ibMore.setVisibility(GONE);
+            ibClose.setVisibility(VISIBLE);
+            int padding = Utils.dip2px(mActivity, 10);
+            clMediaController.setPadding(padding, padding, Utils.dip2px(mActivity, 15), padding);
+        }
+    }
+
+    public void setStatusBar(boolean fullScreen) {
+        if (fullScreen) {
+            StatusBarUtil.setFullScreen(mActivity);
+        } else {
+            StatusBarUtil.setStatusBarTranslucentStatus(mActivity);
+        }
+    }
+
+    public interface Callback {
+        void onSwitchFullScreen(boolean fullScreen);
+
+        void onClose();
     }
 }
