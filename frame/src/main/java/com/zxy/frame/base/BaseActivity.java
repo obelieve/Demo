@@ -43,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = this;
-        setScreenOrientation();
+        //setScreenOrientation();
         if (mNeedInsetStatusBar) {
             StatusBarUtil.setStatusBarColor(this, getStatusBarColor());
         } else {

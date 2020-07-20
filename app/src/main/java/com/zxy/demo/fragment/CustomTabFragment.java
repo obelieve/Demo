@@ -1,5 +1,6 @@
 package com.zxy.demo.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.zxy.demo.R;
+import com.zxy.demo.activity.TabActivity;
 import com.zxy.demo.utils.String2TabLayoutHelper;
 import com.zxy.demo.utils.StringTabLayoutHelper;
 import com.zxy.frame.base.BaseFragment;
@@ -21,6 +23,7 @@ import com.zxy.frame.base.BaseFragment;
 import java.util.Arrays;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class CustomTabFragment extends BaseFragment {
 
@@ -33,11 +36,11 @@ public class CustomTabFragment extends BaseFragment {
 
     StringTabLayoutHelper mTab1LayoutHelper = new StringTabLayoutHelper();
     String2TabLayoutHelper mTab2LayoutHelper = new String2TabLayoutHelper();
-    String[] mStrings = new String[]{"TAB1","TAB2","TAB3","TAB4","TAB5","TAB6"};
+    String[] mStrings = new String[]{"TAB1", "TAB2", "TAB3", "TAB4", "TAB5", "TAB6"};
 
     @Override
     public int layoutId() {
-        return R.layout.fragment_tab_type;
+        return R.layout.fragment_tab_custom;
     }
 
     @Override
@@ -54,18 +57,23 @@ public class CustomTabFragment extends BaseFragment {
                 return mStrings.length;
             }
         });
-        mTab1LayoutHelper.init(mVpContent,mTlTab1,Arrays.asList(mStrings),0);
-        mTab2LayoutHelper.init(mVpContent,mTlTab2,Arrays.asList(mStrings),0);
+        mTab1LayoutHelper.init(mVpContent, mTlTab1, Arrays.asList(mStrings), 0);
+        mTab2LayoutHelper.init(mVpContent, mTlTab2, Arrays.asList(mStrings), 0);
     }
 
-    public static class TabFragment extends Fragment{
+    @OnClick(R.id.btn_tab)
+    public void onViewClicked() {
+        startActivity(new Intent(getActivity(), TabActivity.class));
+    }
+
+    public static class TabFragment extends Fragment {
 
         private String mTitle;
 
-        public TabFragment(){
+        public TabFragment() {
         }
 
-        public TabFragment(String title){
+        public TabFragment(String title) {
             mTitle = title;
         }
 

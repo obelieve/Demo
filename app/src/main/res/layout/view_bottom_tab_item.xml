@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lav_menu"
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:scaleType="centerInside"

@@ -29,6 +29,7 @@
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/SplashTheme" />
+        <activity android:name=".activity.TabActivity"/>
         <!--文件访问-->
         <provider
             android:name="androidx.core.content.FileProvider"
