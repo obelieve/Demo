@@ -157,6 +157,14 @@
                     android:src="@drawable/full_screen" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageButton
+            android:id="@+id/ib_lock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|left"
+            android:background="@android:color/transparent"
+            android:src="@drawable/sel_lock" />
     </com.news.mediaplayer.MediaController>
 
     <LinearLayout
@@ -180,10 +188,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:visibility="gone"
             android:text="正在努力抢救中..."
             android:textColor="#ffffffff"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
@@ -204,9 +212,9 @@
             app:lottie_loop="true" />
 
         <TextView
-            android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:text="正在努力抢救中..."
             android:textColor="#ffffffff"
             android:textSize="12sp" />

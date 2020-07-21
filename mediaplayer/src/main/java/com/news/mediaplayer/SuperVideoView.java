@@ -62,6 +62,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
     private ImageButton ibMore;
     private LinearLayout llCover;
     private LinearLayout loadingView;
+    private ImageButton ibLock;
 
     //切换线路
     private FrameLayout flSwitchLine;
@@ -123,6 +124,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
         ibMore = findViewById(R.id.ib_more);
         llCover = view.findViewById(R.id.ll_cover);
         loadingView = view.findViewById(R.id.loading_view);
+        ibLock = view.findViewById(R.id.ib_lock);
 
         flSwitchLine = view.findViewById(R.id.fl_switch_line);
         llSwitchNoLine = view.findViewById(R.id.ll_switch_no_line);
@@ -180,6 +182,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
         ibBack.setOnClickListener(this);
         ibClose.setOnClickListener(this);
         ibMore.setOnClickListener(this);
+        ibLock.setOnClickListener(this);
         fullScreenImage.setOnClickListener(this);
         ibLineBack.setOnClickListener(this);
         ibLineClose.setOnClickListener(this);
@@ -212,7 +215,16 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             } else {
                 flMore.setVisibility(View.VISIBLE);
             }
-        } else if (v == fullScreenImage || v == fullLineScreenImage) {
+        } else if(v == ibLock){
+            if(!ibLock.isSelected()){
+                flMore.setVisibility(GONE);
+                clMediaController.setVisibility(GONE);
+                ibLock.setSelected(true);
+            }else{
+                clMediaController.setVisibility(VISIBLE);
+                ibLock.setSelected(false);
+            }
+        }else if (v == fullScreenImage || v == fullLineScreenImage) {
             if (mOnFullScreenListener != null) {
                 mOnFullScreenListener.onFullScreen(viewVideoPlayer, mediaController);
             }
@@ -412,8 +424,10 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             ibMore.setVisibility(VISIBLE);
             ibClose.setVisibility(GONE);
             if (mActivity.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                ibLock.setPadding(Utils.dip2px(mActivity, 25), 0,0,0);
                 clMediaController.setPadding(Utils.dip2px(mActivity, 25), Utils.dip2px(mActivity, 30), Utils.dip2px(mActivity, 25), Utils.dip2px(mActivity, 35));
             } else {
+                ibLock.setPadding(Utils.dip2px(mActivity, 10), 0,0,0);
                 clMediaController.setPadding(Utils.dip2px(mActivity, 10), mStatusBarHeight, Utils.dip2px(mActivity, 15), mNavigationBarHeight);
             }
         } else {
@@ -421,6 +435,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             ibMore.setVisibility(GONE);
             ibClose.setVisibility(VISIBLE);
             int padding = Utils.dip2px(mActivity, 10);
+            ibLock.setPadding(padding, 0,0,0);
             clMediaController.setPadding(padding, padding, Utils.dip2px(mActivity, 15), padding);
         }
     }
