@@ -37,7 +37,7 @@ public class TabActivity extends BaseActivity {
     BottomTabView viewBottomTab;
 
     boolean mLoadXmlTab = false;
-    FragmentManagerHelper mTabFragmentManagerHelper;
+    FragmentManagerHelper mFragmentManagerHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class TabActivity extends BaseActivity {
 
     @Override
     protected void initCreateAfterView(Bundle savedInstanceState) {
-        mTabFragmentManagerHelper = new FragmentManagerHelper(getSupportFragmentManager(), R.id.fl_content, new FragmentManagerHelper.FragmentFactory() {
+        mFragmentManagerHelper = new FragmentManagerHelper(getSupportFragmentManager(), R.id.fl_content, new FragmentManagerHelper.FragmentFactory() {
             @Override
             public Fragment genFragment(int index) {
                 Fragment fragment;
@@ -78,7 +78,7 @@ public class TabActivity extends BaseActivity {
             viewBottomTab.setup(new BottomTabView.Callback() {
                 @Override
                 public void onSelectChange(int index, View view, boolean select) {
-                    mTabFragmentManagerHelper.switchFragment(index);
+                    mFragmentManagerHelper.switchFragment(index);
                 }
             });
         } else {
@@ -90,7 +90,7 @@ public class TabActivity extends BaseActivity {
                 @Override
                 public void onSelectChange(int index, View view, boolean select) {
                     BottomTabViewHelper.selectChange(index, view, select);
-                    mTabFragmentManagerHelper.switchFragment(index);
+                    mFragmentManagerHelper.switchFragment(index);
                 }
             });
         }
