@@ -17,7 +17,7 @@ import com.zxy.demo.MainEnum;
 import com.zxy.demo.R;
 import com.zxy.demo.fragment.LoadRefreshFragment;
 import com.zxy.frame.base.BaseActivity;
-import com.zxy.frame.utils.FragmentManagerHelper;
+import com.zxy.frame.utils.helper.FragmentManagerHelper;
 import com.zxy.frame.view.BottomTabView;
 import com.zxy.utility.SystemUtil;
 
