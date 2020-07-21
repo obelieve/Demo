@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
  * Created by Admin
  * on 2020/7/20
  */
-public class TabFragmentManagerHelper {
+public class FragmentManagerHelper {
 
     private Fragment mCurrentFragment;
     private FragmentManager mFragmentManager;
@@ -24,7 +24,7 @@ public class TabFragmentManagerHelper {
     @IdRes
     private int mContainer;
 
-    public TabFragmentManagerHelper(FragmentManager fm, @IdRes int container, FragmentFactory factory) {
+    public FragmentManagerHelper(FragmentManager fm, @IdRes int container, FragmentFactory factory) {
         mFragmentManager = fm;
         mContainer = container;
         mFragmentFactory = factory;

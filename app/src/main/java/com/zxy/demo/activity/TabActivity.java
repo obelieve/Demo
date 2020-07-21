@@ -17,7 +17,7 @@ import com.zxy.demo.MainEnum;
 import com.zxy.demo.R;
 import com.zxy.demo.fragment.LoadRefreshFragment;
 import com.zxy.frame.base.BaseActivity;
-import com.zxy.frame.utils.TabFragmentManagerHelper;
+import com.zxy.frame.utils.FragmentManagerHelper;
 import com.zxy.frame.view.BottomTabView;
 import com.zxy.utility.SystemUtil;
 
@@ -37,11 +37,11 @@ public class TabActivity extends BaseActivity {
     BottomTabView viewBottomTab;
 
     boolean mLoadXmlTab = false;
-    TabFragmentManagerHelper mTabFragmentManagerHelper;
+    FragmentManagerHelper mTabFragmentManagerHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        TabFragmentManagerHelper.activityRemoveFragmentInstanceState(savedInstanceState);
+        FragmentManagerHelper.activityRemoveFragmentInstanceState(savedInstanceState);
         super.onCreate(savedInstanceState);
     }
 
@@ -53,7 +53,7 @@ public class TabActivity extends BaseActivity {
 
     @Override
     protected void initCreateAfterView(Bundle savedInstanceState) {
-        mTabFragmentManagerHelper = new TabFragmentManagerHelper(getSupportFragmentManager(), R.id.fl_content, new TabFragmentManagerHelper.FragmentFactory() {
+        mTabFragmentManagerHelper = new FragmentManagerHelper(getSupportFragmentManager(), R.id.fl_content, new FragmentManagerHelper.FragmentFactory() {
             @Override
             public Fragment genFragment(int index) {
                 Fragment fragment;
