@@ -27,5 +27,8 @@
     <style name="TabLayoutTextStyle">
         <item name="android:textSize">14sp</item>
     </style>
-
+    <style name="NoSpaceActionBarTheme" parent="Base.Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+    </style>
 </resources>

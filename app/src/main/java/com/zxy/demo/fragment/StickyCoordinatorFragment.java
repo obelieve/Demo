@@ -1,7 +1,6 @@
 package com.zxy.demo.fragment;
 
 import android.os.Handler;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,6 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.zxy.demo.R;
-import com.zxy.demo.fragment.LoadRefreshFragment;
 import com.zxy.demo.view.PageStatusView;
 import com.zxy.frame.base.BaseFragment;
 
@@ -30,8 +28,8 @@ public class StickyCoordinatorFragment extends BaseFragment {
 
     @BindView(R.id.cl_content)
     CoordinatorLayout clContent;
-    @BindView(R.id.common_index_activity_view_status_bar)
-    View commonIndexActivityViewStatusBar;
+//    @BindView(R.id.common_index_activity_view_status_bar)
+//    View commonIndexActivityViewStatusBar;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.ctl_bar)

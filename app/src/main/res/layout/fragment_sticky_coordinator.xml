@@ -20,6 +20,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:expandedTitleMarginStart="100dp"
+                app:collapsedTitleGravity="center"
+                app:title="金卡贷记卡金卡贷"
+                app:expandedTitleGravity="top"
+                app:expandedTitleMarginTop="62dp"
                 app:layout_collapseMode="parallax"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
                 <!--Header部分-->
@@ -38,32 +42,36 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     app:contentInsetStart="0dp"
                     app:layout_collapseMode="pin"
+                    app:navigationIcon="@drawable/ic_ali_pay"
+                    app:contentInsetLeft="10dp"
+                    style="@style/NoSpaceActionBarTheme"
+                    android:paddingRight="48dp"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:orientation="vertical">
-                        <!--状态栏-->
-                        <View
-                            android:id="@+id/common_index_activity_view_status_bar"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp" />
-                        <!--顶部固定部分-->
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp">
-                            <TextView
-                                android:layout_gravity="center"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="固定部分"/>
-                        </FrameLayout>
-                    </LinearLayout>
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:background="@color/white"-->
+<!--                        android:orientation="vertical">-->
+<!--                        &lt;!&ndash;状态栏&ndash;&gt;-->
+<!--                        <View-->
+<!--                            android:id="@+id/common_index_activity_view_status_bar"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="0dp" />-->
+<!--                        &lt;!&ndash;顶部固定部分&ndash;&gt;-->
+<!--                        <FrameLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="50dp">-->
+<!--                            <TextView-->
+<!--                                android:layout_gravity="center"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="固定部分"/>-->
+<!--                        </FrameLayout>-->
+<!--                    </LinearLayout>-->
                 </androidx.appcompat.widget.Toolbar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
