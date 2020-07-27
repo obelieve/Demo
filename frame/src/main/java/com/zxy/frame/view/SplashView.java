@@ -1,6 +1,7 @@
-package com.zxy.demo.view;
+package com.zxy.frame.view;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,27 +10,25 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import com.zxy.demo.R;
 
-import butterknife.BindView;
+import com.zxy.frame.R;
+import com.zxy.utility.SystemUtil;
+
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class SplashView extends FrameLayout {
 
-    @BindView(R.id.vp_content)
     ViewPager vpContent;
-    @BindView(R.id.view_indicator)
     IndicatorView viewIndicator;
-    @BindView(R.id.tv_next)
     TextView tvNext;
 
     PagerAdapter mAdapter;
-    int[] resInts = new int[]{R.drawable.splash_1, R.drawable.splash_2, R.drawable.splash_3};
     Callback mCallback;
 
     public void setCallback(Callback callback) {
@@ -48,6 +47,20 @@ public class SplashView extends FrameLayout {
     private void init() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_splash, this, true);
         ButterKnife.bind(this, view);
+        vpContent = view.findViewById(R.id.vp_content);
+        viewIndicator = view.findViewById(R.id.view_indicator);
+        tvNext = view.findViewById(R.id.tv_next);
+        tvNext.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCallback != null) {
+                    mCallback.onNext();
+                }
+            }
+        });
+    }
+
+    public void loadData(@DrawableRes int[] resInts, @DrawableRes int selectedRes, @DrawableRes int unSelectedRes, @ColorInt int nextColor) {
         ImageView[] views = new ImageView[resInts.length];
         for (int i = 0; i < views.length; i++) {
             views[i] = new ImageView(getContext());
@@ -57,9 +70,15 @@ public class SplashView extends FrameLayout {
         }
         viewIndicator.setCountAndIndex(resInts.length, 0)
                 .setIndicatorGap(5)
-                .setSelectedDrawable(R.drawable.bg_indicator_main)
-                .setUnSelectedDrawable(R.drawable.bg_indicator_cccccc)
+                .setSelectedDrawable(selectedRes)
+                .setUnSelectedDrawable(unSelectedRes)
                 .build();
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.RECTANGLE);
+        drawable.setColor(nextColor);
+        SystemUtil.init(getContext().getApplicationContext());
+        drawable.setCornerRadius(SystemUtil.dp2px(20));
+        tvNext.setBackground(drawable);
         mAdapter = new PagerAdapter() {
 
             @Override
@@ -108,13 +127,6 @@ public class SplashView extends FrameLayout {
             }
         });
         vpContent.setAdapter(mAdapter);
-    }
-
-    @OnClick(R.id.tv_next)
-    public void onViewClicked() {
-        if(mCallback!=null){
-            mCallback.onNext();
-        }
     }
 
     public interface Callback {

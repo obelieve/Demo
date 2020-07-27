@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.zxy.demo.view.SplashView
+    <com.zxy.frame.view.SplashView
         android:id="@+id/view_splash"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
