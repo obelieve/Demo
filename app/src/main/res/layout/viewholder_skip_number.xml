@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_height="wrap_content">
+    <com.zxy.demo.test.ui.NumUseTTFTextView
+        android:id="@+id/ntv_number"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:layout_marginRight="10dp"
+        android:text="01"
+        android:background="@drawable/bg_circle_edf5ff_15dp"
+        android:textColor="@color/color_main"/>
+    <com.zxy.demo.test.ui.TextProgressBar
+        android:id="@+id/tpb_progress"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_height="14dp"/>
+</LinearLayout>

@@ -9,15 +9,17 @@ import com.zxy.demo.fragment.LottieAnimationFragment;
 import com.zxy.demo.fragment.PayFragment;
 import com.zxy.demo.fragment.SplashFragment;
 import com.zxy.demo.fragment.StickyCoordinatorFragment;
-import com.zxy.demo.test.TestFragment;
 import com.zxy.demo.fragment.VersionUpdateEntranceFragment;
 import com.zxy.demo.fragment.ViewRenderFragment;
 import com.zxy.demo.fragment.ZDialogFragment;
 import com.zxy.demo.fragment.ZWebViewFragment;
+import com.zxy.demo.test.TestFragment;
+import com.zxy.demo.test.ui.UITestFragment;
 
 public enum MainEnum {
 
-    M14("TestFragment", TestFragment.class,true),
+    M15("UITestFragment", UITestFragment.class,true),
+    M14("TestFragment", TestFragment.class),
     M13("控件效果", ViewRenderFragment.class),
     M12("自定义Tab", CustomTabFragment.class),
     M11("列表显示", ListContainerFragment.class),

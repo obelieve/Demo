@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+    <com.zxy.demo.test.ui.TextProgressBar
+        android:id="@+id/tpb_left"
+        android:layout_width="80dp"
+        android:layout_marginRight="5dp"
+        android:layout_height="8dp"/>
+    <TextView
+        android:id="@+id/tv_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="23珠"
+        android:textColor="#ff999999"
+        android:textSize="12sp" />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="总共"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="#ff333333"
+        android:textSize="12sp" />
+    <TextView
+        android:id="@+id/tv_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="23珠"
+        android:textColor="#ff999999"
+        android:textSize="12sp" />
+    <com.zxy.demo.test.ui.TextProgressBar
+        android:id="@+id/tpb_right"
+        android:layout_width="80dp"
+        android:layout_marginLeft="5dp"
+        android:layout_height="8dp"/>
+</LinearLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zxy.demo.test.ui.NumUseTTFTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ntv_num"
+    android:layout_width="24dp"
+    android:gravity="center"
+    android:layout_height="24dp"
+    android:textColor="#0077FF"
+    android:background="@drawable/bg_circle_edf5ff_12dp"
+    android:textSize="15sp"
+    tools:text="112" />

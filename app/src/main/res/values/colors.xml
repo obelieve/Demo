@@ -18,4 +18,13 @@
     <color name="three_layer_bg_2_selected">#FFFFFF</color>
     <color name="three_layer_text_color_nor">#333333</color>
     <color name="three_layer_text_color_selected">#0077FF</color>
+    <color name="colorF0F0F0">#F0F0F0</color>
+    <color name="color999999">#999999</color>
+    <color name="color_333333">#333333</color>
+    <color name="color_line">#F0F0F0</color>
+    <color name="red">#F53F3F</color>
+    <color name="color_FBFCFB">#FBFCFB</color>
+    <color name="color_text_main">#333333</color>
+    <color name="color_main">#333333</color>
+    <color name="color_black_F7F7F7">#F7F7F7</color>
 </resources>
