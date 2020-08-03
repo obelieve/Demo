@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zxy.demo.fragment.CRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rv_item"
+    android:layout_width="42dp"
+    android:layout_height="wrap_content"
+    android:nestedScrollingEnabled="false"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+</com.zxy.demo.fragment.CRecyclerView>

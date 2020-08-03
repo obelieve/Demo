@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zxy.demo.fragment.CTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_content"
+    android:layout_width="42dp"
+    android:gravity="center"
+    android:layout_height="42dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"/>

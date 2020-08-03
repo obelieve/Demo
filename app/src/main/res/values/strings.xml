@@ -1,3 +1,122 @@
 <resources>
     <string name="app_name">Demo</string>
+    <string name="test">
+
+为了追求更加便捷，好看实用的Log，我在github 上进行了搜索查找，找到了以下的Log开源库。
+
+电脑端显示Log
+
+调用这个方法就能获取到当前方法所在方法栈信息，我们再来看看StackTraceElement这个类
+
+
+mNWoV0.png
+我们做一个小测试~
+
+
+mNW5bq.png
+这样类名，方法名，行数就都获取到了。
+
+第二个问题来了，怎么做到这么整洁的呢
+源码是这么做的，拼出来的!
+
+桥上风景
+阅读 38
+评论 0
+赞 1
+2018-03-24 俞凌雄豪言：2018年抓住互联网+分享经济，会造就一大批富翁
+用浅笑把欢愉带给别人，这是融洽人际关系的最根基要求。浅笑能强化有声说话沟通的功能，加强应酬了局；会消弭对方的不满情...
+
+拼自己想要的梦想
+阅读 42
+评论 0
+赞 0
+
+
+lovesosoi
+总资产507 (约45.80元)
+双RecyclerView 不一样的联动方式
+阅读 905
+MAndroid 之 动态权限库
+阅读 17
+\n\n\n\n\n\n\n\n\n\n
+\n\n\n\n\n\n\n\n\n\n
+\n\n\n\n\n\n\n\n\n\n
+推荐阅读
+8年老Android开发谈；Context都没弄明白凭什么拿高薪？
+阅读 39,959
+字节跳动Android面试凉凉，挥泪整理面筋，你不看看吗？
+阅读 16,784
+Android实现面包屑效果，支持Fragment联动
+阅读 339
+Android面经分享，失业两个月，五一节前拿到Offer，年薪25W！
+阅读 1,732
+阿里面试官：说一下RecyclerView 性能优化
+阅读 5,846
+写下你的评论...
+    </string>
+    <string name="test1">
+        拼自己想要的梦想
+阅读 42
+评论 0
+赞 0
+
+
+lovesosoi
+总资产507 (约45.80元)
+双RecyclerView 不一样的联动方式
+阅读 905
+MAndroid 之 动态权限库
+阅读 170
+推荐阅读
+8年老Android开发谈；Context都没弄明白凭什么拿高薪？
+阅读 39,959
+字节跳动Android面试凉凉，挥泪整理面筋，你不看看吗？
+阅读 16,784
+Android实现面包屑效果，支持Fragment联动
+阅读 339
+Android面经分享，失业两个月，五一节前拿到Offer，年薪25W！
+阅读 1,732
+阿里面试官：说一下RecyclerView 性能优化
+阅读 5,846
+写下你的评论...
+    </string>
+    <string name="test2">
+        拼自己想要的梦想
+阅读 42
+评论 0
+赞 0
+
+总资产507 (约45.80元)
+双RecyclerView 不一样的联动方式
+阅读 905
+MAndroid 之 动态权限库
+阅读 170
+推荐阅读
+8年老Android开发谈；Context都没弄明白凭什么拿高薪？
+阅读 39,959
+字节跳动Android面试凉凉，挥泪整理面筋，你不看看吗？
+阅读 16,784
+Android实现面包屑效果，支持Fragment联动
+阅读 339
+Android面经分享，失业两个月，五一节前拿到Offer，年薪25W！
+阅读 1,732
+lovesosoi
+总资产507 (约45.80元)
+双RecyclerView 不一样的联动方式
+阅读 905
+MAndroid 之 动态权限库
+阅读 170
+推荐阅读
+8年老Android开发谈；Context都没弄明白凭什么拿高薪？
+阅读 39,959
+字节跳动Android面试凉凉，挥泪整理面筋，你不看看吗？
+阅读 16,784
+Android实现面包屑效果，支持Fragment联动
+阅读 339
+Android面经分享，失业两个月，五一节前拿到Offer，年薪25W！
+阅读 1,732
+阿里面试官：说一下RecyclerView 性能优化
+阅读 5,846
+写下你的评论...
+    </string>
 </resources>
