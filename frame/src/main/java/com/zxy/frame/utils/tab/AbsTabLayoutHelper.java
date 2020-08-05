@@ -24,6 +24,8 @@ public abstract class AbsTabLayoutHelper<T> implements ITabStatus<T> {
             throw new IllegalArgumentException("初始化TabLayout 参数错误！");
         }
         mCurrentSelectedPosition = index;
+        mViewPager.clearOnPageChangeListeners();
+        mTabLayout.clearOnTabSelectedListeners();
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
