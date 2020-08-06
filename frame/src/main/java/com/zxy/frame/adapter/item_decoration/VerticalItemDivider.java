@@ -83,10 +83,16 @@ public class VerticalItemDivider extends RecyclerView.ItemDecoration {
             mDividerWidth = (int) (mDividerWidth * mDensity);
             mIsFirst = false;
         }
-        if (mDividerToTop)
-            outRect.top = mDividerWidth;
-        else
-            outRect.bottom = mDividerWidth;
+        int position = parent.getChildAdapterPosition(view);
+        if (!((mHeaderNoDivider && position == 0) ||
+                (mFooterNoDivider && position == parent.getAdapter().getItemCount() - 1) ||
+                mNoDividers.size() > 0 && mNoDividers.contains(position))) {
+            if (mDividerToTop)
+                outRect.top = mDividerWidth;
+            else
+                outRect.bottom = mDividerWidth;
+        }
+
     }
 
     @Override
