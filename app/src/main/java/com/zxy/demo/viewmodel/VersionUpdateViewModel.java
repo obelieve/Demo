@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.zxy.demo.App;
 import com.zxy.demo.entity.VersionUpdateEntity;
 import com.zxy.frame.net.ApiService;
+import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.net.BaseResponse;
 import com.zxy.frame.net.BaseSubscribe;
 
@@ -24,7 +25,7 @@ public class VersionUpdateViewModel extends ViewModel {
             }
 
             @Override
-            public void onError(Throwable e) {
+            protected void onError(ApiServiceException e) {
                 mLoadingLiveData.postValue(false);
             }
         });

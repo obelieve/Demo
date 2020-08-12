@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel;
 import com.zxy.demo.App;
 import com.zxy.demo.entity.SquarePostEntity;
 import com.zxy.frame.net.ApiService;
+import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.net.BaseResponse;
 import com.zxy.frame.net.BaseSubscribe;
+import com.zxy.frame.utils.ToastUtil;
 
 import java.util.List;
 
@@ -31,8 +33,10 @@ public class LoadRefreshViewModel extends ViewModel {
                 success(response.getEntity(),isMore);
             }
 
+
             @Override
-            public void onError(Throwable e) {
+            protected void onError(ApiServiceException e) {
+                ToastUtil.show(e.getMessage());
                 failure(isMore);
             }
         });
