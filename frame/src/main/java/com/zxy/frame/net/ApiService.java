@@ -18,11 +18,9 @@ import okhttp3.ResponseBody;
 
 public class ApiService {
 
-    private static final int SUCCESS_CODE = 200;
-
     private static DownloadInterfaceImpl sDownloadInterfaceImpl;
 
-    public static void setDownloadInterface(DownloadInterface downloadInterface){
+    public static void setDownloadInterface(DownloadInterface downloadInterface) {
         sDownloadInterfaceImpl = new DownloadInterfaceImpl(downloadInterface);
     }
 
@@ -33,7 +31,7 @@ public class ApiService {
         return sDownloadInterfaceImpl.downloadFile(downParam, fileUrl);
     }
 
-    public static Disposable download(String savePath, String fileUrl, DownloadInterfaceImpl.DownloadCallback callback){
+    public static Disposable download(String savePath, String fileUrl, DownloadInterfaceImpl.DownloadCallback callback) {
         if (sDownloadInterfaceImpl == null) {
             throw new ApiServiceException("need invoke setDownloadInterface(DownloadInterface)!");
         }
@@ -76,10 +74,16 @@ public class ApiService {
                 return upstream.flatMap(new Function<BaseResponse<T>, Observable<BaseResponse<T>>>() {
                     @Override
                     public Observable<BaseResponse<T>> apply(@NonNull BaseResponse<T> tBaseResponse) throws Exception {
-                        if (tBaseResponse.getCode() == SUCCESS_CODE) {
-                            T t = MGson.newGson().fromJson(tBaseResponse.getData(), tClass);
-                            tBaseResponse.setEntity(t);
-                            return createData(tBaseResponse);
+                        if (tBaseResponse.getCode() == ApiStatusCode.SUCCESS_CODE) {
+                            try {
+                                T t = MGson.newGson().fromJson(tBaseResponse.getData(), tClass);
+                                tBaseResponse.setEntity(t);
+                                return createData(tBaseResponse);
+                            } catch (Exception e) {
+                                ApiServiceException exception = new ApiServiceException(e.getMessage(), ApiStatusCode.JSON_SYNTAX_EXCEPTION_CODE, tBaseResponse.getData());
+                                exception.setStackTrace(e.getStackTrace());
+                                return Observable.error(exception);
+                            }
                         } else {
                             return Observable.error(new ApiServiceException(tBaseResponse.getMsg(), tBaseResponse.getCode(), tBaseResponse.getData()));
                         }
