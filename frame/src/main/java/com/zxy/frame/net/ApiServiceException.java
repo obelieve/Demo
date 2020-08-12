@@ -1,11 +1,15 @@
 package com.zxy.frame.net;
 
-public class BaseApiServiceException extends Exception {
+public class ApiServiceException extends RuntimeException {
 
     private int code;
     private String data;
 
-    public BaseApiServiceException(String message, int code, String data) {
+    public ApiServiceException(String message) {
+        super(message);
+    }
+
+    public ApiServiceException(String message, int code, String data) {
         super(message);
     }
 

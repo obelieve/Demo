@@ -29,7 +29,7 @@ import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.zxy.demo.MainActivity;
 import com.zxy.demo.R;
 import com.zxy.demo.entity.VersionUpdateEntity;
-import com.zxy.demo.http.ApiService;
+import com.zxy.frame.net.ApiService;
 import com.zxy.frame.base.BaseActivity;
 import com.zxy.frame.base.BaseFragment;
 import com.zxy.frame.net.download.DownloadInterfaceImpl;
@@ -162,7 +162,7 @@ public class VersionUpdateFragment extends BaseFragment {
             });
         }
         mDownloadHelper.setData(mEntity.getEnforce() == 1).show();
-        mDisposable = ApiService.getInstance().download(savePath, downloadUrl, new DownloadInterfaceImpl.DownloadCallback() {
+        mDisposable = ApiService.download(savePath, downloadUrl, new DownloadInterfaceImpl.DownloadCallback() {
             @Override
             public void onStart() {
                 LogUtil.e("更新下载 开始");

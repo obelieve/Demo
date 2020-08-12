@@ -1,9 +1,6 @@
 package com.zxy.frame.net;
 
 
-import com.zxy.frame.net.gson.MGson;
-
-
 /**
  * 网络返回基类 支持泛型
  */
@@ -11,7 +8,7 @@ public class BaseResponse<T>  {
     private int code;
     private String msg;
     private String data;
-    private T t;
+    private T entity;
 
     public BaseResponse() {
     }
@@ -32,18 +29,19 @@ public class BaseResponse<T>  {
         this.msg = msg;
     }
 
-    public T getData(Class<T> c) {
-        if (t == null) {
-            t = MGson.newGson().fromJson(data, c);
-        }
-        return t;
-    }
-
-    public String getDataJson() {
+    public String getData() {
         return data;
     }
 
-    public void setData(String json) {
-        this.data = json;
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public T getEntity() {
+        return entity;
+    }
+
+    public void setEntity(T entity) {
+        this.entity = entity;
     }
 }

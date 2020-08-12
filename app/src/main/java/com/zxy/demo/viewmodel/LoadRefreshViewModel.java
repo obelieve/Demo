@@ -3,8 +3,9 @@ package com.zxy.demo.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.zxy.demo.App;
 import com.zxy.demo.entity.SquarePostEntity;
-import com.zxy.demo.http.ApiService;
+import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.BaseResponse;
 import com.zxy.frame.net.BaseSubscribe;
 
@@ -24,10 +25,10 @@ public class LoadRefreshViewModel extends ViewModel {
         } else {
             mCurPage++;
         }
-        ApiService.getInstance().square_post(mCurPage).subscribe(new BaseSubscribe<BaseResponse<SquarePostEntity>>() {
+        ApiService.wrap(App.getServiceInterface().square_post(mCurPage),SquarePostEntity.class).subscribe(new BaseSubscribe<BaseResponse<SquarePostEntity>>() {
             @Override
             public void onNext(BaseResponse<SquarePostEntity> response) {
-                success(response.getData(SquarePostEntity.class),isMore);
+                success(response.getEntity(),isMore);
             }
 
             @Override

@@ -3,8 +3,9 @@ package com.zxy.demo.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.zxy.demo.App;
 import com.zxy.demo.entity.VersionUpdateEntity;
-import com.zxy.demo.http.ApiService;
+import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.BaseResponse;
 import com.zxy.frame.net.BaseSubscribe;
 
@@ -15,11 +16,11 @@ public class VersionUpdateViewModel extends ViewModel {
 
     public void version_check() {
         mLoadingLiveData.postValue(true);
-        ApiService.getInstance().version_check().subscribe(new BaseSubscribe<BaseResponse<VersionUpdateEntity>>() {
+        ApiService.wrap(App.getServiceInterface().version_check(),VersionUpdateEntity.class).subscribe(new BaseSubscribe<BaseResponse<VersionUpdateEntity>>() {
             @Override
             public void onNext(BaseResponse<VersionUpdateEntity> response) {
                 mLoadingLiveData.postValue(false);
-                mVersionUpdateEntityLiveData.postValue(response.getData(VersionUpdateEntity.class));
+                mVersionUpdateEntityLiveData.postValue(response.getEntity());
             }
 
             @Override
