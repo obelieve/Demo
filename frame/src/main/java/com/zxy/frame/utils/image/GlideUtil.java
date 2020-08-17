@@ -1,5 +1,6 @@
 package com.zxy.frame.utils.image;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
@@ -8,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -16,12 +16,12 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.bumptech.glide.request.transition.Transition;
+import com.zxy.frame.R;
 
 
 public class GlideUtil {
 
     private static DrawableCrossFadeFactory drawableCrossFadeFactory = new DrawableCrossFadeFactory.Builder(300).setCrossFadeEnabled(true).build();
-
     /**
      * 默认加载
      *
@@ -30,19 +30,17 @@ public class GlideUtil {
      * @param iv
      */
     public static void loadImage(Context context, String path, ImageView iv) {
+        if (context == null || (context instanceof Activity && ((Activity) context).isDestroyed())) {
+            return;
+        }
         Glide.with(context).load(path).transition(DrawableTransitionOptions.with(drawableCrossFadeFactory)).into(iv);
     }
 
-    /**
-     * 默认加载
-     *
-     * @param context
-     * @param path
-     * @param iv
-     */
-    @SuppressWarnings("unchecked")
-    public static void loadImageRound(Context context, String path, ImageView iv) {
-        Glide.with(context).load(path).transition(DrawableTransitionOptions.with(drawableCrossFadeFactory)).transform(new MultiTransformation(new CenterCrop(),  new GlideRoundTransform(context, path != null && path.contains(".gif")))).into(iv);
+    public static void loadImage(Context context, int resourceId, ImageView iv) {
+        if (context == null || (context instanceof Activity && ((Activity) context).isDestroyed())) {
+            return;
+        }
+        Glide.with(context).load(resourceId).transition(DrawableTransitionOptions.with(drawableCrossFadeFactory)).into(iv);
     }
 
     /**
@@ -55,24 +53,33 @@ public class GlideUtil {
      * @param errorImage
      */
     public static void loadImage(Context context, String path, ImageView iv, int loadingImage, int errorImage) {
+        if (context == null || (context instanceof Activity && ((Activity) context).isDestroyed())) {
+            return;
+        }
         Glide.with(context).load(path).placeholder(loadingImage).error(errorImage).into(iv);
     }
 
-    /**
-     * 设置加载中以及加载失败图片并且指定大小
-     *
-     * @param context
-     * @param path
-     * @param width
-     * @param height
-     * @param mImageView
-     * @param loadingImage
-     * @param errorImage
-     */
-    public static void loadImage(Context context, String path, int width, int height, ImageView mImageView, int loadingImage, int errorImage) {
-        Glide.with(context).load(path).override(width, height).placeholder(loadingImage).error(errorImage).into(mImageView);
+    public static void loadImageCircle(Context mContext, String path, ImageView mImageView) {
+        if (mContext == null || (mContext instanceof Activity && ((Activity) mContext).isDestroyed())) {
+            return;
+        }
+        GlideApp.with(mContext).load(path).placeholder(R.color.transparent).transform(new CenterCrop(), new GlideCircleTransform()).into(mImageView);
     }
 
+    /**
+     * 加载为圆形图片
+     *
+     * @param mContext
+     * @param path
+     * @param mImageView
+     * @param errRes
+     */
+    public static void loadImageCircle(Context mContext, String path, ImageView mImageView, int errRes) {
+        if (mContext == null || (mContext instanceof Activity && ((Activity) mContext).isDestroyed())) {
+            return;
+        }
+        GlideApp.with(mContext).load(path).placeholder(R.color.transparent).error(errRes).transform(new CenterCrop(), new GlideCircleTransform()).into(mImageView);
+    }
 
     /**
      * 设置缩略图支持,会先加载缩略图
@@ -83,6 +90,18 @@ public class GlideUtil {
      */
     public static void loadImageThumbnail(Context context, String path, ImageView mImageView) {
         Glide.with(context).load(path).thumbnail(0.1f).into(mImageView);
+    }
+
+    /**
+     * 设置缓存策略
+     * 策略解说：
+     * all:缓存源资源和转换后的资源
+     * none:不作任何磁盘缓存
+     * source:缓存源资源
+     * result：缓存转换后的资源
+     */
+    public static void loadImageDiskCache(Context context, String path, ImageView mImageView) {
+        Glide.with(context).load(path).placeholder(android.R.color.darker_gray).error(android.R.color.darker_gray).diskCacheStrategy(DiskCacheStrategy.ALL).into(mImageView);
     }
 
     /**
@@ -118,7 +137,6 @@ public class GlideUtil {
 
             }
         });
-
     }
 
     private static void setImageSize(String path, Context context, Drawable resource, ImageView imageView, float maxsize, boolean isGif) {
@@ -140,17 +158,4 @@ public class GlideUtil {
         Glide.with(context).load(path).transform(new GlideRoundTransform(context, isGif)).into(imageView);
     }
 
-
-    /**
-     * 设置缓存策略
-     * 策略解说：
-     * all:缓存源资源和转换后的资源
-     * none:不作任何磁盘缓存
-     * source:缓存源资源
-     * result：缓存转换后的资源
-     */
-    public static void loadImageDiskCache(Context context, String path, ImageView mImageView) {
-        Glide.with(context).load(path).placeholder(android.R.color.darker_gray).error(android.R.color.darker_gray).diskCacheStrategy(DiskCacheStrategy.ALL).into(mImageView);
-    }
 }
-
