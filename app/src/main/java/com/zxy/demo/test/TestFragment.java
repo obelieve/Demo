@@ -6,12 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.zxy.demo.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
-import com.zxy.frame.adapter.item_decoration.GridItemDivider;
+import com.zxy.frame.adapter.item_decoration.StaggeredGridItemDivider;
 import com.zxy.frame.base.BaseFragment;
 import com.zxy.frame.utils.ToastUtil;
 import com.zxy.utility.SystemUtil;
@@ -46,13 +46,13 @@ public class TestFragment extends BaseFragment {
         tv.setBackgroundColor(Color.GREEN);
         tv.setText("空数据");
         mTestAdapter.setEmptyView(tv);
-        rvContent.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        rvContent.addItemDecoration(new GridItemDivider(true, 10, Color.DKGRAY).noDividerItem(true, true));
+        rvContent.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        rvContent.addItemDecoration(new StaggeredGridItemDivider(true,10,Color.DKGRAY).dividerToLeftTop(true).noDividerItem(true,true));
         rvContent.setAdapter(mTestAdapter);
         List<String> l = new ArrayList<>();
         int i = 6;
         while (i > 0) {
-            l.add(i + "");
+            l.add(i + "ASDAD我完全A");
             i--;
         }
         mTestAdapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<String>() {

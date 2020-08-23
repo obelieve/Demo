@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @Author zxy
+ */
 public class HorizontalItemDivider extends RecyclerView.ItemDecoration {
 
     private boolean mIsFirst = true;
@@ -98,8 +101,8 @@ public class HorizontalItemDivider extends RecyclerView.ItemDecoration {
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDraw(c, parent, state);
         int childCount = parent.getChildCount();
-        int top = parent.getPaddingTop()+ (int) (mIsDP ? mDensity * mMarginTop : mMarginTop);
-        int bottom = parent.getHeight() - parent.getPaddingBottom()- (int) (mIsDP ? mDensity * mMarginBottom : mMarginBottom);
+        int top = parent.getPaddingTop() + (int) (mIsDP ? mDensity * mMarginTop : mMarginTop);
+        int bottom = parent.getHeight() - parent.getPaddingBottom() - (int) (mIsDP ? mDensity * mMarginBottom : mMarginBottom);
         for (int i = 0; i < childCount; i++) {
             Paint paint = mPaint;
             View view = parent.getChildAt(i);
@@ -110,10 +113,10 @@ public class HorizontalItemDivider extends RecyclerView.ItemDecoration {
             }
             int left;
             int right;
-            if(mDividerToLeft){
+            if (mDividerToLeft) {
                 left = view.getLeft() - mDividerWidth;
                 right = view.getLeft();
-            }else{
+            } else {
                 left = view.getRight();
                 right = left + mDividerWidth;
             }

@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @Author zxy
+ */
 public class VerticalItemDivider extends RecyclerView.ItemDecoration {
 
     private boolean mIsFirst = true;
