@@ -34,6 +34,6 @@ public class SplashActivity extends SplashADActivity {
 
     @Override
     public boolean isSkipAD() {
-        return true;
+        return false;
     }
 }
