@@ -1,4 +1,4 @@
-package com.zxy.demo;
+package com.zxy.admodule;
 
 /**
  * demo工程的广告位id

@@ -1,4 +1,4 @@
-package com.zxy.demo;
+package com.zxy.admodule;
 
 import android.app.Activity;
 import android.graphics.Color;

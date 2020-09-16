@@ -1,4 +1,4 @@
-package com.zxy.demo;
+package com.zxy.admodule;
 
 public class Constants {
   public static final String BuglyAppID = "28d030a2bf";

@@ -1,10 +1,13 @@
 package com.zxy.demo;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.zxy.admodule.SplashActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.tv)
     public void onViewClicked() {
-
+        startActivity(new Intent(MainActivity.this, SplashActivity.class));
     }
 }

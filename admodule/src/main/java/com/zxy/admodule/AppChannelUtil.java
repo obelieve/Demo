@@ -1,12 +1,12 @@
-package com.zxy.demo;
+package com.zxy.admodule;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
-import com.zxy.utility.LogUtil;
 
 public class AppChannelUtil {
     private static Context sContext;
@@ -26,7 +26,9 @@ public class AppChannelUtil {
             if (appInfoBundle != null)
                 resultData = appInfoBundle.getString(key);
         }
-        LogUtil.i("AppChannelUtil", "渠道号--------" + resultData);
+        if (BuildConfig.DEBUG) {
+            Log.i("AppChannelUtil", "渠道号--------" + resultData);
+        }
         return resultData;
     }
 

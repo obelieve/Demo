@@ -1,4 +1,4 @@
-package com.zxy.demo;
+package com.zxy.admodule;
 
 /**
  * Created by zxy

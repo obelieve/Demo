@@ -1,4 +1,4 @@
-package com.zxy.demo;
+package com.zxy.admodule;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -225,7 +225,7 @@ public class SplashADActivity extends Activity implements SplashADListener,ADSet
 
   @Override
   public void onNoAD(AdError error) {
-    String str = String.format("LoadSplashADFail, eCode=%d, errorMsg=%s", error.getErrorCode(),
+    final String str = String.format("LoadSplashADFail, eCode=%d, errorMsg=%s", error.getErrorCode(),
         error.getErrorMsg());
     Log.i("AD_DEMO",str);
     handler.post(new Runnable() {
@@ -254,7 +254,7 @@ public class SplashADActivity extends Activity implements SplashADListener,ADSet
 
   private void skip() {
     if (needStartDemoList) {
-      SplashADActivity.this.startActivity(new Intent(SplashADActivity.this, MainActivity.class));
+      SplashADActivity.this.startActivity(new Intent(SplashADActivity.this,ADInitUtil.getSkipActivityClass()));
     }
     SplashADActivity.this.finish();
   }

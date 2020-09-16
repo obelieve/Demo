@@ -5,7 +5,7 @@ android {
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.zxy.demo"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -43,6 +43,6 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation files('libs/GDTSDK.unionNormal.4.176.1046.aar')
+    implementation project(path: ':admodule')
 
 }
