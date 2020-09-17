@@ -23,15 +23,24 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    productFlavors {
-        demo{}
-    }
-
-    productFlavors.all {
-        flavor ->
-            flavor.manifestPlaceholders = [UMENG_CHANNEL: name]
-    }
 }
+apply plugin: 'replugin-host-gradle'
+repluginHostConfig {
+    /**
+     * 是否使用 AppCompat 库
+     * 不需要个性化配置时，无需添加
+     */
+    useAppCompat = true
+    /**
+     * 背景不透明的坑的数量
+     * 不需要个性化配置时，无需添加
+     */
+    countNotTranslucentStandard = 6
+    countNotTranslucentSingleTop = 2
+    countNotTranslucentSingleTask = 3
+    countNotTranslucentSingleInstance = 2
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
@@ -43,6 +52,5 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation project(path: ':admodule')
-
+    implementation 'com.qihoo360.replugin:replugin-host-lib:2.3.4'
 }
