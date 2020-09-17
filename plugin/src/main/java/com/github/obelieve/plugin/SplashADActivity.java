@@ -1,8 +1,9 @@
-package com.zxy.admodule;
+package com.github.obelieve.plugin;
 
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -254,7 +255,13 @@ public class SplashADActivity extends Activity implements SplashADListener,ADSet
 
   private void skip() {
     if (needStartDemoList) {
-      SplashADActivity.this.startActivity(new Intent(SplashADActivity.this,ADInitUtil.getSkipActivityClass()));
+      try{
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName(ADInitUtil.getComponentPkgAndCls()[0],ADInitUtil.getComponentPkgAndCls()[1]));
+        SplashADActivity.this.startActivity(intent);
+      }catch (Exception e){
+        e.printStackTrace();
+      }
     }
     SplashADActivity.this.finish();
   }

@@ -1,4 +1,4 @@
-package com.zxy.admodule;
+package com.github.obelieve.plugin;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -17,7 +17,7 @@ import java.util.Map;
 public class ADInitUtil {
 
     private static Map<String, Integer> mMap = new HashMap<>();
-    private static Class sSkipActivityClass;
+    private static String[] sComponentPkgAndCls =new String[2];
 
     static {
         mMap.put("baidumarket", 1);
@@ -40,10 +40,12 @@ public class ADInitUtil {
     /**
      *
      * @param context
-     * @param activityClass 广告跳转的Activity
+     * @param pkg 包名
+     * @param cls
      */
-    public static void init(Context context,Class activityClass){
-        sSkipActivityClass = activityClass;
+    public static void init(Context context,String pkg,String cls){
+        sComponentPkgAndCls[0]=pkg;
+        sComponentPkgAndCls[1]=cls;
         AppChannelUtil.init(context);
         ApplicationInfo appInfo = null;
         try {
@@ -60,7 +62,7 @@ public class ADInitUtil {
         }
     }
 
-    public static Class getSkipActivityClass() {
-        return sSkipActivityClass;
+    public static String[] getComponentPkgAndCls() {
+        return sComponentPkgAndCls;
     }
 }

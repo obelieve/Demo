@@ -3,11 +3,9 @@ package com.github.obelieve.plugin;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.view.View;
 
 import androidx.annotation.Nullable;
-
-import com.zxy.admodule.SplashActivity;
 
 /**
  * Created by Admin
@@ -18,11 +16,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new Handler().postDelayed(new Runnable() {
+        setContentView(R.layout.activity_main);
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
+            public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, SplashActivity.class));
             }
-        },50);
+        });
     }
+
 }

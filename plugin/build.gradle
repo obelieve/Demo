@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.zxy.admodule"
+        applicationId "com.github.obelieve.plugin"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -41,6 +41,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation project(path: ':admodule')
-//    implementation 'com.qihoo360.replugin:replugin-plugin-lib:2.3.4'
+    implementation 'com.qihoo360.replugin:replugin-plugin-lib:2.3.4'
+    implementation files('libs/GDTSDK.unionNormal.4.176.1046.aar')
 }

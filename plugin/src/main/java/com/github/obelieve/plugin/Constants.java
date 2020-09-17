@@ -1,4 +1,4 @@
-package com.zxy.admodule;
+package com.github.obelieve.plugin;
 
 public class Constants {
   public static final String BuglyAppID = "28d030a2bf";

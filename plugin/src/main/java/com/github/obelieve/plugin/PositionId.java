@@ -1,4 +1,4 @@
-package com.zxy.admodule;
+package com.github.obelieve.plugin;
 
 /**
  * demo工程的广告位id

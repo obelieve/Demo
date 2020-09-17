@@ -1,1 +1,1 @@
-include ':app', ':admodule', ':plugin'
+include ':app', ':plugin'

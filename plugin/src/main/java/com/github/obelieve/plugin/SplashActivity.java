@@ -1,4 +1,4 @@
-package com.zxy.admodule;
+package com.github.obelieve.plugin;
 
 import android.app.Activity;
 import android.graphics.Color;

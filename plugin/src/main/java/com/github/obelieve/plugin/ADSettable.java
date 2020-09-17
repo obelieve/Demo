@@ -1,4 +1,4 @@
-package com.zxy.admodule;
+package com.github.obelieve.plugin;
 
 /**
  * Created by zxy
