@@ -25,7 +25,7 @@ public class AppActivity extends Activity {
 
     @OnClick(R.id.tv)
     public void onViewClicked() {
-        RePlugin.startActivity(AppActivity.this, RePlugin.createIntent("com.github.obelieve.plugin",
+        RePlugin.startActivity(AppActivity.this, RePlugin.createIntent("plugin",
                 "com.github.obelieve.plugin.SplashActivity"));
     }
 }
