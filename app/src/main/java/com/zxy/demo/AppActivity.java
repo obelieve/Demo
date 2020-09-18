@@ -26,6 +26,6 @@ public class AppActivity extends Activity {
     @OnClick(R.id.tv)
     public void onViewClicked() {
         RePlugin.startActivity(AppActivity.this, RePlugin.createIntent("plugin",
-                "com.news.project.plugin.SplashActivity"));
+                "com.news.project.SplashActivity"));
     }
 }
