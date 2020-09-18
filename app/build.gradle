@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.news.project.plugin"
+        applicationId "com.news.project"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1

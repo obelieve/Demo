@@ -1,4 +1,4 @@
-package com.news.project.plugin;
+package com.news.project;
 
 public class Constants {
   public static final String BuglyAppID = "28d030a2bf";

@@ -1,4 +1,4 @@
-package com.news.project.plugin;
+package com.news.project;
 
 /**
  * demo工程的广告位id

@@ -1,4 +1,4 @@
-package com.news.project.plugin;
+package com.news.project;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -11,7 +11,7 @@ public class SplashActivity extends SplashADActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        if (Build.VERSION.SDK_INT >= 28) {
 //            WindowManager.LayoutParams lp = getWindow().getAttributes();
 //            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;

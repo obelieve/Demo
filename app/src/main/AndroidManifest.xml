@@ -14,7 +14,7 @@
 
 
     <application
-        android:name="com.news.project.plugin.App"
+        android:name="com.news.project.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.news.project.plugin.MainActivity">
+        <activity android:name="com.news.project.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.news.project.plugin.SplashActivity"
+            android:name="com.news.project.SplashActivity"
             android:theme="@style/SplashTheme"/>
         <provider
             android:name="androidx.core.content.FileProvider"

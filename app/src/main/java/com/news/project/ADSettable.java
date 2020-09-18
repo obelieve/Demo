@@ -1,4 +1,4 @@
-package com.news.project.plugin;
+package com.news.project;
 
 /**
  * Created by zxy

@@ -1,4 +1,4 @@
-package com.news.project.plugin;
+package com.news.project;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+
+import com.news.project.plugin.R;
 
 /**
  * Created by Admin

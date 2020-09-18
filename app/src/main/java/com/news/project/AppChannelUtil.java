@@ -1,4 +1,4 @@
-package com.news.project.plugin;
+package com.news.project;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.news.project.plugin.BuildConfig;
 
 
 public class AppChannelUtil {

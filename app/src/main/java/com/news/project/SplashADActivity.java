@@ -1,4 +1,4 @@
-package com.news.project.plugin;
+package com.news.project;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.news.project.plugin.R;
 import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.util.AdError;
