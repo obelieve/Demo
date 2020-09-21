@@ -8,6 +8,8 @@ public class PositionId {
   public static final String BANNER_POS_ID = "9079537218417626401";
   public static final String INTERTERISTAL_POS_ID = "8575134060152130849";
   public static final String SPLASH_POS_ID = "8863364436303842593";
+
+  public static final String[] INFORMATION_POS_ID ={"4021200885258639","3051500998107061","2041801998911083","3001708968005889"} ;
   public static final String NATIVE_POS_ID = "5010320697302671";
   public static final String NATIVE_VIDEO_POS_ID = "3040990202714940";
   public static final String NATIVE_PICTURE_VIDEO_POS_ID = "9040092262296093";
