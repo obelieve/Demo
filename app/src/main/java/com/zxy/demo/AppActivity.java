@@ -1,11 +1,10 @@
 package com.zxy.demo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-
-import com.qihoo360.replugin.RePlugin;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -25,7 +24,8 @@ public class AppActivity extends Activity {
 
     @OnClick(R.id.tv)
     public void onViewClicked() {
-        RePlugin.startActivity(AppActivity.this, RePlugin.createIntent("plugin",
-                "com.news.project.SplashActivity"));
+//        RePlugin.startActivity(AppActivity.this, RePlugin.createIntent("plugin",
+//                "com.news.project.SplashActivity"));
+        startActivity(new Intent(this,NativeActivity.class));
     }
 }

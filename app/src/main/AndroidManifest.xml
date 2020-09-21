@@ -34,6 +34,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".NativeActivity"/>
 
         <!--GDTSDK.unionNormal.4.176.1046 aar声明-->
         <!-- 声明SDK所需要的组件 -->
