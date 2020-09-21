@@ -34,4 +34,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.qihoo360.replugin:replugin-plugin-lib:2.3.4'
     implementation files('libs/GDTSDK.unionNormal.4.176.1046.aar')
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }
