@@ -53,7 +53,8 @@ public class App extends BaseApplication {
     }
 
     @Override
-    protected void init() {
+    public void onCreate() {
+        super.onCreate();
         SystemValue.init(this);
         CacheRepository.getInstance().initUserEntity();
         ToastUtil.init(this);
