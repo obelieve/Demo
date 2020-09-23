@@ -1,16 +1,37 @@
 package com.zxy.frame.net;
 
 
+import com.zxy.frame.proguard.UnProguard;
+
 /**
  * 网络返回基类 支持泛型
  */
-public class BaseResponse<T>  {
+public class ApiBaseResponse<T> implements UnProguard {
+
+    private int toast;
+    private int window;
     private int code;
     private String msg;
     private String data;
     private T entity;
 
-    public BaseResponse() {
+    public ApiBaseResponse() {
+    }
+
+    public int getToast() {
+        return toast;
+    }
+
+    public void setToast(int toast) {
+        this.toast = toast;
+    }
+
+    public int getWindow() {
+        return window;
+    }
+
+    public void setWindow(int window) {
+        this.window = window;
     }
 
     public int getCode() {

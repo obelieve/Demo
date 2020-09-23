@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
-import com.zxy.frame.net.BaseResponse;
+import com.zxy.frame.net.ApiBaseResponse;
 
 import org.json.JSONObject;
 
@@ -19,17 +19,17 @@ import retrofit2.Converter;
  * Created by TQ on 2018/5/30.
  */
 
-final class CustomGsonResponseBodyConverter implements Converter<ResponseBody, BaseResponse> {
+final class ApiCustomGsonResponseBodyConverter implements Converter<ResponseBody, ApiBaseResponse> {
     private final Gson gson;
     private final TypeAdapter adapter;
 
-    CustomGsonResponseBodyConverter(Gson gson, TypeAdapter<BaseResponse> adapter) {
+    ApiCustomGsonResponseBodyConverter(Gson gson, TypeAdapter<ApiBaseResponse> adapter) {
         this.gson = gson;
         this.adapter = adapter;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override public BaseResponse convert(ResponseBody value) throws IOException {
+    @Override public ApiBaseResponse convert(ResponseBody value) throws IOException {
         try {
             String json = value.string();
 //            if (!json.contains("code")){
@@ -41,11 +41,17 @@ final class CustomGsonResponseBodyConverter implements Converter<ResponseBody, B
 //                Log.i("caicai",desc);
 //            }
             JSONObject jsonObject = new JSONObject(json);
-            BaseResponse baseResponse = new BaseResponse();
+            ApiBaseResponse baseResponse = new ApiBaseResponse();
             if (jsonObject.has("code")){
                 baseResponse.setCode(jsonObject.optInt("code"));
             }else if (jsonObject.has("status")){
                 baseResponse.setCode(jsonObject.optInt("status"));
+            }
+            if (jsonObject.has("toast")) {
+                baseResponse.setToast(jsonObject.optInt("toast"));
+            }
+            if (jsonObject.has("window")) {
+                baseResponse.setWindow(jsonObject.optInt("window"));
             }
             baseResponse.setMsg(jsonObject.optString("message"));
             baseResponse.setData(jsonObject.optString("data"));

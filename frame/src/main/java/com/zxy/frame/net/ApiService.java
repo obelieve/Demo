@@ -26,19 +26,19 @@ public class ApiService {
 
     public static Observable<ResponseBody> downloadFile(String downParam, String fileUrl) throws ApiServiceException {
         if (sDownloadInterfaceImpl == null) {
-            throw new ApiServiceException("need invoke setDownloadInterface(DownloadInterface)!");
+            throw new ApiServiceException("need invoke setDownloadInterface(DownloadInterface)!",ApiErrorCode.CODE_DOWNLOAD_INIT);
         }
         return sDownloadInterfaceImpl.downloadFile(downParam, fileUrl);
     }
 
     public static Disposable download(String savePath, String fileUrl, DownloadInterfaceImpl.DownloadCallback callback) {
         if (sDownloadInterfaceImpl == null) {
-            throw new ApiServiceException("need invoke setDownloadInterface(DownloadInterface)!");
+            throw new ApiServiceException("need invoke setDownloadInterface(DownloadInterface)!",ApiErrorCode.CODE_DOWNLOAD_INIT);
         }
         return sDownloadInterfaceImpl.download(savePath, fileUrl, callback);
     }
 
-    public static <T> Observable<BaseResponse<T>> wrap(Observable<BaseResponse<T>> observable, Class<T> tClass) {
+    public static <T> Observable<ApiBaseResponse<T>> wrap(Observable<ApiBaseResponse<T>> observable, Class<T> tClass) {
         return observable.compose(io_main()).compose(handleResult(tClass));
     }
 
@@ -67,25 +67,27 @@ public class ApiService {
         };
     }
 
-    private static <T> ObservableTransformer<BaseResponse<T>, BaseResponse<T>> handleResult(Class<T> tClass) {
-        return new ObservableTransformer<BaseResponse<T>, BaseResponse<T>>() {
+    private static <T> ObservableTransformer<ApiBaseResponse<T>, ApiBaseResponse<T>> handleResult(Class<T> tClass) {
+        return new ObservableTransformer<ApiBaseResponse<T>, ApiBaseResponse<T>>() {
             @Override
-            public Observable<BaseResponse<T>> apply(@NonNull Observable<BaseResponse<T>> upstream) {
-                return upstream.flatMap(new Function<BaseResponse<T>, Observable<BaseResponse<T>>>() {
+            public Observable<ApiBaseResponse<T>> apply(@NonNull Observable<ApiBaseResponse<T>> upstream) {
+                return upstream.flatMap(new Function<ApiBaseResponse<T>, Observable<ApiBaseResponse<T>>>() {
                     @Override
-                    public Observable<BaseResponse<T>> apply(@NonNull BaseResponse<T> tBaseResponse) throws Exception {
-                        if (tBaseResponse.getCode() == ApiStatusCode.SUCCESS_CODE) {
+                    public Observable<ApiBaseResponse<T>> apply(@NonNull ApiBaseResponse<T> tBaseResponse) throws Exception {
+                        if (tBaseResponse.getCode() == ApiErrorCode.CODE_OK) {
                             try {
                                 T t = MGson.newGson().fromJson(tBaseResponse.getData(), tClass);
                                 tBaseResponse.setEntity(t);
                                 return createData(tBaseResponse);
                             } catch (Exception e) {
-                                ApiServiceException exception = new ApiServiceException(e.getMessage(), ApiStatusCode.JSON_SYNTAX_EXCEPTION_CODE, tBaseResponse.getData());
+                                ApiServiceException exception = new ApiServiceException(e.getMessage(), ApiErrorCode.CODE_JSON_SYNTAX_EXCEPTION, tBaseResponse.getData(),
+                                        tBaseResponse.getToast(), tBaseResponse.getWindow());
                                 exception.setStackTrace(e.getStackTrace());
                                 return Observable.error(exception);
                             }
                         } else {
-                            return Observable.error(new ApiServiceException(tBaseResponse.getMsg(), tBaseResponse.getCode(), tBaseResponse.getData()));
+                            return Observable.error(new ApiServiceException(tBaseResponse.getMsg(), tBaseResponse.getCode(), tBaseResponse.getData(),
+                                    tBaseResponse.getToast(), tBaseResponse.getWindow()));
                         }
                     }
                 });

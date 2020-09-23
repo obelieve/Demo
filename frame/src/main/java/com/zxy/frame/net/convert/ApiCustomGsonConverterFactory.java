@@ -16,12 +16,12 @@ import retrofit2.Retrofit;
  * Created by TQ on 2018/5/30.
  */
 
-public class CustomGsonConverterFactory extends Converter.Factory {
+public class ApiCustomGsonConverterFactory extends Converter.Factory {
     /**
      * Create an instance using a default {@link Gson} instance for conversion. Encoding to JSON and
      * decoding from JSON (when no charset is specified by a header) will use UTF-8.
      */
-    public static CustomGsonConverterFactory create() {
+    public static ApiCustomGsonConverterFactory create() {
         return create(new Gson());
     }
 
@@ -30,14 +30,14 @@ public class CustomGsonConverterFactory extends Converter.Factory {
      * decoding from JSON (when no charset is specified by a header) will use UTF-8.
      */
     @SuppressWarnings("ConstantConditions") // Guarding public API nullability.
-    public static CustomGsonConverterFactory create(Gson gson) {
+    public static ApiCustomGsonConverterFactory create(Gson gson) {
         if (gson == null) throw new NullPointerException("gson == null");
-        return new CustomGsonConverterFactory(gson);
+        return new ApiCustomGsonConverterFactory(gson);
     }
 
     private final Gson gson;
 
-    private CustomGsonConverterFactory(Gson gson) {
+    private ApiCustomGsonConverterFactory(Gson gson) {
         this.gson = gson;
     }
 
@@ -45,7 +45,7 @@ public class CustomGsonConverterFactory extends Converter.Factory {
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
                                                             Retrofit retrofit) {
         TypeAdapter adapter = gson.getAdapter(TypeToken.get(type));
-        return new CustomGsonResponseBodyConverter(gson, adapter);
+        return new ApiCustomGsonResponseBodyConverter(gson, adapter);
     }
 
     @Override
