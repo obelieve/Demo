@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_white"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <TextView
+        android:id="@+id/chose_title"
+        android:layout_centerVertical="true"
+        android:textSize="18dp"
+        android:textColor="#4D4D4D"
+        android:layout_width="wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_marginRight="30dp"
+        android:gravity="center"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/chose_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/chose_title"
+        android:layout_toLeftOf="@+id/chose_arrow"
+        android:textSize="16dp"
+        android:textColor="#4D4D4D"
+        android:background="@null"
+        android:focusableInTouchMode="false"/>
+
+
+    <ImageView
+        android:id="@+id/chose_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/icon_common_arrowright" />
+
+    <View
+        android:id="@+id/chose_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/common_line" />
+
+</RelativeLayout>

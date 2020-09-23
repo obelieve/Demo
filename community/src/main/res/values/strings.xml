@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">community</string>
+
+    <string name="common_setting">设置</string>
+    <string name="common_submit">提交</string>
+    <string name="common_delete">删除</string>
+    <string name="common_add">添加</string>
+
+    <string name="common_done">完成</string>
+    <!-- 加载更多 -->
+    <string name="loadmore_error">加载失败,点击重试</string>
+
+    <string name="token_error_tip">登录状态已失效，请重新登录</string>
+
+    <!-- 请求异常提示 -->
+    <string name="common_error_tip">操作失败，请稍后再试</string>
+    <string name="common_request_error_tip">数据请求失败，请稍后再试</string>
+    <string name="common_network_error_tip">网络连接失败，请稍后再试</string>
+    <string name="common_upload_error_tip">上传失败，请重试</string>
+    <string name="common_loginout_tip">您还未登录，快去登录吧</string>
+    <string name="common_input">请输入</string>
+    <string name="common_select">请选择</string>
+
+    <!-- 弹窗按钮 -->
+    <string name="common_dialog_title">温馨提示</string>
+    <string name="common_dialog_confirm">确定</string>
+    <string name="common_dialog_cancel">取消</string>
+    <string name="common_dialog_yes">是</string>
+    <string name="common_dialog_no">否</string>
+    <string name="common_dialog_call">呼叫</string>
+
+    <!--loadingView-->
+    <string name="loading_request_error">emm，服务器出了点小状况！</string>
+    <string name="loading_net_error">哎呀，网络开小差啦~</string>
+    <string name="loading_try_again">重试</string>
+    <string name="loading_load_again">重新加载</string>
+    <string name="loading_request_empty">暂无内容</string>
+    <string name="settings_privacy_policy">隐私政策说明</string>
+    <string name="network_unavailable">网络连接失败</string>
+    <string name="user_title">欢迎来到社区</string>
+    <string name="user_login_out">退出登录</string>
+    <string name="user_info_upload">上传头像</string>
+    <string name="user_info_nick">昵称</string>
+    <string name="user_info_nick_hint">取个有意思的名字吧</string>
+    <string name="user_info_sex">性别</string>
+    <string name="user_info_sex_m">男</string>
+    <string name="user_info_sex_w">女</string>
+    <string name="user_info_sex_none">保密</string>
+    <string name="common_save">保存</string>
+    <string name="user_info_day_hint">1999-09-09</string>
+    <string name="user_info_day">生日</string>
+    <string name="user_info_city_hint">来自火星</string>
+    <string name="user_info_city">城市</string>
+    <string name="user_info_title">完善个人信息</string>
+    <string name="user_info_pass">取消</string>
+    <string name="user_info_update_title">个人信息</string>
+    <string name="common_download_text">正在下载</string>
+    <string name="update_cancel">取消更新</string>
+    <string name="update_hide">后台下载</string>
+    <string name="update_hide_toast">已转到后台下载</string>
+    <string name="update_download_fail">下载失败</string>
+    <string name="update_progress">%1$s/%2$s</string>
+    <string name="update_notification">更新包正在下载</string>
+    <string name="update_title">发现新版本V%1$s</string>
+    <string name="update_now">立即升级</string>
+</resources>

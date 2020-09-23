@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--大标题文字-->
+    <dimen name="common_big_title">18dp</dimen>
+    <!--弹窗文字-->
+    <dimen name="common_dialog_text">17dp</dimen>
+    <!--弹窗文字-->
+    <dimen name="common_dialog_content">13dp</dimen>
+    <!--标题文字-->
+    <dimen name="common_title">16dp</dimen>
+    <!--短文本 （文字按钮等）-->
+    <dimen name="common_button">16dp</dimen>
+    <!--长文本-->
+    <dimen name="common_content">15dp</dimen>
+    <!--说明注释 -->
+    <dimen name="common_tip">13dp</dimen>
+    <!--时间 \数字-->
+    <dimen name="common_time">11dp</dimen>
+    <!--间距-->
+    <dimen name="common_padding">15dp</dimen>
+    <!--间距-->
+    <dimen name="common_margin">15dp</dimen>
+    <!--模块高度-->
+    <dimen name="common_item_height">47dp</dimen>
+    <!--线高度-->
+    <dimen name="common_line">0.5dp</dimen>
+    <!--模块间距-->
+    <dimen name="common_item_margin">10dp</dimen>
+
+    <dimen name="picker_view_height">160dp</dimen>
+    <dimen name="date_unit_text_size">18sp</dimen>
+
+    <dimen name="cut_margin">55dp</dimen>
+    <dimen name="avatar_size">40dp</dimen>
+    <!-- 社区 -->
+    <dimen name="comment_avatar_size">30dp</dimen>
+    <dimen name="comment_text_name_size">14sp</dimen>
+    <dimen name="item_bb_total_width">60dp</dimen>
+    <dimen name="update_text_name_size">16sp</dimen>
+</resources>

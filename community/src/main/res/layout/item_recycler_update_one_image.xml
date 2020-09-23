@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/sel_circle_f8f8f8_ffffff_8dp"
+    android:paddingTop="24dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
+
+    <com.qian.news.ui.widget.CircleImageView
+        android:id="@+id/img_avatar"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txt_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sel_state_view_content"
+                android:clickable="true"
+                android:textColor="@color/update_text_name_color"
+                android:textSize="@dimen/update_text_name_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_stick"
+                android:layout_marginLeft="5dp"
+                android:layout_width="30dp"
+                android:visibility="gone"
+                android:layout_height="15dp"
+                android:background="#5789FF"
+                android:gravity="center"
+                android:text="置顶"
+                android:textColor="#F7F7F7"
+                android:textSize="11sp" />
+        </LinearLayout>
+        <include layout="@layout/include_item_recycler_time"/>
+        <include layout="@layout/include_item_recycler_content"/>
+        <include layout="@layout/include_item_recycler_one_image"/>
+        <include layout="@layout/include_item_recycler_praise"/>
+
+    </LinearLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/view_lottie_zan"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="left|bottom"
+        android:scaleType="fitEnd"
+        app:lottie_imageAssetsFolder="zan/images"
+        app:lottie_fileName="zan/zan.json"
+        app:lottie_loop="false"
+        app:lottie_autoPlay="false" />
+</FrameLayout>

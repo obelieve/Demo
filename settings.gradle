@@ -1,1 +1,1 @@
-include ':app', ':frame', ':anim', ':mockapi'
+include ':app', ':frame', ':anim', ':mockapi', ':community', ':captchalib'

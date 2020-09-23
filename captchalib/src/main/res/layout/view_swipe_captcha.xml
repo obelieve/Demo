@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp">
+            <com.news.captchalib.CaptchaImageView
+                android:id="@+id/iv_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_bg_1"/>
+            <LinearLayout
+                android:id="@+id/ll_success"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_gravity="bottom"
+                android:background="#7f000000"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/success" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:text="验证成功"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_failure"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_gravity="bottom"
+                android:background="#7F000000"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/failure" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:text="验证失败"/>
+
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/refresh"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="right|top"
+                android:layout_margin="10dp"
+                android:src="@drawable/refresh"
+                android:stateListAnimator="@drawable/anim_refresh" />
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+    <com.news.captchalib.CaptchaSeekBar
+        android:id="@+id/sb_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:thumb="@drawable/thumb"
+        android:layout_marginTop="14dp"
+        android:thumbOffset="0dp"
+        android:progressDrawable="@drawable/po_seekbar"/>
+
+</LinearLayout>
