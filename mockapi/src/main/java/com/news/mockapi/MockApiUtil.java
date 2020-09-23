@@ -2,38 +2,40 @@ package com.news.mockapi;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
 
 /**
  * Created by Admin
  * on 2020/7/6
  */
 public class MockApiUtil {
+    private static final String TAG = MockApiUtil.class.getSimpleName();
     private static Context sContext;
     private static final String FILE_SUFFIX = ".json";
     private static StringBuilder SB = new StringBuilder();
     private static String ALL_URL;
+    private static String sApiPrefix;
 
-    static {
-        Field[] fieldArray = MockApi.class.getDeclaredFields();
-        for (Field f : fieldArray) {
-            try {
-                SB.append(f.get(null) + ",");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+    public static void init(Context context, String apiPrefix, String fileDir, String fileSuffix) {
+        sContext = context;
+        sApiPrefix = apiPrefix;
+        try {
+            String[] paths = sContext.getAssets().list(fileDir);
+            for (String path : paths) {
+                SB.append(apiPrefix + path.replace(fileSuffix, "") + ",");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, "Assets目录下，文件查找错误：" + e.getMessage());
         }
         ALL_URL = SB.toString();
-    }
-
-    public static void init(Context context) {
-        sContext = context;
+        Log.e(TAG, "ALL_URL：" + ALL_URL);
     }
 
     /**
@@ -44,7 +46,7 @@ public class MockApiUtil {
      */
     public static String getMockApiDataTag(String url) {
         if (!TextUtils.isEmpty(url)) {
-            int start = url.indexOf(MockApi.API_PREFIX_TAG);
+            int start = url.indexOf(sApiPrefix);
             if (start != -1) {
                 String tag = url.substring(start);
                 if (MockApiUtil.ALL_URL.contains(tag)) {

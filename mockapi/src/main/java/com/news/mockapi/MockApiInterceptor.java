@@ -1,5 +1,6 @@
 package com.news.mockapi;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -22,6 +23,10 @@ public class MockApiInterceptor implements Interceptor {
     private static final String REQUEST_FORMAT = "REQUEST: \n%s\nmethod: %s\nheaders:\n%s \nrequestBody-length = %s\nrequestBody-contentType:%s\n";
     private static final String RESPONSE_FORMAT = "\nRESPONSE: \nprotocol: %s code: %s message: %s\nheaders:\n%s\nbody:\n%s";
     private static final int MAX_CONTENT_LENGTH = 8 * 1024;
+
+    public MockApiInterceptor(Context context,String apiPrefix, String fileDir, String fileSuffix){
+        MockApiUtil.init(context,apiPrefix,fileDir,fileSuffix);
+    }
 
     @NotNull
     @Override
