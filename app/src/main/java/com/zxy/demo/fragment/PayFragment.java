@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.zxy.demo.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
-import com.zxy.frame.base.BaseActivity;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseActivity;
+import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import butterknife.OnClick;
  * Created by Admin
  * on 2020/6/4
  */
-public class PayFragment extends BaseFragment {
+public class PayFragment extends ApiBaseFragment {
 
     @BindView(R.id.et_num)
     EditText etNum;
@@ -100,8 +100,8 @@ public class PayFragment extends BaseFragment {
             ToastUtil.show("请输入充值金额");
             return;
         }
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).showLoading();
+        if (getActivity() instanceof ApiBaseActivity) {
+            ((ApiBaseActivity) getActivity()).showLoading();
         }
         String payWay;
         if (rbAliPay.isChecked()) {
@@ -110,8 +110,8 @@ public class PayFragment extends BaseFragment {
             PayUtil.aliPay(payEntity.getSign(), new Callback() {
                 @Override
                 public void onSuccess() {
-                    if (getActivity() instanceof BaseActivity) {
-                        ((BaseActivity) getActivity()).dismissLoading();
+                    if (getActivity() instanceof ApiBaseActivity) {
+                        ((ApiBaseActivity) getActivity()).dismissLoading();
                     }
                     ToastUtil.show("支付成功");
                 }
@@ -127,8 +127,8 @@ public class PayFragment extends BaseFragment {
             PayUtil.wxPay(payEntity.getSign(), new Callback() {
                 @Override
                 public void onSuccess() {
-                    if (getActivity() instanceof BaseActivity) {
-                        ((BaseActivity) getActivity()).dismissLoading();
+                    if (getActivity() instanceof ApiBaseActivity) {
+                        ((ApiBaseActivity) getActivity()).dismissLoading();
                     }
                     ToastUtil.show("支付成功");
                 }

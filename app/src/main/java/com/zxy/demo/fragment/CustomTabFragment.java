@@ -18,14 +18,14 @@ import com.zxy.demo.R;
 import com.zxy.demo.activity.TabActivity;
 import com.zxy.demo.utils.String2TabLayoutHelper;
 import com.zxy.demo.utils.StringTabLayoutHelper;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 
 import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class CustomTabFragment extends BaseFragment {
+public class CustomTabFragment extends ApiBaseFragment {
 
     @BindView(R.id.tl_tab1)
     TabLayout mTlTab1;

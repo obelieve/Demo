@@ -7,12 +7,12 @@ import com.zxy.demo.R;
 import com.zxy.demo.activity.VersionUpdateActivity;
 import com.zxy.demo.entity.VersionUpdateEntity;
 import com.zxy.demo.viewmodel.VersionUpdateViewModel;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.ToastUtil;
 
 import butterknife.OnClick;
 
-public class VersionUpdateEntranceFragment extends BaseFragment {
+public class VersionUpdateEntranceFragment extends ApiBaseFragment {
 
     VersionUpdateViewModel mVersionUpdateViewModel;
     boolean mBool;

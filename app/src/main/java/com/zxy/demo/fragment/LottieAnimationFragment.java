@@ -2,7 +2,7 @@ package com.zxy.demo.fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.zxy.demo.R;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 
 import java.util.Random;
 
@@ -12,7 +12,7 @@ import butterknife.OnClick;
 /**
  * ((DefaultItemAnimator) #RecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);//RecyclerView item中使用，要调用 （动画有冲突）
  */
-public class LottieAnimationFragment extends BaseFragment {
+public class LottieAnimationFragment extends ApiBaseFragment {
 
     @BindView(R.id.animation_view)
     LottieAnimationView animationView;

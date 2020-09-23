@@ -6,13 +6,13 @@ import android.webkit.JavascriptInterface;
 import android.widget.ProgressBar;
 
 import com.zxy.demo.R;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.ToastUtil;
 import com.zxy.frame.view.AppWebView;
 
 import butterknife.BindView;
 
-public class ZWebViewFragment extends BaseFragment {
+public class ZWebViewFragment extends ApiBaseFragment {
 
     @BindView(R.id.wv_content)
     AppWebView wvContent;

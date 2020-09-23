@@ -2,7 +2,7 @@ package com.zxy.demo.http;
 
 import com.zxy.demo.entity.SquarePostEntity;
 import com.zxy.demo.entity.VersionUpdateEntity;
-import com.zxy.frame.net.BaseResponse;
+import com.zxy.frame.net.ApiBaseResponse;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -20,7 +20,7 @@ import retrofit2.http.Url;
  */
 public interface ServiceInterface {
 
-    String BASE_URL = "http://api.dev.2048.com";
+    String BASE_URL = "http://api.dev.ssbf.imjihua.com";
     String GET_TAB = "/api/get_tab";
     String SQUARE_POST = "/api/square_post";
     String VERSION_CHECK = "/api/version_check";
@@ -40,7 +40,7 @@ public interface ServiceInterface {
      */
     @FormUrlEncoded
     @POST(SQUARE_POST)
-    Observable<BaseResponse<SquarePostEntity>> square_post(@Field("page") int page);
+    Observable<ApiBaseResponse<SquarePostEntity>> square_post(@Field("page") int page);
 
     /**
      * 版本更新
@@ -48,6 +48,6 @@ public interface ServiceInterface {
      * @return
      */
     @POST(VERSION_CHECK)
-    Observable<BaseResponse<VersionUpdateEntity>> version_check();
+    Observable<ApiBaseResponse<VersionUpdateEntity>> version_check();
 
 }

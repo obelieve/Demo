@@ -10,13 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zxy.demo.R;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class LoginFragment extends BaseFragment {
+public class LoginFragment extends ApiBaseFragment {
 
     @BindView(R.id.tv_phone_tip)
     TextView tvPhoneTip;

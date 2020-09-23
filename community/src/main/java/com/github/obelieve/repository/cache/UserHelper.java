@@ -65,14 +65,14 @@ public class UserHelper {
 //            }
 //        });
 //        //todo 请求用户设置
-//        new NewsRequestBusiness().userSet(new BaseSubscriber<BaseResponse<UserSetBean>>() {
+//        new NewsRequestBusiness().userSet(new BaseSubscriber<ApiBaseResponse<UserSetBean>>() {
 //            @Override
 //            public void onError(ExceptionHandle.RespondThrowable e) {
 //
 //            }
 //
 //            @Override
-//            public void onSuccess(BaseResponse<UserSetBean> response, boolean isProcessed) {
+//            public void onSuccess(ApiBaseResponse<UserSetBean> response, boolean isProcessed) {
 //
 //            }
 //        });

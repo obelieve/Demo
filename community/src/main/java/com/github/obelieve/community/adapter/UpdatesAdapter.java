@@ -150,18 +150,18 @@ public class UpdatesAdapter extends BaseRecyclerViewAdapter<SquareListsEntity.Po
 
 
     private void sendComment(Dialog dialog, SquareListsEntity.PostListBean postListBean, String content) {
-//        ((BaseActivity) mContext).showLoading();
+//        ((ApiBaseActivity) mContext).showLoading();
         ApiService.wrap(App.getServiceInterface().sendPostComment(postListBean.getPost_id(), content), String.class)
                 .subscribe(new ApiBaseSubscribe<ApiBaseResponse<String>>(mContext) {
                     @Override
                     public void onError(ApiServiceException e) {
-//                        ((BaseActivity) mContext).dismissLoading();
+//                        ((ApiBaseActivity) mContext).dismissLoading();
                         ToastUtil.show(e.message);
                     }
 
                     @Override
                     public void onSuccess(ApiBaseResponse<String> response, boolean isProcessed) {
-//                        ((BaseActivity) mContext).dismissLoading();
+//                        ((ApiBaseActivity) mContext).dismissLoading();
                         dialog.dismiss();
                         postListBean.setPc_num(postListBean.getPc_num() + 1);
                         if (!isProcessed) {
@@ -403,15 +403,15 @@ public class UpdatesAdapter extends BaseRecyclerViewAdapter<SquareListsEntity.Po
      * @param p_type 举报类型 post-帖子；comment-评论；reply-回复
      */
     private void showReport(int p_id, String p_type) {
-//        if (mContext instanceof BaseActivity) {
-//            ((BaseActivity) mContext).showLoading();
+//        if (mContext instanceof ApiBaseActivity) {
+//            ((ApiBaseActivity) mContext).showLoading();
 //        }
         ApiService.wrap(App.getServiceInterface().getReportType(), ReportTypeEntity.class)
                 .subscribe(new ApiBaseSubscribe<ApiBaseResponse<ReportTypeEntity>>(mContext) {
                     @Override
                     public void onError(ApiServiceException e) {
-//                        if (mContext instanceof BaseActivity) {
-//                            ((BaseActivity) mContext).dismissLoading();
+//                        if (mContext instanceof ApiBaseActivity) {
+//                            ((ApiBaseActivity) mContext).dismissLoading();
 //                        }
                     }
 
@@ -419,8 +419,8 @@ public class UpdatesAdapter extends BaseRecyclerViewAdapter<SquareListsEntity.Po
                     public void onSuccess(ApiBaseResponse<ReportTypeEntity> response, boolean isProcessed) {
                         if (mContext == null)
                             return;
-//                        if (mContext instanceof BaseActivity) {
-//                            ((BaseActivity) mContext).dismissLoading();
+//                        if (mContext instanceof ApiBaseActivity) {
+//                            ((ApiBaseActivity) mContext).dismissLoading();
 //                        }
                         try {
                             List<ReportTypeEntity.ReportTypeBean> list = response.getEntity().getReport_type();

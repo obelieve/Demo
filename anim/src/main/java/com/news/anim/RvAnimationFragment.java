@@ -13,7 +13,7 @@ import androidx.dynamicanimation.animation.SpringForce;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.ToastUtil;
 
 import java.util.Arrays;
@@ -27,7 +27,7 @@ import butterknife.OnClick;
  * Created by Admin
  * on 2020/6/10
  */
-public class RvAnimationFragment extends BaseFragment {
+public class RvAnimationFragment extends ApiBaseFragment {
 
 
     @BindView(R.id.rv_content)

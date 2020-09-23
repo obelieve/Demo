@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment;
 import com.zxy.demo.R;
 import com.zxy.demo.entity.VersionUpdateEntity;
 import com.zxy.demo.fragment.VersionUpdateFragment;
-import com.zxy.frame.base.BaseActivity;
+import com.zxy.frame.base.ApiBaseActivity;
 
 import butterknife.BindView;
 
-public class VersionUpdateActivity extends BaseActivity {
+public class VersionUpdateActivity extends ApiBaseActivity {
 
     public static final String EXTRA_VERSION_UPDATE_ENTITY = "extra_version_update_entity";
 

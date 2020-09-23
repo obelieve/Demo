@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.zxy.frame.base.BaseActivity;
+import com.zxy.frame.base.ApiBaseActivity;
 
 import butterknife.BindView;
 
@@ -16,7 +16,7 @@ import butterknife.BindView;
  * Created by Admin
  * on 2020/6/10
  */
-public class AnimationActivity extends BaseActivity {
+public class AnimationActivity extends ApiBaseActivity {
 
     @BindView(R.id.tl_tab)
     TabLayout tlTab;

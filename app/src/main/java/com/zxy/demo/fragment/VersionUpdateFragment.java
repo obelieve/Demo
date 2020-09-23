@@ -29,12 +29,12 @@ import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.zxy.demo.MainActivity;
 import com.zxy.demo.R;
 import com.zxy.demo.entity.VersionUpdateEntity;
+import com.zxy.frame.base.ApiBaseActivity;
+import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.net.ApiService;
-import com.zxy.frame.base.BaseActivity;
-import com.zxy.frame.base.BaseFragment;
 import com.zxy.frame.net.download.DownloadInterfaceImpl;
-import com.zxy.frame.utils.ActivityUtil;
 import com.zxy.frame.utils.StringUtil;
+import com.zxy.frame.utils.SystemIntentUtil;
 import com.zxy.frame.utils.ToastUtil;
 import com.zxy.utility.LogUtil;
 
@@ -47,7 +47,7 @@ import io.reactivex.disposables.Disposable;
 /**
  * 版本更新
  */
-public class VersionUpdateFragment extends BaseFragment {
+public class VersionUpdateFragment extends ApiBaseFragment {
 
     public static final String EXTRA_VERSION_UPDATE_ENTITY = "extra_version_update_entity";
 
@@ -99,9 +99,9 @@ public class VersionUpdateFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_update:
-                if (getActivity() instanceof BaseActivity) {
-                    ((BaseActivity) getActivity()).requestPermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE}, new BaseActivity.OnRequestPermissionListener() {
+                if (getActivity() instanceof ApiBaseActivity) {
+                    ((ApiBaseActivity) getActivity()).requestPermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE}, new ApiBaseActivity.OnRequestPermissionListener() {
                         @Override
                         public void onSuccess() {
                             startDownload();
@@ -131,7 +131,7 @@ public class VersionUpdateFragment extends BaseFragment {
         final String savePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/" + apkName;
         final File apkFile = new File(savePath);
         if (apkFile.exists() && !isBadAPK(getActivity(), savePath)) {
-            ActivityUtil.openInstall(getActivity(), apkFile);
+            SystemIntentUtil.openInstall(getActivity(), apkFile);
             if (mEntity.getEnforce() != 1) {
                 getActivity().finish();
             }
@@ -198,7 +198,7 @@ public class VersionUpdateFragment extends BaseFragment {
                     mNotificationManager.cancel(UPDATE_NOTIFY_ID);
                 }
                 if (file.exists()) {
-                    ActivityUtil.openInstall(getActivity(), file);
+                    SystemIntentUtil.openInstall(getActivity(), file);
                 }
                 if (mEntity.getEnforce() != 1) {
                     mDownloadHelper.dismiss();

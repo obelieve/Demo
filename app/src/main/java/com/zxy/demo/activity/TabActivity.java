@@ -16,7 +16,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.zxy.demo.MainEnum;
 import com.zxy.demo.R;
 import com.zxy.demo.fragment.LoadRefreshFragment;
-import com.zxy.frame.base.BaseActivity;
+import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.utils.helper.FragmentManagerHelper;
 import com.zxy.frame.view.BottomTabView;
 import com.zxy.utility.SystemUtil;
@@ -27,7 +27,7 @@ import butterknife.BindView;
  * Created by Admin
  * on 2020/7/20
  */
-public class TabActivity extends BaseActivity {
+public class TabActivity extends ApiBaseActivity {
 
 
     @BindView(R.id.fl_content)

@@ -16,14 +16,14 @@ import com.zxy.demo.entity.SquarePostEntity;
 import com.zxy.demo.viewmodel.LoadRefreshViewModel;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.adapter.item_decoration.VerticalItemDivider;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.image.GlideUtil;
 
 import java.util.List;
 
 import butterknife.BindView;
 
-public class LoadRefreshFragment extends BaseFragment {
+public class LoadRefreshFragment extends ApiBaseFragment {
 
     @BindView(R.id.rv_content)
     RecyclerView mRvContent;

@@ -9,7 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -19,7 +19,7 @@ import butterknife.OnClick;
  * Created by Admin
  * on 2020/6/9
  */
-public class AnimationFragment extends BaseFragment {
+public class AnimationFragment extends ApiBaseFragment {
 
     @BindView(R.id.iv_frame)
     ImageView ivFrame;

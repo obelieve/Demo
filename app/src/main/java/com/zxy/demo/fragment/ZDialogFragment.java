@@ -11,14 +11,14 @@ import androidx.appcompat.app.AlertDialog;
 import com.zxy.demo.R;
 import com.zxy.demo.dialog.DelOrReportDialog;
 import com.zxy.demo.dialog.SendCommentDialog;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.dialog.SimpleAlertDialog;
 import com.zxy.frame.utils.PopupMenuUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ZDialogFragment extends BaseFragment {
+public class ZDialogFragment extends ApiBaseFragment {
 
     @BindView(R.id.btn_alert)
     Button mBtnAlert;

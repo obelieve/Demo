@@ -7,8 +7,8 @@ import com.zxy.demo.App;
 import com.zxy.demo.entity.SquarePostEntity;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
-import com.zxy.frame.net.BaseResponse;
-import com.zxy.frame.net.BaseSubscribe;
+import com.zxy.frame.net.ApiBaseResponse;
+import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.utils.ToastUtil;
 
 import java.util.List;
@@ -27,17 +27,17 @@ public class LoadRefreshViewModel extends ViewModel {
         } else {
             mCurPage++;
         }
-        ApiService.wrap(App.getServiceInterface().square_post(mCurPage),SquarePostEntity.class).subscribe(new BaseSubscribe<BaseResponse<SquarePostEntity>>() {
-            @Override
-            public void onNext(BaseResponse<SquarePostEntity> response) {
-                success(response.getEntity(),isMore);
-            }
-
+        ApiService.wrap(App.getServiceInterface().square_post(mCurPage),SquarePostEntity.class).subscribe(new ApiBaseSubscribe<ApiBaseResponse<SquarePostEntity>>() {
 
             @Override
-            protected void onError(ApiServiceException e) {
+            public void onError(ApiServiceException e) {
                 ToastUtil.show(e.getMessage());
                 failure(isMore);
+            }
+
+            @Override
+            public void onSuccess(ApiBaseResponse<SquarePostEntity> response, boolean isProcessed) {
+                success(response.getEntity(),isMore);
             }
         });
     }
