@@ -13,17 +13,21 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.news.mediaplayer.utils.BrightnessUtil;
 import com.news.mediaplayer.utils.StatusBarUtil;
 import com.news.mediaplayer.utils.Utils;
+import com.news.mediaplayer.utils.VolumeUtil;
 import com.news.mediaplayer.view.HorizontalItemDivider;
 import com.news.mediaplayer.view.HorizontalListSelectViewImpl;
 import com.news.mediaplayer.view.ListSelectView;
@@ -74,6 +78,14 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
     private ImageButton fullLineScreenImage;
     private TextView tvLineTip;
     private ListSelectView lsvHorContent;
+
+    //亮度、音量控制
+    View viewVolume;
+    View viewBrightness;
+    ProgressBar pbVolume;
+    CardView cvVolume;
+    ProgressBar pbBrightness;
+    CardView cvBrightness;
 
     private List<VideoBean> mVideoBeanList;
     private VideoBean mCurVideoBean;
@@ -136,6 +148,60 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
         fullLineScreenImage = findViewById(R.id.full_line_screen_image);
         tvLineTip = findViewById(R.id.tv_line_tip);
         lsvHorContent = findViewById(R.id.lsv_hor_content);
+
+        viewVolume = findViewById(R.id.view_volume);
+        viewBrightness = findViewById(R.id.view_brightness);
+        pbVolume = findViewById(R.id.pb_volume);
+        cvVolume = findViewById(R.id.cv_volume);
+        pbBrightness = findViewById(R.id.pb_brightness);
+        cvBrightness = findViewById(R.id.cv_brightness);
+        viewBrightness.setOnTouchListener(new OnTouchListener() {
+            int lastY;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    lastY = (int) event.getY();
+                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    int dy = (int) (event.getY() - lastY);
+                    cvBrightness.setVisibility(View.VISIBLE);
+                    int pb = (int) (pbBrightness.getProgress() + (-dy * 1.0f*0.5f));
+                    if (pb < 0) pb = 0;
+                    if (pb > 100) pb = 100;
+                    pbBrightness.setProgress(pb);
+                    BrightnessUtil.setAppBrightness(mActivity, pb * 1.0f / 100);
+                    lastY = (int) event.getY();
+                } else {
+                    cvBrightness.setVisibility(View.GONE);
+                }
+                return true;
+            }
+        });
+        viewVolume.setOnTouchListener(new OnTouchListener() {
+            int lastY;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    lastY = (int) event.getY();
+                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    int dy = (int) (event.getY() - lastY);
+                    cvVolume.setVisibility(View.VISIBLE);
+                    int pb = (int) (pbVolume.getProgress() + (-dy * 1.0f*0.5f));
+                    if (pb < 0) pb = 0;
+                    if (pb > 100) pb = 100;
+                    pbVolume.setProgress(pb);
+                    VolumeUtil.setVolume(getContext(),pb);
+                    lastY = (int) event.getY();
+                } else {
+                    cvVolume.setVisibility(View.GONE);
+                }
+                return true;
+            }
+        });
+        pbVolume.setMax(VolumeUtil.getMax(getContext()));
+        pbVolume.setProgress(VolumeUtil.getCurrent(getContext()));
+        pbBrightness.setMax(100);
+        pbBrightness.setProgress((int) (BrightnessUtil.getAppBrightness(getContext())*100));
     }
 
     private void init(Context context) {
@@ -215,16 +281,16 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             } else {
                 flMore.setVisibility(View.VISIBLE);
             }
-        } else if(v == ibLock){
-            if(!ibLock.isSelected()){
+        } else if (v == ibLock) {
+            if (!ibLock.isSelected()) {
                 flMore.setVisibility(GONE);
                 clMediaController.setVisibility(GONE);
                 ibLock.setSelected(true);
-            }else{
+            } else {
                 clMediaController.setVisibility(VISIBLE);
                 ibLock.setSelected(false);
             }
-        }else if (v == fullScreenImage || v == fullLineScreenImage) {
+        } else if (v == fullScreenImage || v == fullLineScreenImage) {
             if (mOnFullScreenListener != null) {
                 mOnFullScreenListener.onFullScreen(viewVideoPlayer, mediaController);
             }
@@ -424,10 +490,10 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             ibMore.setVisibility(VISIBLE);
             ibClose.setVisibility(GONE);
             if (mActivity.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-                ibLock.setPadding(Utils.dip2px(mActivity, 25), 0,0,0);
+                ibLock.setPadding(Utils.dip2px(mActivity, 25), 0, 0, 0);
                 clMediaController.setPadding(Utils.dip2px(mActivity, 25), Utils.dip2px(mActivity, 30), Utils.dip2px(mActivity, 25), Utils.dip2px(mActivity, 35));
             } else {
-                ibLock.setPadding(Utils.dip2px(mActivity, 10), 0,0,0);
+                ibLock.setPadding(Utils.dip2px(mActivity, 10), 0, 0, 0);
                 clMediaController.setPadding(Utils.dip2px(mActivity, 10), mStatusBarHeight, Utils.dip2px(mActivity, 15), mNavigationBarHeight);
             }
         } else {
@@ -435,7 +501,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             ibMore.setVisibility(GONE);
             ibClose.setVisibility(VISIBLE);
             int padding = Utils.dip2px(mActivity, 10);
-            ibLock.setPadding(padding, 0,0,0);
+            ibLock.setPadding(padding, 0, 0, 0);
             clMediaController.setPadding(padding, padding, Utils.dip2px(mActivity, 15), padding);
         }
     }
