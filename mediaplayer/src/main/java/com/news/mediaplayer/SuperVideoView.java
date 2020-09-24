@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -156,44 +157,65 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
         pbBrightness = findViewById(R.id.pb_brightness);
         cvBrightness = findViewById(R.id.cv_brightness);
         viewBrightness.setOnTouchListener(new OnTouchListener() {
+            int downY;
             int lastY;
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    lastY = (int) event.getY();
+                    downY = (int) event.getY();
+                    lastY = downY;
+                    if (getParent() != null) {
+                        getParent().requestDisallowInterceptTouchEvent(true);
+                    }
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     int dy = (int) (event.getY() - lastY);
-                    cvBrightness.setVisibility(View.VISIBLE);
-                    int pb = (int) (pbBrightness.getProgress() + (-dy * 1.0f*0.5f));
-                    if (pb < 0) pb = 0;
-                    if (pb > 100) pb = 100;
-                    pbBrightness.setProgress(pb);
-                    BrightnessUtil.setAppBrightness(mActivity, pb * 1.0f / 100);
-                    lastY = (int) event.getY();
+                    if (Math.abs(dy) > ViewConfiguration.get(getContext()).getScaledTouchSlop()) {
+                        cvBrightness.setVisibility(View.VISIBLE);
+                        int pb = (int) (pbBrightness.getProgress() + (-dy * 1.0f * 0.5f));
+                        if (pb < 0) pb = 0;
+                        if (pb > 100) pb = 100;
+                        pbBrightness.setProgress(pb);
+                        BrightnessUtil.setAppBrightness(mActivity, pb * 1.0f / 100);
+                        lastY = (int) event.getY();
+                    }
                 } else {
                     cvBrightness.setVisibility(View.GONE);
+                    if (getParent() != null) {
+                        getParent().requestDisallowInterceptTouchEvent(false);
+                    }
                 }
                 return true;
             }
         });
         viewVolume.setOnTouchListener(new OnTouchListener() {
+            int downY;
             int lastY;
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    lastY = (int) event.getY();
+                    downY = (int) event.getY();
+                    lastY = downY;
+                    if (getParent() != null) {
+                        getParent().requestDisallowInterceptTouchEvent(true);
+                    }
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     int dy = (int) (event.getY() - lastY);
-                    cvVolume.setVisibility(View.VISIBLE);
-                    int pb = (int) (pbVolume.getProgress() + (-dy * 1.0f*0.5f));
-                    if (pb < 0) pb = 0;
-                    if (pb > 100) pb = 100;
-                    pbVolume.setProgress(pb);
-                    VolumeUtil.setVolume(getContext(),pb);
-                    lastY = (int) event.getY();
+                    if (Math.abs(dy) > ViewConfiguration.get(getContext()).getScaledTouchSlop()) {
+                        cvVolume.setVisibility(View.VISIBLE);
+                        int pb = (int) (pbVolume.getProgress() + (-dy * 1.0f * 0.5f));
+                        if (pb < 0) pb = 0;
+                        if (pb > 100) pb = 100;
+                        pbVolume.setProgress(pb);
+                        VolumeUtil.setVolume(getContext(), pb);
+                        lastY = (int) event.getY();
+                    }
                 } else {
                     cvVolume.setVisibility(View.GONE);
+                    if (getParent() != null) {
+                        getParent().requestDisallowInterceptTouchEvent(false);
+                    }
                 }
                 return true;
             }
