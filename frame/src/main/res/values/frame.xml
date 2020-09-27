@@ -46,4 +46,19 @@
     <dimen name="baseDialogContent2">12sp</dimen>
     <color name="baseWhite">#ffffff</color>
     <color name="baseGreen">#1CC42F</color>
+
+    <!--color颜色-->
+    <color name="white">#FFFFFF</color>
+    <color name="common_red">#FF4C44</color>
+    <color name="common_title">#161F29</color>
+    <color name="common_black">#000000</color>
+
+    <!--dimen 尺寸-->
+    <dimen name="common_title">16dp</dimen>
+    <dimen name="common_margin">15dp</dimen>
+    <dimen name="common_big_title">18dp</dimen>
+
+    <!--string 字符串-->
+    <string name="common_request_error_tip">数据请求失败，请稍后再试</string>
+    <string name="common_network_error_tip">网络连接失败，请稍后再试</string>
 </resources>

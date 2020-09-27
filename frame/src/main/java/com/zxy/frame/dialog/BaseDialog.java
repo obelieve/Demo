@@ -75,7 +75,11 @@ public class BaseDialog {
     }
 
     public void dismiss() {
-        mDialog.dismiss();
+        try{
+            mDialog.dismiss();
+        }catch (Exception e){//mWindow.isDestroyed()
+            e.printStackTrace();
+        }
     }
 
     public boolean isShowing() {

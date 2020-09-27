@@ -7,7 +7,7 @@ import com.zxy.frame.utils.StatusBarUtil;
 /**
  * 状态栏透明时，控制状态栏Light切换方式 Fragment
  */
-public abstract class BaseStatusBarFragment extends BaseFragment implements IBaseStatusBar {
+public abstract class ApiBaseStatusBarFragment extends ApiBaseFragment implements IBaseStatusBar {
 
     @Override
     protected void initView() {

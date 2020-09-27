@@ -11,7 +11,7 @@ import androidx.core.content.FileProvider;
 
 import java.io.File;
 
-public class ActivityUtil {
+public class SystemIntentUtil {
 
     /**
      * GPS定位是否开启

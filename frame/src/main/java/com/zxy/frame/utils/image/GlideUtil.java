@@ -113,11 +113,24 @@ public class GlideUtil {
      * @param maxsize
      */
     public static void loadImageAutoSize(Context context, String path, ImageView imageView, float maxsize) {
+        loadImageAutoSize(context, path, imageView, maxsize, 7);
+    }
+
+    /**
+     * 加载单图，自适应高宽
+     *
+     * @param context
+     * @param path
+     * @param imageView
+     * @param maxsize
+     * @param roundDp
+     */
+    public static void loadImageAutoSize(Context context, String path, ImageView imageView, float maxsize, int roundDp) {
         Glide.with(context).clear(imageView);
         Glide.with(context).setDefaultRequestOptions(new RequestOptions()).load(path).into(new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                setImageSize(path, context, resource, imageView, maxsize, path.contains(".gif"));
+                setImageSize(path, context, resource, imageView, maxsize, roundDp, path.contains(".gif"));
             }
 
             @Override
@@ -140,6 +153,10 @@ public class GlideUtil {
     }
 
     private static void setImageSize(String path, Context context, Drawable resource, ImageView imageView, float maxsize, boolean isGif) {
+        setImageSize(path, context, resource, imageView, maxsize, 7, isGif);
+    }
+
+    private static void setImageSize(String path, Context context, Drawable resource, ImageView imageView, float maxsize, int dp, boolean isGif) {
         int width = resource.getIntrinsicWidth();
         int height = resource.getIntrinsicHeight();
         imageView.requestLayout();
@@ -155,7 +172,7 @@ public class GlideUtil {
             imageView.getLayoutParams().height = height;
             imageView.getLayoutParams().width = width;
         }
-        Glide.with(context).load(path).transform(new GlideRoundTransform(context, isGif)).into(imageView);
+        Glide.with(context).load(path).transform(new GlideRoundTransform(context, isGif, dp)).into(imageView);
     }
 
 }

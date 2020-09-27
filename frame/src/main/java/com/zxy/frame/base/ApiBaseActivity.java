@@ -4,8 +4,13 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,16 +20,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.zxy.frame.dialog.LoadDialog;
-import com.zxy.frame.utils.ActivityUtil;
+import com.zxy.frame.R;
+import com.zxy.frame.dialog.LoadingDialog;
 import com.zxy.frame.utils.StatusBarUtil;
+import com.zxy.frame.utils.SystemIntentUtil;
+import com.zxy.frame.utils.SystemUtil;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class ApiBaseActivity extends AppCompatActivity implements ICommonToolbar, IStatusBar {
 
     private static final int PERMISSION_REQUEST_CODE = 10240;
 
@@ -32,7 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected boolean mNeedInsetStatusBar = true;
     protected boolean mLightStatusBar = true;
 
-    private LoadDialog mLoadDialog;
+    private LoadingDialog mLoadingDialog;
     /**
      * Activity 实例.
      */
@@ -43,7 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = this;
-        //setScreenOrientation();
+        setScreenOrientation();
         if (mNeedInsetStatusBar) {
             StatusBarUtil.setStatusBarColor(this, getStatusBarColor());
         } else {
@@ -62,7 +69,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void initCreateAfterView(Bundle savedInstanceState);
 
     protected void setScreenOrientation() {
-        if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制竖屏
         } else {
             try {
@@ -81,17 +88,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mLightStatusBar;
     }
 
-    public void showLoading(){
-        if(mLoadDialog==null){
-            mLoadDialog = new LoadDialog(this);
+    public void showLoading() {
+        if (mLoadingDialog == null) {
+            mLoadingDialog = new LoadingDialog(this);
         }
-        mLoadDialog.show();
+        mLoadingDialog.show();
     }
-    public void dismissLoading(){
-        if(mLoadDialog!=null){
-            mLoadDialog.dismiss();
+
+    public void dismissLoading() {
+        if (mLoadingDialog != null) {
+            mLoadingDialog.dismiss();
         }
     }
+
     /**
      * 请求权限BaseActivity$OnRequestPermissionListener
      *
@@ -182,10 +191,144 @@ public abstract class BaseActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ActivityUtil.openAppSettings(mActivity);
+                        SystemIntentUtil.openAppSettings(mActivity);
 
                     }
                 }).show();
+    }
+
+    @Override
+    public void setNavigateStyle(Style style) {
+        ImageView left_icon = findViewById(R.id.left_icon);
+        TextView title = findViewById(R.id.title);
+        TextView right_icon = findViewById(R.id.right_icon);
+        TextView right_tip = findViewById(R.id.right_tip);
+        if (style == Style.DARK) {
+            if (left_icon != null) {
+                left_icon.setImageResource(R.drawable.ic_back_black);
+            }
+            if (title != null) {
+                title.setTextColor(getResources().getColor(R.color.common_black));
+            }
+            if (right_icon != null) {
+                right_icon.setTextColor(getResources().getColor(R.color.common_black));
+            }
+            if(right_tip!=null){
+                right_tip.setTextColor(getResources().getColor(R.color.common_black));
+            }
+        } else if (style == Style.LIGHT) {
+            if (left_icon != null) {
+                left_icon.setImageResource(R.drawable.ic_back_white);
+            }
+            if (title != null) {
+                title.setTextColor(getResources().getColor(R.color.white));
+            }
+            if (right_icon != null) {
+                right_icon.setTextColor(getResources().getColor(R.color.white));
+            }
+            if(right_tip!=null){
+                right_tip.setTextColor(getResources().getColor(R.color.white));
+            }
+        }
+    }
+
+    @Override
+    public void setNavigateBackgroundResource(int resId) {
+        View toolbar_layout = findViewById(R.id.toolbar_layout);
+        if (toolbar_layout != null) {
+            toolbar_layout.setBackgroundResource(resId);
+        }
+    }
+
+    @Override
+    public void setNavigateBackgroundColor(int color) {
+        View toolbar_layout = findViewById(R.id.toolbar_layout);
+        if (toolbar_layout != null) {
+            toolbar_layout.setBackgroundColor(color);
+        }
+    }
+
+    @Override
+    public void setNeedNavigate() {
+        View left_layout = findViewById(R.id.left_layout);
+        if (left_layout != null) {
+            left_layout.setOnClickListener(v -> finish());
+        }
+    }
+
+    @Override
+    public void setNeedNavigate(View.OnClickListener onClickListener) {
+        View left_layout = findViewById(R.id.left_layout);
+        if (left_layout != null) {
+            ImageView left_icon = findViewById(R.id.left_icon);
+            left_icon.setImageResource(R.drawable.ic_back_black);
+            left_layout.setOnClickListener(onClickListener);
+        }
+
+    }
+
+    @Override
+    public void setMyTitle(int titleId) {
+        TextView tvTitle = findViewById(R.id.title);
+        if (tvTitle != null) {
+            tvTitle.setText(titleId);
+        }
+    }
+
+    @Override
+    public void setMyTitle(String title) {
+        TextView tvTitle = findViewById(R.id.title);
+        if (tvTitle != null) {
+            tvTitle.setText(title);
+        }
+    }
+
+    @Override
+    public void setRightNavigate(int drawableId, View.OnClickListener onClickListener) {
+        View icon_layout = findViewById(R.id.right_icon_layout_2);
+        if (icon_layout != null) {
+            ImageView rightIcon = findViewById(R.id.right_icon_2);
+            rightIcon.setImageResource(drawableId);
+            icon_layout.setVisibility(View.VISIBLE);
+            icon_layout.setOnClickListener(onClickListener);
+        }
+    }
+
+    @Override
+    public void setRightNavigate(int drawableGravity, int drawableId, String text, View.OnClickListener onClickListener) {
+        setRightNavigate(drawableGravity, drawableId, SystemUtil.dp2px(getApplicationContext(), 4), text, onClickListener);
+    }
+
+    @Override
+    public void setRightNavigate(int drawableGravity, int drawableId, int drawablePaddingDp, String text, View.OnClickListener onClickListener) {
+        View right_tip_layout = findViewById(R.id.right_tip_layout);
+        if (right_tip_layout != null) {
+            TextView right_tip = findViewById(R.id.right_tip);
+            Drawable tempDrawable = getResources().getDrawable(drawableId);
+            Drawable left = null, top = null, right = null, bottom = null;
+            if (drawableGravity == Gravity.LEFT) {
+                left = tempDrawable;
+            } else if (drawableGravity == Gravity.TOP) {
+                top = tempDrawable;
+            } else if (drawableGravity == Gravity.RIGHT) {
+                right = tempDrawable;
+            } else if (drawableGravity == Gravity.BOTTOM) {
+                bottom = tempDrawable;
+            }
+            right_tip.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
+            right_tip.setCompoundDrawablePadding(drawablePaddingDp);
+            right_tip.setText(text);
+            right_tip_layout.setVisibility(View.VISIBLE);
+            right_tip_layout.setOnClickListener(onClickListener);
+        }
+    }
+
+    @Override
+    public void setStatusBarHeight(View view) {
+        if (view != null && view.getLayoutParams() != null) {
+            view.getLayoutParams().height = StatusBarUtil.getStatusBarHeight(mActivity);
+            view.setLayoutParams(view.getLayoutParams());
+        }
     }
 
     public interface OnRequestPermissionListener {

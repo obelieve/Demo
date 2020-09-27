@@ -1,6 +1,8 @@
 package com.zxy.frame.dialog;
 
 import android.app.Activity;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ public class SimpleAlertDialog extends BaseDialog implements View.OnClickListene
     private Button mBtnCancel;
     private Button mBtnOk;
 
+    private boolean mSimple;
     View.OnClickListener mOkListener;
     View.OnClickListener mCancelListener;
 
@@ -36,10 +39,23 @@ public class SimpleAlertDialog extends BaseDialog implements View.OnClickListene
         mBtnOk.setOnClickListener(this);
     }
 
+    public SimpleAlertDialog setSimple(boolean simple) {
+        mSimple =simple;
+        mBtnCancel.setVisibility(simple?View.GONE:View.VISIBLE);
+        return this;
+    }
+
     public SimpleAlertDialog setContent(String content) {
         mTvContent.setText(content);
         return this;
     }
+
+    public SimpleAlertDialog setContent(SpannableString content) {
+        mTvContent.setText(content);
+        mTvContent.setMovementMethod(LinkMovementMethod.getInstance());
+        return this;
+    }
+
 
     public SimpleAlertDialog setOk(String ok) {
         mBtnOk.setText(ok);

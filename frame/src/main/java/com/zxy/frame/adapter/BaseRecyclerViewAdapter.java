@@ -42,7 +42,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     private RecyclerView mRecyclerView;
     private RecyclerView.OnScrollListener mOnScrollListener;
 
-    private BaseDataHolder<DATA> mDataHolder;
+    protected BaseDataHolder<DATA> mDataHolder;
     protected OnItemClickCallback<DATA> mItemClickCallback;
     protected OnItemLongClickCallback<DATA> mItemLongClickCallback;
     private OnLoadMoreListener mOnLoadMoreListener;
