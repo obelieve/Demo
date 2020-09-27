@@ -11,7 +11,7 @@ import com.zxy.demo.view.ListSelectPopupView;
 import com.zxy.demo.view.ListSelectView;
 import com.zxy.demo.view.ThreeLayerSelectView;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.PopupMenuUtil;
 import com.zxy.frame.utils.ToastUtil;
 import com.zxy.utility.LogUtil;
@@ -28,7 +28,7 @@ import butterknife.OnClick;
  * Created by zxy
  * on 2020/5/8
  */
-public class FilterListFragment extends BaseFragment {
+public class FilterListFragment extends ApiBaseFragment {
 
 
     @BindView(R.id.ll_type1)

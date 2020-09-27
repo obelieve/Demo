@@ -13,7 +13,7 @@ import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.adapter.item_decoration.HorizontalItemDivider;
 import com.zxy.frame.adapter.item_decoration.VerticalItemDivider;
 import com.zxy.frame.adapter.layout_manager.AutoFixWidthLayoutManager;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.view.LeftRightRecyclerView;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class ListContainerFragment extends BaseFragment {
+public class ListContainerFragment extends ApiBaseFragment {
 
     @BindView(R.id.view_lr_recycler_view)
     LeftRightRecyclerView<LeftData, RightData> mViewLrRecyclerView;

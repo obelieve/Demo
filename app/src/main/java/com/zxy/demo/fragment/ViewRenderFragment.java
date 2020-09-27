@@ -1,12 +1,9 @@
 package com.zxy.demo.fragment;
 
-import android.graphics.Color;
 import android.view.View;
 
 import com.zxy.demo.R;
-import com.zxy.frame.base.BaseFragment;
-import com.zxy.frame.utils.ShadowDrawable;
-import com.zxy.frame.utils.ViewUtil;
+import com.zxy.frame.base.ApiBaseFragment;
 
 import butterknife.BindView;
 
@@ -14,7 +11,7 @@ import butterknife.BindView;
  * Created by Admin
  * on 2020/5/29
  */
-public class ViewRenderFragment extends BaseFragment {
+public class ViewRenderFragment extends ApiBaseFragment {
 
     @BindView(R.id.view_shadow)
     View viewShadow;
@@ -26,7 +23,6 @@ public class ViewRenderFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        ViewUtil.setShadowBackground(viewShadow, ShadowDrawable.gen().radius(10).shadowColor(Color.parseColor("#332995FF")).build(getContext()));
 
     }
 

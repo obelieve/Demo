@@ -5,12 +5,12 @@ import android.graphics.Color;
 
 import com.zxy.demo.R;
 import com.zxy.demo.activity.SplashActivity;
+import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.view.SplashView;
-import com.zxy.frame.base.BaseFragment;
 
 import butterknife.BindView;
 
-public class SplashFragment extends BaseFragment {
+public class SplashFragment extends ApiBaseFragment {
 
     @BindView(R.id.view_splash)
     SplashView viewSplash;

@@ -1,7 +1,6 @@
 package com.zxy.demo.fragment;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.NoCopySpan;
 import android.text.Selection;
@@ -11,31 +10,22 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.zxy.demo.R;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import butterknife.Unbinder;
 
 /**
  * @其他人 使用例子
  */
-public class ForTAFragment extends BaseFragment {
+public class ForTAFragment extends ApiBaseFragment {
     @BindView(R.id.btn)
     Button mBtn;
     @BindView(R.id.et)

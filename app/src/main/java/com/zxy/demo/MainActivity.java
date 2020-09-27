@@ -9,11 +9,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.zxy.demo.fragment.LoadRefreshFragment;
-import com.zxy.frame.base.BaseActivity;
+import com.zxy.frame.base.ApiBaseActivity;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends ApiBaseActivity {
 
     @BindView(R.id.tl_tab)
     TabLayout mTlTab;

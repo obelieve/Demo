@@ -16,9 +16,8 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.zxy.demo.R;
-import com.zxy.demo.fragment.LoadRefreshFragment;
 import com.zxy.demo.view.PageStatusView;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 
 import butterknife.BindView;
 
@@ -26,7 +25,7 @@ import butterknife.BindView;
  * Created by Administrator
  * on 2020/4/17
  */
-public class StickyCoordinatorFragment extends BaseFragment {
+public class StickyCoordinatorFragment extends ApiBaseFragment {
 
     @BindView(R.id.cl_content)
     CoordinatorLayout clContent;

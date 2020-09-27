@@ -5,10 +5,11 @@ import androidx.lifecycle.ViewModel;
 
 import com.zxy.demo.App;
 import com.zxy.demo.entity.VersionUpdateEntity;
+import com.zxy.frame.net.ApiBaseResponse;
+import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
-import com.zxy.frame.net.BaseResponse;
-import com.zxy.frame.net.BaseSubscribe;
+
 
 public class VersionUpdateViewModel extends ViewModel {
 
@@ -17,16 +18,18 @@ public class VersionUpdateViewModel extends ViewModel {
 
     public void version_check() {
         mLoadingLiveData.postValue(true);
-        ApiService.wrap(App.getServiceInterface().version_check(),VersionUpdateEntity.class).subscribe(new BaseSubscribe<BaseResponse<VersionUpdateEntity>>() {
+        ApiService.wrap(App.getServiceInterface().version_check(),VersionUpdateEntity.class).subscribe(new ApiBaseSubscribe<ApiBaseResponse<VersionUpdateEntity>>() {
+
+
             @Override
-            public void onNext(BaseResponse<VersionUpdateEntity> response) {
+            public void onError(ApiServiceException e) {
                 mLoadingLiveData.postValue(false);
-                mVersionUpdateEntityLiveData.postValue(response.getEntity());
             }
 
             @Override
-            protected void onError(ApiServiceException e) {
+            public void onSuccess(ApiBaseResponse<VersionUpdateEntity> response, boolean isProcessed) {
                 mLoadingLiveData.postValue(false);
+                mVersionUpdateEntityLiveData.postValue(response.getEntity());
             }
         });
     }

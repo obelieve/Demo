@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.zxy.demo.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
-import com.zxy.frame.base.BaseFragment;
+import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.ToastUtil;
 import com.zxy.utility.SystemUtil;
 
@@ -26,7 +26,7 @@ import butterknife.BindView;
  * Created by Admin
  * on 2020/6/30
  */
-public class TestFragment extends BaseFragment {
+public class TestFragment extends ApiBaseFragment {
 
 
     @BindView(R.id.rv_content)
