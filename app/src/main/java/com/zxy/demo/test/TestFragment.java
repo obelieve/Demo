@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.zxy.demo.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
@@ -47,7 +47,7 @@ public class TestFragment extends ApiBaseFragment {
         tv.setBackgroundColor(Color.GREEN);
         tv.setText("空数据");
         mTestAdapter.setEmptyView(tv);
-        rvContent.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         rvContent.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -58,7 +58,7 @@ public class TestFragment extends ApiBaseFragment {
         });
         rvContent.setAdapter(mTestAdapter);
         List<String> l = new ArrayList<>();
-        int i = 6;
+        int i = 20;
         while (i > 0) {
             l.add(i + "ASDAD我完全A");
             i--;
