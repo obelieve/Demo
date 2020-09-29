@@ -148,25 +148,27 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             return false;
         RecyclerView.LayoutManager lm = mRecyclerView.getLayoutManager();
         if (lm instanceof LinearLayoutManager) {
-//            LogUtil.e("Msg last="+(((LinearLayoutManager) lm).findLastVisibleItemPosition()));
-            if (((LinearLayoutManager) lm).findLastVisibleItemPosition() + 1 == getItemCount()) {
-//                LogUtil.e("Msg last="+false);
+            /**
+             * 1.判断是否到底部，底部直接显示 end/error状态.
+             * 2.没有到底部判断内容是否充满整页，有存在加载中，否则end/error状态.
+             */
+            if (((LinearLayoutManager) lm).findLastCompletelyVisibleItemPosition() + 1 == getItemCount()) {
                 return false;
             } else {
-//                LogUtil.e("Msg first="+(((LinearLayoutManager) lm).findFirstCompletelyVisibleItemPosition() != 0));
-//                LogUtil.e("Msg itemCount="+((LinearLayoutManager) lm).findLastVisibleItemPosition() + 1+" itemCount="+getItemCount());
-//                LogUtil.e("Msg f="+(((LinearLayoutManager) lm).findFirstCompletelyVisibleItemPosition()));
-//                LogUtil.e("Msg l="+(((LinearLayoutManager) lm).findLastVisibleItemPosition()));
                 return ((LinearLayoutManager) lm).findFirstCompletelyVisibleItemPosition() != 0 ||
-                        ((LinearLayoutManager) lm).findLastVisibleItemPosition() + 1 < getItemCount();
+                        ((LinearLayoutManager) lm).findLastCompletelyVisibleItemPosition() + 1 < getItemCount();
             }
         } else if (lm instanceof StaggeredGridLayoutManager) {
             int[] startPosArray = new int[((StaggeredGridLayoutManager) lm).getSpanCount()];
             int[] endPosArray = new int[((StaggeredGridLayoutManager) lm).getSpanCount()];
             ((StaggeredGridLayoutManager) lm).findFirstCompletelyVisibleItemPositions(startPosArray);
-            ((StaggeredGridLayoutManager) lm).findLastVisibleItemPositions(endPosArray);
+            ((StaggeredGridLayoutManager) lm).findLastCompletelyVisibleItemPositions(endPosArray);
             Arrays.sort(startPosArray);
             Arrays.sort(endPosArray);
+            /**
+             * 1.判断是否到底部，底部直接显示 end/error状态.
+             * 2.没有到底部判断内容是否充满整页，有存在加载中，否则end/error状态.
+             */
             if (endPosArray[endPosArray.length - 1] + 1 == getItemCount()) {
                 return false;
             } else {
@@ -335,7 +337,9 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     public void onViewAttachedToWindow(@NonNull BaseViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         int index = holder.getLayoutPosition();
-        //StaggeredGridLayoutManager
+        /**
+         * 瀑布流布局，有特殊类型时显示一行
+         */
         if (getItemViewType(index) == (HEADER_TYPE | FOOTER_TYPE | LOAD_MORE_TYPE | EMPTY_TYPE)) {
             ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
             if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
@@ -350,6 +354,9 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
+            /**
+             * Grid布局，有特殊类型时显示一行
+             */
             ((GridLayoutManager) recyclerView.getLayoutManager()).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
