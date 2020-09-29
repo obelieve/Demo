@@ -36,8 +36,62 @@ public class SPUtil {
         }
         return sSPUtil;
     }
+    
+    public String getString(String key) {
+        return mSharedPreferences.getString(key, "");
+    }
 
-    public SharedPreferences getSP() {
-        return mSharedPreferences;
+    public String getString(String key, String defaultValue) {
+        return mSharedPreferences.getString(key, defaultValue);
+    }
+
+    /**
+     * 设置配置参数的值
+     *
+
+     * @param key
+     * @param value
+     */
+    public void putString(String key, String value) {
+
+
+        mSharedPreferences.edit().putString(key, value).apply();
+    }
+
+    public boolean getBoolean(String key) {
+        return mSharedPreferences.getBoolean(key, false);
+    }
+
+    public boolean getBoolean(String key, boolean defValue) {
+        return mSharedPreferences.getBoolean(key, defValue);
+    }
+
+    public void putBoolean(String key, boolean value) {
+        mSharedPreferences.edit().putBoolean(key, value).apply();
+    }
+
+
+    public float getFloat(String key, float defValue) {
+        return mSharedPreferences.getFloat(key, defValue);
+    }
+
+    public void putFloat(String key, float value) {
+        mSharedPreferences.edit().putFloat(key, value).apply();
+    }
+
+    public long getLong(String key, long defValue) {
+        return mSharedPreferences.getLong(key, defValue);
+    }
+
+    public void putLong(String key, long value) {
+        mSharedPreferences.edit().putLong(key, value).apply();
+    }
+
+    public int getInteger(String key, int defValue) {
+        return mSharedPreferences.getInt(key, defValue);
+    }
+
+    public void putInteger(String key, int value) {
+        mSharedPreferences.edit().putInt(key, value).apply();
     }
 }
