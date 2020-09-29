@@ -334,6 +334,15 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+        if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
+            ((GridLayoutManager) recyclerView.getLayoutManager()).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    int type = getItemViewType(position);
+                    return type == (HEADER_TYPE | FOOTER_TYPE | LOAD_MORE_TYPE | EMPTY_TYPE) ? ((GridLayoutManager) recyclerView.getLayoutManager()).getSpanCount() : 1;
+                }
+            });
+        }
         if (recyclerView == mRecyclerView && mOnLoadMoreListener != null) {
             if (mOnScrollListener == null) {
                 mOnScrollListener = new RecyclerView.OnScrollListener() {
