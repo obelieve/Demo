@@ -18,6 +18,7 @@ import com.zxy.frame.utils.ToastUtil;
 import com.zxy.utility.SystemUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,7 +48,16 @@ public class TestFragment extends ApiBaseFragment {
         tv.setBackgroundColor(Color.GREEN);
         tv.setText("空数据");
         mTestAdapter.setEmptyView(tv);
-        rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
+        mTestAdapter.setLoadMoreListener(rvContent, new BaseRecyclerViewAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                mTestAdapter.getDataHolder().addAll(new ArrayList<>(Arrays.asList("111", "222", "333", "111", "222", "333")));
+                mTestAdapter.loadMoreEnd();
+            }
+        });
+        rvContent.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
+//        rvContent.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
+//        rvContent.setLayoutManager(new GridLayoutManager(getContext(), 3));
         rvContent.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -58,7 +68,7 @@ public class TestFragment extends ApiBaseFragment {
         });
         rvContent.setAdapter(mTestAdapter);
         List<String> l = new ArrayList<>();
-        int i = 20;
+        int i = 10;
         while (i > 0) {
             l.add(i + "ASDAD我完全A");
             i--;
