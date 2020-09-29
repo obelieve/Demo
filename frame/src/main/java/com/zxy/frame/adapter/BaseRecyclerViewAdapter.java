@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.zxy.frame.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -38,7 +39,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     private View mFooterView;
     private boolean mEnableHeader = true;
     private boolean mEnableFooter = true;
-    private int mLoadMoreState = 0;
+    private int mLoadMoreState = LOAD_END_STATE;
     private RecyclerView mRecyclerView;
     private RecyclerView.OnScrollListener mOnScrollListener;
 
@@ -85,15 +86,29 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     public void loadMoreError() {
         if (mOnLoadMoreListener == null)
             return;
-        mLoadMoreState = LOAD_ERROR_STATE;
-        notifyItemChanged(getItemCount() - 1);
+        mRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                mLoadMoreState = checkIsLoadingState() ? LOADING_STATE : LOAD_ERROR_STATE;
+                notifyItemChanged(getItemCount() - 1);
+            }
+        });
     }
 
     public void loadMoreEnd() {
         if (mOnLoadMoreListener == null)
             return;
-        mLoadMoreState = LOAD_END_STATE;
-        notifyItemChanged(getItemCount() - 1);
+        /**
+         * RecyclerView#consumePendingUpdateOperations 布局延时刷新处理。
+         * 导致checkIsFullPage();需要在Handler#post中调用。
+         */
+        mRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                mLoadMoreState = checkIsLoadingState() ? LOADING_STATE : LOAD_END_STATE;
+                notifyItemChanged(getItemCount() - 1);
+            }
+        });
     }
 
     public void onSetListAfter() {
@@ -126,6 +141,39 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
 
     public void setItemLongClickCallback(OnItemLongClickCallback<DATA> itemLongClickCallback) {
         mItemLongClickCallback = itemLongClickCallback;
+    }
+
+    private boolean checkIsLoadingState() {
+        if (mRecyclerView == null)
+            return false;
+        RecyclerView.LayoutManager lm = mRecyclerView.getLayoutManager();
+        if (lm instanceof LinearLayoutManager) {
+//            LogUtil.e("Msg last="+(((LinearLayoutManager) lm).findLastVisibleItemPosition()));
+            if (((LinearLayoutManager) lm).findLastVisibleItemPosition() + 1 == getItemCount()) {
+//                LogUtil.e("Msg last="+false);
+                return false;
+            } else {
+//                LogUtil.e("Msg first="+(((LinearLayoutManager) lm).findFirstCompletelyVisibleItemPosition() != 0));
+//                LogUtil.e("Msg itemCount="+((LinearLayoutManager) lm).findLastVisibleItemPosition() + 1+" itemCount="+getItemCount());
+//                LogUtil.e("Msg f="+(((LinearLayoutManager) lm).findFirstCompletelyVisibleItemPosition()));
+//                LogUtil.e("Msg l="+(((LinearLayoutManager) lm).findLastVisibleItemPosition()));
+                return ((LinearLayoutManager) lm).findFirstCompletelyVisibleItemPosition() != 0 ||
+                        ((LinearLayoutManager) lm).findLastVisibleItemPosition() + 1 < getItemCount();
+            }
+        } else if (lm instanceof StaggeredGridLayoutManager) {
+            int[] startPosArray = new int[((StaggeredGridLayoutManager) lm).getSpanCount()];
+            int[] endPosArray = new int[((StaggeredGridLayoutManager) lm).getSpanCount()];
+            ((StaggeredGridLayoutManager) lm).findFirstCompletelyVisibleItemPositions(startPosArray);
+            ((StaggeredGridLayoutManager) lm).findLastCompletelyVisibleItemPositions(endPosArray);
+            Arrays.sort(startPosArray);
+            Arrays.sort(endPosArray);
+            if (endPosArray[endPosArray.length - 1] + 1 == getItemCount()) {
+                return false;
+            } else {
+                return endPosArray[endPosArray.length - 1] + 1 < getItemCount() || startPosArray[0] != 0;
+            }
+        }
+        return false;
     }
 
     @NonNull
