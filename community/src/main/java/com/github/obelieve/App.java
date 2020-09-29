@@ -57,8 +57,8 @@ public class App extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         SystemValue.init(this);
-        CacheRepository.getInstance().initUserEntity();
         SPUtil.init(this,"App");
+        CacheRepository.getInstance().initUserEntity();
         ToastUtil.init(this);
         ZoomMediaLoader.getInstance().init(new TestImageLoader());
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
