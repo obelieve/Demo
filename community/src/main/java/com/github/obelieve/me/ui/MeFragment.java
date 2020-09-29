@@ -21,7 +21,6 @@ import com.github.obelieve.me.bean.CenterMenuEntity;
 import com.github.obelieve.me.bean.MenuDataEntity;
 import com.github.obelieve.me.ui.view.MeHeaderView;
 import com.github.obelieve.me.viewmodel.MeViewModel;
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.repository.cache.UserHelper;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.github.obelieve.repository.cache.constant.SystemValue;
@@ -30,6 +29,7 @@ import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.base.ApiBaseStatusBarFragment;
 import com.zxy.frame.utils.LogUtil;
+import com.zxy.frame.utils.SPUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -141,7 +141,7 @@ public class MeFragment extends ApiBaseStatusBarFragment {
                 if (entity != null) {
                     if (entity.do_type.equals("login")) {
                         UserHelper.getInstance().getUserInfo(mActivity);
-                        PreferenceUtil.putInteger(mActivity, PreferenceConst.SP_LOGIN_TYPE, loginType);
+                        SPUtil.getInstance().putInteger(PreferenceConst.SP_LOGIN_TYPE, loginType);
                         EventBus.getDefault().post(new LoginNotifyEvent());
                     } else if (entity.do_type.equals("wechat") || entity.do_type.equals("qq")) {
                         LoginTypeActivity.startBindPhone(mActivity, entity.open_id, entity.do_type);

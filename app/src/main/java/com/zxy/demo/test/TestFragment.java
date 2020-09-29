@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.zxy.demo.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseFragment;
+import com.zxy.frame.utils.SystemUtil;
 import com.zxy.frame.utils.ToastUtil;
-import com.zxy.utility.SystemUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class TestFragment extends ApiBaseFragment {
     protected void initView() {
         mTestAdapter = new TestAdapter(getActivity());
         TextView tv = new TextView(getActivity());
-        tv.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, SystemUtil.dp2px(100)));
+        tv.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, SystemUtil.dp2px(mActivity,100)));
         tv.setBackgroundColor(Color.GREEN);
         tv.setText("空数据");
         mTestAdapter.setEmptyView(tv);
@@ -52,8 +52,8 @@ public class TestFragment extends ApiBaseFragment {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                outRect.right = SystemUtil.dp2px(10);
-                outRect.bottom = SystemUtil.dp2px(10);
+                outRect.right = SystemUtil.dp2px(mActivity,10);
+                outRect.bottom = SystemUtil.dp2px(mActivity,10);
             }
         });
         rvContent.setAdapter(mTestAdapter);

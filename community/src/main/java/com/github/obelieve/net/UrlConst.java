@@ -3,10 +3,8 @@ package com.github.obelieve.net;
 import android.text.TextUtils;
 
 import com.github.obelieve.community.BuildConfig;
-import com.github.obelieve.App;
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
-
+import com.zxy.frame.utils.SPUtil;
 
 /**
  * Created by TQ on 2018/1/9.
@@ -23,7 +21,7 @@ public class UrlConst {
 
     static {
         if (BuildConfig.DEBUG) {
-            String url = PreferenceUtil.getString(App.getContext(), PreferenceConst.SP_BASE_URL);
+            String url = SPUtil.getInstance().getString(PreferenceConst.SP_BASE_URL);
             if (!TextUtils.isEmpty(url)) {
                 BASE_URL = url;
             }
@@ -160,7 +158,7 @@ public class UrlConst {
 
     public static String ABOUT_URL = BASE_URL + "h5/about.html";
     //等级说明
-    public static String LEVEL_URL = BASE_URL+"static/level.html?mode=light";
+    public static String LEVEL_URL = BASE_URL + "static/level.html?mode=light";
 
     //---------社区
     //社区广场列表接口（搜索共用）
@@ -382,7 +380,7 @@ public class UrlConst {
     //发现 - 频道列表
     public static final String NEWS_CHAN_LIST = "/api/news_chan_list";
     //发现 - 频道详情
-    public static final String NEWS_CHAN_DETAIL="/api/news_chan_detail";
+    public static final String NEWS_CHAN_DETAIL = "/api/news_chan_detail";
     //发现 - 资讯列表
     public static final String NEWS_LIST = "/api/news_list_ad";
     /*原生 - 资讯详情*/

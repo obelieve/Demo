@@ -6,11 +6,11 @@ import android.text.TextUtils;
 import android.webkit.CookieManager;
 
 import com.github.obelieve.App;
-import com.github.obelieve.net.ApiServiceWrapper;
-import com.github.obelieve.net.UrlConst;
 import com.github.obelieve.event.login.LogoutNotifyEvent;
 import com.github.obelieve.event.login.UserInfoRefreshNotifyEvent;
 import com.github.obelieve.login.entity.UserEntity;
+import com.github.obelieve.net.ApiServiceWrapper;
+import com.github.obelieve.net.UrlConst;
 import com.github.obelieve.repository.CacheRepository;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.github.obelieve.repository.cache.constant.SystemValue;
@@ -19,6 +19,7 @@ import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.net.gson.MGson;
+import com.zxy.frame.utils.SPUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -104,7 +105,7 @@ public class UserHelper {
     }
 
     public void initUserEntity() {
-        String data = PreferenceUtil.getString(App.getContext(), PreferenceConst.USER_DATA_CACHE, "");
+        String data = SPUtil.getInstance().getString( PreferenceConst.USER_DATA_CACHE, "");
         if (!TextUtils.isEmpty(data)) {
             this.mUserEntity = new Gson().fromJson(data, UserEntity.class);
             SystemValue.token = mUserEntity.token;
@@ -159,8 +160,8 @@ public class UserHelper {
 
 //        ThirdLoginUtil.deleteOauth(activity, SHARE_MEDIA.WEIXIN); //删除 第三方微信授权
 //        ThirdLoginUtil.deleteOauth(activity, SHARE_MEDIA.QQ);   //删除 第三方QQ授权
-        PreferenceUtil.putString(App.getContext(), PreferenceConst.USER_DATA_CACHE, ""); //清空 用户数据缓存
-        PreferenceUtil.putString(App.getContext(), PreferenceConst.SP_CJ_USER_NAV_INFO_CACHE, ""); //清空 个人信息用户数据缓存
+        SPUtil.getInstance().putString(PreferenceConst.USER_DATA_CACHE, ""); //清空 用户数据缓存
+        SPUtil.getInstance().putString(PreferenceConst.SP_CJ_USER_NAV_INFO_CACHE, ""); //清空 个人信息用户数据缓存
         // 还有 【赛事筛选】 和  【更多设置 红/黄牌】 跟用户无关联，不需要删除
     }
 
@@ -198,6 +199,6 @@ public class UserHelper {
     }
 
     public void cacheUserData(String json) {
-        PreferenceUtil.putString(App.getContext(), PreferenceConst.USER_DATA_CACHE, json);
+        SPUtil.getInstance().putString(PreferenceConst.USER_DATA_CACHE, json);
     }
 }

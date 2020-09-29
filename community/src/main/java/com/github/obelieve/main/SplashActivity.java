@@ -8,11 +8,11 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 
 import com.github.obelieve.community.R;
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.github.obelieve.utils.ActivityUtil;
 import com.github.obelieve.utils.AppDataUtil;
 import com.zxy.frame.base.ApiBaseActivity;
+import com.zxy.frame.utils.SPUtil;
 
 /**
  * Created by Admin
@@ -41,7 +41,7 @@ public class SplashActivity extends ApiBaseActivity {
     @Override
     protected void initCreateAfterView(Bundle savedInstanceState) {
         //第一次打开弹出提示
-        boolean KEY_FIRST_ENTER = PreferenceUtil.getBoolean(mActivity, PreferenceConst.KEY_FIRST_ENTER, true);
+        boolean KEY_FIRST_ENTER = SPUtil.getInstance().getBoolean(PreferenceConst.KEY_FIRST_ENTER, true);
         if (KEY_FIRST_ENTER) {
             AppDataUtil.showPrivacyDialog(this, new AppDataUtil.OnComfirmListener() {
                 @Override

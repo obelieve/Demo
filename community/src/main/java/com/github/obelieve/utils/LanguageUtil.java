@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.text.TextUtils;
 
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.github.obelieve.repository.cache.constant.SystemValue;
+import com.zxy.frame.utils.SPUtil;
 
 import java.util.Locale;
 
@@ -92,7 +92,7 @@ public class LanguageUtil {
     }
 
     public String getLanguagePreference(Context context) {
-        return PreferenceUtil.getString(context, PreferenceConst.LANGUAGE_INDEX, LANGUAGE_NONE);
+        return SPUtil.getInstance().getString(PreferenceConst.LANGUAGE_INDEX, LANGUAGE_NONE);
     }
 
     public String getLanguage(int index) {
@@ -154,7 +154,7 @@ public class LanguageUtil {
         }else {
             SystemValue.language = languagePreference;
         }
-        PreferenceUtil.putString(context, PreferenceConst.LANGUAGE_INDEX, languagePreference);
+        SPUtil.getInstance().putString(PreferenceConst.LANGUAGE_INDEX, languagePreference);
     }
 
     public int getCurrentLanguageIndex(Context context) {

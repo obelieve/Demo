@@ -16,8 +16,8 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.repository.cache.constant.SystemValue;
+import com.zxy.frame.utils.SPUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -372,7 +372,7 @@ public class TelephoneUtil {
     /**获取不到设备ID的机子 给个随机数 */
     public static String KEY_DEVICE_ID = "KEY_DEVICE_ID";
     public static String getDeviceId(Context context) {
-        String deviceId = PreferenceUtil.getString(context,KEY_DEVICE_ID,"");
+        String deviceId = SPUtil.getInstance().getString(KEY_DEVICE_ID,"");
         if (!TextUtils.isEmpty(deviceId)){
             return deviceId;
         }
@@ -383,14 +383,14 @@ public class TelephoneUtil {
                 deviceId = SystemValue.imei;
                 if (TextUtils.isEmpty(deviceId)){
                     deviceId = UUID.randomUUID() + "";
-                    PreferenceUtil.putString(context, KEY_DEVICE_ID,deviceId);
+                    SPUtil.getInstance().putString(KEY_DEVICE_ID,deviceId);
                     return deviceId;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
             deviceId = UUID.randomUUID() + "";
-            PreferenceUtil.putString(context, KEY_DEVICE_ID,deviceId);
+            SPUtil.getInstance().putString(KEY_DEVICE_ID,deviceId);
             return deviceId;
         }
         return deviceId;

@@ -3,12 +3,12 @@ package com.github.obelieve.repository.cache;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
-import com.github.obelieve.App;
 import com.github.obelieve.login.entity.UserEntity;
 import com.github.obelieve.repository.CacheRepository;
 import com.github.obelieve.repository.bean.PostCommentCacheBean;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.zxy.frame.net.gson.MGson;
+import com.zxy.frame.utils.SPUtil;
 
 
 public class GlobalCacheUtil {
@@ -27,7 +27,7 @@ public class GlobalCacheUtil {
 
     private PostCommentCacheBean getPostCommentCacheBean() {
         if (mPostCommentCacheBean == null) {
-            String json = PreferenceUtil.getString(App.getContext(), PreferenceConst.SP_POST_COMMENT_CACHE);
+            String json = SPUtil.getInstance().getString( PreferenceConst.SP_POST_COMMENT_CACHE);
             if (!TextUtils.isEmpty(json)) {
                 try {
                     mPostCommentCacheBean = MGson.newGson().fromJson(json, PostCommentCacheBean.class);
@@ -35,12 +35,12 @@ public class GlobalCacheUtil {
                         UserEntity entity = CacheRepository.getInstance().getUserEntity();
                         if (!(entity != null && mPostCommentCacheBean.getUserId() == entity.user_id)) {
                             mPostCommentCacheBean = null;
-                            PreferenceUtil.getString(App.getContext(), PreferenceConst.SP_POST_COMMENT_CACHE, "");
+                            SPUtil.getInstance().getString( PreferenceConst.SP_POST_COMMENT_CACHE, "");
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    PreferenceUtil.getString(App.getContext(), PreferenceConst.SP_POST_COMMENT_CACHE, "");
+                    SPUtil.getInstance().getString( PreferenceConst.SP_POST_COMMENT_CACHE, "");
                 }
             }
             if (mPostCommentCacheBean == null) {
@@ -56,7 +56,7 @@ public class GlobalCacheUtil {
 
     public void clearPostCommentCacheBean() {
         mPostCommentCacheBean = null;
-        PreferenceUtil.putString(App.getContext(), PreferenceConst.SP_POST_COMMENT_CACHE, "");
+        SPUtil.getInstance().putString(PreferenceConst.SP_POST_COMMENT_CACHE, "");
     }
 
     public String getPostComment(int postId) {

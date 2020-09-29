@@ -6,9 +6,9 @@ import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.utils.LanguageUtil;
 import com.github.obelieve.utils.TelephoneUtil;
+import com.zxy.frame.utils.SPUtil;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -84,10 +84,10 @@ public class SystemValue {
             sysWidth = Math.min(metrics.widthPixels, metrics.heightPixels);
             sysHeight = Math.max(metrics.widthPixels, metrics.heightPixels);
 
-            pushToken = PreferenceUtil.getString(ctx,PreferenceConst.PUSH_TOKEN);
-            uploadToken = PreferenceUtil.getString(ctx,PreferenceConst.PUSH_TOKEN);
+            pushToken = SPUtil.getInstance().getString(PreferenceConst.PUSH_TOKEN);
+            uploadToken = SPUtil.getInstance().getString(PreferenceConst.PUSH_TOKEN);
 
-            cid = PreferenceUtil.getString(ctx,PreferenceConst.CID_PUSH);
+            cid = SPUtil.getInstance().getString(PreferenceConst.CID_PUSH);
             firmwareVersion = TelephoneUtil.getFirmWareVersion();
             resolution = TelephoneUtil.getScreenResolution(ctx);
             resolutionXY = TelephoneUtil.getScreenResolutionXY(ctx);
@@ -118,12 +118,12 @@ public class SystemValue {
             timezone = tz.getDisplayName(false, TimeZone.SHORT);
             language = LanguageUtil.getInstance().getCurrentLanguage(ctx);
 
-            boolean isFirst = PreferenceUtil.getBoolean(ctx, PreferenceConst.KEY_FIRST_ENTER, true);
+            boolean isFirst = SPUtil.getInstance().getBoolean(PreferenceConst.KEY_FIRST_ENTER, true);
             if (isFirst){
                 locale = ctx.getResources().getConfiguration().locale.getCountry();
-                PreferenceUtil.putString(ctx, PreferenceConst.KEY_LOCALE, locale);
+                SPUtil.getInstance().putString(PreferenceConst.KEY_LOCALE, locale);
             }else {
-                locale = PreferenceUtil.getString(ctx, PreferenceConst.KEY_LOCALE, ctx.getResources().getConfiguration().locale.getCountry());
+                locale = SPUtil.getInstance().getString(PreferenceConst.KEY_LOCALE, ctx.getResources().getConfiguration().locale.getCountry());
             }
 
             client_ip = getLocalIp();

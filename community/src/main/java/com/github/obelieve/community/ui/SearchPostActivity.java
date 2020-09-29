@@ -22,13 +22,13 @@ import androidx.lifecycle.ViewModelProviders;
 import com.github.obelieve.community.R;
 import com.github.obelieve.community.ui.view.FlowLayout;
 import com.github.obelieve.community.viewmodel.UpdatesViewModel;
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.github.obelieve.utils.others.SoftKeyBoardListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.dialog.CommonDialog;
+import com.zxy.frame.utils.SPUtil;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class SearchPostActivity extends ApiBaseActivity {
             }
         });
 
-        String spString = PreferenceUtil.getString(this, PreferenceConst.SP_SEARCH);
+        String spString = SPUtil.getInstance().getString(PreferenceConst.SP_SEARCH);
 
         if ("".equals(spString)) {
             spStringList = new ArrayList<>();
@@ -142,7 +142,7 @@ public class SearchPostActivity extends ApiBaseActivity {
                 changeSP = true;
                 Gson gson = new Gson();
                 String data = gson.toJson(spStringList);
-                PreferenceUtil.putString(SearchPostActivity.this, PreferenceConst.SP_SEARCH, data);
+                SPUtil.getInstance().putString(PreferenceConst.SP_SEARCH, data);
                 hideInput();
                 createFlowLayout();
                 break;
@@ -254,7 +254,7 @@ public class SearchPostActivity extends ApiBaseActivity {
                             }
                             spStringList.clear();
                             searchHistoryVisibility();
-                            PreferenceUtil.putString(SearchPostActivity.this, PreferenceConst.SP_SEARCH, "");
+                            SPUtil.getInstance().putString(PreferenceConst.SP_SEARCH, "");
                         })
                         .show();
                 break;

@@ -16,12 +16,12 @@ import com.github.obelieve.App;
 import com.github.obelieve.community.R;
 import com.github.obelieve.login.entity.UserEntity;
 import com.github.obelieve.repository.CacheRepository;
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.github.obelieve.repository.cache.constant.SystemValue;
 import com.github.obelieve.utils.others.TranslationState;
 import com.zxy.frame.application.BaseApplication;
 import com.zxy.frame.dialog.CommonDialog;
+import com.zxy.frame.utils.SPUtil;
 import com.zxy.frame.utils.SystemUtil;
 
 /**
@@ -218,7 +218,7 @@ public class AppDataUtil {
         commonDialog.setPositiveButton("同意并继续", new CommonDialog.onSubmitListener() {
             @Override
             public void onClickSubmit(Dialog dialog) {
-                PreferenceUtil.putBoolean(dialog.getContext(), PreferenceConst.KEY_FIRST_ENTER, false);
+                SPUtil.getInstance().putBoolean(PreferenceConst.KEY_FIRST_ENTER, false);
                 dialog.dismiss();
                 if (listener != null)
                     listener.onConfirm();

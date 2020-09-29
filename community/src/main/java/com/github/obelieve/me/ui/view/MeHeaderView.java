@@ -27,11 +27,11 @@ import com.github.obelieve.login.LoginTypeActivity;
 import com.github.obelieve.login.entity.UserEntity;
 import com.github.obelieve.main.UserNavInfoEntity;
 import com.github.obelieve.net.UrlConst;
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.repository.cache.UserHelper;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.github.obelieve.repository.cache.constant.SystemValue;
 import com.github.obelieve.utils.ActivityUtil;
+import com.zxy.frame.utils.SPUtil;
 import com.zxy.frame.utils.image.GlideUtil;
 
 import butterknife.BindView;
@@ -88,7 +88,7 @@ public class MeHeaderView extends FrameLayout {
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                String privacy_url = PreferenceUtil.getString(mActivity, PreferenceConst.COPYRIGHT_URL, UrlConst.PRIVACY_URL);
+                String privacy_url = SPUtil.getInstance().getString(PreferenceConst.COPYRIGHT_URL, UrlConst.PRIVACY_URL);
                 ActivityUtil.gotoWebActivity(mActivity, privacy_url, getResources().getString(R.string.settings_privacy_policy), false);
             }
 

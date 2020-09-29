@@ -10,7 +10,6 @@ import com.github.obelieve.App;
 import com.github.obelieve.login.entity.UserEntity;
 import com.github.obelieve.main.UserNavInfoEntity;
 import com.github.obelieve.me.bean.CenterMenuEntity;
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.github.obelieve.repository.cache.constant.SystemValue;
 import com.zxy.frame.net.ApiBaseResponse;
@@ -18,6 +17,7 @@ import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.net.gson.MGson;
+import com.zxy.frame.utils.SPUtil;
 
 public class MeViewModel extends ViewModel {
 
@@ -68,7 +68,7 @@ public class MeViewModel extends ViewModel {
 
                     @Override
                     public void onSuccess(ApiBaseResponse<UserNavInfoEntity> response, boolean isProcessed) {
-                        PreferenceUtil.putString(App.getContext(), PreferenceConst.SP_CJ_USER_NAV_INFO_CACHE, response.getData());
+                        SPUtil.getInstance().putString(PreferenceConst.SP_CJ_USER_NAV_INFO_CACHE, response.getData());
                         if (notify) {
                             mUserNavInfoEntityMutableLiveData.setValue(response.getEntity());
                         }
@@ -95,7 +95,7 @@ public class MeViewModel extends ViewModel {
 
             @Override
             public void onSuccess(ApiBaseResponse<CenterMenuEntity> response, boolean isProcessed) {
-                PreferenceUtil.putString(App.getContext(), PreferenceConst.SP_CJ_CENTER_MENU_CACHE, response.getData());
+                SPUtil.getInstance().putString(PreferenceConst.SP_CJ_CENTER_MENU_CACHE, response.getData());
                 if (progress) {
                     mShowProgressMutableLiveData.setValue(false);
                 }
@@ -106,7 +106,7 @@ public class MeViewModel extends ViewModel {
     }
 
     private CenterMenuEntity getCacheCenterMenuEntity() {
-        String centerMenu = PreferenceUtil.getString(App.getContext(), PreferenceConst.SP_CJ_CENTER_MENU_CACHE);
+        String centerMenu = SPUtil.getInstance().getString( PreferenceConst.SP_CJ_CENTER_MENU_CACHE);
         CenterMenuEntity centerMenuEntity = null;
         if (!TextUtils.isEmpty(centerMenu)) {
             try {
@@ -123,7 +123,7 @@ public class MeViewModel extends ViewModel {
 
     private UserNavInfoEntity getCacheUserNavInfoEntity() {
         UserNavInfoEntity userNavInfoEntity = null;
-        String userNavInfo = PreferenceUtil.getString(App.getContext(), PreferenceConst.SP_CJ_USER_NAV_INFO_CACHE);
+        String userNavInfo = SPUtil.getInstance().getString( PreferenceConst.SP_CJ_USER_NAV_INFO_CACHE);
         if (!TextUtils.isEmpty(userNavInfo)) {
             try {
                 userNavInfoEntity = MGson.newGson().fromJson(userNavInfo, UserNavInfoEntity.class);

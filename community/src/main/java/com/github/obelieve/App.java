@@ -30,6 +30,7 @@ import com.zxy.frame.net.HttpUtil;
 import com.zxy.frame.net.convert.ApiCustomGsonConverterFactory;
 import com.zxy.frame.net.download.DownloadInterface;
 import com.zxy.frame.utils.LogInterceptor;
+import com.zxy.frame.utils.SPUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import java.util.LinkedList;
@@ -57,6 +58,7 @@ public class App extends BaseApplication {
         super.onCreate();
         SystemValue.init(this);
         CacheRepository.getInstance().initUserEntity();
+        SPUtil.init(this,"App");
         ToastUtil.init(this);
         ZoomMediaLoader.getInstance().init(new TestImageLoader());
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {

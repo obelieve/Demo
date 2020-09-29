@@ -7,16 +7,16 @@ import com.github.obelieve.App;
 import com.github.obelieve.community.bean.BBSUserTrendsEntity;
 import com.github.obelieve.community.bean.BBSUserZanEntity;
 import com.github.obelieve.community.bean.SquareListsEntity;
-import com.github.obelieve.repository.cache.PostFilterCacheConst;
 import com.github.obelieve.login.entity.SendSMSEntity;
 import com.github.obelieve.login.entity.UserEntity;
-import com.github.obelieve.repository.cache.PreferenceUtil;
+import com.github.obelieve.repository.cache.PostFilterCacheConst;
 import com.github.obelieve.repository.cache.constant.SystemValue;
 import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.utils.LogUtil;
+import com.zxy.frame.utils.SPUtil;
 
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +30,7 @@ public class ApiServiceWrapper extends ApiService {
 
     @Deprecated
     public static void testLogin() {
-        String token = PreferenceUtil.getString(App.getContext(), "Token");
+        String token = SPUtil.getInstance().getString( "Token");
         if (!TextUtils.isEmpty(token)) {
             SystemValue.token = token;
             LogUtil.e("token 缓存=" + SystemValue.token);
@@ -54,7 +54,7 @@ public class ApiServiceWrapper extends ApiService {
                                     @Override
                                     public void onSuccess(ApiBaseResponse<UserEntity> response1, boolean isProcessed) {
                                         SystemValue.token = response1.getEntity().token;
-                                        PreferenceUtil.putString(App.getContext(), "Token", SystemValue.token);
+                                        SPUtil.getInstance().putString("Token", SystemValue.token);
                                         LogUtil.e("token 请求=" + SystemValue.token);
                                     }
                                 });

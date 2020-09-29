@@ -2,11 +2,11 @@ package com.github.obelieve.repository.cache;
 
 import android.text.TextUtils;
 
-import com.github.obelieve.App;
 import com.github.obelieve.community.bean.PostFilterCache;
 import com.github.obelieve.repository.CacheRepository;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.zxy.frame.net.gson.MGson;
+import com.zxy.frame.utils.SPUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,7 +23,7 @@ public class PostFilterCacheConst {
     }
 
     private PostFilterCacheConst() {
-        String json = PreferenceUtil.getString(App.getContext(), PreferenceConst.SP_POST_FILTER_CACHE);
+        String json = SPUtil.getInstance().getString( PreferenceConst.SP_POST_FILTER_CACHE);
         if (!TextUtils.isEmpty(json)) {
             try {
                 PostFilterCache filterCache = MGson.newGson().fromJson(json, PostFilterCache.class);
@@ -46,7 +46,7 @@ public class PostFilterCacheConst {
     }
 
     public void clear() {
-        PreferenceUtil.putString(App.getContext(), PreferenceConst.SP_POST_FILTER_CACHE, "");
+        SPUtil.getInstance().putString(PreferenceConst.SP_POST_FILTER_CACHE, "");
         mPostIds.clear();
         mUserIds.clear();
     }
@@ -59,7 +59,7 @@ public class PostFilterCacheConst {
             filterCache.setPostIds(mPostIds);
             filterCache.setUserIds(mUserIds);
             filterCache.setCurUserId(CacheRepository.getInstance().getUserEntity().user_id);
-            PreferenceUtil.putString(App.getContext(), PreferenceConst.SP_POST_FILTER_CACHE, MGson.newGson().toJson(filterCache));
+            SPUtil.getInstance().putString(PreferenceConst.SP_POST_FILTER_CACHE, MGson.newGson().toJson(filterCache));
         }
     }
 

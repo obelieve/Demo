@@ -3,7 +3,6 @@ package com.github.obelieve.repository;
 import android.app.Activity;
 import android.content.Context;
 
-import com.github.obelieve.App;
 import com.github.obelieve.login.entity.UserEntity;
 import com.github.obelieve.repository.bean.TempEditPostBean;
 import com.github.obelieve.repository.cache.GlobalCacheUtil;
@@ -13,9 +12,9 @@ import com.github.obelieve.repository.cache.ITempEditPostBean;
 import com.github.obelieve.repository.cache.IUserEntity;
 import com.github.obelieve.repository.cache.PostFilterCacheConst;
 import com.github.obelieve.repository.cache.UserHelper;
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.zxy.frame.net.gson.MGson;
+import com.zxy.frame.utils.SPUtil;
 
 import java.util.Set;
 
@@ -104,7 +103,7 @@ public class CacheRepository implements IPostCommentCacheBean, IUserEntity, ITem
     @Override
     public TempEditPostBean getTempEditPostBean() {
         TempEditPostBean bean = null;
-        String tempPost = PreferenceUtil.getString(App.getContext(), PreferenceConst.SP_TEMP_POST);
+        String tempPost = SPUtil.getInstance().getString( PreferenceConst.SP_TEMP_POST);
         if (tempPost != null && tempPost.length() > 0) {
             try {
                 bean = MGson.newGson().fromJson(tempPost, TempEditPostBean.class);
@@ -117,7 +116,7 @@ public class CacheRepository implements IPostCommentCacheBean, IUserEntity, ITem
 
     @Override
     public void saveTempEditPostBean(TempEditPostBean bean) {
-        PreferenceUtil.putString(App.getContext(), PreferenceConst.SP_TEMP_POST, bean != null ? MGson.newGson().toJson(bean) : "");
+        SPUtil.getInstance().putString(PreferenceConst.SP_TEMP_POST, bean != null ? MGson.newGson().toJson(bean) : "");
     }
 
     @Override

@@ -21,18 +21,18 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.github.obelieve.App;
 import com.github.obelieve.community.R;
-import com.github.obelieve.utils.ActivityUtil;
-import com.github.obelieve.utils.MD5Util;
 import com.github.obelieve.event.login.LoginNotifyEvent;
 import com.github.obelieve.login.entity.SendSMSEntity;
 import com.github.obelieve.login.entity.UserEntity;
 import com.github.obelieve.repository.CacheRepository;
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.repository.cache.constant.LoginType;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
+import com.github.obelieve.utils.ActivityUtil;
+import com.github.obelieve.utils.MD5Util;
 import com.news.captchalib.SwipeCaptchaHelper;
 import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.net.ApiBaseResponse;
+import com.zxy.frame.utils.SPUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -366,17 +366,17 @@ public class LoginTypeActivity extends ApiBaseActivity {
                     case TYPE_LOGIN_INPUT_CODE:
                         if (entity.do_type.equals("register")) {
                             ActivityUtil.gotoUserInfoActivity(mActivity, true);
-                            PreferenceUtil.putInteger(mActivity, PreferenceConst.SP_LOGIN_TYPE, LoginType.LOGIN_PHONE);
+                            SPUtil.getInstance().putInteger(PreferenceConst.SP_LOGIN_TYPE, LoginType.LOGIN_PHONE);
                         } else if (entity.do_type.equals("wechat") || entity.do_type.equals("qq")) {
                             startBindPhone(mActivity, entity.open_id, entity.do_type);
-                            PreferenceUtil.putInteger(mActivity, PreferenceConst.SP_LOGIN_TYPE, entity.do_type.equals("wechat") ? LoginType.LOGIN_WECHAT : LoginType.LOGIN_QQ);
+                            SPUtil.getInstance().putInteger(PreferenceConst.SP_LOGIN_TYPE, entity.do_type.equals("wechat") ? LoginType.LOGIN_WECHAT : LoginType.LOGIN_QQ);
                         } else {
                             CacheRepository.getInstance().refreshUserEntity(mActivity);
                             if (App.getContext() instanceof App) {
                                 App application = (App) App.getContext();
                                 application.finishActivity(2);
                             }
-                            PreferenceUtil.putInteger(mActivity, PreferenceConst.SP_LOGIN_TYPE, LoginType.LOGIN_PHONE);
+                            SPUtil.getInstance().putInteger(PreferenceConst.SP_LOGIN_TYPE, LoginType.LOGIN_PHONE);
                         }
                         EventBus.getDefault().post(new LoginNotifyEvent());
                         finish();
@@ -467,7 +467,7 @@ public class LoginTypeActivity extends ApiBaseActivity {
 //        UMShareAPI.get(this).release(); //todo 第三方登录注销
     }
 
-    @OnClick({R.id.tv_next, R.id.tv_switch_login, R.id.tv_retry_code, R.id.iv_agree,R.id.tv_policy})
+    @OnClick({R.id.tv_next, R.id.tv_switch_login, R.id.tv_retry_code, R.id.iv_agree, R.id.tv_policy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_next:
@@ -479,7 +479,7 @@ public class LoginTypeActivity extends ApiBaseActivity {
                         mLoginViewModel.thridBindPhone(mActivity, mPhoneOfCode, etCode.getText().toString(), mOpenType, mOpenID);
                         break;
                     case TYPE_LOGIN_INPUT_PHONE:
-                        if(!ivAgree.isSelected()){
+                        if (!ivAgree.isSelected()) {
                             ToastUtil.show("请先同意《软件许可及隐私政策》");
                             return;
                         }
@@ -537,7 +537,7 @@ public class LoginTypeActivity extends ApiBaseActivity {
                 break;
             case R.id.tv_policy:
                 if (mType == TYPE_LOGIN_INPUT_PHONE) { //隐私政策
-//                    String privacy_url = PreferenceUtil.getString(mActivity, PreferenceConst.COPYRIGHT_URL, UrlConst.PRIVACY_URL);
+//                    String privacy_url = SPUtil.getInstance().getString(mActivity, PreferenceConst.COPYRIGHT_URL, UrlConst.PRIVACY_URL);
 //                    ActivityUtil.gotoWebActivity(mActivity, privacy_url, getResources().getString(R.string.settings_privacy_policy), false);
                 }
                 break;

@@ -7,18 +7,17 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.github.obelieve.App;
-import com.github.obelieve.utils.others.SystemConstant;
 import com.github.obelieve.net.ApiServiceWrapper;
-import com.github.obelieve.repository.cache.PreferenceUtil;
 import com.github.obelieve.repository.cache.UserHelper;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.github.obelieve.utils.QiNiuUploadUtil;
+import com.github.obelieve.utils.others.SystemConstant;
 import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.utils.BitmapUtil;
 import com.zxy.frame.utils.FileUtil;
+import com.zxy.frame.utils.SPUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import java.io.File;
@@ -45,7 +44,7 @@ public class UserInfoViewModel extends ViewModel {
             QiNiuUploadUtil.getInstance().upload(file, new QiNiuUploadUtil.Callback() {
                 @Override
                 public void getToken(String token) {
-                    PreferenceUtil.putString(App.getContext(), PreferenceConst.UPLOAD_TOKEN, token);
+                    SPUtil.getInstance().putString(PreferenceConst.UPLOAD_TOKEN, token);
                 }
 
                 @Override

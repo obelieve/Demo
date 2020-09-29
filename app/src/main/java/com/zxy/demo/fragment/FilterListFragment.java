@@ -12,10 +12,10 @@ import com.zxy.demo.view.ListSelectView;
 import com.zxy.demo.view.ThreeLayerSelectView;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseFragment;
+import com.zxy.frame.utils.LogUtil;
 import com.zxy.frame.utils.PopupMenuUtil;
+import com.zxy.frame.utils.SystemUtil;
 import com.zxy.frame.utils.ToastUtil;
-import com.zxy.utility.LogUtil;
-import com.zxy.utility.SystemUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +79,7 @@ public class FilterListFragment extends ApiBaseFragment {
                     });
                     mPopupMenuType1 = new PopupMenuUtil(getActivity());
                 }
-                mPopupMenuType1.showDownPopup(llType1, mThreeLayerSelectView, SystemUtil.screenWidth());
+                mPopupMenuType1.showDownPopup(llType1, mThreeLayerSelectView, SystemUtil.screenWidth(mActivity));
                 break;
             case R.id.ll_type2:
                 if (mPopupMenuType2 == null) {
@@ -99,7 +99,7 @@ public class FilterListFragment extends ApiBaseFragment {
                     });
                     mPopupMenuType2 = new PopupMenuUtil(getActivity());
                 }
-                mPopupMenuType2.showDownPopup(llType2, mListSelectPopupView, SystemUtil.screenWidth());
+                mPopupMenuType2.showDownPopup(llType2, mListSelectPopupView, SystemUtil.screenWidth(mActivity));
                 break;
             case R.id.ll_type3:
                 break;

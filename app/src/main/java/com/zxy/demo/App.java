@@ -9,7 +9,6 @@ import com.zxy.frame.net.convert.ApiCustomGsonConverterFactory;
 import com.zxy.frame.net.download.DownloadInterface;
 import com.zxy.frame.utils.LogInterceptor;
 import com.zxy.frame.utils.ToastUtil;
-import com.zxy.utility.SystemUtil;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -22,7 +21,6 @@ public class App extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        SystemUtil.init(this);
         ToastUtil.init(this);
         mServiceInterface = HttpUtil.build().baseUrl(ServiceInterface.BASE_URL)
                 .addInterceptor(new HttpInterceptor())
