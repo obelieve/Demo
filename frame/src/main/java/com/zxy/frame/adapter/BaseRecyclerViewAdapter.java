@@ -164,7 +164,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             int[] startPosArray = new int[((StaggeredGridLayoutManager) lm).getSpanCount()];
             int[] endPosArray = new int[((StaggeredGridLayoutManager) lm).getSpanCount()];
             ((StaggeredGridLayoutManager) lm).findFirstCompletelyVisibleItemPositions(startPosArray);
-            ((StaggeredGridLayoutManager) lm).findLastCompletelyVisibleItemPositions(endPosArray);
+            ((StaggeredGridLayoutManager) lm).findLastVisibleItemPositions(endPosArray);
             Arrays.sort(startPosArray);
             Arrays.sort(endPosArray);
             if (endPosArray[endPosArray.length - 1] + 1 == getItemCount()) {
@@ -327,6 +327,21 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                 return LOAD_MORE_TYPE;
             } else {
                 return loadItemViewType(header ? position - 1 : position);
+            }
+        }
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull BaseViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        int index = holder.getLayoutPosition();
+        //StaggeredGridLayoutManager
+        if (getItemViewType(index) == (HEADER_TYPE | FOOTER_TYPE | LOAD_MORE_TYPE | EMPTY_TYPE)) {
+            ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+            if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+                StaggeredGridLayoutManager.LayoutParams p =
+                        (StaggeredGridLayoutManager.LayoutParams) lp;
+                p.setFullSpan(true);
             }
         }
     }
