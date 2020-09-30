@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#B2000000">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="280dp"
+                android:layout_height="292dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_reward_coin_bg" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="130dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="每月赠送"
+                    android:textColor="#ff666666"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:id="@+id/tv_coin_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="金币"
+                    android:textColor="#ffff7c2c"
+                    android:textSize="34sp" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_open"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="立即领取"
+                android:textColor="#ffff7c2c"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_gradient_ffffff_ffeac2_50dp"
+                android:textSize="15sp"/>
+        </FrameLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/my_close_grey" />
+    </LinearLayout>
+</FrameLayout>

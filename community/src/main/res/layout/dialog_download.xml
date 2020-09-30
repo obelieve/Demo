@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:custom="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="@dimen/common_title"
+              android:background="@drawable/common_dialog_bg">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/common_download_text"
+        android:textColor="@color/common_title"
+        android:layout_marginTop="3dp"
+        android:textSize="18dp"/>
+
+    <com.daimajia.numberprogressbar.NumberProgressBar
+        android:id="@+id/download_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        custom:progress_reached_color="@color/common_green"
+        custom:progress_unreached_color="@color/common_tip"
+        custom:progress_unreached_bar_height="6dp"
+        custom:progress_reached_bar_height="6dp"
+        custom:progress_text_size="12dp"
+        custom:progress_text_color="@color/common_green"/>
+
+    <TextView
+        android:id="@+id/download_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="15dp"
+        android:textSize="12dp"
+        android:textColor="@color/common_content"
+        android:text="0MB/0MB"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/download_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/common_content"
+            android:layout_marginRight="15dp"
+            android:text="@string/update_cancel"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/download_hide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="24dp"
+            android:textColor="@color/common_green"
+            android:text="@string/update_hide"
+            android:textSize="15dp"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

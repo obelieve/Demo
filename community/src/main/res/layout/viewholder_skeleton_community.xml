@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/sel_circle_f8f8f8_ffffff_8dp">
+
+    <View
+        android:id="@+id/view_header"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#F2F3F5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_header"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/view_line1"
+        android:layout_width="0dp"
+        android:layout_height="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/view_header"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <View
+        android:id="@+id/view_circle"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_circle_ffffff_20size"
+        app:layout_constraintLeft_toLeftOf="@id/view_line1"
+        app:layout_constraintTop_toBottomOf="@id/view_line1" />
+
+    <View
+        android:id="@+id/view_line2"
+        android:layout_width="72dp"
+        android:layout_height="14dp"
+        android:layout_marginLeft="5dp"
+        app:layout_constrainedWidth="true"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="@id/view_circle"
+        app:layout_constraintBottom_toBottomOf="@id/view_circle"
+        app:layout_constraintLeft_toRightOf="@id/view_circle" />
+
+    <View
+        android:id="@+id/view_line3"
+        android:layout_width="96dp"
+        android:layout_height="14dp"
+        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_circle"
+        app:layout_constraintLeft_toLeftOf="@id/view_circle" />
+</androidx.constraintlayout.widget.ConstraintLayout>

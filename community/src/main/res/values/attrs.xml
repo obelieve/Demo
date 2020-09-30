@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ChooseCardView">
+        <attr name="chose_title" format="string" />
+        <attr name="chose_hint" format="string" />
+        <attr name="chose_arrow_visibility" format="enum">
+            <enum name="VISIBLE" value="0"></enum>
+            <enum name="INVISIBLE" value="4"></enum>
+            <enum name="GONE" value="8"></enum>
+        </attr>
+    </declare-styleable>
+</resources>

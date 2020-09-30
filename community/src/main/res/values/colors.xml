@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/white</color>
+    <color name="colorPrimaryDark">@color/white</color>
+    <color name="colorAccent">#37BD42</color>
+
+    <color name="common_white">#ffffff</color>
+    <color name="common_black">#000000</color>
+    <color name="common_transparent_black">#99000000</color><!--%60 不透明度 -->
+    <color name="common_green">#43CD80</color>
+    <color name="common_red">#FF4C44</color>
+    <color name="common_orange">#FF864A</color>
+    <color name="common_gray">#999999</color>
+    <color name="common_gray_light">#E3E3E3</color>
+    <color name="common_blue">#0F8CF7</color>
+    <color name="common_blue_two">#5789FF</color>
+    <color name="common_blue_pressed">#ee0F8CF7</color>
+    <color name="common_blue_nonclickable">#0F8CF7</color>
+    <color name="common_gray_bg">#F7F7F7</color>
+    <color name="transparent">#00000000</color>
+    <color name="common_main_pressed">#ee37BD42</color>
+    <!-- 主色调 -->
+    <color name="common_main">#00C753</color><!--#37BD42-->
+    <!-- 背景色 -->
+    <color name="common_bg">#ffffffff</color>
+    <!-- 主要/标题 -->
+    <color name="common_title">#161F29</color>
+    <!-- 副标题/正文 -->
+    <color name="common_content">#333A40</color>
+    <color name="common_content_333333">#333333</color>
+    <!-- 描述/说明 -->
+    <color name="common_explain">#7D8389</color>
+    <!-- 备注/提示 -->
+    <color name="common_tip">#666666</color>
+    <color name="common_tip_black">#4D4D4D</color>
+    <!-- 描边/分割线/ 图片默认色 -->
+    <color name="common_line">#F0F0F0</color>
+    <color name="common_dialog_line">#D5D6D8</color>
+    <color name="common_pic">#EEEEEE</color>
+    <!-- 辅助色/重要提示 -->
+    <color name="common_important">#FF4141</color>
+    <!-- 消息/提醒 -->
+    <color name="common_remind">#FF4141</color>
+
+    <color name="bg_clear">#30A5FE</color>
+    <color name="bg_clear_night">#5867A2</color>
+    <color name="bg_partly_cloudy">#64A6D6</color>
+    <color name="bg_partly_cloudy_night">#234871</color>
+    <color name="bg_cloudy">#959799</color>
+    <color name="bg_rain">#7EA0CD</color>
+    <color name="bg_snow">#8BAABF</color>
+    <color name="bg_haze">#A99682</color>
+    <color name="bg_sleet">#7EA0CD</color>
+    <!--进度条灰色-->
+    <color name="bg_pb_green">@color/common_main</color>
+    <color name="bg_pb_gray">#66FFFFFF</color>
+    <color name="bg_pb_gray2">#D9D9D9</color>
+    <color name="common_coin_color">#FFA200</color>
+
+    <color name="bg_f8f8fa">#F8F8FA</color>
+    <color name="color_333333">#333333</color>
+    <color name="color_999999">#999999</color>
+    <color name="base_4d4d4d">#4d4d4d</color>
+    <color name="base_697A9F">#697A9F</color>
+
+    <color name="update_text_name_color">#000</color>
+    <color name="comment_text_blue_color">#5789FF</color>
+    <color name="comment_reply_text_color">#999</color>
+    <color name="_ccffffff">#ccffffff</color>
+
+    <color name="tab_text_select">#000000</color>
+    <color name="tab_text">#4C4C4C</color>
+    <color name="tab_text_find">#333333</color>
+    <color name="tab_line">#37BD42</color>
+    <color name="base_FFFFFF">#FFFFFF</color>
+    <color name="base_F8F8F8">#F8F8F8</color>
+    <color name="base_F7F7F7">#F7F7F7</color>
+    <color name="base_B5B5B5">#B5B5B5</color>
+</resources>

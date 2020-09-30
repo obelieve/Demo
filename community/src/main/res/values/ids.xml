@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--tab-->
+    <item name="main_tab_match" type="id" />
+    <item name="main_tab_data" type="id" />
+    <item name="main_tab_recommend" type="id" />
+    <item name="main_tab_community" type="id" />
+    <item name="main_tab_me" type="id" />
+</resources>

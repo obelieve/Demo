@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_f8f8fa">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/abl_content"
+        android:background="@color/bg_f8f8fa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_collapseMode="parallax"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="135dp">
+                <TextView
+                    android:id="@+id/tv_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_circle_ffffff_10dp"
+                    android:drawableLeft="@drawable/sq_search_grey"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="bottom"
+                    android:paddingLeft="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:text="搜点什么呢"
+                    android:transitionName="search"
+                    app:layout_collapseMode="parallax"
+                    android:textColor="#cccccc" />
+            </FrameLayout>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contentInsetStart="0dp"
+                app:layout_collapseMode="pin"
+                android:background="@color/bg_f8f8fa"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <View
+                        android:id="@+id/view_status_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingRight="12dp">
+
+                        <com.flyco.tablayout.SlidingTabLayout
+                            android:id="@+id/stl_tab"
+                            android:layout_width="0dp"
+                            android:layout_height="55dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tl_indicator_color="#37BD42"
+                            app:tl_indicator_corner_radius="2dp"
+                            app:tl_indicator_height="3dp"
+                            app:tl_indicator_margin_bottom="8dp"
+                            app:tl_indicator_width="7dp"
+                            app:tl_indicator_width_equal_title="true"
+                            app:tl_tab_space_equal="true"
+                            app:tl_tab_width="55dp"
+                            app:tl_textBold="BOTH"
+                            app:tl_textSelectColor="#474747"
+                            app:tl_textUnselectColor="#474747"
+                            app:tl_textsize="16dp" />
+
+                        <TextView
+                            android:id="@+id/tv_publish"
+                            android:layout_width="52dp"
+                            android:layout_height="27dp"
+                            android:layout_centerVertical="true"
+                            android:gravity="center"
+                            android:text="发布"
+                            android:background="@drawable/bg_circle_main_4dp"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="@id/stl_tab"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/stl_tab" />
+
+                        <ImageView
+                            android:id="@+id/iv_search"
+                            android:layout_width="42dp"
+                            android:layout_height="22dp"
+                            android:layout_marginRight="18dp"
+                            android:paddingLeft="20dp"
+                            android:src="@drawable/sq_search"
+                            app:layout_constraintBottom_toBottomOf="@id/stl_tab"
+                            app:layout_constraintRight_toLeftOf="@id/tv_publish"
+                            app:layout_constraintTop_toTopOf="@id/stl_tab"
+                            android:transitionName="search"
+                            tools:visibility="visible" />
+                        <View
+                            android:id="@+id/view_top"
+                            android:layout_width="0dp"
+                            android:layout_height="55dp"
+                            app:layout_constraintLeft_toRightOf="@id/stl_tab"
+                            app:layout_constraintRight_toLeftOf="@id/iv_search"
+                            app:layout_constraintTop_toTopOf="parent"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:lineSpacingExtra="3dp"
+        android:textColor="@color/base_4d4d4d"
+        android:textSize="16sp"
+        tools:text="内容"/>
+<!--    android:background="@drawable/sel_state_view_content"-->
+    <TextView
+        android:id="@+id/txt_state"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:text="全文"
+        android:textColor="@color/base_697A9F"
+        android:textSize="16sp"/>
+
+
+</LinearLayout>
