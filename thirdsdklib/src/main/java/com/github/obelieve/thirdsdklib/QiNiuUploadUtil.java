@@ -1,18 +1,12 @@
-package com.github.obelieve.utils;
+package com.github.obelieve.thirdsdklib;
 
 import android.app.Activity;
 
-import com.github.obelieve.App;
-import com.github.obelieve.bean.UploadTokenEntity;
 import com.qiniu.android.common.FixedZone;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
-import com.zxy.frame.net.ApiBaseResponse;
-import com.zxy.frame.net.ApiBaseSubscribe;
-import com.zxy.frame.net.ApiService;
-import com.zxy.frame.net.ApiServiceException;
 
 import org.json.JSONObject;
 
@@ -45,6 +39,12 @@ public class QiNiuUploadUtil {
 
     private static QiNiuUploadUtil sUploadUtil = new QiNiuUploadUtil();
 
+    private static QiNiuCallback sQiNiuCallback;
+
+    public static void setQiNiuCallback(QiNiuCallback qiNiuCallback) {
+        sQiNiuCallback = qiNiuCallback;
+    }
+
     private QiNiuUploadUtil() {
 
     }
@@ -72,28 +72,13 @@ public class QiNiuUploadUtil {
         return getRandomString(6) + System.currentTimeMillis();
     }
 
-
     public void getToken(TokenCallback callback, Activity activity) {
-        ApiService.wrap(App.getServiceInterface().uploadToken(), UploadTokenEntity.class)
-                .subscribe(new ApiBaseSubscribe<ApiBaseResponse<UploadTokenEntity>>(activity) {
-                    @Override
-                    public void onError(ApiServiceException e) {
-                        if (callback != null) {
-                            callback.onFailure(e.message);
-                        }
-                    }
-
-                    @Override
-                    public void onSuccess(ApiBaseResponse<UploadTokenEntity> response, boolean isProcessed) {
-                        if (callback != null) {
-                            callback.onSuccess(response.getEntity().getUpload_token());
-                        }
-                    }
-                });
+        if (sQiNiuCallback != null)
+            sQiNiuCallback.getToken(callback, activity);
     }
 
 
-    public void upload(File file, Callback callback, Activity activity) {
+    public void upload(final File file, final Callback callback, Activity activity) {
         getToken(new TokenCallback() {
             @Override
             public void onSuccess(String token) {
@@ -121,7 +106,7 @@ public class QiNiuUploadUtil {
         }, activity);
     }
 
-    public void upload(List<File> fileList, Callback callback, Activity activity) {
+    public void upload(List<File> fileList, final Callback callback, Activity activity) {
         if (fileList == null || fileList.size() == 0) return;
         String fileCountTag = getRandomFileCountTag();
         if (mMap.containsKey(fileCountTag)) {
@@ -135,12 +120,12 @@ public class QiNiuUploadUtil {
         }
         final int COUNT = fileList.size();
         final String TAG = fileCountTag;
-        List<String> list = new ArrayList<>();
+        final List<String> list = new ArrayList<>();
         for (File file : fileList) {
             upload(file, new Callback() {
                 @Override
                 public void getToken(String token) {
-                    if(callback!=null){
+                    if (callback != null) {
                         callback.getToken(token);
                     }
                 }
@@ -180,6 +165,10 @@ public class QiNiuUploadUtil {
         void onSuccess(List<String> urlList);
 
         void onFailure(String msg);
+    }
+
+    public interface QiNiuCallback {
+        void getToken(TokenCallback callback, Activity activity);
     }
 
 }

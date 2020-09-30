@@ -6,11 +6,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.github.obelieve.bean.UploadTokenEntity;
 import com.github.obelieve.community.BuildConfig;
 import com.github.obelieve.net.HttpInterceptor;
 import com.github.obelieve.net.ServiceInterface;
 import com.github.obelieve.repository.CacheRepository;
 import com.github.obelieve.repository.cache.constant.SystemValue;
+import com.github.obelieve.thirdsdklib.QiNiuUploadUtil;
 import com.github.obelieve.utils.ActivityUtil;
 import com.github.obelieve.utils.others.CustomSmartRefreshHeader;
 import com.github.obelieve.utils.others.TestImageLoader;
@@ -22,6 +24,8 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.zxy.frame.application.BaseApplication;
 import com.zxy.frame.dialog.CommonDialog;
+import com.zxy.frame.net.ApiBaseResponse;
+import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiErrorCode;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
@@ -56,10 +60,31 @@ public class App extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        SPUtil.init(this, "App");
         SystemValue.init(this);
-        SPUtil.init(this,"App");
-        CacheRepository.getInstance().initUserEntity();
         ToastUtil.init(this);
+        QiNiuUploadUtil.setQiNiuCallback(new QiNiuUploadUtil.QiNiuCallback() {
+            @Override
+            public void getToken(QiNiuUploadUtil.TokenCallback callback, Activity activity) {
+                ApiService.wrap(App.getServiceInterface().uploadToken(), UploadTokenEntity.class)
+                        .subscribe(new ApiBaseSubscribe<ApiBaseResponse<UploadTokenEntity>>(activity) {
+                            @Override
+                            public void onError(ApiServiceException e) {
+                                if (callback != null) {
+                                    callback.onFailure(e.message);
+                                }
+                            }
+
+                            @Override
+                            public void onSuccess(ApiBaseResponse<UploadTokenEntity> response, boolean isProcessed) {
+                                if (callback != null) {
+                                    callback.onSuccess(response.getEntity().getUpload_token());
+                                }
+                            }
+                        });
+            }
+        });
+        CacheRepository.getInstance().initUserEntity();
         ZoomMediaLoader.getInstance().init(new TestImageLoader());
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
             @NonNull
@@ -166,7 +191,7 @@ public class App extends BaseApplication {
             httpUtil.addInterceptor(new LogInterceptor());
         }
         if (BuildConfig.IS_MOCK_API) {
-            httpUtil.addInterceptor(new MockApiInterceptor(App.getContext(),"api/","api",".json"));
+            httpUtil.addInterceptor(new MockApiInterceptor(App.getContext(), "api/", "api", ".json"));
         }
         mServiceInterface = httpUtil
                 .addConverterFactory(ApiCustomGsonConverterFactory.create())

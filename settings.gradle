@@ -1,1 +1,2 @@
+include ':thirdsdklib'
 include ':app', ':frame', ':anim', ':mockapi', ':community', ':captchalib'

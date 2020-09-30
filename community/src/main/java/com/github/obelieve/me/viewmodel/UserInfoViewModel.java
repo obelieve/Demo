@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel;
 import com.github.obelieve.net.ApiServiceWrapper;
 import com.github.obelieve.repository.cache.UserHelper;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
-import com.github.obelieve.utils.QiNiuUploadUtil;
+import com.github.obelieve.thirdsdklib.QiNiuUploadUtil;
 import com.github.obelieve.utils.others.SystemConstant;
 import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;

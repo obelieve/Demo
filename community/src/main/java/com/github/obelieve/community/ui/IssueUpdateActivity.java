@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -19,8 +17,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
-import com.github.obelieve.App;
-import com.github.obelieve.bean.UploadTokenEntity;
 import com.github.obelieve.community.R;
 import com.github.obelieve.community.adapter.IssuePhotoAdapter;
 import com.github.obelieve.community.bean.CommentData;
@@ -29,22 +25,15 @@ import com.github.obelieve.net.ApiServiceWrapper;
 import com.github.obelieve.repository.CacheRepository;
 import com.github.obelieve.repository.bean.TempEditPostBean;
 import com.github.obelieve.repository.cache.constant.SystemValue;
+import com.github.obelieve.thirdsdklib.QiNiuUploadUtil;
 import com.github.obelieve.utils.ImageSelectorUtil;
-import com.qiniu.android.common.FixedZone;
-import com.qiniu.android.storage.Configuration;
-import com.qiniu.android.storage.UploadManager;
 import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.dialog.CommonDialog;
-import com.zxy.frame.net.ApiBaseResponse;
-import com.zxy.frame.net.ApiBaseSubscribe;
-import com.zxy.frame.net.ApiService;
-import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.utils.LogUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -126,32 +115,62 @@ public class IssueUpdateActivity extends ApiBaseActivity {
                 return;
             }
             if (mIssuePhotoAdapter.getPathList().size() == 0) {
-                issueUpdateViewModel.sendUpdata(mActivity,editIssueContent.getText().toString(), "", "");
+                issueUpdateViewModel.sendUpdata(mActivity, editIssueContent.getText().toString(), "", "");
                 return;
             }
             showLoading();
             ArrayList<String> pathList = mIssuePhotoAdapter.getPathList();
             List<CommentData> commentDataArrayList = new ArrayList<>();
-            ApiService.wrap(App.getServiceInterface().uploadToken(), UploadTokenEntity.class)
-                    .subscribe(new ApiBaseSubscribe<ApiBaseResponse<UploadTokenEntity>>(mActivity) {
-                        @Override
-                        public void onError(ApiServiceException e) {
-                            dismissLoading();
-                        }
+            if (pathList != null) {
+                List<File> files = new ArrayList<>();
+                for (int i = 0; i < pathList.size(); i++) {
+                    files.add(new File(pathList.get(i)));
+                }
+                QiNiuUploadUtil.getInstance().upload(files, new QiNiuUploadUtil.Callback() {
+                    @Override
+                    public void getToken(String token) {
+                        SystemValue.uploadToken = token;
+                    }
 
-                        @Override
-                        public void onSuccess(ApiBaseResponse<UploadTokenEntity> response, boolean isProcessed) {
-                            String token = response.getEntity().getUpload_token();
-                            if (!TextUtils.isEmpty(token)){
-                                SystemValue.uploadToken = token;
-                                for (String path : pathList) {
-                                    qiniu(new File(path), path.contains(".gif"), pathList.size() == 1, commentDataArrayList);
-                                }
-                            }else{
-                                dismissLoading();
+                    @Override
+                    public void onSuccess(List<String> urlList) {
+                        CommentData commentData;
+                        if (urlList.size() == 1) {
+                            int[] imageWidthHeight = files.size() > 0 ? getImageWidthHeight(files.get(0).getPath()) : new int[]{0, 0};
+                            commentData = new CommentData(imageWidthHeight[0] + "," + imageWidthHeight[1], "image", urlList.get(0));
+                            commentDataArrayList.add(commentData);
+                        } else {
+                            for(int i=0;i<urlList.size();i++){
+                                commentDataArrayList.add(new CommentData("", "image", urlList.get(i)));
                             }
                         }
-                    });
+                        if (commentDataArrayList.size() == mIssuePhotoAdapter.getPathList().size()) {
+                            StringBuffer stringBuffer = new StringBuffer();
+                            for (CommentData commentData1 : commentDataArrayList) {
+                                stringBuffer.append(commentData1.getMedia() + ",");
+                            }
+                            String mediaScale = "";
+                            if (commentDataArrayList.size() == 1) {
+                                mediaScale = commentDataArrayList.get(0).getMedia_scale();
+                            }
+                            issueUpdateViewModel.sendUpdata(mActivity, editIssueContent.getText().toString(), stringBuffer.toString(), mediaScale);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ApiServiceWrapper.errorLog(mActivity, "上传失败 QiNiu Upload Fail:" + msg);
+                                LogUtil.e("qiniu", "上传失败 Upload Fail:" + msg);
+                                ToastUtil.show("上传失败");
+                                dismissLoading();
+                            }
+                        });
+                    }
+                }, mActivity);
+            }
         });
     }
 
@@ -205,57 +224,6 @@ public class IssueUpdateActivity extends ApiBaseActivity {
         } else {
             finish();
         }
-    }
-
-    public void qiniu(File data, boolean isGif, boolean single, List<CommentData> commentDataArrayList) {
-        String key = Settings.System.getString(getContentResolver(), Settings.System.ANDROID_ID) + new Date().getTime() + (isGif ? ".gif" : "");
-        String token = SystemValue.uploadToken;
-        Configuration config = new Configuration.Builder()
-                .chunkSize(512 * 1024)        // 分片上传时，每片的大小。 默认256K
-                .putThreshold(1024 * 1024)   // 启用分片上传阀值。默认512K
-                .connectTimeout(10)           // 链接超时。默认10秒
-                .useHttps(true)               // 是否使用https上传域名
-                .responseTimeout(60)          // 服务器响应超时。默认60秒// keyGen 分片上传时，生成标识符，用于片记录器区分是那个文件的上传记录
-                .zone(FixedZone.zone2)        // 设置区域，指定不同区域的上传域名、备用域名、备用IP。
-                .build();
-        UploadManager uploadManager = new UploadManager(config);
-        uploadManager.put(data, key, token,
-                (key1, info, res) -> {
-                    //res包含hash、key等信息，具体字段取决于上传策略的设置
-                    if (info.isOK()) {
-                        CommentData commentData;
-                        if (single) {
-                            int[] imageWidthHeight = getImageWidthHeight(data.getPath());
-                            commentData = new CommentData(imageWidthHeight[0] + "," + imageWidthHeight[1], "image", key1);
-                        } else {
-                            commentData = new CommentData("", "image", key1);
-                        }
-                        commentDataArrayList.add(commentData);
-                        if (commentDataArrayList.size() == mIssuePhotoAdapter.getPathList().size()) {
-                            StringBuffer stringBuffer = new StringBuffer();
-                            for (CommentData commentData1 : commentDataArrayList) {
-                                stringBuffer.append(commentData1.getMedia() + ",");
-                            }
-                            String mediaScale = "";
-                            if (commentDataArrayList.size() == 1) {
-                                mediaScale = commentDataArrayList.get(0).getMedia_scale();
-                            }
-                            issueUpdateViewModel.sendUpdata(mActivity,editIssueContent.getText().toString(), stringBuffer.toString(), mediaScale);
-                        }
-                    } else {
-                        //info.error
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ApiServiceWrapper.errorLog(mActivity,"上传失败 QiNiu Upload Fail:" + info.error);
-                                LogUtil.e("qiniu", "上传失败 Upload Fail:" + info.error);
-                                ToastUtil.show("上传失败");
-                                dismissLoading();
-                            }
-                        });
-                        //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
-                    }
-                }, null);
     }
 
     public static int[] getImageWidthHeight(String path) {
