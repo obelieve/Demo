@@ -6,20 +6,20 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.github.obelieve.utils.ActivityUtil;
-import com.github.obelieve.net.ApiServiceWrapper;
 import com.github.obelieve.App;
 import com.github.obelieve.community.bean.CommentListEntity;
 import com.github.obelieve.community.bean.PraiseEntity;
 import com.github.obelieve.community.bean.SquareListsEntity;
 import com.github.obelieve.community.bean.UpdateDetailEntity;
-import com.github.obelieve.utils.TelephoneUtil;
+import com.github.obelieve.net.ApiServiceWrapper;
+import com.github.obelieve.utils.ActivityUtil;
 import com.zxy.frame.dialog.CommonDialog;
 import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiErrorCode;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
+import com.zxy.frame.utils.TelephoneUtil;
 
 
 public class UpdatesViewModel extends ViewModel {

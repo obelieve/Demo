@@ -33,13 +33,13 @@ import com.github.obelieve.repository.cache.constant.SystemValue;
 import com.github.obelieve.utils.ActivityUtil;
 import com.github.obelieve.utils.AppDataUtil;
 import com.github.obelieve.utils.BottomMenuUtil;
-import com.github.obelieve.utils.TelephoneUtil;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.dialog.CommonDialog;
 import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
+import com.zxy.frame.utils.TelephoneUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;

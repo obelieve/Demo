@@ -1,4 +1,4 @@
-package com.github.obelieve.utils;
+package com.zxy.frame.utils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -14,10 +14,8 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.github.obelieve.repository.cache.constant.SystemValue;
-import com.zxy.frame.utils.SPUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -66,6 +64,7 @@ public class TelephoneUtil {
      * @param ctx
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
     public static String getIMEI(Context ctx) {
         TelephonyManager tm = (TelephonyManager) ctx.getSystemService(AppCompatActivity.TELEPHONY_SERVICE);
         String imei = tm.getDeviceId();
@@ -81,6 +80,7 @@ public class TelephoneUtil {
      * @param ctx
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
     public static String getIMSI(Context ctx) {
         TelephonyManager tm = (TelephonyManager) ctx.getSystemService(AppCompatActivity.TELEPHONY_SERVICE);
         String imsi = tm.getSubscriberId();
@@ -91,19 +91,19 @@ public class TelephoneUtil {
     }
 
     /**
-     *
      * @param ctx
      * @return
      */
-    public static String getSimCountryCode(Context ctx){
-        TelephonyManager  telephonyManager=(TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+    public static String getSimCountryCode(Context ctx) {
+        TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
         String simCountryCode = telephonyManager.getSimCountryIso();
-        if (TextUtils.isEmpty(simCountryCode)){
+        if (TextUtils.isEmpty(simCountryCode)) {
             return "";
-        }else {
+        } else {
             return simCountryCode;
         }
     }
+
     /**
      * 获取机器名称 如 milestone
      *
@@ -115,6 +115,7 @@ public class TelephoneUtil {
 
     /**
      * 获取手机品牌
+     *
      * @return
      */
     public static String getBrandName() {
@@ -229,8 +230,8 @@ public class TelephoneUtil {
     /**
      * 获取详细的固件版本号
      *
-     * @author Administrator
      * @return
+     * @author Administrator
      */
     public static String getFirmWareVersion() {
         // 获取固件版本号
@@ -291,6 +292,7 @@ public class TelephoneUtil {
      * @param context
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public synchronized static boolean isNetworkAvailable(Context context) {
         if (context == null)
             return false;
@@ -346,10 +348,10 @@ public class TelephoneUtil {
     /**
      * 获取WifiMac地址
      *
-     * @Title: getMacAddress
      * @param ctx
      * @return
      * @throws
+     * @Title: getMacAddress
      */
     public static String getWifiMacAddress(Context ctx) {
 
@@ -369,28 +371,34 @@ public class TelephoneUtil {
         }
     }
 
-    /**获取不到设备ID的机子 给个随机数 */
     public static String KEY_DEVICE_ID = "KEY_DEVICE_ID";
+
+    /**
+     * 获取不到设备ID的机子 给个随机数
+     *
+     * @param context
+     * @return
+     */
+    @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
     public static String getDeviceId(Context context) {
-        String deviceId = SPUtil.getInstance().getString(KEY_DEVICE_ID,"");
-        if (!TextUtils.isEmpty(deviceId)){
+        String deviceId = SPUtil.getInstance().getString(KEY_DEVICE_ID, "");
+        if (!TextUtils.isEmpty(deviceId)) {
             return deviceId;
         }
         try {
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             deviceId = tm.getDeviceId();
-            if (TextUtils.isEmpty(deviceId)){
-                deviceId = SystemValue.imei;
-                if (TextUtils.isEmpty(deviceId)){
+            if (TextUtils.isEmpty(deviceId)) {
+                if (TextUtils.isEmpty(deviceId)) {
                     deviceId = UUID.randomUUID() + "";
-                    SPUtil.getInstance().putString(KEY_DEVICE_ID,deviceId);
+                    SPUtil.getInstance().putString(KEY_DEVICE_ID, deviceId);
                     return deviceId;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
             deviceId = UUID.randomUUID() + "";
-            SPUtil.getInstance().putString(KEY_DEVICE_ID,deviceId);
+            SPUtil.getInstance().putString(KEY_DEVICE_ID, deviceId);
             return deviceId;
         }
         return deviceId;
@@ -402,6 +410,7 @@ public class TelephoneUtil {
      * @param ctx
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isWifiEnable(Context ctx) {
         // 解决日志反馈空指针问题，增加对null的判断
         try {

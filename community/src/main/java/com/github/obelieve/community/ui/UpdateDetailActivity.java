@@ -42,7 +42,6 @@ import com.github.obelieve.repository.cache.constant.SystemValue;
 import com.github.obelieve.utils.ActivityUtil;
 import com.github.obelieve.utils.AppDataUtil;
 import com.github.obelieve.utils.BottomMenuUtil;
-import com.github.obelieve.utils.TelephoneUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -55,6 +54,7 @@ import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.utils.LogUtil;
 import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.TelephoneUtil;
 import com.zxy.frame.utils.ToastUtil;
 import com.zxy.frame.utils.image.GlideUtil;
 

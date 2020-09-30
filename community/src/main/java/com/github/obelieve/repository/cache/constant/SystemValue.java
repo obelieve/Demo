@@ -1,14 +1,15 @@
 package com.github.obelieve.repository.cache.constant;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 
-import com.github.obelieve.utils.LanguageUtil;
-import com.github.obelieve.utils.TelephoneUtil;
+import com.zxy.frame.utils.LanguageUtil;
 import com.zxy.frame.utils.SPUtil;
+import com.zxy.frame.utils.TelephoneUtil;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -72,9 +73,11 @@ public class SystemValue {
 
     /**
      * 程序一启动就初始化的全局变量,如imei imsi ...
+     * 需要申请读取手机信息权限
      *
      * @param ctx
      */
+    @SuppressLint("MissingPermission")
     public static void init(Context ctx) {
         try {
             DisplayMetrics metrics = ctx.getResources().getDisplayMetrics();
@@ -98,14 +101,13 @@ public class SystemValue {
             mac = TelephoneUtil.getWifiMacAddress(ctx);
 
             /*
-			 * 影响较大，暂时先不改
-			 */
+             * 影响较大，暂时先不改
+             */
             if (mac != null && mac.length() > 0) {
                 mac = mac.replace("-", "");
                 mac = mac.replace(":", "");
             }
             deviceId = TelephoneUtil.getDeviceId(ctx);
-            //imsi = TelephoneUtil.getIMSI(ctx);
             abi = TelephoneUtil.getCPUABI();
             sdk = TelephoneUtil.getApiLevel();
             nt = getNT(ctx);
@@ -116,13 +118,13 @@ public class SystemValue {
             // 时区 TODO时区编码
             TimeZone tz = TimeZone.getDefault();
             timezone = tz.getDisplayName(false, TimeZone.SHORT);
-            language = LanguageUtil.getInstance().getCurrentLanguage(ctx);
+            language = LanguageUtil.getInstance().getCurrentLanguage();
 
             boolean isFirst = SPUtil.getInstance().getBoolean(PreferenceConst.KEY_FIRST_ENTER, true);
-            if (isFirst){
+            if (isFirst) {
                 locale = ctx.getResources().getConfiguration().locale.getCountry();
                 SPUtil.getInstance().putString(PreferenceConst.KEY_LOCALE, locale);
-            }else {
+            } else {
                 locale = SPUtil.getInstance().getString(PreferenceConst.KEY_LOCALE, ctx.getResources().getConfiguration().locale.getCountry());
             }
 
@@ -141,14 +143,12 @@ public class SystemValue {
             Enumeration<NetworkInterface> en = NetworkInterface
                     .getNetworkInterfaces();
             // 遍历所用的网络接口
-            while (en.hasMoreElements())
-            {
+            while (en.hasMoreElements()) {
                 // 得到每一个网络接口绑定的所有ip
                 NetworkInterface nif = en.nextElement();
                 Enumeration<InetAddress> inet = nif.getInetAddresses();
                 // 遍历每一个接口绑定的所有ip
-                while (inet.hasMoreElements())
-                {
+                while (inet.hasMoreElements()) {
                     InetAddress ip = inet.nextElement();
                     if (!ip.isLoopbackAddress()) {
                         ipaddress = ip.getHostAddress();
@@ -156,8 +156,7 @@ public class SystemValue {
                     }
                 }
             }
-        }
-        catch (SocketException e) {
+        } catch (SocketException e) {
             e.printStackTrace();
         }
         return ipaddress;
@@ -202,7 +201,7 @@ public class SystemValue {
             if (type == ConnectivityManager.TYPE_MOBILE) {
                 String mobileSubtype = mobileNetworkType(context);
                 return "1";
-            }else {
+            } else {
                 return "99";
             }
         } catch (Exception e) {

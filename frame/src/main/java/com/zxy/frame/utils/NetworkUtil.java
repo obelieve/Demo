@@ -1,4 +1,4 @@
-package com.github.obelieve.utils;
+package com.zxy.frame.utils;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,7 +11,7 @@ import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
-import com.zxy.frame.utils.LogUtil;
+import androidx.annotation.RequiresPermission;
 
 
 public class NetworkUtil {
@@ -76,6 +76,7 @@ public class NetworkUtil {
      * 获取网络类型
      *
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static int getNetType(Context context) {
         NetworkInfo networkInfo = getActiveNetworkInfo(context);
         if (networkInfo == null) {
@@ -91,6 +92,7 @@ public class NetworkUtil {
      * @param context
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static byte getCurrentNetType(Context context) {
         NetworkInfo networkInfo = getActiveNetworkInfo(context);
         byte type = CURRENT_NETWORK_TYPE_NONE;
@@ -199,6 +201,7 @@ public class NetworkUtil {
      * @param context
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isNetAvailable(Context context) {
         NetworkInfo networkInfo = getActiveNetworkInfo(context);
         if (networkInfo != null) {
@@ -214,6 +217,7 @@ public class NetworkUtil {
      * @param context
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isNetworkConnected(Context context) {
         NetworkInfo networkInfo = getActiveNetworkInfo(context);
         if (networkInfo != null) {
@@ -230,6 +234,7 @@ public class NetworkUtil {
      * @param context
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     private static NetworkInfo getActiveNetworkInfo(Context context) {
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -239,6 +244,7 @@ public class NetworkUtil {
         }
     }
 
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isWifiOr3G(Context context) {
         if (isWifi(context)) {
             return true;
@@ -247,10 +253,12 @@ public class NetworkUtil {
         }
     }
 
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean is2G(Context context) {
         return !isWifiOr3G(context);
     }
 
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean is3G(Context context) {
         int type = getNetworkClass(context);
         if (type == NETWORK_CLASS_3_G || type == NETWORK_CLASS_4_G) {
@@ -266,6 +274,7 @@ public class NetworkUtil {
      * @param context
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isWifi(Context context) {
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -284,6 +293,7 @@ public class NetworkUtil {
         }
     }
 
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean getNetworkConnectionStatus(Context context) {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (manager == null) {
@@ -308,6 +318,7 @@ public class NetworkUtil {
         }
     }
 
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static String getNetworkProxyInfo(Context context) {
         String proxyHost = android.net.Proxy.getDefaultHost();
         int proxyPort = android.net.Proxy.getDefaultPort();
@@ -337,6 +348,7 @@ public class NetworkUtil {
         }
     }
 
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static String getNetworkProxyUrl(Context context) {
         if (isWifi(context)) {
             return null;
@@ -395,6 +407,7 @@ public class NetworkUtil {
      *
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isCtcNetwork(Context context) {
         byte type = getCurrentNetType(context);
 
@@ -426,6 +439,7 @@ public class NetworkUtil {
      *
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isCucNetwork(Context context) {
         byte type = getCurrentNetType(context);
 
@@ -458,6 +472,7 @@ public class NetworkUtil {
      *
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isCmbNetwork(Context context) {
         byte type = getCurrentNetType(context);
 
@@ -490,6 +505,7 @@ public class NetworkUtil {
      * @param context
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static byte getNetworkOperators(Context context) {
         if (isWifi(context)) {
             return CURRENT_NETWORK_TYPE_WIFI;
@@ -549,6 +565,7 @@ public class NetworkUtil {
         return "";
     }
 
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static String getNetworkInfo(Context context) {
         String info = "";
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -599,6 +616,7 @@ public class NetworkUtil {
      * @param context
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static NetworkSpeedMode getNetworkSpeedModeInMobile(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -662,6 +680,7 @@ public class NetworkUtil {
      * @param context
      * @return
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static int getNetworkClass(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -699,6 +718,7 @@ public class NetworkUtil {
         return NETWORK_CLASS_UNKNOWN;
     }
 
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static String getNetworkTypeName(Context context) {
         String networkName = "UNKNOWN";
         ConnectivityManager connectivityManager = (ConnectivityManager) context
@@ -824,6 +844,7 @@ public class NetworkUtil {
         public static final int _4G = 5;
     }
 
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static int getNetworkTypeForLink(Context context) {
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
