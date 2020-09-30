@@ -1,5 +1,6 @@
 package com.zxy.frame.utils;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -7,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.StatFs;
 import android.util.Log;
+
+import androidx.annotation.RequiresPermission;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -136,6 +139,7 @@ public class StorageUtil {
      *context,传全局的上下文进来
      * @return
      */
+    @RequiresPermission(Manifest.permission.KILL_BACKGROUND_PROCESSES)
     public static void killAllProcess(Context context) {
         try {
             ActivityManager am = (ActivityManager)  context.getSystemService(Context.ACTIVITY_SERVICE);
