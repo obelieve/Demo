@@ -17,9 +17,9 @@ import com.zxy.demo.MainEnum;
 import com.zxy.demo.R;
 import com.zxy.demo.fragment.LoadRefreshFragment;
 import com.zxy.frame.base.ApiBaseActivity;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 import com.zxy.frame.utils.helper.FragmentManagerHelper;
 import com.zxy.frame.view.BottomTabView;
-import com.zxy.utility.SystemUtil;
 
 import butterknife.BindView;
 
@@ -177,7 +177,7 @@ public class TabActivity extends ApiBaseActivity {
                 params.weight = 1;
                 ll.setGravity(Gravity.CENTER);
                 ll.setLayoutParams(params);
-                ll.setPadding(0, SystemUtil.dp2px(6), 0, SystemUtil.dp2px(8));
+                ll.setPadding(0, SystemInfoUtil.dp2px(ll.getContext(),6), 0, SystemInfoUtil.dp2px(ll.getContext(),8));
                 ll.setOrientation(LinearLayout.VERTICAL);
                 View view = LayoutInflater.from(bottomTabView.getContext()).inflate(R.layout.view_bottom_tab_item, ll, true);
                 LottieAnimationView lavMenu = (LottieAnimationView) ll.getChildAt(0);

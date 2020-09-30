@@ -33,10 +33,10 @@ import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.download.DownloadInterfaceImpl;
-import com.zxy.frame.utils.StringUtil;
+import com.zxy.frame.utils.log.LogUtil;
+import com.zxy.frame.utils.format.StringUtil;
 import com.zxy.frame.utils.SystemIntentUtil;
 import com.zxy.frame.utils.ToastUtil;
-import com.zxy.utility.LogUtil;
 
 import java.io.File;
 

@@ -5,14 +5,13 @@ import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.zxy.demo.R;
 import com.zxy.frame.dialog.BaseDialog;
-import com.zxy.utility.SystemUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,8 +30,8 @@ public class SendCommentDialog extends BaseDialog {
         view = LayoutInflater.from(activity).inflate(R.layout.layout_comment_dialog, null);
         ButterKnife.bind(this,view);
         setContentView(view);
-        setWidth(SystemUtil.screenWidth());
-        setHeight((int) SystemUtil.density() * 50);
+        setWidth(SystemInfoUtil.screenWidth(mActivity));
+        setHeight((int) SystemInfoUtil.density(mActivity) * 50);
         setGravity(Gravity.BOTTOM);
         mEditComment.requestFocus();
         mEditComment.post(() -> {

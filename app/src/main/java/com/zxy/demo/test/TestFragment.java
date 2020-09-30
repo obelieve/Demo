@@ -8,17 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.zxy.demo.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseFragment;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 import com.zxy.frame.utils.ToastUtil;
-import com.zxy.utility.SystemUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,31 +43,22 @@ public class TestFragment extends ApiBaseFragment {
     protected void initView() {
         mTestAdapter = new TestAdapter(getActivity());
         TextView tv = new TextView(getActivity());
-        tv.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, SystemUtil.dp2px(100)));
+        tv.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, SystemInfoUtil.dp2px(mActivity,100)));
         tv.setBackgroundColor(Color.GREEN);
         tv.setText("空数据");
         mTestAdapter.setEmptyView(tv);
-        mTestAdapter.setLoadMoreListener(rvContent, new BaseRecyclerViewAdapter.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                mTestAdapter.getDataHolder().addAll(new ArrayList<>(Arrays.asList("111", "222", "333", "111", "222", "333")));
-                mTestAdapter.loadMoreEnd();
-            }
-        });
-        rvContent.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
-//        rvContent.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
-//        rvContent.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        rvContent.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         rvContent.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                outRect.right = SystemUtil.dp2px(10);
-                outRect.bottom = SystemUtil.dp2px(10);
+                outRect.right = SystemInfoUtil.dp2px(mActivity,10);
+                outRect.bottom = SystemInfoUtil.dp2px(mActivity,10);
             }
         });
         rvContent.setAdapter(mTestAdapter);
         List<String> l = new ArrayList<>();
-        int i = 10;
+        int i = 6;
         while (i > 0) {
             l.add(i + "ASDAD我完全A");
             i--;

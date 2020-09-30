@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.provider.Settings;
 
 import androidx.core.content.FileProvider;
@@ -12,6 +13,28 @@ import androidx.core.content.FileProvider;
 import java.io.File;
 
 public class SystemIntentUtil {
+
+    /**
+     * 选择图片
+     *
+     * @return
+     */
+    public static Intent selectPicture() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);//可以用流的方式打开
+        intent.setType("image/*");
+        return intent;
+    }
+
+    /**
+     * 拍照
+     *
+     * @return
+     */
+    public static Intent takePicture() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        return intent;
+    }
 
     /**
      * GPS定位是否开启

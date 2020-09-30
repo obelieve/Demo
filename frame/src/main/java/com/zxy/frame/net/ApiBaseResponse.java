@@ -1,7 +1,7 @@
 package com.zxy.frame.net;
 
 
-import com.zxy.frame.proguard.UnProguard;
+import com.zxy.frame.utils.proguard.UnProguard;
 
 /**
  * 网络返回基类 支持泛型

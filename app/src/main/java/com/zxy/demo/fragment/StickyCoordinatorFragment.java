@@ -16,8 +16,8 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.zxy.demo.R;
-import com.zxy.demo.view.PageStatusView;
 import com.zxy.frame.base.ApiBaseFragment;
+import com.zxy.frame.view.PageStatusView;
 
 import butterknife.BindView;
 

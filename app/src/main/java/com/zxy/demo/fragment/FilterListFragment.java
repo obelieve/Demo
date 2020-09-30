@@ -7,15 +7,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zxy.demo.R;
-import com.zxy.demo.view.ListSelectPopupView;
-import com.zxy.demo.view.ListSelectView;
-import com.zxy.demo.view.ThreeLayerSelectView;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.PopupMenuUtil;
 import com.zxy.frame.utils.ToastUtil;
-import com.zxy.utility.LogUtil;
-import com.zxy.utility.SystemUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
+import com.zxy.frame.utils.log.LogUtil;
+import com.zxy.frame.view.select.ListSelectPopupView;
+import com.zxy.frame.view.select.ListSelectView;
+import com.zxy.frame.view.select.ThreeLayerSelectView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +79,7 @@ public class FilterListFragment extends ApiBaseFragment {
                     });
                     mPopupMenuType1 = new PopupMenuUtil(getActivity());
                 }
-                mPopupMenuType1.showDownPopup(llType1, mThreeLayerSelectView, SystemUtil.screenWidth());
+                mPopupMenuType1.showDownPopup(llType1, mThreeLayerSelectView, SystemInfoUtil.screenWidth(mActivity));
                 break;
             case R.id.ll_type2:
                 if (mPopupMenuType2 == null) {
@@ -99,7 +99,7 @@ public class FilterListFragment extends ApiBaseFragment {
                     });
                     mPopupMenuType2 = new PopupMenuUtil(getActivity());
                 }
-                mPopupMenuType2.showDownPopup(llType2, mListSelectPopupView, SystemUtil.screenWidth());
+                mPopupMenuType2.showDownPopup(llType2, mListSelectPopupView, SystemInfoUtil.screenWidth(mActivity));
                 break;
             case R.id.ll_type3:
                 break;
