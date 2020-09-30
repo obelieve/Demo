@@ -24,6 +24,7 @@ import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.utils.SystemUtil;
 import com.zxy.frame.utils.helper.FragmentManagerHelper;
+import com.zxy.frame.view.BottomTabView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
