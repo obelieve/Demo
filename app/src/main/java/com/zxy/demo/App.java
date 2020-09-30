@@ -7,7 +7,7 @@ import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.HttpUtil;
 import com.zxy.frame.net.convert.ApiCustomGsonConverterFactory;
 import com.zxy.frame.net.download.DownloadInterface;
-import com.zxy.frame.utils.LogInterceptor;
+import com.zxy.frame.utils.log.LogInterceptor;
 import com.zxy.frame.utils.ToastUtil;
 
 import io.reactivex.Observable;

@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.github.obelieve.community.BuildConfig;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
-import com.zxy.frame.utils.SPUtil;
+import com.zxy.frame.utils.storage.SPUtil;
 
 /**
  * Created by TQ on 2018/1/9.

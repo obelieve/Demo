@@ -1,4 +1,4 @@
-package com.zxy.frame.utils;
+package com.zxy.frame.utils.storage;
 
 import android.Manifest;
 import android.app.ActivityManager;

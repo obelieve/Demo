@@ -12,7 +12,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.github.obelieve.community.R;
 import com.github.obelieve.community.bean.SquareListsEntity;
 import com.github.obelieve.community.ui.view.NineGridView;
-import com.zxy.frame.utils.SystemInfoUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 import com.zxy.frame.utils.image.GlideRoundTransform;
 
 import java.util.List;

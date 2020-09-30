@@ -1,4 +1,4 @@
-package com.zxy.frame.utils;
+package com.zxy.frame.utils.image;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

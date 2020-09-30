@@ -26,9 +26,9 @@ import com.github.obelieve.net.ApiServiceWrapper;
 import com.github.obelieve.utils.others.SystemConstant;
 import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.net.download.DownloadInterfaceImpl;
-import com.zxy.frame.utils.FileUtil;
+import com.zxy.frame.utils.storage.FileUtil;
 import com.zxy.frame.utils.StatusBarUtil;
-import com.zxy.frame.utils.StringUtil;
+import com.zxy.frame.utils.format.StringUtil;
 import com.zxy.frame.utils.SystemIntentUtil;
 import com.zxy.frame.utils.ToastUtil;
 

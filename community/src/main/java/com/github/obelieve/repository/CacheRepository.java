@@ -14,7 +14,7 @@ import com.github.obelieve.repository.cache.PostFilterCacheConst;
 import com.github.obelieve.repository.cache.UserHelper;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.zxy.frame.net.gson.MGson;
-import com.zxy.frame.utils.SPUtil;
+import com.zxy.frame.utils.storage.SPUtil;
 
 import java.util.Set;
 

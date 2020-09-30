@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.zxy.demo.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseFragment;
-import com.zxy.frame.utils.SystemInfoUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import java.util.ArrayList;

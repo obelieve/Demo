@@ -24,7 +24,7 @@ import com.zxy.frame.R;
 import com.zxy.frame.dialog.LoadingDialog;
 import com.zxy.frame.utils.StatusBarUtil;
 import com.zxy.frame.utils.SystemIntentUtil;
-import com.zxy.frame.utils.SystemInfoUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 
 import java.util.ArrayList;
 

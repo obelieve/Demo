@@ -31,7 +31,7 @@ import com.github.obelieve.repository.cache.UserHelper;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.github.obelieve.repository.cache.constant.SystemValue;
 import com.github.obelieve.utils.ActivityUtil;
-import com.zxy.frame.utils.SPUtil;
+import com.zxy.frame.utils.storage.SPUtil;
 import com.zxy.frame.utils.image.GlideUtil;
 
 import butterknife.BindView;

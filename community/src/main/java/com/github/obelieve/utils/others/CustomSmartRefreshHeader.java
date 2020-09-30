@@ -19,7 +19,7 @@ import com.scwang.smartrefresh.layout.api.RefreshKernel;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.zxy.frame.utils.SystemInfoUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 
 @SuppressLint("RestrictedApi")
 public class CustomSmartRefreshHeader extends LinearLayout implements RefreshHeader {

@@ -1,4 +1,4 @@
-package com.zxy.frame.utils;
+package com.zxy.frame.utils.info;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -16,6 +16,8 @@ import android.view.WindowManager;
 
 import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.zxy.frame.utils.storage.SPUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

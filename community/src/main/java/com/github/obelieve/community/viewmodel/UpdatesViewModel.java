@@ -19,7 +19,7 @@ import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiErrorCode;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
-import com.zxy.frame.utils.TelephoneUtil;
+import com.zxy.frame.utils.info.TelephoneUtil;
 
 
 public class UpdatesViewModel extends ViewModel {

@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 import com.zxy.demo.R;
 import com.zxy.frame.dialog.BaseDialog;
-import com.zxy.frame.utils.SystemInfoUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

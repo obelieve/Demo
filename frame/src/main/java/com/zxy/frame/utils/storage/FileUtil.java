@@ -1,8 +1,10 @@
-package com.zxy.frame.utils;
+package com.zxy.frame.utils.storage;
 
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.StatFs;
+
+import com.zxy.frame.utils.log.LogUtil;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

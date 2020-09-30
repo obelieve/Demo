@@ -1,7 +1,7 @@
 package com.github.obelieve.me.bean;
 
 
-import com.zxy.frame.proguard.UnProguard;
+import com.zxy.frame.utils.proguard.UnProguard;
 
 public class MenuDataEntity implements UnProguard {
     public String menu_ident;// notice,   //菜单唯一标识 notice-系统公告；message-我的消息；feedback-问题反馈；setup-系统设置

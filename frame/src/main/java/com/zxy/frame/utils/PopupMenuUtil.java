@@ -12,6 +12,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.PopupWindow;
 
 import com.zxy.frame.R;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 
 
 /**

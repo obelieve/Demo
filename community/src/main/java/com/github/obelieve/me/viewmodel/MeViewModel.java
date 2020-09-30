@@ -17,7 +17,7 @@ import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.net.gson.MGson;
-import com.zxy.frame.utils.SPUtil;
+import com.zxy.frame.utils.storage.SPUtil;
 
 public class MeViewModel extends ViewModel {
 

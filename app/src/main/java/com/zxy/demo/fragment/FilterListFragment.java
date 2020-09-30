@@ -12,9 +12,9 @@ import com.zxy.demo.view.ListSelectView;
 import com.zxy.demo.view.ThreeLayerSelectView;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseFragment;
-import com.zxy.frame.utils.LogUtil;
+import com.zxy.frame.utils.log.LogUtil;
 import com.zxy.frame.utils.PopupMenuUtil;
-import com.zxy.frame.utils.SystemInfoUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import java.util.ArrayList;

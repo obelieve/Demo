@@ -29,7 +29,7 @@ import com.github.obelieve.thirdsdklib.ImageSelectorUtil;
 import com.github.obelieve.thirdsdklib.QiNiuUploadUtil;
 import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.dialog.CommonDialog;
-import com.zxy.frame.utils.LogUtil;
+import com.zxy.frame.utils.log.LogUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import java.io.File;

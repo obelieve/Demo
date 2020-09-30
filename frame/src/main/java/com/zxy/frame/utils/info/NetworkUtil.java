@@ -1,4 +1,4 @@
-package com.zxy.frame.utils;
+package com.zxy.frame.utils.info;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,6 +12,8 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
 import androidx.annotation.RequiresPermission;
+
+import com.zxy.frame.utils.log.LogUtil;
 
 
 public class NetworkUtil {

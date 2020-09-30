@@ -1,4 +1,4 @@
-package com.zxy.frame.utils;
+package com.zxy.frame.utils.info;
 
 import android.content.Context;
 import android.content.res.Configuration;

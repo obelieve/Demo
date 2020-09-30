@@ -19,7 +19,7 @@ import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.net.gson.MGson;
-import com.zxy.frame.utils.SPUtil;
+import com.zxy.frame.utils.storage.SPUtil;
 
 import org.greenrobot.eventbus.EventBus;
 

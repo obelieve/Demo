@@ -1,6 +1,6 @@
 package com.github.obelieve.bean;
 
-import com.zxy.frame.proguard.UnProguard;
+import com.zxy.frame.utils.proguard.UnProguard;
 
 import java.io.Serializable;
 

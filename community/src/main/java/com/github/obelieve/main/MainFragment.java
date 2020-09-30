@@ -22,7 +22,7 @@ import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiServiceException;
-import com.zxy.frame.utils.SystemInfoUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 import com.zxy.frame.utils.helper.FragmentManagerHelper;
 import com.zxy.frame.view.BottomTabView;
 

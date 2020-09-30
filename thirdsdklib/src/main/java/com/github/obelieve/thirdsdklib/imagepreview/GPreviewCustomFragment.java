@@ -28,7 +28,7 @@ import com.bumptech.glide.request.target.Target;
 import com.github.obelieve.thirdsdklib.R;
 import com.previewlibrary.enitity.IThumbViewInfo;
 import com.previewlibrary.view.BasePhotoFragment;
-import com.zxy.frame.utils.StorageUtil;
+import com.zxy.frame.utils.storage.StorageUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import java.io.File;

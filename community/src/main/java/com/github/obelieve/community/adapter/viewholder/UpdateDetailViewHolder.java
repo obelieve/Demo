@@ -15,7 +15,7 @@ import com.github.obelieve.community.bean.SquareListsEntity;
 import com.github.obelieve.community.bean.UpdateDetailEntity;
 import com.github.obelieve.thirdsdklib.ImagePreviewUtil;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
-import com.zxy.frame.utils.SystemInfoUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 import com.zxy.frame.utils.image.GlideUtil;
 
 import java.util.ArrayList;

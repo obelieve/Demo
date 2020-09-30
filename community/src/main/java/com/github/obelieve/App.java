@@ -32,8 +32,8 @@ import com.zxy.frame.net.ApiServiceExceptionHandle;
 import com.zxy.frame.net.HttpUtil;
 import com.zxy.frame.net.convert.ApiCustomGsonConverterFactory;
 import com.zxy.frame.net.download.DownloadInterface;
-import com.zxy.frame.utils.LogInterceptor;
-import com.zxy.frame.utils.SPUtil;
+import com.zxy.frame.utils.log.LogInterceptor;
+import com.zxy.frame.utils.storage.SPUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import java.util.LinkedList;

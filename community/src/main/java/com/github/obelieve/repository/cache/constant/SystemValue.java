@@ -7,9 +7,9 @@ import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 
-import com.zxy.frame.utils.LanguageUtil;
-import com.zxy.frame.utils.SPUtil;
-import com.zxy.frame.utils.TelephoneUtil;
+import com.zxy.frame.utils.info.LanguageUtil;
+import com.zxy.frame.utils.storage.SPUtil;
+import com.zxy.frame.utils.info.TelephoneUtil;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

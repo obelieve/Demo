@@ -28,8 +28,8 @@ import com.github.obelieve.utils.ActivityUtil;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.base.ApiBaseStatusBarFragment;
-import com.zxy.frame.utils.LogUtil;
-import com.zxy.frame.utils.SPUtil;
+import com.zxy.frame.utils.log.LogUtil;
+import com.zxy.frame.utils.storage.SPUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;

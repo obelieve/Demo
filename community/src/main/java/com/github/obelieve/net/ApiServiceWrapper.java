@@ -15,8 +15,8 @@ import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
-import com.zxy.frame.utils.LogUtil;
-import com.zxy.frame.utils.SPUtil;
+import com.zxy.frame.utils.log.LogUtil;
+import com.zxy.frame.utils.storage.SPUtil;
 
 import java.util.HashSet;
 import java.util.List;

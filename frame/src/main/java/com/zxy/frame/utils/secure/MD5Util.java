@@ -1,4 +1,4 @@
-package com.zxy.frame.utils;
+package com.zxy.frame.utils.secure;
 
 import android.text.TextUtils;
 

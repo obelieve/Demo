@@ -39,7 +39,7 @@ import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
-import com.zxy.frame.utils.TelephoneUtil;
+import com.zxy.frame.utils.info.TelephoneUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;

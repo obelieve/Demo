@@ -8,7 +8,7 @@ import com.github.obelieve.repository.CacheRepository;
 import com.github.obelieve.repository.bean.PostCommentCacheBean;
 import com.github.obelieve.repository.cache.constant.PreferenceConst;
 import com.zxy.frame.net.gson.MGson;
-import com.zxy.frame.utils.SPUtil;
+import com.zxy.frame.utils.storage.SPUtil;
 
 
 public class GlobalCacheUtil {

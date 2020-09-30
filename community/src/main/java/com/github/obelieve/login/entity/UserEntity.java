@@ -1,7 +1,7 @@
 package com.github.obelieve.login.entity;
 
 
-import com.zxy.frame.proguard.UnProguard;
+import com.zxy.frame.utils.proguard.UnProguard;
 
 public class UserEntity implements UnProguard {
 

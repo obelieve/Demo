@@ -21,8 +21,8 @@ import com.github.obelieve.repository.cache.constant.SystemValue;
 import com.github.obelieve.utils.others.TranslationState;
 import com.zxy.frame.application.BaseApplication;
 import com.zxy.frame.dialog.CommonDialog;
-import com.zxy.frame.utils.SPUtil;
-import com.zxy.frame.utils.SystemInfoUtil;
+import com.zxy.frame.utils.storage.SPUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 
 /**
  * 应用相关的逻辑调用
