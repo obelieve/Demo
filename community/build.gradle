@@ -63,6 +63,7 @@ dependencies {
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation 'org.greenrobot:eventbus:3.1.1' //EventBus
+    //UI
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar' //TabLayout
     implementation 'com.kongzue.dialog_v3:dialog:3.1.3' //Dialog
     implementation 'de.hdodenhof:circleimageview:3.0.1' //圆角图片
@@ -71,10 +72,10 @@ dependencies {
     implementation 'com.github.EHENJOOM:RedSpot:1.0.2' //未读数红点
     implementation 'com.contrarywind:Android-PickerView:3.2.5' //时间选择器
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar' //数字百分百显示进度条
-
     implementation 'com.lcodecorex:tkrefreshlayout:1.0.7' //下拉刷新
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'//下拉刷新
     api 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5'
+
     implementation project(':frame')
     implementation project(path: ':captchalib')
     implementation project(path: ':mockapi')
