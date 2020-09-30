@@ -24,7 +24,7 @@ import com.github.obelieve.ui.BottomMenuDialog;
 import com.github.obelieve.ui.ChooseCardView;
 import com.github.obelieve.utils.ActivityUtil;
 import com.github.obelieve.utils.CityPickerHelper;
-import com.github.obelieve.utils.ImageSelectorUtil;
+import com.github.obelieve.thirdsdklib.ImageSelectorUtil;
 import com.github.obelieve.utils.others.SystemConstant;
 import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.utils.ToastUtil;

@@ -80,18 +80,6 @@
         <activity android:name="com.github.obelieve.me.ui.UserInfoActivity" />
         <activity android:name="com.github.obelieve.ui.UpdateSelfActivity"
             android:theme="@style/TranslucentTheme" />
-        <!--图片选择 start-->
-        <activity
-            android:name="com.donkingliang.imageselector.ImageSelectorActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name="com.donkingliang.imageselector.PreviewActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name="com.donkingliang.imageselector.ClipImageActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <!--图片选择 end-->
         <activity android:name="com.github.obelieve.me.ui.SettingsActivity"
             android:launchMode="singleTop"/>
 

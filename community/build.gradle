@@ -65,7 +65,6 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1' //EventBus
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar' //TabLayout
     implementation 'com.kongzue.dialog_v3:dialog:3.1.3' //Dialog
-    implementation 'com.github.donkingliang:ImageSelector:2.1.1' //图片选择
     implementation 'de.hdodenhof:circleimageview:3.0.1' //圆角图片
     implementation 'com.airbnb.android:lottie:3.4.0' //动画效果
     implementation 'com.bigkoo:convenientbanner:2.1.5' //轮播图

@@ -13,7 +13,7 @@ import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.obelieve.community.R;
-import com.github.obelieve.utils.ImageSelectorUtil;
+import com.github.obelieve.thirdsdklib.ImageSelectorUtil;
 import com.zxy.frame.utils.SystemUtil;
 import com.zxy.frame.utils.image.GlideRoundTransform;
 

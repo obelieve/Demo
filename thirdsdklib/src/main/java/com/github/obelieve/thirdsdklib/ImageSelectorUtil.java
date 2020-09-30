@@ -1,4 +1,4 @@
-package com.github.obelieve.utils;
+package com.github.obelieve.thirdsdklib;
 
 import android.app.Activity;
 
