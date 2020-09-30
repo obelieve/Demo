@@ -12,7 +12,7 @@ public class ViewUtil {
     public static void insetStatusBar(View view) {
         if (view.getLayoutParams() != null) {
             view.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-            view.getLayoutParams().height = SystemUtil.getStatusBarHeight(view.getContext());
+            view.getLayoutParams().height = SystemInfoUtil.getStatusBarHeight(view.getContext());
         }
     }
 }

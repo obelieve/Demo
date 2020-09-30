@@ -53,7 +53,7 @@ import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.utils.LogUtil;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 import com.zxy.frame.utils.TelephoneUtil;
 import com.zxy.frame.utils.ToastUtil;
 import com.zxy.frame.utils.image.GlideUtil;
@@ -207,7 +207,7 @@ public class UpdateDetailActivity extends ApiBaseActivity {
                 super.getItemOffsets(outRect, view, parent, state);
                 int position = parent.getChildAdapterPosition(view);
                 if (parent.getAdapter() != null && position == parent.getAdapter().getItemCount() - 1) {
-                    outRect.bottom = SystemUtil.dp2px(view.getContext(),25);
+                    outRect.bottom = SystemInfoUtil.dp2px(view.getContext(),25);
                 }
             }
         });
@@ -255,7 +255,7 @@ public class UpdateDetailActivity extends ApiBaseActivity {
             if (detailUserBottom == 0) {
                 View viewById = scrollView.findViewById(R.id.txt_user_name);
                 if (viewById != null) {
-                    detailUserBottom = viewById.getBottom() + SystemUtil.dp2px(App.getContext(), 20);
+                    detailUserBottom = viewById.getBottom() + SystemInfoUtil.dp2px(App.getContext(), 20);
                     LogUtil.v("detailUserBottom", detailUserBottom + "");
                 } else {
                     return;
@@ -429,7 +429,7 @@ public class UpdateDetailActivity extends ApiBaseActivity {
             }
         });
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(0, SystemUtil.dp2px(App.getContext(), 10), 0, 0);
+        layoutParams.setMargins(0, SystemInfoUtil.dp2px(App.getContext(), 10), 0, 0);
         mLayoutCommentToolbar.setLayoutParams(layoutParams);
         layoutContentDetail.addView(mLayoutCommentToolbar);
     }

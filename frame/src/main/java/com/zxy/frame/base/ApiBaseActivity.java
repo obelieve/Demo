@@ -24,7 +24,7 @@ import com.zxy.frame.R;
 import com.zxy.frame.dialog.LoadingDialog;
 import com.zxy.frame.utils.StatusBarUtil;
 import com.zxy.frame.utils.SystemIntentUtil;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 
 import java.util.ArrayList;
 
@@ -296,7 +296,7 @@ public abstract class ApiBaseActivity extends AppCompatActivity implements IComm
 
     @Override
     public void setRightNavigate(int drawableGravity, int drawableId, String text, View.OnClickListener onClickListener) {
-        setRightNavigate(drawableGravity, drawableId, SystemUtil.dp2px(getApplicationContext(), 4), text, onClickListener);
+        setRightNavigate(drawableGravity, drawableId, SystemInfoUtil.dp2px(getApplicationContext(), 4), text, onClickListener);
     }
 
     @Override

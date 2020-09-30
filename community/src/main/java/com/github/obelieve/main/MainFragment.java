@@ -22,7 +22,7 @@ import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiServiceException;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 import com.zxy.frame.utils.helper.FragmentManagerHelper;
 import com.zxy.frame.view.BottomTabView;
 
@@ -77,7 +77,7 @@ public class MainFragment extends ApiBaseFragment {
             params.weight = 1;
             ll.setGravity(Gravity.CENTER);
             ll.setLayoutParams(params);
-            ll.setPadding(0, SystemUtil.dp2px(mActivity, 6), 0, SystemUtil.dp2px(mActivity, 8));
+            ll.setPadding(0, SystemInfoUtil.dp2px(mActivity, 6), 0, SystemInfoUtil.dp2px(mActivity, 8));
             ll.setOrientation(LinearLayout.VERTICAL);
             View view = LayoutInflater.from(mActivity).inflate(R.layout.view_bottom_tab_item, ll, true);
             LottieAnimationView lavMenu = view.findViewById(R.id.lav_menu);

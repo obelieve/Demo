@@ -18,7 +18,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.zxy.frame.R;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 
 import butterknife.ButterKnife;
 
@@ -76,7 +76,7 @@ public class SplashView extends FrameLayout {
         GradientDrawable drawable = new GradientDrawable();
         drawable.setShape(GradientDrawable.RECTANGLE);
         drawable.setColor(nextColor);
-        drawable.setCornerRadius(SystemUtil.dp2px(getContext(),20));
+        drawable.setCornerRadius(SystemInfoUtil.dp2px(getContext(),20));
         tvNext.setBackground(drawable);
         mAdapter = new PagerAdapter() {
 

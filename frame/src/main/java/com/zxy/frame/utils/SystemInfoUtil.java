@@ -18,7 +18,7 @@ import static android.view.View.NO_ID;
  * Created by zxy on 2018/8/31 18:10.
  */
 
-public class SystemUtil {
+public class SystemInfoUtil {
 
     public static int screenWidth(Context context) {
         DisplayMetrics ds = context.getResources().getDisplayMetrics();

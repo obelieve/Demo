@@ -43,7 +43,7 @@ import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 import com.zxy.frame.utils.TelephoneUtil;
 import com.zxy.frame.utils.ToastUtil;
 import com.zxy.frame.utils.image.GlideUtil;
@@ -278,7 +278,7 @@ public class UpdatesAdapter extends BaseRecyclerViewAdapter<SquareListsEntity.Po
                 bottomDialog.setContentView(contentView);
                 ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
                 layoutParams.width = mContext.getResources().getDisplayMetrics().widthPixels;
-                layoutParams.height = SystemUtil.dp2px(App.getContext(), 50);
+                layoutParams.height = SystemInfoUtil.dp2px(App.getContext(), 50);
                 contentView.setLayoutParams(layoutParams);
                 bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
                 bottomDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
@@ -500,7 +500,7 @@ public class UpdatesAdapter extends BaseRecyclerViewAdapter<SquareListsEntity.Po
         @Override
         public void bind(SquareListsEntity.PostListBean postListBean) {
             //单图片样式
-            GlideUtil.loadImageAutoSize(mContext, postListBean.getMedia().getMedia_list().get(0).getThumbnail(), imageSingle, SystemUtil.dp2px(App.getContext(), 175));
+            GlideUtil.loadImageAutoSize(mContext, postListBean.getMedia().getMedia_list().get(0).getThumbnail(), imageSingle, SystemInfoUtil.dp2px(App.getContext(), 175));
             //单图点击事件
             imageSingle.setOnClickListener(view -> {
                 List<SquareListsEntity.PostListBean.MediaBean.MediaListBean> media_list = postListBean.getMedia().getMedia_list();

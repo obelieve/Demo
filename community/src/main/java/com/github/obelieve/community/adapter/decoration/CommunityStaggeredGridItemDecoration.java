@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.github.obelieve.App;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 
 
 /**
@@ -21,7 +21,7 @@ public class CommunityStaggeredGridItemDecoration extends RecyclerView.ItemDecor
     int padding;
 
     {
-        padding = SystemUtil.dp2px(App.getContext(), 12);
+        padding = SystemInfoUtil.dp2px(App.getContext(), 12);
     }
 
     @Override

@@ -15,7 +15,7 @@ import com.github.obelieve.community.bean.SquareListsEntity;
 import com.github.obelieve.community.bean.UpdateDetailEntity;
 import com.github.obelieve.thirdsdklib.ImagePreviewUtil;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 import com.zxy.frame.utils.image.GlideUtil;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class UpdateDetailViewHolder extends BaseRecyclerViewAdapter.BaseViewHold
         super(parent, R.layout.viewholder_update_detail);
         mActivity = (Activity) parent.getContext();
         if (cbContent.getLayoutParams() != null) {
-            cbContent.getLayoutParams().height = SystemUtil.screenWidth(mActivity);
+            cbContent.getLayoutParams().height = SystemInfoUtil.screenWidth(mActivity);
             cbContent.setLayoutParams(cbContent.getLayoutParams());
         }
     }

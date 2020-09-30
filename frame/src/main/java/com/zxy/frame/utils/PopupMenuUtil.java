@@ -77,12 +77,12 @@ public class PopupMenuUtil {
     }
 
     public void showDownPopup(View anchorView, View contentView, int width) {
-        int height = SystemUtil.getRealHeight((Activity) (anchorView.getContext()));
+        int height = SystemInfoUtil.getRealHeight((Activity) (anchorView.getContext()));
         int[] screenPosArr = new int[2];
         anchorView.getLocationOnScreen(screenPosArr);
         height -= (screenPosArr[1] + anchorView.getHeight());
-        if (SystemUtil.isNavigationBarExist((Activity) (anchorView.getContext()))) {
-            height -= SystemUtil.getNavigationHeight(anchorView.getContext());
+        if (SystemInfoUtil.isNavigationBarExist((Activity) (anchorView.getContext()))) {
+            height -= SystemInfoUtil.getNavigationHeight(anchorView.getContext());
         }
         showPopup(anchorView, contentView, width, height);
     }
@@ -116,7 +116,7 @@ public class PopupMenuUtil {
             contentView.measure(View.MeasureSpec.makeMeasureSpec(0,
                     View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0,
                     View.MeasureSpec.UNSPECIFIED));
-            width = contentView.getMeasuredWidth() > SystemUtil.screenWidth(contentView.getContext()) ? SystemUtil.screenWidth(contentView.getContext()) : contentView.getMeasuredWidth();
+            width = contentView.getMeasuredWidth() > SystemInfoUtil.screenWidth(contentView.getContext()) ? SystemInfoUtil.screenWidth(contentView.getContext()) : contentView.getMeasuredWidth();
         }
         mPopupWindow.setWidth(width);
         mPopupWindow.setHeight(height);

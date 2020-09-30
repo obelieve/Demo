@@ -19,7 +19,7 @@ import com.scwang.smartrefresh.layout.api.RefreshKernel;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 
 @SuppressLint("RestrictedApi")
 public class CustomSmartRefreshHeader extends LinearLayout implements RefreshHeader {
@@ -49,8 +49,8 @@ public class CustomSmartRefreshHeader extends LinearLayout implements RefreshHea
         mProgressView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         mProgressView.setAnimation("refresh/refresh.json");
         mProgressView.setRepeatCount(Animation.INFINITE);
-        addView(mProgressView, SystemUtil.dp2px(App.getContext(), 40), SystemUtil.dp2px(App.getContext(), 40));
-        setMinimumHeight(SystemUtil.dp2px(App.getContext(), 50));
+        addView(mProgressView, SystemInfoUtil.dp2px(App.getContext(), 40), SystemInfoUtil.dp2px(App.getContext(), 40));
+        setMinimumHeight(SystemInfoUtil.dp2px(App.getContext(), 50));
     }
 
     @NonNull

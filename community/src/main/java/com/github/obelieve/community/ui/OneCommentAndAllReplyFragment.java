@@ -61,7 +61,7 @@ import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiErrorCode;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 import com.zxy.frame.utils.TelephoneUtil;
 import com.zxy.frame.utils.ToastUtil;
 
@@ -189,7 +189,7 @@ public class OneCommentAndAllReplyFragment extends ApiBaseFragment {
                 super.getItemOffsets(outRect, view, parent, state);
                 int position = parent.getChildAdapterPosition(view);
                 if(parent.getAdapter()!=null&& position==parent.getAdapter().getItemCount()-1){
-                    outRect.bottom = SystemUtil.dp2px(view.getContext(),25);
+                    outRect.bottom = SystemInfoUtil.dp2px(view.getContext(),25);
                 }
             }
         });
@@ -332,7 +332,7 @@ public class OneCommentAndAllReplyFragment extends ApiBaseFragment {
             }
             mTxt_praise.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                     null, null, null);
-            mTxt_praise.setCompoundDrawablePadding(SystemUtil.dp2px(mTxt_praise.getContext(),6));
+            mTxt_praise.setCompoundDrawablePadding(SystemInfoUtil.dp2px(mTxt_praise.getContext(),6));
             //底部固定评论条
             cbLike.setChecked(aBoolean);
             txtLikenum.setSelected(aBoolean);
@@ -451,7 +451,7 @@ public class OneCommentAndAllReplyFragment extends ApiBaseFragment {
         mCommentDialog.setContentView(contentView);
         ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
         layoutParams.width = getResources().getDisplayMetrics().widthPixels;
-        layoutParams.height = SystemUtil.dp2px(App.getContext(),50);
+        layoutParams.height = SystemInfoUtil.dp2px(App.getContext(),50);
         contentView.setLayoutParams(layoutParams);
         mCommentDialog.getWindow().setGravity(Gravity.BOTTOM);
         mCommentDialog.show();
@@ -495,7 +495,7 @@ public class OneCommentAndAllReplyFragment extends ApiBaseFragment {
         }
         mTxt_praise.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                 null, null, null);
-        mTxt_praise.setCompoundDrawablePadding(SystemUtil.dp2px(mTxt_praise.getContext(),6));
+        mTxt_praise.setCompoundDrawablePadding(SystemInfoUtil.dp2px(mTxt_praise.getContext(),6));
         mTxt_praise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

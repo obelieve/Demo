@@ -14,7 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.obelieve.community.R;
 import com.github.obelieve.thirdsdklib.ImageSelectorUtil;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 import com.zxy.frame.utils.image.GlideRoundTransform;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class IssuePhotoAdapter extends BaseAdapter {
     Activity context;
     public IssuePhotoAdapter(Activity context){
         this.context=context;
-        itemSize = (SystemUtil.screenWidth(context) - SystemUtil.dp2px(context,34+4)) / 3;
+        itemSize = (SystemInfoUtil.screenWidth(context) - SystemInfoUtil.dp2px(context,34+4)) / 3;
 
 
     }

@@ -22,7 +22,7 @@ import com.github.obelieve.utils.others.TranslationState;
 import com.zxy.frame.application.BaseApplication;
 import com.zxy.frame.dialog.CommonDialog;
 import com.zxy.frame.utils.SPUtil;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 
 /**
  * 应用相关的逻辑调用
@@ -134,9 +134,9 @@ public class AppDataUtil {
      */
     public static boolean calculateShowCheckAllText(String content) {
         Paint textPaint = new Paint();
-        textPaint.setTextSize(SystemUtil.dp2px(App.getContext(), 16));
+        textPaint.setTextSize(SystemInfoUtil.dp2px(App.getContext(), 16));
         float textWidth = textPaint.measureText(content);
-        float maxContentViewWidth = SystemUtil.screenWidth(App.getContext()) - SystemUtil.dp2px(App.getContext(), 74);
+        float maxContentViewWidth = SystemInfoUtil.screenWidth(App.getContext()) - SystemInfoUtil.dp2px(App.getContext(), 74);
         float maxLines = textWidth / maxContentViewWidth;
         return maxLines > 4;
     }

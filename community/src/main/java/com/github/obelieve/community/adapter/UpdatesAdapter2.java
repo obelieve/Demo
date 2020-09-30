@@ -44,7 +44,7 @@ import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 import com.zxy.frame.utils.TelephoneUtil;
 import com.zxy.frame.utils.ToastUtil;
 
@@ -238,7 +238,7 @@ public class UpdatesAdapter2 extends BaseRecyclerViewAdapter<SquareListsEntity.P
                         bottomDialog.setContentView(contentView);
                         ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
                         layoutParams.width = mContext.getResources().getDisplayMetrics().widthPixels;
-                        layoutParams.height = SystemUtil.dp2px(App.getContext(),50);
+                        layoutParams.height = SystemInfoUtil.dp2px(App.getContext(),50);
                         contentView.setLayoutParams(layoutParams);
                         bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
                         bottomDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);

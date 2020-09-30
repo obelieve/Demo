@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.zxy.demo.R;
 import com.zxy.frame.dialog.BaseDialog;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +26,7 @@ public class DelOrReportDialog extends BaseDialog {
         View view = LayoutInflater.from(activity).inflate(R.layout.layout_del_or_report, null);
         ButterKnife.bind(this, view);
         setContentView(view);
-        setWidth(SystemUtil.screenWidth(mActivity));
+        setWidth(SystemInfoUtil.screenWidth(mActivity));
         setGravity(Gravity.BOTTOM);
     }
 

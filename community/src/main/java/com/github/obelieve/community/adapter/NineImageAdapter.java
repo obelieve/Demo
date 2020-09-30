@@ -12,7 +12,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.github.obelieve.community.R;
 import com.github.obelieve.community.bean.SquareListsEntity;
 import com.github.obelieve.community.ui.view.NineGridView;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 import com.zxy.frame.utils.image.GlideRoundTransform;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class NineImageAdapter implements NineGridView.NineGridAdapter<SquareList
     public NineImageAdapter(Context context,  List<SquareListsEntity.PostListBean.MediaBean.MediaListBean> imageBeans) {
         this.mContext = context;
         this.mImageBeans = imageBeans;
-        itemSize = (SystemUtil.screenWidth(context) - 2 * SystemUtil.dp2px(context,4) - SystemUtil.dp2px(context,54)) / 3;
+        itemSize = (SystemInfoUtil.screenWidth(context) - 2 * SystemInfoUtil.dp2px(context,4) - SystemInfoUtil.dp2px(context,54)) / 3;
 
     }
 

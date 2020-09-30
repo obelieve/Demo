@@ -25,7 +25,7 @@ import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.ApiServiceException;
-import com.zxy.frame.utils.SystemUtil;
+import com.zxy.frame.utils.SystemInfoUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 
@@ -117,7 +117,7 @@ public class SendCommentModule {
         mCommentDialog.setContentView(contentView);
         ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
         layoutParams.width = mActivity.getResources().getDisplayMetrics().widthPixels;
-        layoutParams.height = SystemUtil.dp2px(App.getContext(), 60);
+        layoutParams.height = SystemInfoUtil.dp2px(App.getContext(), 60);
         contentView.setLayoutParams(layoutParams);
         mCommentDialog.getWindow().setGravity(Gravity.BOTTOM);
         mCommentDialog.show();
