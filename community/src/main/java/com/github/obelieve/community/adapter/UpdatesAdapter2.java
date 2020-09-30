@@ -35,7 +35,7 @@ import com.github.obelieve.repository.cache.constant.SystemValue;
 import com.github.obelieve.utils.ActivityUtil;
 import com.github.obelieve.utils.AppDataUtil;
 import com.github.obelieve.utils.BottomMenuUtil;
-import com.github.obelieve.utils.ImagePreviewUtil;
+import com.github.obelieve.thirdsdklib.ImagePreviewUtil;
 import com.github.obelieve.utils.TelephoneUtil;
 import com.github.obelieve.utils.others.TranslationState;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;

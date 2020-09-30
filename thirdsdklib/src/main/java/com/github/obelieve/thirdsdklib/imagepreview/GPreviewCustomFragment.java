@@ -1,4 +1,4 @@
-package com.github.obelieve.utils.imagepreview;
+package com.github.obelieve.thirdsdklib.imagepreview;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -25,11 +25,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.target.Target;
-import com.github.obelieve.App;
-import com.github.obelieve.community.R;
-import com.github.obelieve.utils.StorageUtil;
+import com.github.obelieve.thirdsdklib.R;
 import com.previewlibrary.enitity.IThumbViewInfo;
 import com.previewlibrary.view.BasePhotoFragment;
+import com.zxy.frame.utils.StorageUtil;
 import com.zxy.frame.utils.ToastUtil;
 
 import java.io.File;
@@ -69,7 +68,7 @@ public class GPreviewCustomFragment extends BasePhotoFragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1024) {
             if (PermissionUtil.hasAllPermissionsGranted(grantResults)) {
-                savePicture();
+                savePicture(getContext());
             } else {
                 ToastUtil.show("请前往权限管理允许读写手机存储权限");
             }
@@ -78,14 +77,14 @@ public class GPreviewCustomFragment extends BasePhotoFragment {
     }
 
     @SuppressLint("CheckResult")
-    private void savePicture() {
+    private void savePicture(final Context context) {
         if (b != null && !TextUtils.isEmpty(b.getUrl()) && StorageUtil.isSdExsit()) {
-            String imgUrl = b.getUrl();
-            String dir = Environment.getExternalStorageDirectory().getAbsolutePath() +
+            final String imgUrl = b.getUrl();
+            final String dir = Environment.getExternalStorageDirectory().getAbsolutePath() +
                     File.separator + "2048Sport";
             String filename;
             Drawable drawable = imageView.getDrawable();
-            if(!new File(dir).exists()){
+            if (!new File(dir).exists()) {
                 new File(dir).mkdir();
             }
             if (drawable instanceof GifDrawable) {
@@ -93,13 +92,13 @@ public class GPreviewCustomFragment extends BasePhotoFragment {
             } else {
                 filename = System.currentTimeMillis() + ".jpg";
             }
-            String path = dir + File.separator + filename;
+            final String path = dir + File.separator + filename;
             Observable.create(new ObservableOnSubscribe<Boolean>() {
                 @Override
                 public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
                     try {
                         String cachePath = getGlideCacheImagePath(imgUrl);
-                        boolean bool = copyFile(cachePath, path);
+                        boolean bool = copyFile(context, cachePath, path);
                         emitter.onNext(bool);
                         emitter.onComplete();
                     } catch (Exception e) {
@@ -130,7 +129,7 @@ public class GPreviewCustomFragment extends BasePhotoFragment {
         return inflater.inflate(com.previewlibrary.R.layout.fragment_image_photo_layout, container, false);
     }
 
-    public void showBottomDialog(Context context) {
+    public void showBottomDialog(final Context context) {
         if (mBottomDialog == null) {
             mBottomDialog = new Dialog(context, R.style.BottomDialog);
             mBottomDialog.setCanceledOnTouchOutside(true);
@@ -140,7 +139,7 @@ public class GPreviewCustomFragment extends BasePhotoFragment {
                 public void onSavePicture() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if ((context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
-                            savePicture();
+                            savePicture(context);
                         } else {
                             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024);
                         }
@@ -163,7 +162,7 @@ public class GPreviewCustomFragment extends BasePhotoFragment {
         mBottomDialog.show();
     }
 
-    public boolean copyFile(String oldPath, final String newPath) {
+    public boolean copyFile(Context context, String oldPath, final String newPath) {
         try {
             int bytesum = 0;
             int byteread = 0;
@@ -182,7 +181,7 @@ public class GPreviewCustomFragment extends BasePhotoFragment {
                 Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 Uri uri = Uri.fromFile(new File(newPath));
                 intent.setData(uri);
-                App.getContext().sendBroadcast(intent);
+                context.sendBroadcast(intent);
                 return true;
             }
         } catch (Exception e) {

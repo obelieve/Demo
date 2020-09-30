@@ -12,12 +12,11 @@ import com.github.obelieve.net.HttpInterceptor;
 import com.github.obelieve.net.ServiceInterface;
 import com.github.obelieve.repository.CacheRepository;
 import com.github.obelieve.repository.cache.constant.SystemValue;
+import com.github.obelieve.thirdsdklib.ImagePreviewUtil;
 import com.github.obelieve.thirdsdklib.QiNiuUploadUtil;
 import com.github.obelieve.utils.ActivityUtil;
 import com.github.obelieve.utils.others.CustomSmartRefreshHeader;
-import com.github.obelieve.utils.others.TestImageLoader;
 import com.news.mockapi.MockApiInterceptor;
-import com.previewlibrary.ZoomMediaLoader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
@@ -63,6 +62,8 @@ public class App extends BaseApplication {
         SPUtil.init(this, "App");
         SystemValue.init(this);
         ToastUtil.init(this);
+        ImagePreviewUtil.init();
+        CacheRepository.getInstance().initUserEntity();
         QiNiuUploadUtil.setQiNiuCallback(new QiNiuUploadUtil.QiNiuCallback() {
             @Override
             public void getToken(QiNiuUploadUtil.TokenCallback callback, Activity activity) {
@@ -84,8 +85,6 @@ public class App extends BaseApplication {
                         });
             }
         });
-        CacheRepository.getInstance().initUserEntity();
-        ZoomMediaLoader.getInstance().init(new TestImageLoader());
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
             @NonNull
             @Override

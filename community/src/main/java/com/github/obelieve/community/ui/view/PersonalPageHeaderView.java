@@ -21,7 +21,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.github.obelieve.community.R;
 import com.github.obelieve.community.bean.BBSUserInfoEntity;
-import com.github.obelieve.utils.ImagePreviewUtil;
+import com.github.obelieve.thirdsdklib.ImagePreviewUtil;
 import com.zxy.frame.utils.image.GlideApp;
 
 import butterknife.BindView;

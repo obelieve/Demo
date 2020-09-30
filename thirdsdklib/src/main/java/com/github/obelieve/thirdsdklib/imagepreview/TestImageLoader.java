@@ -1,4 +1,4 @@
-package com.github.obelieve.utils.others;
+package com.github.obelieve.thirdsdklib.imagepreview;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -13,7 +13,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.github.obelieve.community.R;
+import com.github.obelieve.thirdsdklib.R;
 import com.previewlibrary.loader.IZoomMediaLoader;
 import com.previewlibrary.loader.MySimpleTarget;
 import com.previewlibrary.wight.SmoothImageView;
@@ -23,7 +23,7 @@ public class TestImageLoader implements IZoomMediaLoader {
 
 
     @Override
-    public void displayImage(@NonNull Fragment fragment, @NonNull String s, ImageView imageView, @NonNull MySimpleTarget mySimpleTarget) {
+    public void displayImage(@NonNull Fragment fragment, @NonNull String s, ImageView imageView, @NonNull final MySimpleTarget mySimpleTarget) {
         GlideApp.with(fragment).load(s)
                 .error(R.drawable.failed_to_load).listener(new RequestListener<Drawable>() {
             @Override

@@ -1,4 +1,4 @@
-package com.github.obelieve.utils.imagepreview;
+package com.github.obelieve.thirdsdklib.imagepreview;
 
 import android.graphics.Rect;
 import android.os.Parcel;

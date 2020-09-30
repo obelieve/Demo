@@ -1,12 +1,14 @@
-package com.github.obelieve.utils;
+package com.github.obelieve.thirdsdklib;
 
 import android.app.Activity;
 import android.graphics.Rect;
 import android.view.View;
 
-import com.github.obelieve.utils.imagepreview.GPreviewCustomFragment;
-import com.github.obelieve.utils.imagepreview.PreviewImageInfo;
+import com.github.obelieve.thirdsdklib.imagepreview.GPreviewCustomFragment;
+import com.github.obelieve.thirdsdklib.imagepreview.PreviewImageInfo;
+import com.github.obelieve.thirdsdklib.imagepreview.TestImageLoader;
 import com.previewlibrary.GPreviewBuilder;
+import com.previewlibrary.ZoomMediaLoader;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +20,13 @@ import java.util.List;
  * on 2020/9/10
  */
 public class ImagePreviewUtil {
+
+    /**
+     * 图片预览工具初始化
+     */
+    public static void init() {
+        ZoomMediaLoader.getInstance().init(new TestImageLoader());
+    }
 
     /**
      * 图片预览显示
