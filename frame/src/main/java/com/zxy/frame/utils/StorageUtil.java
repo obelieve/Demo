@@ -1,4 +1,4 @@
-package com.github.obelieve.utils;
+package com.zxy.frame.utils;
 
 import android.app.ActivityManager;
 import android.content.Context;
