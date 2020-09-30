@@ -1,13 +1,13 @@
-package com.github.obelieve.utils;
+package com.github.obelieve.thirdsdklib.picker;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.model.IPickerViewData;
-import com.github.obelieve.App;
-import com.github.obelieve.community.R;
+import com.github.obelieve.thirdsdklib.R;
 import com.google.gson.Gson;
 import com.zxy.frame.proguard.UnProguard;
 
@@ -20,7 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CityPickerHelper {
+public class CityPickerDialog {
 
     private Activity mActivity;
     private OptionsPickerView mOptionsPickerView;
@@ -32,10 +32,10 @@ public class CityPickerHelper {
     private Callback mCallback;
 
 
-    public CityPickerHelper(Activity activity, Callback callback) {
+    public CityPickerDialog(Activity activity, Callback callback) {
         mActivity = activity;
         mCallback = callback;
-        initData();
+        initData(activity);
     }
 
 
@@ -130,9 +130,9 @@ public class CityPickerHelper {
         return exist;
     }
 
-    private void initData() {
+    private void initData(Context context) {
         try {
-            CityBean cityBean = CityBeanUtil.getInstance().getCityBean();
+            CityBean cityBean = CityBeanUtil.getInstance().getCityBean(context);
             mProvinceDataList = cityBean.item;
             mCityDataNestedList = new ArrayList<>();
             for (CityBean.ProvinceData data : mProvinceDataList) {
@@ -191,9 +191,9 @@ public class CityPickerHelper {
             return instance;
         }
 
-        public void initCityData() {
+        public void initCityData(Context context) {
             try {
-                InputStream inputStream = App.getContext().getResources().openRawResource(R.raw.city);
+                InputStream inputStream = context.getResources().openRawResource(R.raw.city);
                 String data = getString(inputStream);
                 mCityBean = new Gson().fromJson(data, CityBean.class);
             } catch (Exception e) {
@@ -221,9 +221,9 @@ public class CityPickerHelper {
             return sb.toString();
         }
 
-        public CityBean getCityBean() {
+        public CityBean getCityBean(Context context) {
             if (mCityBean == null) {
-                initCityData();
+                initCityData(context);
             }
             return mCityBean;
         }

@@ -15,24 +15,21 @@ import android.widget.TextView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.bigkoo.pickerview.TimePickerView;
 import com.github.obelieve.community.R;
 import com.github.obelieve.login.entity.UserEntity;
 import com.github.obelieve.me.viewmodel.UserInfoViewModel;
 import com.github.obelieve.repository.cache.UserHelper;
+import com.github.obelieve.thirdsdklib.ImageSelectorUtil;
+import com.github.obelieve.thirdsdklib.picker.TimerPickerDialog;
 import com.github.obelieve.ui.BottomMenuDialog;
 import com.github.obelieve.ui.ChooseCardView;
 import com.github.obelieve.utils.ActivityUtil;
-import com.github.obelieve.utils.CityPickerHelper;
-import com.github.obelieve.thirdsdklib.ImageSelectorUtil;
+import com.github.obelieve.thirdsdklib.picker.CityPickerDialog;
 import com.github.obelieve.utils.others.SystemConstant;
 import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.utils.ToastUtil;
 import com.zxy.frame.utils.image.GlideUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,8 +63,8 @@ public class UserInfoActivity extends ApiBaseActivity {
     @BindView(R.id.user_info_next)
     TextView mNext;
     BottomMenuDialog mBottomMenuDialog;
-    TimePickerView mTimePickerView;
-    CityPickerHelper mCityPickerHelper;
+    TimerPickerDialog mTimerPickerDialog;
+    CityPickerDialog mCityPickerDialog;
 
     boolean mRegister = false;
     boolean mSetTheName = false;
@@ -147,26 +144,15 @@ public class UserInfoActivity extends ApiBaseActivity {
         mCityCard.setOnCardViewClick(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCityPickerHelper.setSelectedData(mCityData[1]);
-                mCityPickerHelper.show();
+                mCityPickerDialog.setSelectedData(mCityData[1]);
+                mCityPickerDialog.show();
             }
         });
         mDayCard.setOnCardViewClick(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar selectedDate = Calendar.getInstance();
-                try {
-                    if (TextUtils.isEmpty(mDayCard.getCount())) {
-                        selectedDate.set(1999, 8, 9);
-                    } else {
-                        String[] split = mDayCard.getCount().split("-");
-                        selectedDate.set(Integer.parseInt(split[0]), Integer.parseInt(split[1]) - 1, Integer.parseInt(split[2]));//设置起始年份
-                    }
-                } catch (Exception e) {
-                    selectedDate.set(1999, 9, 9);
-                }
-                mTimePickerView.setDate(selectedDate);
-                mTimePickerView.show();
+                mTimerPickerDialog.setSelectedData(mDayCard.getCount());
+                mTimerPickerDialog.show();
             }
         });
     }
@@ -195,7 +181,7 @@ public class UserInfoActivity extends ApiBaseActivity {
     }
 
     private void initPickerView() {
-        mCityPickerHelper = new CityPickerHelper(this, new CityPickerHelper.Callback() {
+        mCityPickerDialog = new CityPickerDialog(this, new CityPickerDialog.Callback() {
             @Override
             public void selected(String province, String city) {
                 if (province != null) {
@@ -211,36 +197,13 @@ public class UserInfoActivity extends ApiBaseActivity {
                 }
             }
         });
-        Calendar startDate = Calendar.getInstance();
-        startDate.set(1900, 1, 1);//设置起始年份
-        Calendar endDate = Calendar.getInstance();
-        mTimePickerView = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
+        mTimerPickerDialog = new TimerPickerDialog(this, new TimerPickerDialog.Callback() {
             @Override
-            public void onTimeSelect(Date date, View v) {//选中事件回调
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                String format = simpleDateFormat.format(date);
-                mDate = format;
-                mDayCard.setContent(format);
+            public void onTimeSelect(String date) {
+                mDate = date;
+                mDayCard.setContent(date);
             }
-        }).setType(new boolean[]{true, true, true, false, false, false})//默认全部显示
-                .setCancelText("取消")//取消按钮文字
-                .setSubmitText("确定")//确认按钮文字
-                .setContentSize(15)//滚轮文字大小
-                .setTitleSize(18)//标题文字大小
-                .setTitleText("请选择时间")//标题文字
-                .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
-                .isCyclic(false)//是否循环滚动
-                .setTitleColor(0xff43CD80)//标题文字颜色
-                .setSubmitColor(0xff43CD80)//确定按钮文字颜色
-                .setCancelColor(0xff43CD80)//取消按钮文字颜色
-                .setTitleBgColor(0xffffffff)//标题背景颜色 Night mode
-                .setBgColor(0xffffffff)//滚轮背景颜色 Night mode
-//                .setRange(calendar.get(Calendar.YEAR) - 20, calendar.get(Calendar.YEAR) + 20)//默认是1900-2100年
-                .setRangDate(startDate, endDate)//起始终止年月日设定
-                .setLabel("年", "月", "日", "时", "分", "秒")
-                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-                .isDialog(false)//是否显示为对话框样式
-                .build();
+        });
     }
 
     @OnClick({R.id.user_info_face, R.id.user_info_next})
@@ -315,10 +278,11 @@ public class UserInfoActivity extends ApiBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mTimePickerView != null)
-            mTimePickerView.dismiss();
-        if (mCityPickerHelper != null) {
-            mCityPickerHelper.dismiss();
+        if (mTimerPickerDialog != null) {
+            mTimerPickerDialog.dismiss();
+        }
+        if (mCityPickerDialog != null) {
+            mCityPickerDialog.dismiss();
         }
     }
 
