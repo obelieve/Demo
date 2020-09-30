@@ -7,15 +7,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zxy.demo.R;
-import com.zxy.demo.view.ListSelectPopupView;
-import com.zxy.demo.view.ListSelectView;
-import com.zxy.demo.view.ThreeLayerSelectView;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseFragment;
-import com.zxy.frame.utils.log.LogUtil;
 import com.zxy.frame.utils.PopupMenuUtil;
-import com.zxy.frame.utils.info.SystemInfoUtil;
 import com.zxy.frame.utils.ToastUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
+import com.zxy.frame.utils.log.LogUtil;
+import com.zxy.frame.view.select.ListSelectPopupView;
+import com.zxy.frame.view.select.ListSelectView;
+import com.zxy.frame.view.select.ThreeLayerSelectView;
 
 import java.util.ArrayList;
 import java.util.List;

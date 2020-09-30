@@ -1,4 +1,4 @@
-package com.zxy.demo.view;
+package com.zxy.frame.view.select;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -14,13 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.zxy.demo.R;
+import com.zxy.frame.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by zxy
@@ -289,12 +286,11 @@ public class ThreeLayerSelectView extends FrameLayout {
 
         public class TypeLayer1ViewHolder extends BaseViewHolder {
 
-            @BindView(R.id.tv_name)
             TextView tvName;
 
             public TypeLayer1ViewHolder(ViewGroup parent) {
                 super(parent, R.layout.viewholder_type_layer1);
-                ButterKnife.bind(this, itemView);
+                tvName = itemView.findViewById(R.id.tv_name);
             }
         }
     }
@@ -320,12 +316,11 @@ public class ThreeLayerSelectView extends FrameLayout {
 
         public class TypeLayer2ViewHolder extends BaseViewHolder {
 
-            @BindView(R.id.tv_name)
             TextView tvName;
 
             public TypeLayer2ViewHolder(ViewGroup parent) {
                 super(parent, R.layout.viewholder_type_layer2);
-                ButterKnife.bind(this, itemView);
+                tvName = itemView.findViewById(R.id.tv_name);
             }
         }
     }
@@ -356,14 +351,13 @@ public class ThreeLayerSelectView extends FrameLayout {
 
         public class TypeLayer3ViewHolder extends BaseViewHolder {
 
-            @BindView(R.id.tv_name)
             TextView tvName;
-            @BindView(R.id.iv_select)
             ImageView ivSelect;
 
             public TypeLayer3ViewHolder(ViewGroup parent) {
                 super(parent, R.layout.viewholder_type_layer3);
-                ButterKnife.bind(this, itemView);
+                tvName = itemView.findViewById(R.id.tv_name);
+                ivSelect = itemView.findViewById(R.id.iv_select);
             }
         }
     }
@@ -442,6 +436,6 @@ public class ThreeLayerSelectView extends FrameLayout {
 
     public interface Callback {
         void onClickEmpty();
-        void onSelectedItem(int id1,String name1, int id2,String name2,int id3,String name3);
+        void onSelectedItem(int id1, String name1, int id2, String name2, int id3, String name3);
     }
 }

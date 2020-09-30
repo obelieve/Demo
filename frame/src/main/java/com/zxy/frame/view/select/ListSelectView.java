@@ -1,4 +1,4 @@
-package com.zxy.demo.view;
+package com.zxy.frame.view.select;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -56,7 +56,7 @@ public class ListSelectView extends FrameLayout {
 
     private void init(Context context) {
         rvContent = new RecyclerView(context);
-        rvContent.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        rvContent.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         addView(rvContent);
     }
 
