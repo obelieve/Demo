@@ -1,8 +1,10 @@
 package com.zxy.demo.entity;
 
+import com.zxy.frame.utils.proguard.UnProguard;
+
 import java.util.List;
 
-public class SquarePostEntity {
+public class SquarePostEntity implements UnProguard {
     
         /**
          * current_page : 1
@@ -88,7 +90,7 @@ public class SquarePostEntity {
             this.post_list = post_list;
         }
 
-        public static class PostListBean {
+        public static class PostListBean implements UnProguard{
             /**
              * user_id : 331
              * nickname : 17999999999
@@ -223,7 +225,7 @@ public class SquarePostEntity {
                 this.is_report = is_report;
             }
 
-            public static class MediaBean {
+            public static class MediaBean implements UnProguard{
                 /**
                  * media_type : image
                  * media_list : [{"scale":"3120,4160","original":"https://image.2048.com/1a5cdadd75d1dd691572492517826","thumbnail":"https://image.2048.com/1a5cdadd75d1dd691572492517826?imageView2/2/w/300/format/gif"}]
@@ -248,7 +250,7 @@ public class SquarePostEntity {
                     this.media_list = media_list;
                 }
 
-                public static class MediaListBean {
+                public static class MediaListBean implements UnProguard{
                     /**
                      * scale : 3120,4160
                      * original : https://image.2048.com/1a5cdadd75d1dd691572492517826

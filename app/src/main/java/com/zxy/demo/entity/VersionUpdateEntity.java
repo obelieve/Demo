@@ -1,8 +1,10 @@
 package com.zxy.demo.entity;
 
+import com.zxy.frame.utils.proguard.UnProguard;
+
 import java.io.Serializable;
 
-public class VersionUpdateEntity implements Serializable {
+public class VersionUpdateEntity implements Serializable, UnProguard {
 
     /**
      * remark : v1.6.1

@@ -154,7 +154,7 @@
 #----------------------------------------------------------------------------
 #bean文件
 #-keep class com.xxx.xxx.entity.** {*;}
--keep class com.zxy.demo.model.** {*;}
+-keep class * implements com.zxy.frame.utils.proguard.UnProguard {*;}
 #反射类
 
 

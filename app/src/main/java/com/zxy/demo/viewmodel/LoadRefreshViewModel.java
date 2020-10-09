@@ -10,6 +10,7 @@ import com.zxy.frame.net.ApiServiceException;
 import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.utils.ToastUtil;
+import com.zxy.frame.utils.proguard.UnProguard;
 
 import java.util.List;
 
@@ -91,7 +92,7 @@ public class LoadRefreshViewModel extends ViewModel {
         return mLoadMoreLiveData;
     }
 
-    public static class LoadMoreModel {
+    public static class LoadMoreModel implements UnProguard {
 
         private boolean mCompleted;
         private boolean mError;
