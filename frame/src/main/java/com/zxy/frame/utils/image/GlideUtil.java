@@ -21,6 +21,9 @@ import com.zxy.frame.R;
 
 public class GlideUtil {
 
+    //图片重新加载时，闪烁问题
+    //Glide.with(MainActivity.this).load(mUrl).dontAnimate().placeholder(iv.getDrawable())
+
     private static DrawableCrossFadeFactory drawableCrossFadeFactory = new DrawableCrossFadeFactory.Builder(300).setCrossFadeEnabled(true).build();
     /**
      * 默认加载
