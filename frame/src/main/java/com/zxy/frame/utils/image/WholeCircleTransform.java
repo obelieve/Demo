@@ -1,5 +1,6 @@
 package com.zxy.frame.utils.image;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 
 import java.security.MessageDigest;
 
@@ -20,6 +22,7 @@ import java.security.MessageDigest;
  */
 public class WholeCircleTransform extends BitmapTransformation {
 
+    private Context mContext;
     private int mSize;
     private int mRadius;
     private final String ID = "com.zxy.frame.utils.image.WholeCircleTransform";
@@ -28,25 +31,30 @@ public class WholeCircleTransform extends BitmapTransformation {
     /**
      * @param size 显示的尺寸
      */
-    public WholeCircleTransform(int size) {
+    public WholeCircleTransform(Context context, int size) {
+        mContext = context;
         mSize = size;
         mRadius = size / 2;
     }
 
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+        int mSize = SystemInfoUtil.dp2px(mContext, 65);
+        int mRadius = mSize / 2;
         float scale = mSize / (float) Math.sqrt(Math.pow(toTransform.getWidth(), 2) + Math.pow(toTransform.getHeight(), 2));
-        float margin = (1 - scale) * mSize / 2;
-        int size = (int) (scale * mSize);
+        int width = (int) (scale * toTransform.getWidth());
+        int height = (int) (scale * toTransform.getHeight());
+        float marginL = (mSize - width) / 2;
+        float marginT = (mSize - height) / 2;
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);
-        Bitmap image = Bitmap.createScaledBitmap(toTransform, size, size, true);
+        Bitmap image = Bitmap.createScaledBitmap(toTransform, width, height, true);
         final Bitmap result = Bitmap.createBitmap(mSize, mSize, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         canvas.drawCircle(mRadius, mRadius, mRadius, paint);
-        canvas.drawBitmap(image, margin, margin, paint);
+        canvas.drawBitmap(image, marginL, marginT, paint);
         return result;
     }
 
