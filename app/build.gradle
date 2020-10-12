@@ -102,7 +102,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:${rootProject.ext.dependencies.swiperefreshlayout}"
     implementation "com.github.lihangleo2:ShadowLayout:${rootProject.ext.dependencies.lihangleo2_ShadowLayout}"
     //第三方
-    implementation "com.daimajia.numberprogressbar:${rootProject.ext.dependencies.numberprogressbar}"
+    implementation "com.daimajia.numberprogressbar:library:${rootProject.ext.dependencies.numberprogressbar}"
     implementation "com.jakewharton:butterknife:${rootProject.ext.dependencies.butterknife}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${rootProject.ext.dependencies.butterknife}"
     implementation "com.github.bumptech.glide:glide:${rootProject.ext.dependencies.glide}"

@@ -26,7 +26,7 @@ ext {
             butterknife            : '10.2.0',
 
             lihangleo2_ShadowLayout: '3.0.4',
-            numberprogressbar      : 'library:1.4@aar',
+            numberprogressbar      : '1.4@aar',
             lottie                 : '3.4.0',
             lifecycle_extensions   : '2.1.0'
     ]
