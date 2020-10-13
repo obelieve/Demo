@@ -22,9 +22,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        pay{
-
-        }
     }
 }
 
@@ -48,6 +45,6 @@ dependencies {
     api 'com.ycjiang:ImagePreview:2.2.6' //图片查看
     implementation project(':frame')
     //支付
-    payImplementation files('libs/alipay_sdk.aar') //支付宝
-    payImplementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+' //微信支付
+    implementation files('libs/alipay_sdk.aar') //支付宝
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+' //微信支付
 }
