@@ -13,7 +13,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
     }
 
@@ -21,6 +21,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        pay{
+
         }
     }
 }
@@ -44,4 +47,7 @@ dependencies {
     api 'com.github.donkingliang:ImageSelector:2.1.1' //图片选择
     api 'com.ycjiang:ImagePreview:2.2.6' //图片查看
     implementation project(':frame')
+    //支付
+    payImplementation files('libs/alipay_sdk.aar') //支付宝
+    payImplementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+' //微信支付
 }
