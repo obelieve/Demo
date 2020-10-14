@@ -17,7 +17,7 @@ import com.zxy.demo.viewmodel.LoadRefreshViewModel;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.adapter.item_decoration.VerticalItemDivider;
 import com.zxy.frame.base.ApiBaseFragment;
-import com.zxy.frame.utils.image.GlideUtil;
+import com.zxy.frame.utils.image.GlideApp;
 
 import java.util.List;
 
@@ -95,7 +95,8 @@ public class LoadRefreshFragment extends ApiBaseFragment {
             LoadRefreshViewHolder holder1 = ((LoadRefreshViewHolder) holder);
             holder1.mTvName.setText(getDataHolder().getList().get(position).getNickname());
             holder1.mTvName.setText(getDataHolder().getList().get(position).getNickname());
-            GlideUtil.loadImage(getContext(), getDataHolder().getList().get(position).getAvatar(), holder1.mIvImage);
+            GlideApp.with(LoadRefreshFragment.this).load( getDataHolder().getList().get(position).getAvatar())
+                    .defImage().into(holder1.mIvImage);
         }
 
     }
