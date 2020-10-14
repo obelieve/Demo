@@ -1,6 +1,9 @@
 package com.github.obelieve.thirdsdklib.pay;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -17,6 +20,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -119,6 +123,23 @@ public class PayManager {
         payThread.start();
     }
 
+    /**
+     * 判断是否安装了微信
+     *
+     * @param context
+     * @return
+     */
+    public boolean isWeixinAvilible(Context context) {
+        PackageManager packageManager = context.getPackageManager();// 获取packagemanager
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
+        for (PackageInfo info : pinfo) {
+            String pn = info.packageName;
+            if ("com.tencent.mm".equals(pn)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public enum PayWay {
         ALI_PAY, WECHAT_PAY
