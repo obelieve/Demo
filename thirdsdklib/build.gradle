@@ -32,18 +32,19 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    implementation project(':frame')
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
     api 'io.reactivex.rxjava2:rxjava:2.2.8'
     implementation 'com.squareup.okhttp3:okhttp:4.2.2'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
     implementation ('com.qiniu:qiniu-android-sdk:8.0.0'){//七牛
         exclude (group: 'com.squareup.okhttp3', module: 'okhttp')
     }
-
     implementation 'com.kongzue.dialog_v3:dialog:3.1.3' //Dialog
     api 'com.contrarywind:Android-PickerView:3.2.5' //选择器
     api 'com.github.donkingliang:ImageSelector:2.1.1' //图片选择
     api 'com.ycjiang:ImagePreview:2.2.6' //图片查看
-    implementation project(':frame')
     //支付
     implementation files('libs/alipay_sdk.aar') //支付宝
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+' //微信支付
