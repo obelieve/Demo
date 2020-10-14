@@ -3,4 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+
+    <color name="three_layer_bg_1_nor">#F0F0F0</color>
+    <color name="three_layer_bg_1_selected">#F7F7F7</color>
+    <color name="three_layer_bg_2_nor">#F7F7F7</color>
+    <color name="three_layer_bg_2_selected">#FFFFFF</color>
+    <color name="three_layer_text_color_nor">#333333</color>
+    <color name="three_layer_text_color_selected">#0077FF</color>
 </resources>
