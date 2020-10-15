@@ -5,17 +5,19 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.zxy.demo.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseFragment;
-import com.zxy.frame.utils.info.SystemInfoUtil;
 import com.zxy.frame.utils.ToastUtil;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,8 @@ public class TestFragment extends ApiBaseFragment {
 
     @BindView(R.id.rv_content)
     RecyclerView rvContent;
+    @BindView(R.id.iv)
+    ImageView iv;
 
     TestAdapter mTestAdapter;
 
@@ -43,17 +47,17 @@ public class TestFragment extends ApiBaseFragment {
     protected void initView() {
         mTestAdapter = new TestAdapter(getActivity());
         TextView tv = new TextView(getActivity());
-        tv.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, SystemInfoUtil.dp2px(mActivity,100)));
+        tv.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, SystemInfoUtil.dp2px(mActivity, 100)));
         tv.setBackgroundColor(Color.GREEN);
         tv.setText("空数据");
         mTestAdapter.setEmptyView(tv);
-        rvContent.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        rvContent.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvContent.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                outRect.right = SystemInfoUtil.dp2px(mActivity,10);
-                outRect.bottom = SystemInfoUtil.dp2px(mActivity,10);
+                outRect.right = SystemInfoUtil.dp2px(mActivity, 10);
+                outRect.bottom = SystemInfoUtil.dp2px(mActivity, 10);
             }
         });
         rvContent.setAdapter(mTestAdapter);
@@ -70,6 +74,9 @@ public class TestFragment extends ApiBaseFragment {
             }
         });
         mTestAdapter.getDataHolder().setList(l);
+        String url = "https://dss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1626745461,2641918547&fm=26&gp=0.jpg";
+        int size = SystemInfoUtil.dp2px(getContext(),50);
+        Glide.with(TestFragment.this).load(url).circleCrop().override(size,size).into(iv);
 
     }
 
