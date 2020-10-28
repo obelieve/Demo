@@ -185,7 +185,7 @@ public class UpdatesFragment extends ApiBaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onCommunityScrollToTopNotifyEvent(CommunityScrollToTopNotifyEvent event) {
         if (event.getType() == type) {
-            rvContent.smoothScrollToPosition(0);
+            rvContent.scrollToPosition(0);
         }
     }
 
