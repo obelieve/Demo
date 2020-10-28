@@ -20,6 +20,9 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
+import static com.zxy.frame.adapter.BaseRecyclerViewAdapter.LoadMoreStatus.*;
+import static com.zxy.frame.adapter.BaseRecyclerViewAdapter.LoadMoreStatus.LOADING;
+
 public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter<BaseRecyclerViewAdapter.BaseViewHolder> {
 
     private final int LOAD_MORE_TYPE = 9999;
@@ -28,18 +31,13 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     private final int FOOTER_TYPE = 9996;
     private final int NORMAL_TYPE = 0;
 
-
-    private final int LOADING_STATE = 0;
-    private final int LOAD_END_STATE = 1;
-    private final int LOAD_ERROR_STATE = 2;
-
     private Context mContext;
     private View mEmptyView;
     private View mHeaderView;
     private View mFooterView;
     private boolean mEnableHeader = true;
     private boolean mEnableFooter = true;
-    private int mLoadMoreState = LOAD_END_STATE;
+    private LoadMoreStatus mLoadMoreState = END;
     private RecyclerView mRecyclerView;
     private RecyclerView.OnScrollListener mOnScrollListener;
 
@@ -79,7 +77,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     public void loadMoreLoading() {
         if (mOnLoadMoreListener == null)
             return;
-        mLoadMoreState = LOADING_STATE;
+        mLoadMoreState = LOADING;
         notifyItemChanged(getItemCount() - 1);
     }
 
@@ -89,7 +87,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         mRecyclerView.post(new Runnable() {
             @Override
             public void run() {
-                mLoadMoreState = checkIsLoadingState() ? LOADING_STATE : LOAD_ERROR_STATE;
+                mLoadMoreState = checkIsLoadingState() ? LOADING : ERROR;
                 notifyItemChanged(getItemCount() - 1);
             }
         });
@@ -105,7 +103,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         mRecyclerView.post(new Runnable() {
             @Override
             public void run() {
-                mLoadMoreState = checkIsLoadingState() ? LOADING_STATE : LOAD_END_STATE;
+                mLoadMoreState = checkIsLoadingState() ? LOADING : END;
                 notifyItemChanged(getItemCount() - 1);
             }
         });
@@ -232,17 +230,17 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             if (holder instanceof LoadMoreViewHolder) {
                 LoadMoreViewHolder holder1 = (LoadMoreViewHolder) holder;
                 switch (mLoadMoreState) {
-                    case LOADING_STATE:
+                    case LOADING:
                         holder1.mFlLoading.setVisibility(View.VISIBLE);
                         holder1.mFlError.setVisibility(View.GONE);
                         holder1.mFlEnd.setVisibility(View.GONE);
                         break;
-                    case LOAD_END_STATE:
+                    case END:
                         holder1.mFlLoading.setVisibility(View.GONE);
                         holder1.mFlError.setVisibility(View.GONE);
                         holder1.mFlEnd.setVisibility(View.VISIBLE);
                         break;
-                    case LOAD_ERROR_STATE:
+                    case ERROR:
                         holder1.mFlLoading.setVisibility(View.GONE);
                         holder1.mFlError.setVisibility(View.VISIBLE);
                         holder1.mFlEnd.setVisibility(View.GONE);
@@ -252,7 +250,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                     @Override
                     public void onClick(View v) {
                         if (mOnLoadMoreListener != null) {
-                            mLoadMoreState = LOADING_STATE;
+                            mLoadMoreState = LOADING;
                             holder1.mFlLoading.setVisibility(View.VISIBLE);
                             holder1.mFlError.setVisibility(View.GONE);
                             holder1.mFlEnd.setVisibility(View.GONE);
@@ -390,7 +388,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                                 ((StaggeredGridLayoutManager) manager).findLastVisibleItemPositions(lastPositions);
                                 lastItemPosition = findMax(lastPositions);
                             }
-                            if (lastItemPosition == (itemCount - 1) && isSlidingUpward && mLoadMoreState == LOADING_STATE) {
+                            if (lastItemPosition == (itemCount - 1) && isSlidingUpward && mLoadMoreState == LOADING) {
                                 mOnLoadMoreListener.onLoadMore();
                             }
                         }
@@ -512,6 +510,10 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
 
         public void bind(DATA data) {
         }
+    }
+
+    public enum LoadMoreStatus {
+        LOADING, END, ERROR
     }
 
 
