@@ -23,6 +23,7 @@ public class HttpUtil {
     private static HttpUtil sHttpUtil = new HttpUtil();
 
     private Retrofit mRetrofit;
+    private OkHttpClient mOkHttpClient;
 
     private String mBaseUrl;
     private List<Interceptor> mInterceptors;
@@ -101,9 +102,14 @@ public class HttpUtil {
                     clientBuilder.addInterceptor(in);
                 }
             }
-            mRetrofit = builder.client(clientBuilder.build()).build();
+            mOkHttpClient = clientBuilder.build();
+            mRetrofit = builder.client(mOkHttpClient).build();
         }
         return sHttpUtil.mRetrofit.create(clazz);
     }
 
+    public void cancelAll() {
+        if (mOkHttpClient != null)
+            mOkHttpClient.dispatcher().cancelAll();
+    }
 }
