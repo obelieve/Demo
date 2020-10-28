@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,6 +47,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseActivity;
 import com.github.obelieve.ui.CommonDialog;
 import com.zxy.frame.net.ApiBaseResponse;
@@ -226,11 +228,16 @@ public class UpdateDetailActivity extends ApiBaseActivity {
             }
         });
         //完成详情获取
-        mUpdatesViewModel.getGetDataFinish().observe(this, updateDetailEntity -> {
-            if (updateDetailEntity.booleanValue()) {
-                srl_update_detail.finishLoadMore();
-            } else {
+        mUpdatesViewModel.getRefreshLiveData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
                 srl_update_detail.finishRefresh();
+            }
+        });
+        mUpdatesViewModel.getLoadMoreStatusMutableLiveData().observe(this, new Observer<BaseRecyclerViewAdapter.LoadMoreStatus>() {
+            @Override
+            public void onChanged(BaseRecyclerViewAdapter.LoadMoreStatus status) {
+                srl_update_detail.finishLoadMore();
             }
         });
         //监听评论数据

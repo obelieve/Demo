@@ -14,6 +14,7 @@ import com.github.obelieve.community.bean.UpdateDetailEntity;
 import com.github.obelieve.net.ApiServiceWrapper;
 import com.github.obelieve.utils.ActivityUtil;
 import com.github.obelieve.ui.CommonDialog;
+import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.net.ApiBaseResponse;
 import com.zxy.frame.net.ApiBaseSubscribe;
 import com.zxy.frame.net.ApiErrorCode;
@@ -36,8 +37,10 @@ public class UpdatesViewModel extends ViewModel {
     //帖子评论列表数据
     private MutableLiveData<CommentListEntity> commentListEntityMutableLiveData = new MutableLiveData<>();
 
-    //获取数据结束 true加载更多，false下拉刷新
-    private MutableLiveData<Boolean> getDataFinish = new MutableLiveData<>();
+    //刷新数据
+    private MutableLiveData<Boolean> mRefreshLiveData = new MutableLiveData<>();
+    //加载更多
+    private MutableLiveData<BaseRecyclerViewAdapter.LoadMoreStatus> mLoadMoreStatusMutableLiveData = new MutableLiveData<>();
 
     //是否加载
     private MutableLiveData<Boolean> showdialog = new MutableLiveData<>();
@@ -61,7 +64,11 @@ public class UpdatesViewModel extends ViewModel {
             @Override
             public void onError(ApiServiceException e) {
                 Log.e("RespondThrowable", e.message);
-                getDataFinish.postValue(isMore);
+                if(!isMore){
+                    mRefreshLiveData.setValue(false);
+                }else{
+                    mLoadMoreStatusMutableLiveData.setValue(BaseRecyclerViewAdapter.LoadMoreStatus.ERROR);
+                }
             }
 
             @Override
@@ -72,7 +79,14 @@ public class UpdatesViewModel extends ViewModel {
                     mUpdatesPage = data.getCurrent_page() + 1;
                 }
                 squareListsEntityMutableLiveData.setValue(data);
-                getDataFinish.postValue(isMore);
+                if(!isMore){
+                    mRefreshLiveData.setValue(false);
+                }
+                if(data.getHas_next_page()==1){
+                    mLoadMoreStatusMutableLiveData.setValue(BaseRecyclerViewAdapter.LoadMoreStatus.LOADING);
+                }else{
+                    mLoadMoreStatusMutableLiveData.setValue(BaseRecyclerViewAdapter.LoadMoreStatus.END);
+                }
             }
         });
     }
@@ -90,7 +104,11 @@ public class UpdatesViewModel extends ViewModel {
             @Override
             public void onError(ApiServiceException e) {
                 Log.e("RespondThrowable", e.message);
-                getDataFinish.postValue(isMore);
+                if(!isMore){
+                    mRefreshLiveData.setValue(false);
+                }else{
+                    mLoadMoreStatusMutableLiveData.setValue(BaseRecyclerViewAdapter.LoadMoreStatus.ERROR);
+                }
             }
 
             @Override
@@ -101,7 +119,14 @@ public class UpdatesViewModel extends ViewModel {
                 if (data.getPost_list() != null && data.getPost_list().size() > 0) {
                     mUpdatesPage = data.getCurrent_page() + 1;
                 }
-                getDataFinish.postValue(isMore);
+                if(!isMore){
+                    mRefreshLiveData.setValue(false);
+                }
+                if(data.getHas_next_page()==1){
+                    mLoadMoreStatusMutableLiveData.setValue(BaseRecyclerViewAdapter.LoadMoreStatus.LOADING);
+                }else{
+                    mLoadMoreStatusMutableLiveData.setValue(BaseRecyclerViewAdapter.LoadMoreStatus.END);
+                }
             }
         });
     }
@@ -117,14 +142,14 @@ public class UpdatesViewModel extends ViewModel {
             @Override
             public void onError(ApiServiceException e) {
                 Log.e("RespondThrowable", e.message);
-                getDataFinish.postValue(false);
+                mRefreshLiveData.setValue(false);
             }
 
             @Override
             public void onSuccess(ApiBaseResponse<UpdateDetailEntity> response, boolean isProcessed) {
                 UpdateDetailEntity data = response.getEntity();
                 updateDetailEntityMutableLiveData.postValue(data);
-                getDataFinish.postValue(false);
+                mRefreshLiveData.setValue(false);
             }
         });
     }
@@ -147,7 +172,7 @@ public class UpdatesViewModel extends ViewModel {
                         Log.e("RespondThrowable", e.message);
                         //page>1代表是获取更多评论，则关闭页面的上拉加载更多
                         if (mCommentPage > 1) {
-                            getDataFinish.postValue(true);
+                            mRefreshLiveData.setValue(false);
                         }
                     }
 
@@ -157,7 +182,7 @@ public class UpdatesViewModel extends ViewModel {
                         commentListEntityMutableLiveData.setValue(data);
                         //page>1代表是获取更多评论，则关闭页面的上拉加载更多
                         if (mCommentPage > 1) {
-                            getDataFinish.postValue(true);
+                            mRefreshLiveData.setValue(false);
                         }
                         mCommentPage = data.getCurrent_page() + 1;
                     }
@@ -230,8 +255,12 @@ public class UpdatesViewModel extends ViewModel {
         return updateDetailEntityMutableLiveData;
     }
 
-    public MutableLiveData<Boolean> getGetDataFinish() {
-        return getDataFinish;
+    public MutableLiveData<Boolean> getRefreshLiveData() {
+        return mRefreshLiveData;
+    }
+
+    public MutableLiveData<BaseRecyclerViewAdapter.LoadMoreStatus> getLoadMoreStatusMutableLiveData() {
+        return mLoadMoreStatusMutableLiveData;
     }
 
     public String getCommentSortType() {

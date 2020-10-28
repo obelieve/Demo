@@ -9,19 +9,16 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.github.obelieve.community.R;
 import com.github.obelieve.community.adapter.UpdatesAdapter2;
 import com.github.obelieve.community.adapter.decoration.CommunityStaggeredGridItemDecoration;
 import com.github.obelieve.community.bean.SquareListsEntity;
+import com.github.obelieve.community.viewmodel.UpdatesViewModel;
 import com.github.obelieve.event.community.CommunityItemChangedEvent;
 import com.github.obelieve.event.community.CommunityScrollToTopNotifyEvent;
 import com.github.obelieve.event.community.PostFilterCacheEvent;
-import com.github.obelieve.community.viewmodel.UpdatesViewModel;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseFragment;
 
@@ -43,7 +40,7 @@ public class UpdatesFragment extends ApiBaseFragment {
     @BindView(R.id.rv_content)
     RecyclerView rvContent;
     @BindView(R.id.srl_content)
-    SmartRefreshLayout srlContent;
+    SwipeRefreshLayout srlContent;
     @BindView(R.id.tv_no_data)
     TextView tv_no_data;
 
@@ -95,34 +92,45 @@ public class UpdatesFragment extends ApiBaseFragment {
                 mCurrentPostListBean = bean;
             }
         });
+        mUpdatesAdapter.setLoadMoreListener(rvContent, new BaseRecyclerViewAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                refreshData(true);
+            }
+        });
         rvContent.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvContent.addItemDecoration(new CommunityStaggeredGridItemDecoration());
         ((DefaultItemAnimator) rvContent.getItemAnimator()).setSupportsChangeAnimations(false);
         rvContent.setAdapter(mUpdatesAdapter);
         //下拉刷新
-        srlContent.setOnRefreshListener(new OnRefreshListener() {
+        srlContent.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh(RefreshLayout refreshLayout) {
+            public void onRefresh() {
                 refreshData(false);
             }
         });
-        srlContent.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(RefreshLayout refreshLayout) {
-                refreshData(true);
-            }
-        });
+
         //获取数据成功
-        mUpdatesViewModel.getGetDataFinish().observe(this, new Observer<Boolean>() {
+        mUpdatesViewModel.getRefreshLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    srlContent.finishLoadMore();
-                } else {
-                    srlContent.finishRefresh();
+                srlContent.setRefreshing(false);
+            }
+        });
+        mUpdatesViewModel.getLoadMoreStatusMutableLiveData().observe(this, new Observer<BaseRecyclerViewAdapter.LoadMoreStatus>() {
+            @Override
+            public void onChanged(BaseRecyclerViewAdapter.LoadMoreStatus status) {
+                switch (status){
+                    case LOADING:
+                        mUpdatesAdapter.loadMoreLoading();
+                        break;
+                    case END:
+                        mUpdatesAdapter.loadMoreEnd();
+                        break;
+                    case ERROR:
+                        mUpdatesAdapter.loadMoreError();
+                        break;
                 }
-
-
             }
         });
 
@@ -142,11 +150,9 @@ public class UpdatesFragment extends ApiBaseFragment {
             } else {
                 tv_no_data.setVisibility(View.GONE);
             }
-            //是否有一下页数据
-            srlContent.setEnableLoadMore(seasonMenuEntity.getHas_next_page() == 1);
         });
         mFirstInit = true;
-        srlContent.autoRefresh();
+        refreshData(false);
         EventBus.getDefault().register(this);
     }
 
@@ -209,7 +215,7 @@ public class UpdatesFragment extends ApiBaseFragment {
 
 
     public void startRefresh() {
-        srlContent.autoRefresh();
+        refreshData(false);
     }
 
     public void clearData() {
