@@ -8,7 +8,9 @@ import android.util.Log
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
+import androidx.lifecycle.Observer
 import com.zxy.utility.LogUtil
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import javax.security.auth.login.LoginException
 
@@ -18,13 +20,18 @@ import javax.security.auth.login.LoginException
  */
 class LifecycleActivity : AppCompatActivity() {
 
-    var registery: LifecycleRegistry? =null;
+    var registery: LifecycleRegistry? =null
+    var viewModel:LifecycleViewModel?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         LogUtil.e()
         setContentView(R.layout.activity_main)
-        lifecycle.addObserver(TestObserver());
+        viewModel = ViewModelProviders.of(this).get(LifecycleViewModel::class.java)
+        viewModel!!.value.observe(this, Observer {
+            tv.text="$it"
+        })
+        lifecycle.addObserver(TestObserver())
         lifecycle.addObserver(object: DefaultLifecycleObserver{
             override fun onCreate(owner: LifecycleOwner) {
                 LogUtil.e("DefaultLifecycleObserver-onCreate","onCreate")
@@ -67,12 +74,14 @@ class LifecycleActivity : AppCompatActivity() {
         super.onResume()
         registery!!.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
         LogUtil.e()
+        viewModel?.open()
     }
 
     override fun onPause() {
         registery!!.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         super.onPause()
         LogUtil.e()
+        viewModel?.close()
     }
 
     override fun onStop() {
