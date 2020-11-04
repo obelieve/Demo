@@ -26,6 +26,12 @@ class LifecycleActivity : AppCompatActivity() {
         viewModel!!.value.observe(this, Observer {
             tv.text = "$it"
         })
+        viewModel?.mapLiveData?.observe(this, Observer {
+            LogUtil.e("mapLiveData Map:$it")
+        })
+        viewModel?.switchMapLiveData?.observe(this, Observer {
+            LogUtil.e("switchMapLiveData SwitchMap:$it")
+        })
         lifecycle.addObserver(TestObserver())
         lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onCreate(owner: LifecycleOwner) {

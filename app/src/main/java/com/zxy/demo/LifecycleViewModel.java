@@ -1,8 +1,11 @@
 package com.zxy.demo;
 
+import androidx.arch.core.util.Function;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 /**
@@ -13,7 +16,25 @@ public class LifecycleViewModel extends ViewModel {
 
     private MutableLiveData<A> mValueLiveData = new MutableLiveData<>();
     private MutableLiveData<String> mNameLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> mMapLiveData;
+    private LiveData<String> mSwitchMapLiveData;
+    private MutableLiveData<String> mSMLiveData = new MutableLiveData<>();;
+    {
+        mMapLiveData = (MutableLiveData<Integer>) Transformations.map(mNameLiveData, new Function<String, Integer>() {
+            @Override
+            public Integer apply(String input) {
+                return Integer.valueOf(input.replace("值",""));
+            }
+        });
+        mSwitchMapLiveData = Transformations.switchMap(mValueLiveData, new Function<A, LiveData<String>>() {
 
+            @Override
+            public LiveData<String> apply(A a) {
+                mSMLiveData.setValue(a.getCount()+"转换");
+                return mSMLiveData;
+            }
+        });
+    }
     /**
      * 监听LiveData
      */
@@ -72,6 +93,14 @@ public class LifecycleViewModel extends ViewModel {
 
     public MediatorLiveData<Object> getAMediatorLiveData() {
         return mAMediatorLiveData;
+    }
+
+    public MutableLiveData<Integer> getMapLiveData() {
+        return mMapLiveData;
+    }
+
+    public LiveData<String> getSwitchMapLiveData() {
+        return mSwitchMapLiveData;
     }
 
     public static class A{
