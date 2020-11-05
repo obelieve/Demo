@@ -143,7 +143,11 @@ public class UpdatesFragment extends ApiBaseFragment {
                 }
                 mUpdatesAdapter.getDataHolder().setList(post_list);
             } else {
-                mUpdatesAdapter.getDataHolder().addAll(post_list);
+                List<SquareListsEntity.PostListBean> originList = mUpdatesAdapter.getDataHolder().getList();
+                if(originList!=null){
+                    originList.addAll(post_list);
+                }
+                mUpdatesAdapter.notifyItemRangeChanged(0,originList.size());
             }
             if (mUpdatesAdapter.getItemCount() == 0) {
                 tv_no_data.setVisibility(View.VISIBLE);
