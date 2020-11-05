@@ -166,8 +166,9 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             /**
              * 1.判断是否到底部，底部直接显示 end/error状态.
              * 2.没有到底部判断内容是否充满整页，有存在加载中，否则end/error状态.
+             * 3.底部还未显示出来时，返回-1
              */
-            if (endPosArray[endPosArray.length - 1] + 1 == getItemCount()) {
+            if (endPosArray[endPosArray.length - 1] + 1 == getItemCount() || endPosArray[endPosArray.length - 1] == -1) {
                 return false;
             } else {
                 return endPosArray[endPosArray.length - 1] + 1 < getItemCount() || startPosArray[0] != 0;
