@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -117,7 +119,7 @@ public class PopupMenuUtil {
             contentView.measure(View.MeasureSpec.makeMeasureSpec(0,
                     View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0,
                     View.MeasureSpec.UNSPECIFIED));
-            width = contentView.getMeasuredWidth() > SystemInfoUtil.screenWidth(contentView.getContext()) ? SystemInfoUtil.screenWidth(contentView.getContext()) : contentView.getMeasuredWidth();
+            width = Math.min(contentView.getMeasuredWidth(), SystemInfoUtil.screenWidth(contentView.getContext()));
         }
         mPopupWindow.setWidth(width);
         mPopupWindow.setHeight(height);
@@ -131,10 +133,16 @@ public class PopupMenuUtil {
         mPopupWindow.setTouchable(true);
         // 设置点击pop外侧消失，默认为false；在focusable为true时点击外侧始终消失
         mPopupWindow.setOutsideTouchable(true);
-        // 相对于 + 号正下面，同时可以设置偏移量
-        mPopupWindow.showAsDropDown(anchorView, 0, 0);
         // 设置pop关闭监听，用于改变背景透明度
         mPopupWindow.setOnDismissListener(null);
+        // 相对于 + 号正下面，同时可以设置偏移量
+        if(Build.VERSION.SDK_INT<24){
+            mPopupWindow.showAsDropDown(anchorView, 0, 0);
+        }else{
+            int[] location = new int[2];
+            anchorView.getLocationOnScreen(location);
+            mPopupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY,location[0],location[1]+anchorView.getHeight());
+        }
     }
 
 
