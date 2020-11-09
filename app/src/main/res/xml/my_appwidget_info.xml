@@ -1,0 +1,9 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="40dp"
+    android:minHeight="40dp"
+    android:updatePeriodMillis="3600000"
+    android:previewImage="@drawable/ic_launcher_background"
+    android:initialLayout="@layout/appwidget_my"
+    android:configure="com.zxy.demo.MyAppWidgetConfigure"
+    android:resizeMode="horizontal|vertical">
+</appwidget-provider>
