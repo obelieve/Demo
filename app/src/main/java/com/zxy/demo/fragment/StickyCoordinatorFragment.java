@@ -17,7 +17,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.zxy.demo.R;
 import com.zxy.frame.base.ApiBaseFragment;
-import com.zxy.frame.view.pagestatus.PageStatus;
 import com.zxy.frame.view.pagestatus.PageStatusView;
 
 import butterknife.BindView;
@@ -56,26 +55,17 @@ public class StickyCoordinatorFragment extends ApiBaseFragment {
 
     @Override
     protected void initView() {
-        mViewPageStatus.setStatusView(PageStatus.getPageStatusView(getContext()));
-        mViewPageStatus.setStatus(PageStatus.Status.LOADING);
+//        mViewPageStatus.setStatus(PageStatusView.Status.LOADING);
 //        mViewPageStatus.setCallback(new PageStatusView.Callback() {
-//
 //            @Override
-//            public void onInflated(View view) {
-//                if(view instanceof FailurePageStatusView){
-//                    ((FailurePageStatusView) view).setCallback(new FailurePageStatusView.Callback() {
-//                        @Override
-//                        public void onRefresh() {
-//                            mViewPageStatus.setStatus(PageStatus.Status.SUCCESS);
-//                        }
-//                    });
-//                }
+//            public void onRefresh() {
+//                mViewPageStatus.setStatus(PageStatusView.Status.SUCCESS);
 //            }
 //        });
 //        mHandler.postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
-//                mViewPageStatus.setStatus(PageStatus.Status.FAILURE);
+//                mViewPageStatus.setStatus(PageStatusView.Status.FAILURE);
 //            }
 //        }, 500);
         tlTab.setupWithViewPager(vpContent);

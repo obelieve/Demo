@@ -48,6 +48,10 @@ public class FailurePageStatusView extends FrameLayout {
         mCallback = callback;
     }
 
+    public Callback getCallback() {
+        return mCallback;
+    }
+
     public interface Callback{
         void onRefresh();
     }
