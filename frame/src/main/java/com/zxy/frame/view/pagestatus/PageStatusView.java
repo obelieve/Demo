@@ -56,6 +56,7 @@ public class PageStatusView extends FrameLayout {
                             if(mCallback!=null){
                                 mCallback.onInflated(viewStub.inflate());
                             }
+                            viewStub.setVisibility(View.VISIBLE);
                         }else{
                             viewStub.setVisibility(View.VISIBLE);
                         }
