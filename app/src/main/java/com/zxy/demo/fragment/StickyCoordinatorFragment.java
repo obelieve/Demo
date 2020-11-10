@@ -17,7 +17,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.zxy.demo.R;
 import com.zxy.frame.base.ApiBaseFragment;
-import com.zxy.frame.view.PageStatusView;
+import com.zxy.frame.view.pagestatus.PageStatus;
+import com.zxy.frame.view.pagestatus.PageStatusView;
 
 import butterknife.BindView;
 
@@ -55,19 +56,28 @@ public class StickyCoordinatorFragment extends ApiBaseFragment {
 
     @Override
     protected void initView() {
-        mViewPageStatus.loading();
-        mViewPageStatus.setCallback(new PageStatusView.Callback() {
-            @Override
-            public void onClickRefresh() {
-                mViewPageStatus.success();
-            }
-        });
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mViewPageStatus.failure();
-            }
-        }, 500);
+        mViewPageStatus.setStatusView(PageStatus.getPageStatusView(getContext()));
+        mViewPageStatus.setStatus(PageStatus.Status.LOADING);
+//        mViewPageStatus.setCallback(new PageStatusView.Callback() {
+//
+//            @Override
+//            public void onInflated(View view) {
+//                if(view instanceof FailurePageStatusView){
+//                    ((FailurePageStatusView) view).setCallback(new FailurePageStatusView.Callback() {
+//                        @Override
+//                        public void onRefresh() {
+//                            mViewPageStatus.setStatus(PageStatus.Status.SUCCESS);
+//                        }
+//                    });
+//                }
+//            }
+//        });
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mViewPageStatus.setStatus(PageStatus.Status.FAILURE);
+//            }
+//        }, 500);
         tlTab.setupWithViewPager(vpContent);
         vpContent.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
