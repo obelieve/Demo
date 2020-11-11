@@ -19,6 +19,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.zxy.demo.ScreenOrientationHelper.OrientationEnum.REVERSE_LANDSCAPE;
+
 /**
  * Created by Admin
  * on 2020/7/2
@@ -34,7 +36,7 @@ public class SuperVideoPlayerActivity extends Activity {
 
 
     List<VideoBean> mVideoBeanList = new ArrayList<>();
-
+    ScreenOrientationHelper mScreenOrientationHelper;
 
     {
 
@@ -58,6 +60,40 @@ public class SuperVideoPlayerActivity extends Activity {
         viewSuperVideo.setLive(true);
         viewSuperVideo.loadData("标题", mVideoBeanList, coverPath);
         viewSuperVideo.setContainer(flNormal, flFull);
+        mScreenOrientationHelper = new ScreenOrientationHelper(this, false);
+        mScreenOrientationHelper.setCallback(new ScreenOrientationHelper.Callback() {
+            @Override
+            public void onChanged(ScreenOrientationHelper.OrientationEnum orientation) {
+                if (!viewSuperVideo.isLock()) {
+                    if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE) {//用户点击全屏时，
+                        if(orientation == REVERSE_LANDSCAPE){
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                            viewSuperVideo.switchFullScreen(true,false);
+                        }
+                    } else {
+                        switch (orientation) {
+                            case PORTRAIT:
+                                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                                viewSuperVideo.switchFullScreen(false,false);
+                                break;
+                            case LANDSCAPE:
+                                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                                viewSuperVideo.switchFullScreen(true,false);
+                                break;
+                            case REVERSE_PORTRAIT:
+                                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+                                viewSuperVideo.switchFullScreen(false,false);
+                                break;
+                            case REVERSE_LANDSCAPE:
+                                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                                viewSuperVideo.switchFullScreen(true,false);
+                                break;
+                        }
+                    }
+                }
+            }
+        });
+        mScreenOrientationHelper.enable();
     }
 
     @Override
@@ -75,6 +111,7 @@ public class SuperVideoPlayerActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mScreenOrientationHelper.disable();
         viewSuperVideo.release();
     }
 

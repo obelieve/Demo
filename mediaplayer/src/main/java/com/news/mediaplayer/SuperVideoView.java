@@ -96,6 +96,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
     private Activity mActivity;
     private OnFullScreenListener mOnFullScreenListener;
     private boolean mIsLive;
+    private boolean mFullScreen;
 
     private int mStatusBarHeight;
     private int mNavigationBarHeight;
@@ -392,7 +393,7 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
         mediaController.setVisibility(VISIBLE);
         if (data instanceof VideoBean) {
             if (getParent() == mFullScreenContainer) {
-                int orientation = ((VideoBean) data).getOrientation() == VideoBean.VIDEO_LANDSCAPE ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+                int orientation = ((VideoBean) data).getOrientation() == VideoBean.VIDEO_LANDSCAPE ? ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
                 if (orientation != mActivity.getRequestedOrientation()) {
                     mActivity.setRequestedOrientation(orientation);
                     setControllerLayout(true);
@@ -467,37 +468,52 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
     }
 
     public void switchFullScreen(boolean fullScreen) {
+        switchFullScreen(fullScreen, true);
+    }
+
+    /**
+     * @param fullScreen
+     * @param requestOrientation 是否设置屏幕方向
+     */
+    public void switchFullScreen(boolean fullScreen, boolean requestOrientation) {
+        if (mFullScreen == fullScreen) return;
+        mFullScreen = fullScreen;
         setStatusBar(fullScreen);
+        if (getParent() != null && getParent() instanceof ViewGroup) {
+            ((ViewGroup) getParent()).removeView(this);
+        }
         if (fullScreen) {
-/*            int height = ViewGroup.LayoutParams.MATCH_PARENT;
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
-            flNormal.setLayoutParams(params);*/
+            if (requestOrientation) {
+                if (mCurVideoBean.getOrientation() == VideoBean.VIDEO_LANDSCAPE) {
+                    mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE);
+                } else {
+                    mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }
+            }
             if (mCurVideoBean.getOrientation() == VideoBean.VIDEO_LANDSCAPE) {
-                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_FIT_PARENT);
             } else {
-                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_FIT_PARENT);
             }
             fullScreenImage.setImageResource(R.drawable.small_screen);
             mNormalScreenContainer.setVisibility(View.GONE);
-            mNormalScreenContainer.removeView(SuperVideoView.this);
             mFullScreenContainer.setVisibility(View.VISIBLE);
             mFullScreenContainer.addView(SuperVideoView.this);
         } else {
-/*            int height = (int) (getResources().getDisplayMetrics().density * 200);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
-            flNormal.setLayoutParams(params);*/
+            if (requestOrientation) {
+                if (mCurVideoBean.getOrientation() == VideoBean.VIDEO_LANDSCAPE) {
+                    mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                } else {
+                    mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE);
+                }
+            }
             if (mCurVideoBean.getOrientation() == VideoBean.VIDEO_LANDSCAPE) {
-                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_PAVED_PARENT);
             } else {
-                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 viewVideoPlayer.setDisplayAspectRatio(PLVideoTextureView.ASPECT_RATIO_FIT_PARENT);
             }
             fullScreenImage.setImageResource(R.drawable.full_screen);
             mFullScreenContainer.setVisibility(View.GONE);
-            mFullScreenContainer.removeView(SuperVideoView.this);
             mNormalScreenContainer.setVisibility(View.VISIBLE);
             mNormalScreenContainer.addView(SuperVideoView.this);
         }
@@ -511,7 +527,8 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
         if (fullScreen) {
             ibMore.setVisibility(VISIBLE);
             ibClose.setVisibility(GONE);
-            if (mActivity.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            if (mActivity.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                    || mActivity.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
                 ibLock.setPadding(Utils.dip2px(mActivity, 25), 0, 0, 0);
                 clMediaController.setPadding(Utils.dip2px(mActivity, 25), Utils.dip2px(mActivity, 30), Utils.dip2px(mActivity, 25), Utils.dip2px(mActivity, 35));
             } else {
@@ -535,6 +552,15 @@ public class SuperVideoView extends FrameLayout implements View.OnClickListener 
             StatusBarUtil.setStatusBarTranslucentStatus(mActivity);
         }
     }
+
+    public boolean isFullScreen() {
+        return mFullScreen;
+    }
+
+    public boolean isLock() {
+        return ibLock != null && ibLock.isSelected();
+    }
+
 
     public interface Callback {
         void onSwitchFullScreen(boolean fullScreen);
