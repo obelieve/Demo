@@ -96,19 +96,18 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     //Android
     implementation project(path: ':frame')
-    implementation "androidx.appcompat:appcompat:${rootProject.ext.dependencies.androidxAppcompat}"
-    implementation "com.android.support.constraint:constraint-layout:${rootProject.ext.dependencies.constraintLayout}"
-    implementation "com.google.android.material:material:${rootProject.ext.dependencies.material}"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:${rootProject.ext.dependencies.swiperefreshlayout}"
-    implementation "com.github.lihangleo2:ShadowLayout:${rootProject.ext.dependencies.lihangleo2_ShadowLayout}"
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "com.android.support.constraint:constraint-layout:1.1.3"
+    implementation "com.google.android.material:material:1.0.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation "com.github.lihangleo2:ShadowLayout:3.0.4"
     //第三方
-    implementation "com.daimajia.numberprogressbar:library:${rootProject.ext.dependencies.numberprogressbar}"
-    implementation "com.jakewharton:butterknife:${rootProject.ext.dependencies.butterknife}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${rootProject.ext.dependencies.butterknife}"
-    implementation "com.github.bumptech.glide:glide:${rootProject.ext.dependencies.glide}"
-    annotationProcessor "com.github.bumptech.glide:compiler:${rootProject.ext.dependencies.glide}"
-    implementation "jp.wasabeef:glide-transformations:${rootProject.ext.dependencies.glide_transformations}"
-    implementation "com.airbnb.android:lottie:${rootProject.ext.dependencies.lottie}"
-    implementation project(path: ':mockapi')
+    implementation "com.daimajia.numberprogressbar:library:1.4@aar"
+    implementation "com.jakewharton:butterknife:10.2.0"
+    annotationProcessor "com.jakewharton:butterknife-compiler:10.2.0"
+    implementation "com.github.bumptech.glide:glide:4.10.0"
+    annotationProcessor "com.github.bumptech.glide:compiler:4.10.0"
+    implementation "jp.wasabeef:glide-transformations:4.1.0"
+    implementation "com.airbnb.android:lottie:3.4.0"
 
 }
