@@ -44,8 +44,8 @@ public class LoginViewModel extends ViewModel {
                     @Override
                     public void onError(ApiServiceException e) {
                         mShowDialogMutableLiveData.postValue(false);
-                        mLoadErrorMutableLiveData.postValue(e.message);
-                        if (e.code == 30001) {
+                        mLoadErrorMutableLiveData.postValue(e.getMessage());
+                        if (e.getCode() == 30001) {
                             mBindPhoneMutableLiveData.postValue(true);
                         }
                     }
@@ -76,7 +76,7 @@ public class LoginViewModel extends ViewModel {
                     @Override
                     public void onError(ApiServiceException e) {
                         mShowDialogMutableLiveData.postValue(false);
-                        mLoadErrorMutableLiveData.postValue(e.message);
+                        mLoadErrorMutableLiveData.postValue(e.getMessage());
                     }
 
                     @Override
@@ -103,7 +103,7 @@ public class LoginViewModel extends ViewModel {
                     @Override
                     public void onError(ApiServiceException e) {
                         mShowDialogMutableLiveData.postValue(false);
-                        mLoadErrorMutableLiveData.postValue(e.message);
+                        mLoadErrorMutableLiveData.postValue(e.getMessage());
                     }
 
                     @Override
@@ -128,7 +128,7 @@ public class LoginViewModel extends ViewModel {
             @Override
             public void onError(ApiServiceException e) {
                 mShowDialogMutableLiveData.postValue(false);
-                mLoadErrorMutableLiveData.postValue(e.message);
+                mLoadErrorMutableLiveData.postValue(e.getMessage());
             }
 
             @Override
@@ -157,7 +157,7 @@ public class LoginViewModel extends ViewModel {
             @Override
             public void onError(ApiServiceException e) {
                 mShowDialogMutableLiveData.postValue(false);
-                mLoadErrorMutableLiveData.postValue(e.message);
+                mLoadErrorMutableLiveData.postValue(e.getMessage());
             }
 
             @Override
@@ -183,7 +183,7 @@ public class LoginViewModel extends ViewModel {
                     @Override
                     public void onError(ApiServiceException e) {
                         mShowDialogMutableLiveData.postValue(false);
-                        mLoadErrorMutableLiveData.postValue(e.message);
+                        mLoadErrorMutableLiveData.postValue(e.getMessage());
                     }
 
                     @Override
@@ -207,7 +207,7 @@ public class LoginViewModel extends ViewModel {
                     @Override
                     public void onError(ApiServiceException e) {
                         mShowDialogMutableLiveData.postValue(false);
-                        mLoadErrorMutableLiveData.postValue(e.message);
+                        mLoadErrorMutableLiveData.postValue(e.getMessage());
                     }
 
                     @Override
@@ -232,7 +232,7 @@ public class LoginViewModel extends ViewModel {
                     @Override
                     public void onError(ApiServiceException e) {
                         mShowDialogMutableLiveData.postValue(false);
-                        mLoadErrorMutableLiveData.postValue(e.message);
+                        mLoadErrorMutableLiveData.postValue(e.getMessage());
                     }
 
                     @Override

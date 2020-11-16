@@ -46,7 +46,7 @@ public class PersonalPageViewModel extends ViewModel {
                 .subscribe(new ApiBaseSubscribe<ApiBaseResponse<BBSUserInfoEntity>>(activity) {
                     @Override
                     public void onError(ApiServiceException e) {
-                        Log.e("RespondThrowable", e.message);
+                        Log.e("RespondThrowable", e.getMessage());
                     }
 
                     @Override
@@ -71,7 +71,7 @@ public class PersonalPageViewModel extends ViewModel {
         ApiServiceWrapper.bbsUserTrends(activity,userId, page, new ApiBaseSubscribe<ApiBaseResponse<BBSUserTrendsEntity>>() {
             @Override
             public void onError(ApiServiceException e) {
-                Log.e("RespondThrowable", e.message);
+                Log.e("RespondThrowable", e.getMessage());
                 if(isMore){
                     mLoadMoreMutableLiveData.postValue(true);
                 }else{
@@ -108,7 +108,7 @@ public class PersonalPageViewModel extends ViewModel {
         ApiServiceWrapper.bbsUserZan(activity, userId, page, new ApiBaseSubscribe<ApiBaseResponse<BBSUserZanEntity>>() {
             @Override
             public void onError(ApiServiceException e) {
-                Log.e("RespondThrowable", e.message);
+                Log.e("RespondThrowable", e.getMessage());
                 if(isMore){
                     mLoadMoreMutableLiveData.postValue(true);
                 }else{

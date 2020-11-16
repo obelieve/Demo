@@ -633,7 +633,7 @@ public class OneCommentAndAllReplyFragment extends ApiBaseFragment {
                     .subscribe(new ApiBaseSubscribe<ApiBaseResponse<CommentDetailsEntity>>(activity) {
                         @Override
                         public void onError(ApiServiceException e) {
-                            Log.e("RespondThrowable", e.message);
+                            Log.e("RespondThrowable", e.getMessage());
                             getDataFinish.postValue(false);
                         }
 
@@ -657,7 +657,7 @@ public class OneCommentAndAllReplyFragment extends ApiBaseFragment {
                     .subscribe(new ApiBaseSubscribe<ApiBaseResponse<ReplyListEntity>>(activity) {
                         @Override
                         public void onError(ApiServiceException e) {
-                            Log.e("RespondThrowable", e.message);
+                            Log.e("RespondThrowable", e.getMessage());
                             //page>1代表是获取更多评论，则关闭页面的上拉加载更多
                             if (mCommentPage > 1) {
                                 getDataFinish.postValue(true);
@@ -696,7 +696,7 @@ public class OneCommentAndAllReplyFragment extends ApiBaseFragment {
                         public void onError(ApiServiceException e) {
                             CacheRepository.getInstance().setPostCommentReply(post_id, comment_id, content);
                             showdialog.postValue(false);
-                            if (e.code == ApiErrorCode.CODE_NOSET_NICKNAME) {
+                            if (e.getCode() == ApiErrorCode.CODE_NOSET_NICKNAME) {
                                 if (activity != null) {
                                     CommonDialog dialog = new CommonDialog(activity);
                                     dialog.setContent("您还未设置昵称");
@@ -734,7 +734,7 @@ public class OneCommentAndAllReplyFragment extends ApiBaseFragment {
                         public void onError(ApiServiceException e) {
                             CacheRepository.getInstance().setPostCommentReply2Reply(post_id, comment_id, to_rid, content);
                             showdialog.postValue(false);
-                            ToastUtil.show(e.message);
+                            ToastUtil.show(e.getMessage());
                         }
 
                         @Override
@@ -761,7 +761,7 @@ public class OneCommentAndAllReplyFragment extends ApiBaseFragment {
                     .subscribe(new ApiBaseSubscribe<ApiBaseResponse<PraiseEntity>>(activity) {
                         @Override
                         public void onError(ApiServiceException e) {
-                            Log.e("RespondThrowable", e.message);
+                            Log.e("RespondThrowable", e.getMessage());
                         }
 
                         @Override

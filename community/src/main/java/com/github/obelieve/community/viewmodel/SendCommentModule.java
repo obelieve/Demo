@@ -163,7 +163,7 @@ public class SendCommentModule {
                         public void onError(ApiServiceException e) {
                             CacheRepository.getInstance().setPostCommentReply(post_id, comment_id, content);
                             showdialog.postValue(false);
-                            ToastUtil.show(e.message);
+                            ToastUtil.show(e.getMessage());
                         }
 
                         @Override
@@ -190,7 +190,7 @@ public class SendCommentModule {
                         public void onError(ApiServiceException e) {
                             CacheRepository.getInstance().setPostCommentReply2Reply(post_id, comment_id, to_rid, content);
                             showdialog.postValue(false);
-                            ToastUtil.show(e.message);
+                            ToastUtil.show(e.getMessage());
                         }
 
                         @Override

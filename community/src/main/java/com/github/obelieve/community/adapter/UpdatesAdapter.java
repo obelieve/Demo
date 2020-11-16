@@ -156,7 +156,7 @@ public class UpdatesAdapter extends BaseRecyclerViewAdapter<SquareListsEntity.Po
                     @Override
                     public void onError(ApiServiceException e) {
 //                        ((ApiBaseActivity) mContext).dismissLoading();
-                        ToastUtil.show(e.message);
+                        ToastUtil.show(e.getMessage());
                     }
 
                     @Override

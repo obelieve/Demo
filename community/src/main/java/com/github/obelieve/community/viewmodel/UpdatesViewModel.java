@@ -63,7 +63,7 @@ public class UpdatesViewModel extends ViewModel {
         ApiServiceWrapper.squarePost(activity, mUpdatesPage, keyword, new ApiBaseSubscribe<ApiBaseResponse<SquareListsEntity>>() {
             @Override
             public void onError(ApiServiceException e) {
-                Log.e("RespondThrowable", e.message);
+                Log.e("RespondThrowable", ""+e.getMessage());
                 if(!isMore){
                     mRefreshLiveData.setValue(false);
                 }else{
@@ -103,7 +103,7 @@ public class UpdatesViewModel extends ViewModel {
         ApiServiceWrapper.goodPost(activity, mUpdatesPage, new ApiBaseSubscribe<ApiBaseResponse<SquareListsEntity>>() {
             @Override
             public void onError(ApiServiceException e) {
-                Log.e("RespondThrowable", e.message);
+                Log.e("RespondThrowable", e.getMessage());
                 if(!isMore){
                     mRefreshLiveData.setValue(false);
                 }else{
@@ -141,7 +141,7 @@ public class UpdatesViewModel extends ViewModel {
         ApiService.wrap(App.getServiceInterface().postDetail(postId), UpdateDetailEntity.class).subscribe(new ApiBaseSubscribe<ApiBaseResponse<UpdateDetailEntity>>(activity) {
             @Override
             public void onError(ApiServiceException e) {
-                Log.e("RespondThrowable", e.message);
+                Log.e("RespondThrowable", e.getMessage());
                 mRefreshLiveData.setValue(false);
             }
 
@@ -169,7 +169,7 @@ public class UpdatesViewModel extends ViewModel {
                 .subscribe(new ApiBaseSubscribe<ApiBaseResponse<CommentListEntity>>(activity) {
                     @Override
                     public void onError(ApiServiceException e) {
-                        Log.e("RespondThrowable", e.message);
+                        Log.e("RespondThrowable", e.getMessage());
                         //page>1代表是获取更多评论，则关闭页面的上拉加载更多
                         if (mCommentPage > 1) {
                             mRefreshLiveData.setValue(false);
@@ -198,7 +198,7 @@ public class UpdatesViewModel extends ViewModel {
                 .subscribe(new ApiBaseSubscribe<ApiBaseResponse<PraiseEntity>>(activity) {
                     @Override
                     public void onError(ApiServiceException e) {
-                        Log.e("RespondThrowable", e.message);
+                        Log.e("RespondThrowable", ""+e.getMessage());
                     }
 
                     @Override
@@ -217,7 +217,7 @@ public class UpdatesViewModel extends ViewModel {
             @Override
             public void onError(ApiServiceException e) {
                 showdialog.postValue(false);
-                if (e.code == ApiErrorCode.CODE_NOSET_NICKNAME) {
+                if (e.getCode() == ApiErrorCode.CODE_NOSET_NICKNAME) {
                     if (activity != null) {
                         CommonDialog dialog = new CommonDialog(activity);
                         dialog.setContent("您还未设置昵称");

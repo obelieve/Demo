@@ -84,7 +84,7 @@ public class UserInfoViewModel extends ViewModel {
             @Override
             public void onError(ApiServiceException e) {
                 mShowProgressMutableLiveData.postValue(false);
-                ToastUtil.show(e.message);
+                ToastUtil.show(e.getMessage());
             }
 
             @Override

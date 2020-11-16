@@ -39,23 +39,23 @@ public class ApiServiceExceptionHandle {
     }
 
     private static ApiServiceException handleApiServiceException(Activity activity, boolean needLogin, ApiServiceException e) {
-        switch (e.code) {
+        switch (e.getCode()) {
             case ApiErrorCode.CODE_DUPLICATE_NICKNAME:
             case ApiErrorCode.CODE_SENSITIVE_WORDS:
             case ApiErrorCode.CODE_TIME_INTERVAL:
             case ApiErrorCode.CODE_TOOLONG_NICKNAME:
             case ApiErrorCode.CODE_DONOT_CANCEL:
-                if (e.window == 1 && activity != null && !activity.isFinishing()) {
+                if (e.getWindow() == 1 && activity != null && !activity.isFinishing()) {
                     new SimpleAlertDialog(activity)
                             .setSimple(true)
                             .setContent(e.getMessage())
                             .setOk("知道了").show();
                 }
-                e.isProcessed = true;
+                e.setProcessed(true);
                 break;
             default:
                 if (sApiExtendRespondThrowableListener != null) {
-                    sApiExtendRespondThrowableListener.defHandleException(activity, e, e.window, e.toast);
+                    sApiExtendRespondThrowableListener.defHandleException(activity, e, e.getWindow(), e.getToast());
                 }
                 break;
         }

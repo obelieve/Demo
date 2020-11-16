@@ -36,7 +36,7 @@ public class IssueUpdateViewModel extends ViewModel {
             @Override
             public void onError(ApiServiceException e) {
                 isSendstate.postValue(State.SENDERROR);
-                if(e.code== ApiErrorCode.CODE_NOSET_NICKNAME){
+                if(e.getCode()== ApiErrorCode.CODE_NOSET_NICKNAME){
                     CommonDialog dialog = new CommonDialog(activity);
                     dialog.setContent("给自己起一个好称呼,让网友能更好认出你");
                     dialog.setNegativeButton("好的", null);
@@ -45,9 +45,9 @@ public class IssueUpdateViewModel extends ViewModel {
                         ActivityUtil.gotoUserInfoActivity(activity,false,true);
                     });
                     dialog.show();
-                    e.isProcessed=true;
+                    e.setProcessed(true);
                 }
-                ToastUtil.show(e.message);
+                ToastUtil.show(e.getMessage());
             }
 
             @Override

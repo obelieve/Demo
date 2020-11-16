@@ -412,7 +412,7 @@ public class CommentListAdapter extends BaseRecyclerViewAdapter<CommentListEntit
                 .subscribe(new ApiBaseSubscribe<ApiBaseResponse<PraiseEntity>>(context) {
                     @Override
                     public void onError(ApiServiceException e) {
-                        Log.e("RespondThrowable", e.message);
+                        Log.e("RespondThrowable", "" + e.getMessage());
                     }
 
                     @Override

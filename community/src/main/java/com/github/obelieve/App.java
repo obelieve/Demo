@@ -72,7 +72,7 @@ public class App extends BaseApplication {
                             @Override
                             public void onError(ApiServiceException e) {
                                 if (callback != null) {
-                                    callback.onFailure(e.message);
+                                    callback.onFailure(e.getMessage());
                                 }
                             }
 
@@ -148,17 +148,17 @@ public class App extends BaseApplication {
             @Override
             public void defHandleException(Activity activity, ApiServiceException ex, int window, int toast) {
                 if (window == 1 | window == 202) {
-                    switch (ex.code) {
+                    switch (ex.getCode()) {
                         case ApiErrorCode.CODE_TOKEN_ERROR:
                             if (activity != null && !activity.isFinishing()) {
                                 ActivityUtil.gotoLoginDialogActivity(activity);
-                                ex.isProcessed = true;
+                                ex.setProcessed(true);
                             }
                             break;
                         case ApiErrorCode.CODE_NOBINGD_PHONE:
                             if (activity != null && !activity.isFinishing()) {
                                 new CommonDialog(activity)
-                                        .setContent(ex.message)
+                                        .setContent(ex.getMessage())
                                         .setNegativeButton("再看看", null)
                                         .setPositiveButton("去绑定", dialog1 -> {
                                             dialog1.dismiss();
@@ -166,7 +166,7 @@ public class App extends BaseApplication {
                                         })
                                         .show();
                             }
-                            ex.isProcessed = true;
+                            ex.setProcessed(true);
                             break;
                         case ApiErrorCode.CODE_ACCOUNT_BAN:
                             if (activity != null && !activity.isFinishing()) {
@@ -174,12 +174,12 @@ public class App extends BaseApplication {
 //                                        .setBanTitle(ex.message)
 //                                        .show();
                             }
-                            ex.isProcessed = true;
+                            ex.setProcessed(true);
                             break;
                     }
                 } else if (toast == 1) {
-                    ToastUtil.show(ex.message);
-                    ex.isProcessed = true;
+                    ToastUtil.show(ex.getMessage());
+                    ex.setProcessed(true);
                 }
             }
         });
