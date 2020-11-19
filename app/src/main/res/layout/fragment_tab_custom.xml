@@ -20,10 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             app:tabIndicatorHeight="0dp"
-            app:tabMode="scrollable"
             app:tabMinWidth="20dp"
-            app:tabPaddingStart="10dp"
-            app:tabPaddingEnd="10dp"
+            app:tabMode="fixed"
+            app:tabMaxWidth="0dp"
+            app:tabGravity="fill"
+            app:tabIndicatorFullWidth="false"
+            app:tabPaddingEnd="0dp"
+            app:tabPaddingStart="0dp"
             android:background="#B7ECD3"
             app:tabRippleColor="@color/transparent" />
         <com.google.android.material.tabs.TabLayout
