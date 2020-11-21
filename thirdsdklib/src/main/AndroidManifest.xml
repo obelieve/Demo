@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.obelieve.thirdsdklib">
+    package="com.zxy.thirdsdklib">
     <application>
         <!--图片选择 start-->
         <activity

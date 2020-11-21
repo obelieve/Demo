@@ -1,4 +1,4 @@
-package com.github.obelieve.thirdsdklib.picker;
+package com.zxy.thirdsdklib.picker;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.model.IPickerViewData;
-import com.github.obelieve.thirdsdklib.R;
+import com.zxy.thirdsdklib.R;
 import com.google.gson.Gson;
 import com.zxy.frame.utils.proguard.UnProguard;
 

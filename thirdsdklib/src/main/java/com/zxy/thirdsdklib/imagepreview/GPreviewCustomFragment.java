@@ -1,4 +1,4 @@
-package com.github.obelieve.thirdsdklib.imagepreview;
+package com.zxy.thirdsdklib.imagepreview;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -25,7 +25,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.target.Target;
-import com.github.obelieve.thirdsdklib.R;
+import com.zxy.thirdsdklib.R;
 import com.previewlibrary.enitity.IThumbViewInfo;
 import com.previewlibrary.view.BasePhotoFragment;
 import com.zxy.frame.utils.storage.StorageUtil;

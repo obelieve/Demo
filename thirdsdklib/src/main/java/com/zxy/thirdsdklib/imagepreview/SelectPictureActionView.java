@@ -1,4 +1,4 @@
-package com.github.obelieve.thirdsdklib.imagepreview;
+package com.zxy.thirdsdklib.imagepreview;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -9,8 +9,8 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.github.obelieve.thirdsdklib.R;
-import com.github.obelieve.thirdsdklib.databinding.DialogViewSelectPictureActionBinding;
+import com.zxy.thirdsdklib.R;
+import com.zxy.thirdsdklib.databinding.DialogViewSelectPictureActionBinding;
 
 public class SelectPictureActionView extends FrameLayout implements View.OnClickListener {
 

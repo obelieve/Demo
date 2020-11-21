@@ -1,4 +1,4 @@
-package com.github.obelieve.thirdsdklib.imagepreview;
+package com.zxy.thirdsdklib.imagepreview;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -13,7 +13,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.github.obelieve.thirdsdklib.R;
+import com.zxy.thirdsdklib.R;
 import com.previewlibrary.loader.IZoomMediaLoader;
 import com.previewlibrary.loader.MySimpleTarget;
 import com.previewlibrary.wight.SmoothImageView;

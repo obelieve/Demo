@@ -1,4 +1,4 @@
-package com.github.obelieve.thirdsdklib.pay;
+package com.zxy.thirdsdklib.pay;
 
 import android.app.Activity;
 import android.content.Context;

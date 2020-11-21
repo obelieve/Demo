@@ -1,4 +1,4 @@
-package com.github.obelieve.thirdsdklib;
+package com.zxy.thirdsdklib;
 
 import org.junit.Test;
 

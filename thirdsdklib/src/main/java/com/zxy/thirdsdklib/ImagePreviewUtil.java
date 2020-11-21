@@ -1,12 +1,12 @@
-package com.github.obelieve.thirdsdklib;
+package com.zxy.thirdsdklib;
 
 import android.app.Activity;
 import android.graphics.Rect;
 import android.view.View;
 
-import com.github.obelieve.thirdsdklib.imagepreview.GPreviewCustomFragment;
-import com.github.obelieve.thirdsdklib.imagepreview.PreviewImageInfo;
-import com.github.obelieve.thirdsdklib.imagepreview.TestImageLoader;
+import com.zxy.thirdsdklib.imagepreview.GPreviewCustomFragment;
+import com.zxy.thirdsdklib.imagepreview.PreviewImageInfo;
+import com.zxy.thirdsdklib.imagepreview.TestImageLoader;
 import com.previewlibrary.GPreviewBuilder;
 import com.previewlibrary.ZoomMediaLoader;
 
