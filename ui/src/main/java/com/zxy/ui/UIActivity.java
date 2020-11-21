@@ -1,4 +1,4 @@
-package com.news.anim;
+package com.zxy.ui;
 
 import android.os.Bundle;
 
@@ -8,12 +8,13 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.news.anim.databinding.ActivityAnimationBinding;
 import com.zxy.frame.base.ApiBaseActivity;
+import com.zxy.ui.anim.AnimationFragment;
 
 /**
  * Created by Admin
  * on 2020/6/10
  */
-public class AnimationActivity extends ApiBaseActivity<ActivityAnimationBinding> {
+public class UIActivity extends ApiBaseActivity<ActivityAnimationBinding> {
 
 
     @Override
@@ -24,7 +25,7 @@ public class AnimationActivity extends ApiBaseActivity<ActivityAnimationBinding>
             public Fragment getItem(int position) {
                 Fragment fragment;
                 try {
-                    fragment = (Fragment) AnimationEnum.values()[position].getClazz().newInstance();
+                    fragment = (Fragment) UIEnum.values()[position].getClazz().newInstance();
                 } catch (Exception e) {
                     e.printStackTrace();
                     fragment = new AnimationFragment();
@@ -34,17 +35,17 @@ public class AnimationActivity extends ApiBaseActivity<ActivityAnimationBinding>
 
             @Override
             public int getCount() {
-                return AnimationEnum.values().length;
+                return UIEnum.values().length;
             }
 
             @Nullable
             @Override
             public CharSequence getPageTitle(int position) {
-                return AnimationEnum.values()[position].getName();
+                return UIEnum.values()[position].getName();
             }
         });
         mViewBinding.tlTab.setupWithViewPager(mViewBinding.vpContent);
-        mViewBinding.vpContent.setCurrentItem(AnimationEnum.getCurrentIndex());
+        mViewBinding.vpContent.setCurrentItem(UIEnum.getCurrentIndex());
     }
 
 }

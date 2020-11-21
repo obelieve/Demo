@@ -1,4 +1,4 @@
-package com.news.anim;
+package com.zxy.ui.anim;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -8,6 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
+import com.news.anim.R;
 import com.news.anim.databinding.FragmentAnimationBinding;
 import com.zxy.frame.base.ApiBaseFragment;
 

@@ -1,4 +1,4 @@
-package com.news.mockapi;
+package com.zxy.mockapi;
 
 import android.content.Context;
 import android.text.TextUtils;

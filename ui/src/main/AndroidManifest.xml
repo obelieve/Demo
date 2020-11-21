@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /><!--应用安装权限-->
     <application
-        android:name=".App"
+        android:name="com.zxy.ui.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AnimationActivity">
+        <activity android:name="com.zxy.ui.UIActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

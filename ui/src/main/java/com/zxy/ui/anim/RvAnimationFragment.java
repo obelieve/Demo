@@ -1,4 +1,4 @@
-package com.news.anim;
+package com.zxy.ui.anim;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;

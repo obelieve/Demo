@@ -1,2 +1,2 @@
 include ':thirdsdklib'
-include ':app', ':frame', ':anim', ':mockapi'
+include ':app', ':frame', ':ui', ':mockapi'

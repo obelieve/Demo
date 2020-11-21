@@ -1,4 +1,4 @@
-package com.news.anim;
+package com.zxy.mockapi;
 
 import org.junit.Test;
 
