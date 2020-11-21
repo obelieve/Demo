@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.zxy.ui.view.CircleProgressView
+        android:id="@+id/cir"
+        app:circle_stoken="10dp"
+        app:circle_bg_color="#f00"
+        app:circle_color="#00f"
+        app:circle_progress="66"
+        app:circle_isAnime="false"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+</LinearLayout>
