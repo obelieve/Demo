@@ -2,16 +2,17 @@ package com.news.anim;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.news.anim.databinding.FragmentRvAnimationBinding;
+import com.news.anim.databinding.ItemRvAnimBinding;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.ToastUtil;
@@ -20,28 +21,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 /**
  * Created by Admin
  * on 2020/6/10
  */
-public class RvAnimationFragment extends ApiBaseFragment {
+public class RvAnimationFragment extends ApiBaseFragment<FragmentRvAnimationBinding> {
 
-
-    @BindView(R.id.rv_content)
-    RecyclerView rvContent;
-    @BindView(R.id.view_bottom)
-    View viewBottom;
 
     RvAdapter mRvAdapter;
     SpringAnimation mSpringAnimation;
 
-    @Override
-    public int layoutId() {
-        return R.layout.fragment_rv_animation;
-    }
+    int mClickNum = 5;
 
     @Override
     protected void initView() {
@@ -52,7 +42,7 @@ public class RvAnimationFragment extends ApiBaseFragment {
                 ToastUtil.show(t);
             }
         });
-        rvContent.setAdapter(mRvAdapter);
+        mViewBinding.rvContent.setAdapter(mRvAdapter);
         mRvAdapter.getDataHolder().setList(Arrays.asList(
                 "111111111111111111111111", "222222222222222222222222", "333333333333333333333333", "444444444444444444444444", "555555555555555555555555",
                 "666666666666666666666666", "777777777777777777777777777777", "888888888888888888888888888888", "999999999999999999999999999999",
@@ -60,24 +50,24 @@ public class RvAnimationFragment extends ApiBaseFragment {
                 "ffffffffffffffffffffffff", "gggggggggggggggggggggggg", "hhhhhhhhhhhhhhhhhhhhhhhh", "iiiiiiiiiiiiiiiiiiiiiiii",
                 "jjjjjjjjjjjjjjjjjjjjjjjj", "kkkkkkkkkkkkkkkkkkkkkkkk", "llllllllllllllllllllllll", "mmmmmmmmmmmmmmmmmmmmmmmm", "nnnnnnnnnnnnnnnnnnnnnnnn",
                 "oooooooooooooooooooooooooooooo", "pppppppppppppppppppppppp", "qqqqqqqqqqqqqqqqqqqqqqqq", "rrrrrrrrrrrrrrrrrrrrrrrr"));
-        mSpringAnimation = new SpringAnimation(viewBottom, SpringAnimation.TRANSLATION_Y, 0);
+        mSpringAnimation = new SpringAnimation(mViewBinding.viewBottom, SpringAnimation.TRANSLATION_Y, 0);
+        mViewBinding.viewBottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSpringAnimation.cancel();
+                mSpringAnimation.getSpring().setStiffness(SpringForce.STIFFNESS_MEDIUM);
+                mSpringAnimation.getSpring().setDampingRatio(SpringForce.DAMPING_RATIO_LOW_BOUNCY);
+                mClickNum++;
+                mSpringAnimation.setStartVelocity(1 << mClickNum);
+                mSpringAnimation.start();
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mRvAdapter.release();
-    }
-
-    int mClickNum = 5;
-    @OnClick(R.id.view_bottom)
-    public void onViewClicked() {
-        mSpringAnimation.cancel();
-        mSpringAnimation.getSpring().setStiffness(SpringForce.STIFFNESS_MEDIUM);
-        mSpringAnimation.getSpring().setDampingRatio(SpringForce.DAMPING_RATIO_LOW_BOUNCY);
-        mClickNum++;
-        mSpringAnimation.setStartVelocity(1 << mClickNum);
-        mSpringAnimation.start();
     }
 
     public static class RvAdapter extends BaseRecyclerViewAdapter<String> {
@@ -92,7 +82,7 @@ public class RvAnimationFragment extends ApiBaseFragment {
 
         @Override
         public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            return new RvViewHolder(parent, R.layout.item_rv_anim);
+            return new RvViewHolder(ItemRvAnimBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false));
         }
 
         @Override
@@ -170,18 +160,16 @@ public class RvAnimationFragment extends ApiBaseFragment {
             mLastPosition = -1;
         }
 
-        public static class RvViewHolder extends BaseViewHolder<String> {
+        public static class RvViewHolder extends BaseViewHolder<String, ItemRvAnimBinding> {
 
-            @BindView(R.id.tv_content)
-            TextView tvContent;
 
-            public RvViewHolder(ViewGroup parent, int layoutId) {
-                super(parent, layoutId);
+            public RvViewHolder(ItemRvAnimBinding viewBinding) {
+                super(viewBinding);
             }
 
             @Override
             public void bind(String s) {
-                tvContent.setText(s);
+                mViewBinding.tvContent.setText(s);
             }
         }
     }

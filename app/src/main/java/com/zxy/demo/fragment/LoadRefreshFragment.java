@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.zxy.demo.R;
 import com.zxy.demo.adapter.viewholder.LoadRefreshViewHolder;
+import com.zxy.demo.databinding.FragmentLoadRefreshBinding;
+import com.zxy.demo.databinding.ViewholderLoadRefreshBinding;
 import com.zxy.demo.entity.SquarePostEntity;
 import com.zxy.demo.viewmodel.LoadRefreshViewModel;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
@@ -21,34 +21,23 @@ import com.zxy.frame.utils.image.GlideApp;
 
 import java.util.List;
 
-import butterknife.BindView;
+public class LoadRefreshFragment extends ApiBaseFragment<FragmentLoadRefreshBinding> {
 
-public class LoadRefreshFragment extends ApiBaseFragment {
-
-    @BindView(R.id.rv_content)
-    RecyclerView mRvContent;
-    @BindView(R.id.srl_content)
-    SwipeRefreshLayout mSrlContent;
 
     LoadRefreshAdapter mMainAdapter;
 
     LoadRefreshViewModel mLoadRefreshViewModel;
 
     @Override
-    public int layoutId() {
-        return R.layout.fragment_load_refresh;
-    }
-
-    @Override
     protected void initView() {
         mLoadRefreshViewModel = ViewModelProviders.of(this).get(LoadRefreshViewModel.class);
         mMainAdapter = new LoadRefreshAdapter(getContext());
-        mMainAdapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.view_empty, mSrlContent, false));
-        mMainAdapter.setLoadMoreListener(mRvContent, () -> mLoadRefreshViewModel.square_post(true));
-        mRvContent.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRvContent.addItemDecoration(new VerticalItemDivider());
-        mRvContent.setAdapter(mMainAdapter);
-        mSrlContent.setOnRefreshListener(() -> mLoadRefreshViewModel.square_post(false));
+        mMainAdapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.view_empty, mViewBinding.root.srlContent, false));
+        mMainAdapter.setLoadMoreListener(mViewBinding.root.rvContent, () -> mLoadRefreshViewModel.square_post(true));
+        mViewBinding.root.rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
+        mViewBinding.root.rvContent.addItemDecoration(new VerticalItemDivider());
+        mViewBinding.root.rvContent.setAdapter(mMainAdapter);
+        mViewBinding.root.srlContent.setOnRefreshListener(() -> mLoadRefreshViewModel.square_post(false));
         observerData();
     }
 
@@ -62,7 +51,7 @@ public class LoadRefreshFragment extends ApiBaseFragment {
         mLoadRefreshViewModel.getRefreshLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                mSrlContent.setRefreshing(aBoolean);
+                mViewBinding.root.srlContent.setRefreshing(aBoolean);
             }
         });
         mLoadRefreshViewModel.getLoadMoreLiveData().observe(this, new Observer<LoadRefreshViewModel.LoadMoreModel>() {
@@ -87,16 +76,17 @@ public class LoadRefreshFragment extends ApiBaseFragment {
 
         @Override
         public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            return new LoadRefreshViewHolder(parent, R.layout.viewholder_load_refresh);
+            return new LoadRefreshViewHolder(ViewholderLoadRefreshBinding.inflate(LayoutInflater.from(parent.getContext()),
+                    parent,false));
         }
 
         @Override
         public void loadViewHolder(BaseViewHolder holder, int position) {
             LoadRefreshViewHolder holder1 = ((LoadRefreshViewHolder) holder);
-            holder1.mTvName.setText(getDataHolder().getList().get(position).getNickname());
-            holder1.mTvName.setText(getDataHolder().getList().get(position).getNickname());
+            holder1.getViewBinding().tvName.setText(getDataHolder().getList().get(position).getNickname());
+            holder1.getViewBinding().tvContent.setText(getDataHolder().getList().get(position).getContent());
             GlideApp.with(LoadRefreshFragment.this).load( getDataHolder().getList().get(position).getAvatar())
-                    .defImage().into(holder1.mIvImage);
+                    .defImage().into(holder1.getViewBinding().ivImage);
         }
 
     }

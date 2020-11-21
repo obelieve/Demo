@@ -1,26 +1,21 @@
 package com.zxy.demo.fragment;
 
+import android.view.View;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.zxy.demo.R;
 import com.zxy.demo.activity.VersionUpdateActivity;
+import com.zxy.demo.databinding.FragmentVersionUpdateEntranceBinding;
 import com.zxy.demo.entity.VersionUpdateEntity;
 import com.zxy.demo.viewmodel.VersionUpdateViewModel;
 import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.ToastUtil;
 
-import butterknife.OnClick;
-
-public class VersionUpdateEntranceFragment extends ApiBaseFragment {
+public class VersionUpdateEntranceFragment extends ApiBaseFragment<FragmentVersionUpdateEntranceBinding> {
 
     VersionUpdateViewModel mVersionUpdateViewModel;
     boolean mBool;
-
-    @Override
-    public int layoutId() {
-        return R.layout.fragment_version_update_entrance;
-    }
 
     @Override
     protected void initView() {
@@ -41,13 +36,14 @@ public class VersionUpdateEntranceFragment extends ApiBaseFragment {
                 }
             }
         });
+        mViewBinding.btnVersion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!mBool) {
+                    mVersionUpdateViewModel.version_check();
+                }
+            }
+        });
     }
 
-
-    @OnClick(R.id.btn_version)
-    public void onViewClicked() {
-        if (!mBool) {
-            mVersionUpdateViewModel.version_check();
-        }
-    }
 }

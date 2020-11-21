@@ -11,41 +11,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
-import com.zxy.demo.R;
 import com.zxy.demo.activity.TabActivity;
+import com.zxy.demo.databinding.FragmentTabCustomBinding;
 import com.zxy.demo.utils.String2TabLayoutHelper;
 import com.zxy.demo.utils.StringTabLayoutHelper;
 import com.zxy.frame.base.ApiBaseFragment;
 
 import java.util.Arrays;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 
-public class CustomTabFragment extends ApiBaseFragment {
-
-    @BindView(R.id.tl_tab1)
-    TabLayout mTlTab1;
-    @BindView(R.id.tl_tab2)
-    TabLayout mTlTab2;
-    @BindView(R.id.vp_content)
-    ViewPager mVpContent;
+public class CustomTabFragment extends ApiBaseFragment<FragmentTabCustomBinding> {
 
     StringTabLayoutHelper mTab1LayoutHelper = new StringTabLayoutHelper();
     String2TabLayoutHelper mTab2LayoutHelper = new String2TabLayoutHelper();
     String[] mStrings = new String[]{"TAB1", "TAB2", "TAB3", "TAB4", "TAB5", "TAB6"};
 
     @Override
-    public int layoutId() {
-        return R.layout.fragment_tab_custom;
-    }
-
-    @Override
     protected void initView() {
-        mVpContent.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
+        mViewBinding.vpContent.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @NonNull
             @Override
             public Fragment getItem(int position) {
@@ -57,13 +41,14 @@ public class CustomTabFragment extends ApiBaseFragment {
                 return mStrings.length;
             }
         });
-        mTab1LayoutHelper.init(mVpContent, mTlTab1, Arrays.asList(mStrings), 0);
-        mTab2LayoutHelper.init(mVpContent, mTlTab2, Arrays.asList(mStrings), 0);
-    }
-
-    @OnClick(R.id.btn_tab)
-    public void onViewClicked() {
-        startActivity(new Intent(getActivity(), TabActivity.class));
+        mTab1LayoutHelper.init(mViewBinding.vpContent, mViewBinding.tlTab1, Arrays.asList(mStrings), 0);
+        mTab2LayoutHelper.init(mViewBinding.vpContent, mViewBinding.tlTab2, Arrays.asList(mStrings), 0);
+        mViewBinding.btnTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), TabActivity.class));
+            }
+        });
     }
 
     public static class TabFragment extends Fragment {

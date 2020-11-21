@@ -1,15 +1,27 @@
 package com.zxy.frame.utils.info;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Build;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import java.util.List;
+import java.util.UUID;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 import static android.view.View.NO_ID;
@@ -19,6 +31,80 @@ import static android.view.View.NO_ID;
  */
 
 public class SystemInfoUtil {
+
+    private static final String APP_INFO = "appInfo";
+    private static final String KEY_DEVICE_ID = "deviceId";
+
+    /**
+     * 获取不到设备ID的机子 给个随机数
+     *
+     * @param context
+     * @return
+     */
+    public static String getDeviceId(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(APP_INFO, Context.MODE_PRIVATE);
+        String deviceId = sp.getString(KEY_DEVICE_ID, "");
+        if (!TextUtils.isEmpty(deviceId)) {
+            return deviceId;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if ((context.checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED)) {
+                try {
+                    TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+                    deviceId = tm.getDeviceId();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (TextUtils.isEmpty(deviceId)) {
+            deviceId = UUID.randomUUID().toString();
+            sp.edit().putString(KEY_DEVICE_ID, deviceId).apply();
+            return deviceId;
+        }
+        return deviceId;
+    }
+
+    /**
+     * 获取机器名称 如 milestone
+     *
+     * @return
+     */
+    public static String getMachineName() {
+        return Build.MODEL;
+    }
+
+    /**
+     * 获取软件版本名称
+     *
+     * @return
+     */
+    public static String getVersionName(Context ctx) {
+        String versionName = "";
+        try {
+            PackageInfo packageinfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), PackageManager.GET_INSTRUMENTATION);
+            versionName = packageinfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionName;
+    }
+
+    /**
+     * 获取软件版本号 code
+     *
+     * @return
+     */
+    public static int getVersionCode(Context ctx) {
+        int versionCode = 0;
+        try {
+            PackageInfo packageinfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), PackageManager.GET_INSTRUMENTATION);
+            versionCode = packageinfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionCode;
+    }
 
     public static int screenWidth(Context context) {
         DisplayMetrics ds = context.getResources().getDisplayMetrics();
@@ -164,6 +250,39 @@ public class SystemInfoUtil {
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         }
+    }
+
+    /**
+     * 判断应用是否在后台
+     *
+     * @param context
+     * @return
+     */
+    @SuppressLint("ObsoleteSdkInt")
+    public static boolean isAppIsInBackground(Context context) {
+
+        boolean isInBackground = true;
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+            List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
+            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+                //前台程序
+                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    for (String activeProcess : processInfo.pkgList) {
+                        if (activeProcess.equals(context.getPackageName())) {
+                            isInBackground = false;
+                        }
+                    }
+                }
+            }
+        } else {
+            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+            ComponentName componentInfo = taskInfo.get(0).topActivity;
+            if (componentInfo != null && componentInfo.getPackageName().equals(context.getPackageName())) {
+                isInBackground = false;
+            }
+        }
+        return isInBackground;
     }
 
 }

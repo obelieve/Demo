@@ -3,24 +3,20 @@ package com.zxy.demo.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.zxy.demo.R;
+import com.zxy.demo.databinding.ActivityVersionUpdateBinding;
 import com.zxy.demo.entity.VersionUpdateEntity;
 import com.zxy.demo.fragment.VersionUpdateFragment;
 import com.zxy.frame.base.ApiBaseActivity;
 
-import butterknife.BindView;
-
-public class VersionUpdateActivity extends ApiBaseActivity {
+public class VersionUpdateActivity extends ApiBaseActivity<ActivityVersionUpdateBinding> {
 
     public static final String EXTRA_VERSION_UPDATE_ENTITY = "extra_version_update_entity";
 
-    @BindView(R.id.fl_content)
-    FrameLayout flContent;
 
     VersionUpdateEntity mEntity;
 
@@ -35,11 +31,6 @@ public class VersionUpdateActivity extends ApiBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         mNeedInsetStatusBar = true;
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    protected int layoutId() {
-        return R.layout.activity_version_update;
     }
 
     @Override

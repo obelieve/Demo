@@ -5,29 +5,17 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
+import com.zxy.demo.databinding.ActivityMainBinding;
 import com.zxy.demo.fragment.LoadRefreshFragment;
 import com.zxy.frame.base.ApiBaseActivity;
 
-import butterknife.BindView;
+public class MainActivity extends ApiBaseActivity<ActivityMainBinding> {
 
-public class MainActivity extends ApiBaseActivity {
-
-    @BindView(R.id.tl_tab)
-    TabLayout mTlTab;
-    @BindView(R.id.vp_content)
-    ViewPager mVpContent;
-
-    @Override
-    protected int layoutId() {
-        return R.layout.activity_main;
-    }
 
     @Override
     protected void initCreateAfterView(Bundle savedInstanceState) {
-        mVpContent.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+        mViewBinding.vpContent.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
 
             @Override
             public Fragment getItem(int position) {
@@ -52,8 +40,8 @@ public class MainActivity extends ApiBaseActivity {
                 return MainEnum.values()[position].getName();
             }
         });
-        mTlTab.setupWithViewPager(mVpContent);
-        mVpContent.setCurrentItem(MainEnum.getCurrentIndex());
+        mViewBinding.tlTab.setupWithViewPager(mViewBinding.vpContent);
+        mViewBinding.vpContent.setCurrentItem(MainEnum.getCurrentIndex());
     }
 
 }

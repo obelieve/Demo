@@ -6,9 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.zxy.demo.R;
+import com.zxy.demo.databinding.FragmentListContainerBinding;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.adapter.item_decoration.HorizontalItemDivider;
 import com.zxy.frame.adapter.item_decoration.VerticalItemDivider;
@@ -20,38 +19,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
 
-public class ListContainerFragment extends ApiBaseFragment {
+public class ListContainerFragment extends ApiBaseFragment<FragmentListContainerBinding> {
 
-    @BindView(R.id.view_lr_recycler_view)
-    LeftRightRecyclerView<LeftData, RightData> mViewLrRecyclerView;
-    @BindView(R.id.rv_auto_fix_width)
-    RecyclerView rvAutoFixWidth;
 
     AutoFixWidthAdapter mAutoFixWidthAdapter;
 
     @Override
-    public int layoutId() {
-        return R.layout.fragment_list_container;
-    }
-
-    @Override
     protected void initView() {
-        mViewLrRecyclerView.setCallback(new LeftRightRecyclerView.Callback<RightData>() {
+        mViewBinding.viewLrRecyclerView.setCallback(new LeftRightRecyclerView.Callback<RightData>() {
             @Override
             public void onRightItemClick(View view, RightData data, int position) {
 
             }
         });
-        mViewLrRecyclerView.init(mLeftViewHolderFactory,
+        mViewBinding.viewLrRecyclerView.init(mLeftViewHolderFactory,
                 mRightViewHolderFactory);
-        mViewLrRecyclerView.setLeftRightData(getDataList(), getDataItemList());
+        mViewBinding.viewLrRecyclerView.setLeftRightData(getDataList(), getDataItemList());
         mAutoFixWidthAdapter = new AutoFixWidthAdapter(getActivity());
-        rvAutoFixWidth.setLayoutManager(new AutoFixWidthLayoutManager());
-        rvAutoFixWidth.setAdapter(mAutoFixWidthAdapter);
-        rvAutoFixWidth.addItemDecoration(new HorizontalItemDivider(true,5, Color.parseColor("#00000000")));
-        rvAutoFixWidth.addItemDecoration(new VerticalItemDivider(true,5,Color.parseColor("#00000000")));
+        mViewBinding.rvAutoFixWidth.setLayoutManager(new AutoFixWidthLayoutManager());
+        mViewBinding.rvAutoFixWidth.setAdapter(mAutoFixWidthAdapter);
+        mViewBinding.rvAutoFixWidth.addItemDecoration(new HorizontalItemDivider(true,5, Color.parseColor("#00000000")));
+        mViewBinding.rvAutoFixWidth.addItemDecoration(new VerticalItemDivider(true,5,Color.parseColor("#00000000")));
         mAutoFixWidthAdapter.getDataHolder().setList(Arrays.asList("123","名称","数据结构","算法","计算机","繁花似锦"));
     }
 

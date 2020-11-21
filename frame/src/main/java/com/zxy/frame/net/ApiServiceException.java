@@ -8,18 +8,18 @@ public class ApiServiceException extends RuntimeException {
     private int window;
     private boolean isProcessed;
 
-    public ApiServiceException(String msg, int code) {
-        super(msg);
+    public ApiServiceException(String message, int code) {
+        super(message);
         this.code = code;
     }
 
-    public ApiServiceException(Throwable cause, int code, String msg) {
-        super(msg, cause);
+    public ApiServiceException(Throwable cause, int code, String message) {
+        super(message, cause);
         this.code = code;
     }
 
-    public ApiServiceException(String msg, int code, String data, int toast, int window) {
-        super(msg);
+    public ApiServiceException(String message, int code, String data, int toast, int window) {
+        super(message);
         this.code = code;
         this.data = data;
         this.toast = toast;
@@ -65,4 +65,5 @@ public class ApiServiceException extends RuntimeException {
     public void setProcessed(boolean processed) {
         isProcessed = processed;
     }
+
 }

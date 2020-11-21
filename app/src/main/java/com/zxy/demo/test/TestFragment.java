@@ -3,9 +3,9 @@ package com.zxy.demo.test;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.bumptech.glide.Glide;
-import com.zxy.demo.R;
+import com.zxy.demo.databinding.FragmentTestBinding;
+import com.zxy.demo.databinding.ItemTestBinding;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.ToastUtil;
@@ -22,26 +23,14 @@ import com.zxy.frame.utils.info.SystemInfoUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * Created by Admin
  * on 2020/6/30
  */
-public class TestFragment extends ApiBaseFragment {
+public class TestFragment extends ApiBaseFragment<FragmentTestBinding> {
 
-
-    @BindView(R.id.rv_content)
-    RecyclerView rvContent;
-    @BindView(R.id.iv)
-    ImageView iv;
 
     TestAdapter mTestAdapter;
-
-    @Override
-    public int layoutId() {
-        return R.layout.fragment_test;
-    }
 
     @Override
     protected void initView() {
@@ -51,8 +40,8 @@ public class TestFragment extends ApiBaseFragment {
         tv.setBackgroundColor(Color.GREEN);
         tv.setText("空数据");
         mTestAdapter.setEmptyView(tv);
-        rvContent.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        rvContent.addItemDecoration(new RecyclerView.ItemDecoration() {
+        mViewBinding.rvContent.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mViewBinding.rvContent.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
@@ -60,7 +49,7 @@ public class TestFragment extends ApiBaseFragment {
                 outRect.bottom = SystemInfoUtil.dp2px(mActivity, 10);
             }
         });
-        rvContent.setAdapter(mTestAdapter);
+        mViewBinding.rvContent.setAdapter(mTestAdapter);
         List<String> l = new ArrayList<>();
         int i = 6;
         while (i > 0) {
@@ -76,7 +65,7 @@ public class TestFragment extends ApiBaseFragment {
         mTestAdapter.getDataHolder().setList(l);
         String url = "https://dss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1626745461,2641918547&fm=26&gp=0.jpg";
         int size = SystemInfoUtil.dp2px(getContext(),50);
-        Glide.with(TestFragment.this).load(url).circleCrop().override(size,size).into(iv);
+        Glide.with(TestFragment.this).load(url).circleCrop().override(size,size).into(mViewBinding.iv);
 
     }
 
@@ -92,9 +81,9 @@ public class TestFragment extends ApiBaseFragment {
         @Override
         public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
             if (viewType == TYPE1) {
-                return new T1(parent);
+                return new T1(ItemTestBinding.inflate(LayoutInflater.from(parent.getContext())));
             } else {
-                return new T2(parent);
+                return new T2(ItemTestBinding.inflate(LayoutInflater.from(parent.getContext())));
             }
         }
 
@@ -103,36 +92,32 @@ public class TestFragment extends ApiBaseFragment {
             holder.bind(getDataHolder().getList().get(position));
         }
 
-        public static class T1 extends BaseViewHolder<String> {
+        public static class T1 extends BaseViewHolder<String, ItemTestBinding> {
 
-            @BindView(R.id.textView)
-            TextView mTextView;
 
-            public T1(ViewGroup parent) {
-                super(parent, R.layout.item_test);
+            public T1(ItemTestBinding viewBinding) {
+                super(viewBinding);
             }
 
             @Override
             public void bind(String s) {
                 super.bind(s);
-                mTextView.setBackgroundColor(Color.GREEN);
-                mTextView.setText(s);
+                mViewBinding.textView.setBackgroundColor(Color.GREEN);
+                mViewBinding.textView.setText(s);
             }
         }
 
-        public static class T2 extends BaseViewHolder<String> {
+        public static class T2 extends BaseViewHolder<String,ItemTestBinding> {
 
-            @BindView(R.id.textView)
-            TextView mTextView;
 
-            public T2(ViewGroup parent) {
-                super(parent, R.layout.item_test);
+            public T2(ItemTestBinding viewBinding) {
+                super(viewBinding);
             }
 
             @Override
             public void bind(String s) {
                 super.bind(s);
-                mTextView.setText(s);
+                mViewBinding.textView.setText(s);
             }
         }
 

@@ -2,28 +2,26 @@ package com.zxy.frame.utils.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 /**
  * Created by Administrator on 2017/11/9.
  */
-
 public class SPUtil {
 
     private SharedPreferences mSharedPreferences;
     private static Context mContext;
-    private static String mSPName;
     private static SPUtil sSPUtil;
 
     private SPUtil() {
         if (mContext == null) {
             throw new IllegalArgumentException("SPUtil uninitialized init(Context) !");
         }
-        mSharedPreferences = mContext.getSharedPreferences(mSPName, Context.MODE_PRIVATE);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
-    public static void init(Context context, String spFileName) {
+    public static void init(Context context) {
         mContext = context;
-        mSPName = spFileName;
     }
 
     public static SPUtil getInstance() {
@@ -36,7 +34,7 @@ public class SPUtil {
         }
         return sSPUtil;
     }
-    
+
     public String getString(String key) {
         return mSharedPreferences.getString(key, "");
     }
@@ -48,7 +46,6 @@ public class SPUtil {
     /**
      * 设置配置参数的值
      *
-
      * @param key
      * @param value
      */

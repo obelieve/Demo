@@ -7,9 +7,9 @@ import android.view.View;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.model.IPickerViewData;
-import com.zxy.thirdsdklib.R;
 import com.google.gson.Gson;
 import com.zxy.frame.utils.proguard.UnProguard;
+import com.zxy.thirdsdklib.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;

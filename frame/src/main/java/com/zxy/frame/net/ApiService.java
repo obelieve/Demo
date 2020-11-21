@@ -1,5 +1,6 @@
 package com.zxy.frame.net;
 
+import com.google.gson.reflect.TypeToken;
 import com.zxy.frame.net.download.DownloadInterface;
 import com.zxy.frame.net.download.DownloadInterfaceImpl;
 import com.zxy.frame.net.gson.MGson;
@@ -26,20 +27,24 @@ public class ApiService {
 
     public static Observable<ResponseBody> downloadFile(String downParam, String fileUrl) throws ApiServiceException {
         if (sDownloadInterfaceImpl == null) {
-            throw new ApiServiceException("need invoke setDownloadInterface(DownloadInterface)!",ApiErrorCode.CODE_DOWNLOAD_INIT);
+            throw new ApiServiceException("need invoke setDownloadInterface(DownloadInterface)!", ApiErrorCode.CODE_DOWNLOAD_INIT);
         }
         return sDownloadInterfaceImpl.downloadFile(downParam, fileUrl);
     }
 
     public static Disposable download(String savePath, String fileUrl, DownloadInterfaceImpl.DownloadCallback callback) {
         if (sDownloadInterfaceImpl == null) {
-            throw new ApiServiceException("need invoke setDownloadInterface(DownloadInterface)!",ApiErrorCode.CODE_DOWNLOAD_INIT);
+            throw new ApiServiceException("need invoke setDownloadInterface(DownloadInterface)!", ApiErrorCode.CODE_DOWNLOAD_INIT);
         }
         return sDownloadInterfaceImpl.download(savePath, fileUrl, callback);
     }
 
+    public static <T> Observable<ApiBaseResponse<T>> wrap(Observable<ApiBaseResponse<T>> observable, TypeToken<T> typeToken) {
+        return observable.compose(io_main()).compose(handleResult(null, typeToken));
+    }
+
     public static <T> Observable<ApiBaseResponse<T>> wrap(Observable<ApiBaseResponse<T>> observable, Class<T> tClass) {
-        return observable.compose(io_main()).compose(handleResult(tClass));
+        return observable.compose(io_main()).compose(handleResult(tClass, null));
     }
 
     private static <T> Observable<T> createData(final T data) {
@@ -67,7 +72,7 @@ public class ApiService {
         };
     }
 
-    private static <T> ObservableTransformer<ApiBaseResponse<T>, ApiBaseResponse<T>> handleResult(Class<T> tClass) {
+    private static <T> ObservableTransformer<ApiBaseResponse<T>, ApiBaseResponse<T>> handleResult(Class<T> tClass, TypeToken<T> type) {
         return new ObservableTransformer<ApiBaseResponse<T>, ApiBaseResponse<T>>() {
             @Override
             public Observable<ApiBaseResponse<T>> apply(@NonNull Observable<ApiBaseResponse<T>> upstream) {
@@ -76,7 +81,7 @@ public class ApiService {
                     public Observable<ApiBaseResponse<T>> apply(@NonNull ApiBaseResponse<T> tBaseResponse) throws Exception {
                         if (tBaseResponse.getCode() == ApiErrorCode.CODE_OK) {
                             try {
-                                T t = MGson.newGson().fromJson(tBaseResponse.getData(), tClass);
+                                T t = MGson.newGson().fromJson(tBaseResponse.getData(), tClass != null ? tClass : type.getType());
                                 tBaseResponse.setEntity(t);
                                 return createData(tBaseResponse);
                             } catch (Exception e) {

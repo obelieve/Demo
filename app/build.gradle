@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.jakewharton.butterknife'
 android {
 
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -12,6 +11,10 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        viewBinding =true
     }
 
     signingConfigs {
@@ -103,8 +106,6 @@ dependencies {
     implementation "com.github.lihangleo2:ShadowLayout:3.0.4"
     //第三方
     implementation "com.daimajia.numberprogressbar:library:1.4@aar"
-    implementation "com.jakewharton:butterknife:10.2.0"
-    annotationProcessor "com.jakewharton:butterknife-compiler:10.2.0"
     implementation "com.github.bumptech.glide:glide:4.10.0"
     annotationProcessor "com.github.bumptech.glide:compiler:4.10.0"
     implementation "jp.wasabeef:glide-transformations:4.1.0"

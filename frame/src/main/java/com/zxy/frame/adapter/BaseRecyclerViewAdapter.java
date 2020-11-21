@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.viewbinding.ViewBinding;
 
 import com.zxy.frame.R;
 
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.ButterKnife;
 
 import static com.zxy.frame.adapter.BaseRecyclerViewAdapter.LoadMoreStatus.*;
 import static com.zxy.frame.adapter.BaseRecyclerViewAdapter.LoadMoreStatus.LOADING;
@@ -498,18 +498,27 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         }
     }
 
-    public static class BaseViewHolder<DATA> extends RecyclerView.ViewHolder {
+    public static class BaseViewHolder<DATA, VB extends ViewBinding> extends RecyclerView.ViewHolder {
+        protected VB mViewBinding;
 
         private BaseViewHolder(View view) {
             super(view);
         }
 
+        public BaseViewHolder(VB viewBinding) {
+            super(viewBinding.getRoot());
+            mViewBinding = viewBinding;
+        }
+
         public BaseViewHolder(ViewGroup parent, int layoutId) {
             super(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
-            ButterKnife.bind(this, itemView);
         }
 
         public void bind(DATA data) {
+        }
+
+        public VB getViewBinding() {
+            return mViewBinding;
         }
     }
 

@@ -4,18 +4,14 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.zxy.demo.R;
+import com.zxy.demo.databinding.FragmentPayBinding;
+import com.zxy.demo.databinding.ViewholderPayPriceSelectBinding;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.base.ApiBaseFragment;
@@ -24,50 +20,29 @@ import com.zxy.frame.utils.ToastUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by Admin
  * on 2020/6/4
  */
-public class PayFragment extends ApiBaseFragment {
+public class PayFragment extends ApiBaseFragment<FragmentPayBinding> {
 
-    @BindView(R.id.et_num)
-    EditText etNum;
-    @BindView(R.id.rv_select)
-    RecyclerView rvSelect;
-    @BindView(R.id.rb_ali_pay)
-    RadioButton rbAliPay;
-    @BindView(R.id.rb_wx_pay)
-    RadioButton rbWxPay;
-    @BindView(R.id.rg_pay_group)
-    RadioGroup rgPayGroup;
-    @BindView(R.id.btn_login)
-    TextView btnLogin;
 
     SelectAdapter mSelectAdapter;
 
     @Override
-    public int layoutId() {
-        return R.layout.fragment_pay;
-    }
-
-    @Override
     protected void initView() {
         mSelectAdapter = new SelectAdapter(getActivity());
-        rvSelect.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        rvSelect.setAdapter(mSelectAdapter);
+        mViewBinding.rvSelect.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        mViewBinding.rvSelect.setAdapter(mSelectAdapter);
         mSelectAdapter.setItemClickCallback(new BaseRecyclerViewAdapter.OnItemClickCallback<SelectEntity>() {
             @Override
             public void onItemClick(View view, SelectEntity entity, int position) {
                 String num = entity.getIntegral() + "";
-                etNum.setText(num);
-                etNum.setSelection(num.length());
+                mViewBinding.etNum.setText(num);
+                mViewBinding.etNum.setSelection(num.length());
             }
         });
-        etNum.addTextChangedListener(new TextWatcher() {
+        mViewBinding.etNum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -92,55 +67,54 @@ public class PayFragment extends ApiBaseFragment {
             }
         });
         mSelectAdapter.getDataHolder().setList(MockData.getSelectEntityList());
-    }
-
-    @OnClick(R.id.btn_login)
-    public void onViewClicked() {
-        if (TextUtils.isEmpty(etNum.getText().toString())) {
-            ToastUtil.show("请输入充值金额");
-            return;
-        }
-        if (getActivity() instanceof ApiBaseActivity) {
-            ((ApiBaseActivity) getActivity()).showLoading();
-        }
-        String payWay;
-        if (rbAliPay.isChecked()) {
-            payWay = "alipay";
-            PayEntity payEntity = MockData.pay(payWay, etNum.getText().toString());
-            PayUtil.aliPay(payEntity.getSign(), new Callback() {
-                @Override
-                public void onSuccess() {
-                    if (getActivity() instanceof ApiBaseActivity) {
-                        ((ApiBaseActivity) getActivity()).dismissLoading();
-                    }
-                    ToastUtil.show("支付成功");
+        mViewBinding.btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (TextUtils.isEmpty(mViewBinding.etNum.getText().toString())) {
+                    ToastUtil.show("请输入充值金额");
+                    return;
                 }
-
-                @Override
-                public void onFailure() {
-
+                if (getActivity() instanceof ApiBaseActivity) {
+                    ((ApiBaseActivity) getActivity()).showLoading();
                 }
-            });
-        } else {
-            payWay = "wechat";
-            PayEntity payEntity = MockData.pay(payWay, etNum.getText().toString());
-            PayUtil.wxPay(payEntity.getSign(), new Callback() {
-                @Override
-                public void onSuccess() {
-                    if (getActivity() instanceof ApiBaseActivity) {
-                        ((ApiBaseActivity) getActivity()).dismissLoading();
-                    }
-                    ToastUtil.show("支付成功");
+                String payWay;
+                if (mViewBinding.rbAliPay.isChecked()) {
+                    payWay = "alipay";
+                    PayEntity payEntity = MockData.pay(payWay, mViewBinding.etNum.getText().toString());
+                    PayUtil.aliPay(payEntity.getSign(), new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            if (getActivity() instanceof ApiBaseActivity) {
+                                ((ApiBaseActivity) getActivity()).dismissLoading();
+                            }
+                            ToastUtil.show("支付成功");
+                        }
+
+                        @Override
+                        public void onFailure() {
+
+                        }
+                    });
+                } else {
+                    payWay = "wechat";
+                    PayEntity payEntity = MockData.pay(payWay, mViewBinding.etNum.getText().toString());
+                    PayUtil.wxPay(payEntity.getSign(), new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            if (getActivity() instanceof ApiBaseActivity) {
+                                ((ApiBaseActivity) getActivity()).dismissLoading();
+                            }
+                            ToastUtil.show("支付成功");
+                        }
+
+                        @Override
+                        public void onFailure() {
+
+                        }
+                    });
                 }
-
-                @Override
-                public void onFailure() {
-
-                }
-            });
-        }
-
-
+            }
+        });
     }
 
 
@@ -154,7 +128,7 @@ public class PayFragment extends ApiBaseFragment {
 
         @Override
         public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-            return new PayPriceSelectViewHolder(parent, R.layout.viewholder_pay_price_select);
+            return new PayPriceSelectViewHolder(ViewholderPayPriceSelectBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false));
         }
 
         @Override
@@ -181,27 +155,20 @@ public class PayFragment extends ApiBaseFragment {
             notifyDataSetChanged();
         }
 
-        public class PayPriceSelectViewHolder extends BaseViewHolder {
+        public class PayPriceSelectViewHolder extends BaseViewHolder<SelectEntity,ViewholderPayPriceSelectBinding> {
 
-            @BindView(R.id.tv_money)
-            TextView tvMoney;
-            @BindView(R.id.tv_integral)
-            TextView tvIntegral;
-            @BindView(R.id.ll_content)
-            LinearLayout llContent;
 
-            public PayPriceSelectViewHolder(ViewGroup parent, int layoutId) {
-                super(parent, layoutId);
-                ButterKnife.bind(this, itemView);
+            public PayPriceSelectViewHolder(ViewholderPayPriceSelectBinding viewBinding) {
+                super(viewBinding);
             }
 
             public void bind(SelectEntity entity, int pos) {
                 if (mCurSelectPosition == -1 && entity.isSelected()) {
                     mCurSelectPosition = pos;
                 }
-                llContent.setSelected(entity.selected);
-                tvMoney.setText(entity.getMoney() + "元");
-                tvIntegral.setText(entity.getIntegral() + "金币");
+                mViewBinding.llContent.setSelected(entity.selected);
+                mViewBinding.tvMoney.setText(entity.getMoney() + "元");
+                mViewBinding.tvIntegral.setText(entity.getIntegral() + "金币");
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

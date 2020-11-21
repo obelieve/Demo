@@ -2,47 +2,34 @@ package com.zxy.demo.fragment;
 
 import android.content.DialogInterface;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.zxy.demo.R;
+import com.zxy.demo.databinding.FragmentDialogBinding;
 import com.zxy.demo.dialog.DelOrReportDialog;
 import com.zxy.demo.dialog.SendCommentDialog;
 import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.dialog.SimpleAlertDialog;
 import com.zxy.frame.utils.PopupMenuUtil;
 
-import butterknife.BindView;
-import butterknife.OnClick;
+public class ZDialogFragment extends ApiBaseFragment<FragmentDialogBinding> implements View.OnClickListener{
 
-public class ZDialogFragment extends ApiBaseFragment {
 
-    @BindView(R.id.btn_alert)
-    Button mBtnAlert;
-    @BindView(R.id.btn_bottom)
-    Button mBtnBottom;
-    @BindView(R.id.btn_bottom2)
-    Button mBtnBottom2;
-    @BindView(R.id.btn_location)
-    Button mBtnLocation;
-    @BindView(R.id.btn_system)
-    Button mBtnSystem;
-
-    @Override
-    public int layoutId() {
-        return R.layout.fragment_dialog;
-    }
 
     @Override
     protected void initView() {
-
+        mViewBinding.btnAlert.setOnClickListener(this);
+        mViewBinding.btnBottom.setOnClickListener(this);
+        mViewBinding.btnBottom2.setOnClickListener(this);
+        mViewBinding.btnLocation.setOnClickListener(this);
+        mViewBinding.btnSystem.setOnClickListener(this);
     }
 
-    @OnClick({R.id.btn_alert, R.id.btn_bottom, R.id.btn_bottom2, R.id.btn_location, R.id.btn_system})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_alert:
                 new SimpleAlertDialog(getActivity()).setContent("你好？").show();
@@ -63,7 +50,7 @@ public class ZDialogFragment extends ApiBaseFragment {
                 tv2.setText("内容2");
                 ll.addView(tv);
                 ll.addView(tv2);
-                new PopupMenuUtil(getActivity()).showShadowPopup(mBtnLocation, ll);
+                new PopupMenuUtil(getActivity()).showShadowPopup(mViewBinding.btnLocation, ll);
                 break;
             case R.id.btn_system:
                 AlertDialog dialog = new AlertDialog.Builder(getActivity())
@@ -83,5 +70,6 @@ public class ZDialogFragment extends ApiBaseFragment {
                 break;
         }
     }
+
 
 }

@@ -5,32 +5,20 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
+import com.news.anim.databinding.ActivityAnimationBinding;
 import com.zxy.frame.base.ApiBaseActivity;
-
-import butterknife.BindView;
 
 /**
  * Created by Admin
  * on 2020/6/10
  */
-public class AnimationActivity extends ApiBaseActivity {
+public class AnimationActivity extends ApiBaseActivity<ActivityAnimationBinding> {
 
-    @BindView(R.id.tl_tab)
-    TabLayout tlTab;
-    @BindView(R.id.vp_content)
-    ViewPager vpContent;
-
-    @Override
-    protected int layoutId() {
-        return R.layout.activity_animation;
-    }
 
     @Override
     protected void initCreateAfterView(Bundle savedInstanceState) {
-        vpContent.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+        mViewBinding.vpContent.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
 
             @Override
             public Fragment getItem(int position) {
@@ -55,8 +43,8 @@ public class AnimationActivity extends ApiBaseActivity {
                 return AnimationEnum.values()[position].getName();
             }
         });
-        tlTab.setupWithViewPager(vpContent);
-        vpContent.setCurrentItem(AnimationEnum.getCurrentIndex());
+        mViewBinding.tlTab.setupWithViewPager(mViewBinding.vpContent);
+        mViewBinding.vpContent.setCurrentItem(AnimationEnum.getCurrentIndex());
     }
 
 }

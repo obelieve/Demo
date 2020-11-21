@@ -25,11 +25,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.target.Target;
-import com.zxy.thirdsdklib.R;
 import com.previewlibrary.enitity.IThumbViewInfo;
 import com.previewlibrary.view.BasePhotoFragment;
 import com.zxy.frame.utils.storage.StorageUtil;
 import com.zxy.frame.utils.ToastUtil;
+import com.zxy.thirdsdklib.R;
 
 import java.io.File;
 import java.io.FileInputStream;

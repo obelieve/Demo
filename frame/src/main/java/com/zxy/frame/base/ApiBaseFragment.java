@@ -10,14 +10,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewbinding.ViewBinding;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
-public abstract class ApiBaseFragment extends Fragment {
 
-    private Unbinder mUnbinder;
+public abstract class ApiBaseFragment<T extends ViewBinding> extends Fragment {
 
+    protected T mViewBinding;
     protected Context mContext;
     protected Activity mActivity;
 
@@ -36,22 +39,33 @@ public abstract class ApiBaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(layoutId(), container, false);
-        mUnbinder = ButterKnife.bind(this, view);
-        initView();
-        return view;
+        createLayoutView(container);
+        return mViewBinding.getRoot();
     }
 
-    public abstract int layoutId();
+    private void createLayoutView(@Nullable ViewGroup container) {
+        Type superclass = getClass().getGenericSuperclass();
+        Class<?> aClass = (Class<?>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
+        try {
+            Method method = aClass.getDeclaredMethod("inflate", LayoutInflater.class,ViewGroup.class,boolean.class);
+            mViewBinding = (T) method.invoke(null, getLayoutInflater(),container,false);
+        } catch (NoSuchMethodException | IllegalAccessException| InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initView();
+    }
 
     protected abstract void initView();
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
-        }
+        mViewBinding = null;
     }
 
 }

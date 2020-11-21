@@ -11,54 +11,43 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.zxy.demo.R;
+import com.zxy.demo.databinding.FragmentForTaBinding;
 import com.zxy.frame.base.ApiBaseFragment;
-
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.OnLongClick;
 
 /**
  * @其他人 使用例子
  */
-public class ForTAFragment extends ApiBaseFragment {
-    @BindView(R.id.btn)
-    Button mBtn;
-    @BindView(R.id.et)
-    EditText mEt;
+public class ForTAFragment extends ApiBaseFragment<FragmentForTaBinding> {
 
     EditTextForATHelper<ForegroundColorSpan> mEditTextForATHelper;
 
     @Override
-    public int layoutId() {
-        return R.layout.fragment_for_ta;
-    }
-
-    @Override
     protected void initView() {
-        mEditTextForATHelper = new EditTextForATHelper<>(mEt, ForegroundColorSpan.class);
+        mEditTextForATHelper = new EditTextForATHelper<>(mViewBinding.et, ForegroundColorSpan.class);
         mEditTextForATHelper.setCallback(new EditTextForATHelper.Callback<ForegroundColorSpan>() {
             @Override
             public void onDeletedSpan(ForegroundColorSpan span) {
                 Toast.makeText(getContext(), "delete " + span, Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    @OnLongClick(R.id.btn)
-    public void onViewLongClicked() {
-        Toast.makeText(getContext(), mEt.getText().toString(), Toast.LENGTH_LONG).show();
-    }
-
-    @OnClick(R.id.btn)
-    public void onViewClicked() {
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#999999"));
-        mEditTextForATHelper.insertSpan(colorSpan, "@【123】");
+        mViewBinding.btn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Toast.makeText(getContext(), mViewBinding.et.getText().toString(), Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
+        mViewBinding.btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#999999"));
+                mEditTextForATHelper.insertSpan(colorSpan, "@【123】");
 //        mEditTextForATHelper.insertSpan(new A(), "@【AAA】");
+            }
+        });
     }
 
 //    public static class A {

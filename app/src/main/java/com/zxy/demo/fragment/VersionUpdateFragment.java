@@ -18,8 +18,6 @@ import android.os.Environment;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
@@ -28,41 +26,27 @@ import androidx.core.app.NotificationCompat;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.zxy.demo.MainActivity;
 import com.zxy.demo.R;
+import com.zxy.demo.databinding.FragmentVersionUpdateBinding;
 import com.zxy.demo.entity.VersionUpdateEntity;
 import com.zxy.frame.base.ApiBaseActivity;
 import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.net.ApiService;
 import com.zxy.frame.net.download.DownloadInterfaceImpl;
-import com.zxy.frame.utils.log.LogUtil;
-import com.zxy.frame.utils.format.StringUtil;
 import com.zxy.frame.utils.SystemIntentUtil;
 import com.zxy.frame.utils.ToastUtil;
+import com.zxy.frame.utils.format.StringUtil;
+import com.zxy.frame.utils.log.LogUtil;
 
 import java.io.File;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import io.reactivex.disposables.Disposable;
 
 /**
  * 版本更新
  */
-public class VersionUpdateFragment extends ApiBaseFragment {
+public class VersionUpdateFragment extends ApiBaseFragment<FragmentVersionUpdateBinding> implements View.OnClickListener {
 
     public static final String EXTRA_VERSION_UPDATE_ENTITY = "extra_version_update_entity";
-
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
-    @BindView(R.id.tv_content)
-    TextView tvContent;
-    @BindView(R.id.tv_update)
-    TextView tvUpdate;
-    @BindView(R.id.ll_content)
-    LinearLayout llContent;
-    @BindView(R.id.rl_close)
-    RelativeLayout rlClose;
-    @BindView(R.id.rl_content)
-    RelativeLayout rlContent;
 
     private VersionUpdateEntity mEntity;
     private DownloadHelper mDownloadHelper;
@@ -78,25 +62,22 @@ public class VersionUpdateFragment extends ApiBaseFragment {
     }
 
     @Override
-    public int layoutId() {
-        return R.layout.fragment_version_update;
-    }
-
-    @Override
     protected void initView() {
         if (getArguments() != null) {
             mEntity = (VersionUpdateEntity) getArguments().getSerializable(EXTRA_VERSION_UPDATE_ENTITY);
         }
         if (mEntity == null)
             return;
-        tvTitle.setText(String.format("发现新版本V%1$s", mEntity.getVersion_new()));
-        tvContent.setText(Html.fromHtml(mEntity.getContent()));
-        tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
-        rlClose.setVisibility(mEntity.getEnforce() == 1 ? View.GONE : View.VISIBLE);
+        mViewBinding.tvTitle.setText(String.format("发现新版本V%1$s", mEntity.getVersion_new()));
+        mViewBinding.tvContent.setText(Html.fromHtml(mEntity.getContent()));
+        mViewBinding.tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
+        mViewBinding.rlClose.setVisibility(mEntity.getEnforce() == 1 ? View.GONE : View.VISIBLE);
+        mViewBinding.tvUpdate.setOnClickListener(this);
+        mViewBinding.rlClose.setOnClickListener(this);
     }
 
-    @OnClick({R.id.tv_update, R.id.rl_close})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_update:
                 if (getActivity() instanceof ApiBaseActivity) {
@@ -137,7 +118,7 @@ public class VersionUpdateFragment extends ApiBaseFragment {
             }
             return;
         } else {
-            rlContent.setVisibility(View.GONE);
+            mViewBinding.rlContent.setVisibility(View.GONE);
         }
         if (mDownloadHelper == null) {
             mDownloadHelper = new DownloadHelper(getActivity(), new DownloadHelper.Callback() {
@@ -176,7 +157,7 @@ public class VersionUpdateFragment extends ApiBaseFragment {
                         public void run() {
                             mDownloadHelper.dismiss();
                             ToastUtil.show("下载失败");
-                            rlContent.setVisibility(View.VISIBLE);
+                            mViewBinding.rlContent.setVisibility(View.VISIBLE);
                             LogUtil.e("更新下载 失败");
                         }
                     });

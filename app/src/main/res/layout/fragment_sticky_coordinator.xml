@@ -104,7 +104,7 @@
         </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    <com.zxy.frame.view.pagestatus.PageStatusView
+    <com.zxy.frame.view.PageStatusView
         android:id="@+id/view_page_status"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

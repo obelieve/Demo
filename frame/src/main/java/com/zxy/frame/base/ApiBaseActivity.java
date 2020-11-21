@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.viewbinding.ViewBinding;
 
 import com.zxy.frame.R;
 import com.zxy.frame.dialog.LoadingDialog;
@@ -26,18 +28,23 @@ import com.zxy.frame.utils.StatusBarUtil;
 import com.zxy.frame.utils.SystemIntentUtil;
 import com.zxy.frame.utils.info.SystemInfoUtil;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
 
 
-public abstract class ApiBaseActivity extends AppCompatActivity implements ICommonToolbar, IStatusBar {
+public abstract class ApiBaseActivity <T extends ViewBinding> extends AppCompatActivity implements ICommonToolbar, IStatusBar {
 
     private static final int PERMISSION_REQUEST_CODE = 10240;
 
     private int mStatusBarColor = Color.WHITE;
     protected boolean mNeedInsetStatusBar = true;
     protected boolean mLightStatusBar = true;
+
+    protected T mViewBinding;
 
     private LoadingDialog mLoadingDialog;
     /**
@@ -57,14 +64,21 @@ public abstract class ApiBaseActivity extends AppCompatActivity implements IComm
             StatusBarUtil.setStatusBarTranslucentStatus(this);
         }
         StatusBarUtil.setWindowLightStatusBar(this, isLightStatusBar());
-        if (layoutId() != 0) {
-            setContentView(layoutId());
-        }
-        ButterKnife.bind(this);
+        createLayoutView();
         initCreateAfterView(savedInstanceState);
     }
 
-    protected abstract int layoutId();
+    private void createLayoutView() {
+        Type superclass = getClass().getGenericSuperclass();
+        Class<?> aClass = (Class<?>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
+        try {
+            Method method = aClass.getDeclaredMethod("inflate", LayoutInflater.class);
+            mViewBinding = (T) method.invoke(null, getLayoutInflater());
+            setContentView(mViewBinding.getRoot());
+        } catch (NoSuchMethodException | IllegalAccessException| InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
 
     protected abstract void initCreateAfterView(Bundle savedInstanceState);
 
@@ -72,11 +86,7 @@ public abstract class ApiBaseActivity extends AppCompatActivity implements IComm
         if (Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制竖屏
         } else {
-            try {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制竖屏
-            } catch (Exception e) {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_BEHIND);
-            }
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_BEHIND);
         }
     }
 
@@ -213,7 +223,7 @@ public abstract class ApiBaseActivity extends AppCompatActivity implements IComm
             if (right_icon != null) {
                 right_icon.setTextColor(getResources().getColor(R.color.common_black));
             }
-            if(right_tip!=null){
+            if (right_tip != null) {
                 right_tip.setTextColor(getResources().getColor(R.color.common_black));
             }
         } else if (style == Style.LIGHT) {
@@ -226,7 +236,7 @@ public abstract class ApiBaseActivity extends AppCompatActivity implements IComm
             if (right_icon != null) {
                 right_icon.setTextColor(getResources().getColor(R.color.white));
             }
-            if(right_tip!=null){
+            if (right_tip != null) {
                 right_tip.setTextColor(getResources().getColor(R.color.white));
             }
         }

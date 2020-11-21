@@ -13,11 +13,11 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.zxy.thirdsdklib.R;
 import com.previewlibrary.loader.IZoomMediaLoader;
 import com.previewlibrary.loader.MySimpleTarget;
 import com.previewlibrary.wight.SmoothImageView;
 import com.zxy.frame.utils.image.GlideApp;
+import com.zxy.thirdsdklib.R;
 
 public class TestImageLoader implements IZoomMediaLoader {
 

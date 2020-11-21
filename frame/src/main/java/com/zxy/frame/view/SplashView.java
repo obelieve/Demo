@@ -20,8 +20,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.zxy.frame.R;
 import com.zxy.frame.utils.info.SystemInfoUtil;
 
-import butterknife.ButterKnife;
-
 public class SplashView extends FrameLayout {
 
     ViewPager vpContent;
@@ -46,7 +44,6 @@ public class SplashView extends FrameLayout {
 
     private void init() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_splash, this, true);
-        ButterKnife.bind(this, view);
         vpContent = view.findViewById(R.id.vp_content);
         viewIndicator = view.findViewById(R.id.view_indicator);
         tvNext = view.findViewById(R.id.tv_next);

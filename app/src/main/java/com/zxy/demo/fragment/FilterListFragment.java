@@ -1,12 +1,14 @@
 package com.zxy.demo.fragment;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zxy.demo.R;
+import com.zxy.demo.databinding.FragmentFilterListBinding;
+import com.zxy.demo.databinding.ViewListSelectItemBinding;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
 import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.PopupMenuUtil;
@@ -20,23 +22,12 @@ import com.zxy.frame.view.select.ThreeLayerSelectView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by zxy
  * on 2020/5/8
  */
-public class FilterListFragment extends ApiBaseFragment {
+public class FilterListFragment extends ApiBaseFragment<FragmentFilterListBinding> implements View.OnClickListener {
 
-
-    @BindView(R.id.ll_type1)
-    LinearLayout llType1;
-    @BindView(R.id.ll_type2)
-    LinearLayout llType2;
-    @BindView(R.id.ll_type3)
-    LinearLayout llType3;
 
     PopupMenuUtil mPopupMenuType1;
     PopupMenuUtil mPopupMenuType2;
@@ -45,17 +36,14 @@ public class FilterListFragment extends ApiBaseFragment {
     ListSelectPopupView mListSelectPopupView;
 
     @Override
-    public int layoutId() {
-        return R.layout.fragment_filter_list;
+    protected void initView() {
+        mViewBinding.llType1.setOnClickListener(this);
+        mViewBinding.llType2.setOnClickListener(this);
+        mViewBinding.llType3.setOnClickListener(this);
     }
 
     @Override
-    protected void initView() {
-
-    }
-
-    @OnClick({R.id.ll_type1, R.id.ll_type2, R.id.ll_type3})
-    public void onViewClicked(View view) {
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_type1:
                 if (mPopupMenuType1 == null) {
@@ -79,7 +67,7 @@ public class FilterListFragment extends ApiBaseFragment {
                     });
                     mPopupMenuType1 = new PopupMenuUtil(getActivity());
                 }
-                mPopupMenuType1.showDownPopup(llType1, mThreeLayerSelectView, SystemInfoUtil.screenWidth(mActivity));
+                mPopupMenuType1.showDownPopup(mViewBinding.llType1, mThreeLayerSelectView, SystemInfoUtil.screenWidth(mActivity));
                 break;
             case R.id.ll_type2:
                 if (mPopupMenuType2 == null) {
@@ -99,7 +87,7 @@ public class FilterListFragment extends ApiBaseFragment {
                     });
                     mPopupMenuType2 = new PopupMenuUtil(getActivity());
                 }
-                mPopupMenuType2.showDownPopup(llType2, mListSelectPopupView, SystemInfoUtil.screenWidth(mActivity));
+                mPopupMenuType2.showDownPopup(mViewBinding.llType2, mListSelectPopupView, SystemInfoUtil.screenWidth(mActivity));
                 break;
             case R.id.ll_type3:
                 break;
@@ -158,7 +146,8 @@ public class FilterListFragment extends ApiBaseFragment {
 
             @Override
             public BaseRecyclerViewAdapter.BaseViewHolder genViewHolder(ViewGroup parent) {
-                return new ListSelectViewHolder(parent);
+                return new ListSelectViewHolder(ViewListSelectItemBinding.inflate(LayoutInflater.from(parent.getContext()),
+                        parent,false));
             }
 
             @Override
@@ -178,33 +167,29 @@ public class FilterListFragment extends ApiBaseFragment {
             }
         }
 
-        public static class ListSelectViewHolder extends BaseRecyclerViewAdapter.BaseViewHolder<ListSelectData> {
+        public static class ListSelectViewHolder extends BaseRecyclerViewAdapter.BaseViewHolder<ListSelectData, ViewListSelectItemBinding> {
 
-            @BindView(R.id.tv_name)
-            TextView tvName;
-            @BindView(R.id.iv_select)
-            ImageView ivSelect;
 
-            public ListSelectViewHolder(ViewGroup parent) {
-                super(parent, R.layout.view_list_select_item);
-                ButterKnife.bind(this, itemView);
+            public ListSelectViewHolder(ViewListSelectItemBinding viewBinding) {
+                super(viewBinding);
             }
+
 
             @Override
             public void bind(ListSelectData data) {
                 super.bind(data);
                 if (data != null) {
-                    tvName.setText(data.getName());
+                    mViewBinding.tvName.setText(data.getName());
                     setSelectView(data.isSelected());
                 }
             }
 
             private void setSelectView(boolean selected) {
-                tvName.setSelected(selected);
+                mViewBinding.tvName.setSelected(selected);
                 if (selected) {
-                    ivSelect.setVisibility(View.VISIBLE);
+                    mViewBinding.ivSelect.setVisibility(View.VISIBLE);
                 } else {
-                    ivSelect.setVisibility(View.GONE);
+                    mViewBinding.ivSelect.setVisibility(View.GONE);
                 }
             }
         }

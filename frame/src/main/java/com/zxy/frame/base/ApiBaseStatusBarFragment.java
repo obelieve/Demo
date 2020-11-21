@@ -1,22 +1,28 @@
 package com.zxy.frame.base;
 
+import android.graphics.Color;
+import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.viewbinding.ViewBinding;
 
 import com.zxy.frame.utils.StatusBarUtil;
 
 /**
  * 状态栏透明时，控制状态栏Light切换方式 Fragment
  */
-public abstract class ApiBaseStatusBarFragment extends ApiBaseFragment implements IBaseStatusBar {
+public abstract class ApiBaseStatusBarFragment<T extends ViewBinding> extends ApiBaseFragment<T> implements IBaseStatusBar {
 
     @Override
     protected void initView() {
         try {
             switchStatusLight();
-            ViewGroup.LayoutParams params = statusBarView().getLayoutParams();
+            View view = statusBarView();
+            ViewGroup.LayoutParams params = view.getLayoutParams();
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             params.height = StatusBarUtil.getStatusBarHeight(getActivity());
-            statusBarView().setLayoutParams(params);
+            view.setLayoutParams(params);
+            view.setBackgroundColor(statusBarColor());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,6 +46,11 @@ public abstract class ApiBaseStatusBarFragment extends ApiBaseFragment implement
             switchStatusLight();
         }
         super.onResume();
+    }
+
+    @Override
+    public int statusBarColor() {
+        return Color.WHITE;
     }
 
     @Override

@@ -5,7 +5,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,26 +14,20 @@ import androidx.fragment.app.Fragment;
 import com.airbnb.lottie.LottieAnimationView;
 import com.zxy.demo.MainEnum;
 import com.zxy.demo.R;
+import com.zxy.demo.databinding.ActivityTabBinding;
 import com.zxy.demo.fragment.LoadRefreshFragment;
 import com.zxy.frame.base.ApiBaseActivity;
-import com.zxy.frame.utils.info.SystemInfoUtil;
 import com.zxy.frame.utils.helper.FragmentManagerHelper;
+import com.zxy.frame.utils.info.SystemInfoUtil;
 import com.zxy.frame.view.BottomTabView;
-
-import butterknife.BindView;
 
 /**
  * Created by Admin
  * on 2020/7/20
  */
-public class TabActivity extends ApiBaseActivity {
+public class TabActivity extends ApiBaseActivity<ActivityTabBinding> {
 
 
-    @BindView(R.id.fl_content)
-    FrameLayout flContent;
-
-    @BindView(R.id.view_bottom_tab)
-    BottomTabView viewBottomTab;
 
     boolean mLoadXmlTab = false;
     FragmentManagerHelper mFragmentManagerHelper;
@@ -43,12 +36,6 @@ public class TabActivity extends ApiBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         FragmentManagerHelper.activityRemoveFragmentInstanceState(savedInstanceState);
         super.onCreate(savedInstanceState);
-    }
-
-
-    @Override
-    protected int layoutId() {
-        return R.layout.activity_tab;
     }
 
     @Override
@@ -74,8 +61,8 @@ public class TabActivity extends ApiBaseActivity {
             /**
              * XML加载tab
              */
-            LayoutInflater.from(mActivity).inflate(R.layout.view_bottom_tab_content, viewBottomTab, true);
-            viewBottomTab.setup(new BottomTabView.Callback() {
+            LayoutInflater.from(mActivity).inflate(R.layout.view_bottom_tab_content, mViewBinding.viewBottomTab, true);
+            mViewBinding.viewBottomTab.setup(new BottomTabView.Callback() {
                 @Override
                 public void onSelectChange(int index, View view, boolean select) {
                     mFragmentManagerHelper.switchFragment(index);
@@ -85,8 +72,8 @@ public class TabActivity extends ApiBaseActivity {
             /**
              * 动态加载tab
              */
-            BottomTabViewHelper.dynamicAddTabView(viewBottomTab);
-            viewBottomTab.setup(new BottomTabView.Callback() {
+            BottomTabViewHelper.dynamicAddTabView(mViewBinding.viewBottomTab);
+            mViewBinding.viewBottomTab.setup(new BottomTabView.Callback() {
                 @Override
                 public void onSelectChange(int index, View view, boolean select) {
                     BottomTabViewHelper.selectChange(index, view, select);
