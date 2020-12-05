@@ -17,6 +17,8 @@ import android.view.WindowManager;
 import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 import com.zxy.frame.utils.storage.SPUtil;
 
 import java.io.BufferedReader;
@@ -436,4 +438,13 @@ public class TelephoneUtil {
         return false;
     }
 
+    public static boolean isMatched(int countryCode, CharSequence num) {
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        try {
+            Phonenumber.PhoneNumber numberProto = phoneUtil.parse("+" + countryCode + num, String.valueOf(countryCode));
+            return phoneUtil.isValidNumber(numberProto) && phoneUtil.getNumberType(numberProto) == PhoneNumberUtil.PhoneNumberType.MOBILE;
+        } catch (Exception e) {
+        }
+        return false;
+    }
 }

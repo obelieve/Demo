@@ -20,7 +20,7 @@
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:background="@drawable/bg_circle_main_20dp"
-        android:text="Retry"
+        android:text="@string/retry"
         android:textColor="@color/white"
         android:visibility="gone"
         app:cornerRadius="20dp"

@@ -2,6 +2,7 @@ package com.zxy.frame.net;
 
 import android.app.Activity;
 
+import com.zxy.frame.R;
 import com.zxy.frame.dialog.SimpleAlertDialog;
 import com.zxy.frame.utils.ToastUtil;
 
@@ -48,7 +49,7 @@ public abstract class ApiBaseSubscribe<T> implements Observer<T> {
                     new SimpleAlertDialog(mActivity)
                             .setSimple(true)
                             .setContent(response.getMsg())
-                            .setOk("知道了").show();
+                            .setOk(mActivity.getString(R.string.done)).show();
                     isProcessed = true;
                 }
             }

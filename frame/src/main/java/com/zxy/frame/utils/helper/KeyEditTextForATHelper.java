@@ -9,30 +9,29 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.EditText;
 
-/**
- * 这个类用于设置EditText “@其他人” 这种标签式插入和删除操作。
- * 用法：
- * 1.初始化对象
- * 2.调用EditTextForATHelper#insertSpan(T,String) 插入标签
- * * #setCallback(Callback<T>) 删除标签时，回调方法
- *
- * @param <T>
- */
-public class EditTextForATHelper<T> {
+import com.zxy.frame.view.KeyEditText;
+
+public class KeyEditTextForATHelper<T> {
 
     private Class<T> mSpanClass;
-    private EditText mEditText;
+    private KeyEditText mEditText;
     private Callback<T> mCallback;
 
-    public EditTextForATHelper(EditText editText, Class<T> spanClass) {
+    public KeyEditTextForATHelper(KeyEditText editText, Class<T> spanClass) {
+       this(editText,null,spanClass);
+    }
+
+    public KeyEditTextForATHelper(KeyEditText editText, View.OnKeyListener listener, Class<T> spanClass) {
         mEditText = editText;
         mSpanClass = spanClass;
         mEditText.setEditableFactory(new NoCopySpanEditableFactory(new SelectionSpanWatcher<>(mSpanClass)));
         mEditText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(listener!=null&&listener.onKey(v,keyCode,event)){
+                    return true;
+                }
                 return onKeyDownDel(mEditText.getText(), keyCode, event.getAction());
             }
         });

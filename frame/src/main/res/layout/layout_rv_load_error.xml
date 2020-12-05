@@ -7,5 +7,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="加载错误，请重新再试" />
+        android:text="@string/load_error" />
 </FrameLayout>

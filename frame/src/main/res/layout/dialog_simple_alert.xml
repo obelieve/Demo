@@ -36,7 +36,7 @@
             android:layout_weight="1"
             android:background="@color/transparent"
             android:stateListAnimator="@null"
-            android:text="取消"
+            android:text="@string/cancel"
             android:textColor="@color/baseDialogTextColor2"
             android:textSize="@dimen/baseDialogContent" />
 
@@ -52,7 +52,7 @@
             android:layout_weight="1"
             android:background="@color/transparent"
             android:stateListAnimator="@null"
-            android:text="确定"
+            android:text="@string/confirm"
             android:textColor="@color/baseDialogMainColor"
             android:textSize="@dimen/baseDialogContent" />
     </LinearLayout>

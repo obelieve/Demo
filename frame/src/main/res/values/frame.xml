@@ -19,10 +19,10 @@
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowIsTranslucent">false</item>
-        <item name="android:statusBarColor">@color/colorWhite</item>
+        <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:background">@color/colorWhite</item>
-        <item name="android:windowBackground">@color/colorWhite</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:windowBackground">@color/transparent</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
     <style name="BaseBottomDialog" parent="BaseDialog">
@@ -54,11 +54,11 @@
     <color name="common_black">#000000</color>
 
     <!--dimen 尺寸-->
-    <dimen name="common_title">16dp</dimen>
+    <dimen name="common_title">16sp</dimen>
     <dimen name="common_margin">15dp</dimen>
-    <dimen name="common_big_title">18dp</dimen>
+    <dimen name="common_big_title">18sp</dimen>
 
     <!--string 字符串-->
-    <string name="common_request_error_tip">数据请求失败，请稍后再试</string>
-    <string name="common_network_error_tip">网络连接失败，请稍后再试</string>
+    <string name="common_request_error_tip">Data Error,Please Retry</string>
+    <string name="common_network_error_tip">Network Error,Please Retry</string>
 </resources>

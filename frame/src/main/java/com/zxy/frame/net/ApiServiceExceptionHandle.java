@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import com.zxy.frame.R;
 import com.zxy.frame.application.BaseApplication;
-import com.zxy.frame.dialog.SimpleAlertDialog;
 
 import java.net.ConnectException;
 
@@ -40,19 +39,15 @@ public class ApiServiceExceptionHandle {
 
     private static ApiServiceException handleApiServiceException(Activity activity, boolean needLogin, ApiServiceException e) {
         switch (e.getCode()) {
-            case ApiErrorCode.CODE_DUPLICATE_NICKNAME:
-            case ApiErrorCode.CODE_SENSITIVE_WORDS:
-            case ApiErrorCode.CODE_TIME_INTERVAL:
-            case ApiErrorCode.CODE_TOOLONG_NICKNAME:
-            case ApiErrorCode.CODE_DONOT_CANCEL:
-                if (e.getWindow() == 1 && activity != null && !activity.isFinishing()) {
-                    new SimpleAlertDialog(activity)
-                            .setSimple(true)
-                            .setContent(e.getMessage())
-                            .setOk("知道了").show();
-                }
-                e.setProcessed(true);
-                break;
+//            case ApiErrorCode.CODE_DUPLICATE_NICKNAME:
+//                if (e.getWindow() == 1 && activity != null && !activity.isFinishing()) {
+//                    new SimpleAlertDialog(activity)
+//                            .setSimple(true)
+//                            .setContent(e.getMessage())
+//                            .setOk(activity.getString(R.string.get_it)).show();
+//                }
+//                e.setProcessed(true);
+//                break;
             default:
                 if (sApiExtendRespondThrowableListener != null) {
                     sApiExtendRespondThrowableListener.defHandleException(activity, e, e.getWindow(), e.getToast());

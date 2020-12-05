@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name" />
 
-    <EditText
+    <com.zxy.frame.view.KeyEditText
         android:id="@+id/et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 import com.zxy.frame.R;
 import com.zxy.frame.adapter.BaseRecyclerViewAdapter;
@@ -110,12 +111,20 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
         mRightAdapter.getDataHolder().setList(rightData);
     }
 
-    public void leftNotifyItemChanged(int position){
-        mRightAdapter.notifyItemChanged(position);
+    public LeftAdapter<LData> getLeftAdapter() {
+        return mLeftAdapter;
     }
 
-    public void rightNotifyItemChanged(int position){
-        mRightAdapter.notifyItemChanged(position);
+    public RightAdapter<RData> getRightAdapter() {
+        return mRightAdapter;
+    }
+
+    public RecyclerView getRvLeft() {
+        return mRvLeft;
+    }
+
+    public RecyclerView getRvRight() {
+        return mRvRight;
     }
 
     public static class LeftAdapter<LData extends ILeftData> extends BaseRecyclerViewAdapter<LData> {
@@ -224,6 +233,10 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
 
     public abstract static class LeftViewHolder<DATA extends ILeftData> extends BaseRecyclerViewAdapter.BaseViewHolder {
 
+        public LeftViewHolder(ViewBinding viewBinding) {
+            super(viewBinding);
+        }
+
         public LeftViewHolder(ViewGroup parent, int layoutId) {
             super(parent, layoutId);
         }
@@ -232,6 +245,11 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
     }
 
     public abstract static class RightViewHolder<DATA extends IRightData> extends BaseRecyclerViewAdapter.BaseViewHolder {
+
+
+        public RightViewHolder(ViewBinding viewBinding) {
+            super(viewBinding);
+        }
 
         public RightViewHolder(ViewGroup parent, int layoutId) {
             super(parent, layoutId);

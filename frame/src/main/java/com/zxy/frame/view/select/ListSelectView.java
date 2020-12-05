@@ -148,7 +148,7 @@ public class ListSelectView extends FrameLayout {
 
         @Override
         public void loadViewHolder(BaseViewHolder holder, int position) {
-            holder.bind(getDataHolder().getList().get(position));
+            holder.bind(getDataHolder().getList().get(position),position,getDataHolder().getList());
         }
     }
 

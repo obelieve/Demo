@@ -78,7 +78,10 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         if (mOnLoadMoreListener == null)
             return;
         mLoadMoreState = LOADING;
-        notifyItemChanged(getItemCount() - 1);
+        if(getDataHolder().getList().size()>0){
+            //size=0，Called attach on a child which is not detached
+            notifyItemChanged(getItemCount() - 1);
+        }
     }
 
     public void loadMoreError() {
@@ -88,7 +91,9 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             @Override
             public void run() {
                 mLoadMoreState = checkIsLoadingState() ? LOADING : ERROR;
-                notifyItemChanged(getItemCount() - 1);
+                if(getDataHolder().getList().size()>0) {
+                    notifyItemChanged(getItemCount() - 1);
+                }
             }
         });
     }
@@ -104,7 +109,9 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             @Override
             public void run() {
                 mLoadMoreState = checkIsLoadingState() ? LOADING : END;
-                notifyItemChanged(getItemCount() - 1);
+                if(getDataHolder().getList().size()>0) {
+                    notifyItemChanged(getItemCount() - 1);
+                }
             }
         });
     }
@@ -360,7 +367,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                 @Override
                 public int getSpanSize(int position) {
                     int type = getItemViewType(position);
-                    return type == (HEADER_TYPE | FOOTER_TYPE | LOAD_MORE_TYPE | EMPTY_TYPE) ? ((GridLayoutManager) recyclerView.getLayoutManager()).getSpanCount() : 1;
+                    return type == HEADER_TYPE | type == FOOTER_TYPE | type == LOAD_MORE_TYPE | type == EMPTY_TYPE ? ((GridLayoutManager) recyclerView.getLayoutManager()).getSpanCount() : 1;
                 }
             });
         }
@@ -514,7 +521,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             super(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
         }
 
-        public void bind(DATA data) {
+        public void bind(DATA data,int position,List<DATA> list) {
         }
 
         public VB getViewBinding() {

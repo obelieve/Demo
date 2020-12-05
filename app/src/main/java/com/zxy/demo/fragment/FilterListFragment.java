@@ -176,8 +176,7 @@ public class FilterListFragment extends ApiBaseFragment<FragmentFilterListBindin
 
 
             @Override
-            public void bind(ListSelectData data) {
-                super.bind(data);
+            public void bind(ListSelectData data, int position, List<ListSelectData> list) {
                 if (data != null) {
                     mViewBinding.tvName.setText(data.getName());
                     setSelectView(data.isSelected());

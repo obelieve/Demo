@@ -7,5 +7,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="没有更多数据" />
+        android:text="@string/load_no_data" />
 </FrameLayout>

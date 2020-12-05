@@ -89,7 +89,7 @@ public class TestFragment extends ApiBaseFragment<FragmentTestBinding> {
 
         @Override
         public void loadViewHolder(BaseViewHolder holder, int position) {
-            holder.bind(getDataHolder().getList().get(position));
+            holder.bind(getDataHolder().getList().get(position),position,getDataHolder().getList());
         }
 
         public static class T1 extends BaseViewHolder<String, ItemTestBinding> {
@@ -100,8 +100,7 @@ public class TestFragment extends ApiBaseFragment<FragmentTestBinding> {
             }
 
             @Override
-            public void bind(String s) {
-                super.bind(s);
+            public void bind(String s, int position, List<String> list) {
                 mViewBinding.textView.setBackgroundColor(Color.GREEN);
                 mViewBinding.textView.setText(s);
             }
@@ -115,8 +114,7 @@ public class TestFragment extends ApiBaseFragment<FragmentTestBinding> {
             }
 
             @Override
-            public void bind(String s) {
-                super.bind(s);
+            public void bind(String s, int position, List<String> list) {
                 mViewBinding.textView.setText(s);
             }
         }
