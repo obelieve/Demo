@@ -124,6 +124,18 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         mEmptyView = emptyView;
     }
 
+    public void setEmptyView(View emptyView, RecyclerView.LayoutParams params) {
+        if (mEmptyView != null)
+            mEmptyView.setLayoutParams(params);
+        mEmptyView = emptyView;
+    }
+
+    public void setEmptyView(View emptyView, int width, int height) {
+        if (mEmptyView != null)
+            mEmptyView.setLayoutParams(new RecyclerView.LayoutParams(width, height));
+        mEmptyView = emptyView;
+    }
+
     public void setHeaderView(View headerView) {
         mHeaderView = headerView;
     }

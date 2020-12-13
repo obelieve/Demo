@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,8 @@ public class PageStatusView extends FrameLayout implements View.OnClickListener 
 
     private ProgressBar pbLoading;
     private Button btnRefresh;
+    private LinearLayout llRefresh;
+    private TextView tvNoData;
     Callback mCallback;
 
     public PageStatusView(@NonNull Context context) {
@@ -36,8 +40,10 @@ public class PageStatusView extends FrameLayout implements View.OnClickListener 
 
     private void init(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_page_status, this, true);
+        llRefresh = view.findViewById(R.id.ll_refresh);
         pbLoading = view.findViewById(R.id.pb_loading);
         btnRefresh = view.findViewById(R.id.btn_refresh);
+        tvNoData = view.findViewById(R.id.tv_no_data);
         btnRefresh.setOnClickListener(this);
     }
 
@@ -57,19 +63,29 @@ public class PageStatusView extends FrameLayout implements View.OnClickListener 
     public void loading() {
         setVisibility(View.VISIBLE);
         pbLoading.setVisibility(View.VISIBLE);
-        btnRefresh.setVisibility(View.GONE);
+        llRefresh.setVisibility(View.GONE);
+        tvNoData.setVisibility(View.GONE);
     }
 
     public void failure() {
         setVisibility(View.VISIBLE);
         pbLoading.setVisibility(View.GONE);
-        btnRefresh.setVisibility(View.VISIBLE);
+        llRefresh.setVisibility(View.VISIBLE);
+        tvNoData.setVisibility(View.GONE);
     }
 
     public void success() {
         setVisibility(View.GONE);
         pbLoading.setVisibility(View.GONE);
-        btnRefresh.setVisibility(View.GONE);
+        llRefresh.setVisibility(View.GONE);
+        tvNoData.setVisibility(View.GONE);
+    }
+
+    public void noData() {
+        setVisibility(View.VISIBLE);
+        pbLoading.setVisibility(View.GONE);
+        llRefresh.setVisibility(View.GONE);
+        tvNoData.setVisibility(View.VISIBLE);
     }
 
     public interface Callback {
@@ -77,6 +93,6 @@ public class PageStatusView extends FrameLayout implements View.OnClickListener 
     }
 
     public enum Status {
-        LOADING, FAILURE, SUCCESS
+        LOADING, FAILURE, SUCCESS,NO_DATA
     }
 }

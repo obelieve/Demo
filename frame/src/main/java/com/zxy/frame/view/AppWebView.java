@@ -47,9 +47,9 @@ public class AppWebView extends WebView {
     private ValueCallback<Uri> mValueCallbackAndroid4;
     private ValueCallback<Uri[]> mValueCallbackAndroid5;
     private String mCameraPicturePath;
-    private ProgressBar mProgressBar;
 
     private ExecutorService mExecutors;
+    private Callback mCallback;
 
     public AppWebView(Context context) {
         super(context);
@@ -74,8 +74,8 @@ public class AppWebView extends WebView {
         mExecutors = Executors.newSingleThreadExecutor();
     }
 
-    public void setProgressBar(ProgressBar progressBar) {
-        mProgressBar = progressBar;
+    public void setCallback(Callback callback) {
+        mCallback = callback;
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -115,15 +115,25 @@ public class AppWebView extends WebView {
     }
 
     public class AppWebChromeClient extends WebChromeClient {
+
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+            if(mCallback!=null){
+                mCallback.onReceivedTitle(title);
+            }
+        }
+
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            if(mProgressBar!=null){
+            if(mCallback!=null&&mCallback.getProgress()!=null){
+                ProgressBar progressBar = mCallback.getProgress();
                 if(newProgress==100){
-                    mProgressBar.setVisibility(GONE);
+                    progressBar.setVisibility(GONE);
                 }else{
-                    mProgressBar.setProgress(newProgress);
-                    mProgressBar.setVisibility(VISIBLE);
+                    progressBar.setProgress(newProgress);
+                    progressBar.setVisibility(VISIBLE);
                 }
             }
         }
@@ -147,7 +157,11 @@ public class AppWebView extends WebView {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return super.shouldOverrideUrlLoading(view, url);
+            if(mCallback!=null){
+                return mCallback.shouldOverrideUrlLoading(view,url);
+            }else{
+                return super.shouldOverrideUrlLoading(view, url);
+            }
         }
 
         @Override
@@ -302,6 +316,12 @@ public class AppWebView extends WebView {
     private int screenWidth(Context context) {
         DisplayMetrics ds = context.getResources().getDisplayMetrics();
         return ds.widthPixels;
+    }
+
+    public interface Callback{
+        ProgressBar getProgress();
+        void onReceivedTitle(String title);
+        boolean shouldOverrideUrlLoading(WebView view, String url);
     }
 
 }

@@ -7,5 +7,6 @@
     <string name="confirm">Confirm</string>
     <string name="retry">Retry</string>
     <string name="done">Done</string>
-    <string name="get_it">Get it</string>
+    <string name="empty_data_tips">no data</string>
+    <string name="get_it">get it</string>
 </resources>

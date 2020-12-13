@@ -28,6 +28,7 @@ import java.lang.reflect.Type;
 
 public abstract class ApiBaseFragment<T extends ViewBinding> extends Fragment implements ICommonToolbar {
 
+    protected boolean mInitOnce = true;
     protected T mViewBinding;
     protected Context mContext;
     protected Activity mActivity;
@@ -66,9 +67,15 @@ public abstract class ApiBaseFragment<T extends ViewBinding> extends Fragment im
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView();
+        if(mInitOnce){
+            mInitOnce = false;
+            initViewOnce();
+        }
     }
 
     protected abstract void initView();
+
+    protected void initViewOnce(){}
 
     @Override
     public void onDestroyView() {
