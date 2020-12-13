@@ -3,17 +3,35 @@ package com.zxy.demo.fragment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
+import android.widget.ProgressBar;
 
 import com.zxy.demo.databinding.FragmentZwebviewBinding;
 import com.zxy.frame.base.ApiBaseFragment;
 import com.zxy.frame.utils.ToastUtil;
+import com.zxy.frame.view.AppWebView;
 
 public class ZWebViewFragment extends ApiBaseFragment<FragmentZwebviewBinding> {
 
 
     @Override
     protected void initView() {
-        mViewBinding.wvContent.setProgressBar(mViewBinding.pbLoading);
+        mViewBinding.wvContent.setCallback(new AppWebView.Callback() {
+            @Override
+            public ProgressBar getProgress() {
+                return mViewBinding.pbLoading;
+            }
+
+            @Override
+            public void onReceivedTitle(String title) {
+
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return true;
+            }
+        });
         mViewBinding.wvContent.loadUrl("https://developer.mozilla.org/zh-CN/");
 //        wvContent.addJavascriptInterface(new JSInvoke(),"Android");
 //        wvContent.setWebContentsDebuggingEnabled(true);

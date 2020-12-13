@@ -16,7 +16,7 @@ import com.zxy.demo.MainEnum;
 import com.zxy.demo.R;
 import com.zxy.demo.databinding.ActivityTabBinding;
 import com.zxy.demo.fragment.LoadRefreshFragment;
-import com.zxy.frame.base.ApiBaseActivity;
+import com.zxy.frame.base.ApiBaseActivity2;
 import com.zxy.frame.utils.helper.FragmentManagerHelper;
 import com.zxy.frame.utils.info.SystemInfoUtil;
 import com.zxy.frame.view.BottomTabView;
@@ -25,7 +25,7 @@ import com.zxy.frame.view.BottomTabView;
  * Created by Admin
  * on 2020/7/20
  */
-public class TabActivity extends ApiBaseActivity<ActivityTabBinding> {
+public class TabActivity extends ApiBaseActivity2<ActivityTabBinding> {
 
 
 

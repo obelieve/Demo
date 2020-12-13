@@ -11,9 +11,9 @@ import com.zxy.demo.R;
 import com.zxy.demo.databinding.ActivityVersionUpdateBinding;
 import com.zxy.demo.entity.VersionUpdateEntity;
 import com.zxy.demo.fragment.VersionUpdateFragment;
-import com.zxy.frame.base.ApiBaseActivity;
+import com.zxy.frame.base.ApiBaseActivity2;
 
-public class VersionUpdateActivity extends ApiBaseActivity<ActivityVersionUpdateBinding> {
+public class VersionUpdateActivity extends ApiBaseActivity2<ActivityVersionUpdateBinding> {
 
     public static final String EXTRA_VERSION_UPDATE_ENTITY = "extra_version_update_entity";
 

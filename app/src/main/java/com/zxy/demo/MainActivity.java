@@ -8,9 +8,9 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.zxy.demo.databinding.ActivityMainBinding;
 import com.zxy.demo.fragment.LoadRefreshFragment;
-import com.zxy.frame.base.ApiBaseActivity;
+import com.zxy.frame.base.ApiBaseActivity2;
 
-public class MainActivity extends ApiBaseActivity<ActivityMainBinding> {
+public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
 
 
     @Override
