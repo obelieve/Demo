@@ -78,6 +78,12 @@ public class AppWebView extends WebView {
         mCallback = callback;
     }
 
+    public void release(){
+        clearHistory();
+        removeAllViews();
+        destroy();
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     private void initSettings(WebSettings settings) {
         File databaseDir = new File(getContext().getCacheDir().getAbsolutePath() + "/WebViewCache");
@@ -127,8 +133,11 @@ public class AppWebView extends WebView {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            if(mCallback!=null&&mCallback.getProgress()!=null){
-                ProgressBar progressBar = mCallback.getProgress();
+            ProgressBar progressBar=null;
+            if(mCallback!=null){
+                progressBar = mCallback.getProgress();
+            }
+            if(progressBar!=null){
                 if(newProgress==100){
                     progressBar.setVisibility(GONE);
                 }else{

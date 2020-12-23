@@ -50,6 +50,11 @@ public class ZWebViewFragment extends ApiBaseFragment<FragmentZwebviewBinding> {
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        mViewBinding.wvContent.release();
+        super.onDestroyView();
+    }
 
     public static class JSInvoke {
         @JavascriptInterface

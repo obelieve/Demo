@@ -54,4 +54,10 @@ public class StickyCoordinatorFragment extends ApiBaseFragment<FragmentStickyCoo
             }
         });
     }
+
+    @Override
+    public void onDestroyView() {
+        mHandler.removeCallbacksAndMessages(null);
+        super.onDestroyView();
+    }
 }
