@@ -59,8 +59,11 @@ public abstract class ApiBaseSubscribe<T> implements Observer<T> {
 
     @Override
     public void onError(Throwable e) {
-        ApiServiceException exception = ApiServiceExceptionHandle.handleException(mActivity, e, mNeedLogin);
+        ApiServiceException exception = ApiServiceExceptionHandle.convertException(e);
         onError(exception);
+        if(!exception.isProcessed()){
+            ApiServiceExceptionHandle.handleApiServiceException(mActivity,mNeedLogin,exception);
+        }
     }
 
     public abstract void onError(ApiServiceException e);

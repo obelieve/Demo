@@ -72,7 +72,7 @@ public class ApiService {
         };
     }
 
-    private static <T> ObservableTransformer<ApiBaseResponse<T>, ApiBaseResponse<T>> handleResult(Class<T> tClass, TypeToken<T> type) {
+    public static <T> ObservableTransformer<ApiBaseResponse<T>, ApiBaseResponse<T>> handleResult(Class<T> tClass, TypeToken<T> type) {
         return new ObservableTransformer<ApiBaseResponse<T>, ApiBaseResponse<T>>() {
             @Override
             public Observable<ApiBaseResponse<T>> apply(@NonNull Observable<ApiBaseResponse<T>> upstream) {

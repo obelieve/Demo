@@ -18,26 +18,26 @@ public class ApiServiceExceptionHandle {
         sApiExtendRespondThrowableListener = listener;
     }
 
-    public static ApiServiceException handleException(Activity activity, Throwable e, boolean needLogin) {
+    public static ApiServiceException convertException(Throwable e) {
         ApiServiceException ex;
         if (e instanceof HttpException) {
-            return handleHttpException((HttpException) e);
+            return convertHttpException((HttpException) e);
         } else if (e instanceof ApiServiceException) {
-            return handleApiServiceException(activity, needLogin, (ApiServiceException) e);
+            return (ApiServiceException) e;
         } else if (e instanceof ConnectException) {
-            return handleConnectException((ConnectException)e);
+            return convertConnectException((ConnectException) e);
         } else {
             ex = new ApiServiceException(e, ApiErrorCode.CODE_UNKNOWN, BaseApplication.getContext().getString(R.string.common_request_error_tip));
             return ex;
         }
     }
 
-    private static ApiServiceException handleHttpException(HttpException e){
+    private static ApiServiceException convertHttpException(HttpException e) {
         ApiServiceException ex = new ApiServiceException(e, ApiErrorCode.CODE_HTTP_ERROR, BaseApplication.getContext().getString(R.string.common_request_error_tip));
         return ex;
     }
 
-    private static ApiServiceException handleApiServiceException(Activity activity, boolean needLogin, ApiServiceException e) {
+    public static ApiServiceException handleApiServiceException(Activity activity, boolean needLogin, ApiServiceException e) {
         switch (e.getCode()) {
 //            case ApiErrorCode.CODE_DUPLICATE_NICKNAME:
 //                if (e.getWindow() == 1 && activity != null && !activity.isFinishing()) {
@@ -57,8 +57,8 @@ public class ApiServiceExceptionHandle {
         return e;
     }
 
-    private static ApiServiceException handleConnectException(ConnectException e){
-        ApiServiceException  ex = new ApiServiceException(e, ApiErrorCode.CODE_NET_ERROR, BaseApplication.getContext().getString(R.string.common_network_error_tip));
+    private static ApiServiceException convertConnectException(ConnectException e) {
+        ApiServiceException ex = new ApiServiceException(e, ApiErrorCode.CODE_NET_ERROR, BaseApplication.getContext().getString(R.string.common_network_error_tip));
         return ex;
     }
 

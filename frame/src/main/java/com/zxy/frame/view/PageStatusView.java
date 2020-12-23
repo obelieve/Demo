@@ -21,7 +21,9 @@ public class PageStatusView extends FrameLayout implements View.OnClickListener 
     private Button btnRefresh;
     private LinearLayout llRefresh;
     private TextView tvNoData;
+    private FrameLayout flNoLogin;
     Callback mCallback;
+    private static StaticCallback sStaticCallback;
 
     public PageStatusView(@NonNull Context context) {
         super(context);
@@ -44,11 +46,16 @@ public class PageStatusView extends FrameLayout implements View.OnClickListener 
         pbLoading = view.findViewById(R.id.pb_loading);
         btnRefresh = view.findViewById(R.id.btn_refresh);
         tvNoData = view.findViewById(R.id.tv_no_data);
+        flNoLogin = view.findViewById(R.id.fl_no_login);
         btnRefresh.setOnClickListener(this);
     }
 
     public void setCallback(Callback callback) {
         mCallback = callback;
+    }
+
+    public static void setStaticCallback(StaticCallback staticCallback) {
+        sStaticCallback = staticCallback;
     }
 
     @Override
@@ -65,6 +72,7 @@ public class PageStatusView extends FrameLayout implements View.OnClickListener 
         pbLoading.setVisibility(View.VISIBLE);
         llRefresh.setVisibility(View.GONE);
         tvNoData.setVisibility(View.GONE);
+        flNoLogin.setVisibility(View.GONE);
     }
 
     public void failure() {
@@ -72,6 +80,7 @@ public class PageStatusView extends FrameLayout implements View.OnClickListener 
         pbLoading.setVisibility(View.GONE);
         llRefresh.setVisibility(View.VISIBLE);
         tvNoData.setVisibility(View.GONE);
+        flNoLogin.setVisibility(View.GONE);
     }
 
     public void success() {
@@ -79,6 +88,7 @@ public class PageStatusView extends FrameLayout implements View.OnClickListener 
         pbLoading.setVisibility(View.GONE);
         llRefresh.setVisibility(View.GONE);
         tvNoData.setVisibility(View.GONE);
+        flNoLogin.setVisibility(View.GONE);
     }
 
     public void noData() {
@@ -86,13 +96,39 @@ public class PageStatusView extends FrameLayout implements View.OnClickListener 
         pbLoading.setVisibility(View.GONE);
         llRefresh.setVisibility(View.GONE);
         tvNoData.setVisibility(View.VISIBLE);
+        flNoLogin.setVisibility(View.GONE);
+    }
+
+    public void noLogin() {
+        setVisibility(View.VISIBLE);
+        pbLoading.setVisibility(View.GONE);
+        llRefresh.setVisibility(View.GONE);
+        tvNoData.setVisibility(View.GONE);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_page_status_no_login,flNoLogin,false);
+        TextView tv = view.findViewById(R.id.tv_add);
+        tv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(sStaticCallback!=null){
+                    sStaticCallback.onClickLogin();
+                }
+            }
+        });
+        flNoLogin.removeAllViews();
+        flNoLogin.addView(view);
+        flNoLogin.setVisibility(View.VISIBLE);
     }
 
     public interface Callback {
         void onClickRefresh();
+
+    }
+
+    public interface StaticCallback{
+        void onClickLogin();
     }
 
     public enum Status {
-        LOADING, FAILURE, SUCCESS,NO_DATA
+        LOADING, FAILURE, SUCCESS,NO_DATA,NO_LOGIN
     }
 }

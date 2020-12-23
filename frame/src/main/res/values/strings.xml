@@ -9,4 +9,6 @@
     <string name="done">Done</string>
     <string name="empty_data_tips">no data</string>
     <string name="get_it">get it</string>
+    <string name="sign_in_first_please">sign in first please</string>
+    <string name="sign_in">Sign in</string>
 </resources>
