@@ -15,7 +15,7 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
 
     @Override
     protected void initCreateAfterView(Bundle savedInstanceState) {
-        mViewBinding.vpContent.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+        mViewBinding.vpContent.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager(),FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
             @Override
             public Fragment getItem(int position) {

@@ -59,7 +59,7 @@ public abstract class ApiBaseActivity<T extends ViewBinding,VM extends ViewModel
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = this;
-        setScreenOrientation();
+        //setScreenOrientation();
         if (mNeedInsetStatusBar) {
             StatusBarUtil.setStatusBarColor(this, getStatusBarColor());
         } else {
