@@ -93,9 +93,7 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
                 if (mRvRight.getLayoutManager() instanceof LinearLayoutManager) {
                     int firstVisiblePos = ((LinearLayoutManager) mRvRight.getLayoutManager()).findFirstVisibleItemPosition();
                     IRightData dataItem = mRightAdapter.getDataHolder().getList().get(firstVisiblePos);
-                    if (dataItem.isTop()) {
-                        mLeftAdapter.setCurrentPosition(dataItem.LRRVTag());
-                    }
+                    mLeftAdapter.setCurrentPosition(dataItem.LRRVTag());
                 }
             }
         });
@@ -109,6 +107,17 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
                                  List<RData> rightData) {
         mLeftAdapter.getDataHolder().setList(leftData);
         mRightAdapter.getDataHolder().setList(rightData);
+    }
+
+    public void setLeftSelectedPosition(int index){
+        mRvLeft.post(new Runnable() {
+            @Override
+            public void run() {
+                if(index>=0&&index<mRvLeft.getChildCount()){
+                    mRvLeft.getChildAt(index).performClick();
+                }
+            }
+        });
     }
 
     public LeftAdapter<LData> getLeftAdapter() {

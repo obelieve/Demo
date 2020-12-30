@@ -121,13 +121,18 @@ public class BottomTabView extends LinearLayout implements View.OnClickListener 
     public void onClick(View v) {
         for (int index = 0; index < mItemViews.length; index++) {
             if (v.getId() == mItemViews[index].getId()) {
-                mSelectionManage.setCurrentItem(index);
+                if (mCallback != null && !mCallback.onPreClick(index)) {
+                    mSelectionManage.setCurrentItem(index);
+                }
                 break;
             }
         }
     }
 
     public interface Callback {
+        default boolean onPreClick(int index){
+            return false;
+        }
         void onSelectChange(int index, View view, boolean select);
     }
 }

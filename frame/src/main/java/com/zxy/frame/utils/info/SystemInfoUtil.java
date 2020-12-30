@@ -136,6 +136,10 @@ public class SystemInfoUtil {
         DisplayMetrics ds = context.getResources().getDisplayMetrics();
         return (int) (ds.density * size);
     }
+    public static int sp2px(Context context , float spValue){
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        return (int) (displayMetrics.scaledDensity * spValue + 0.5f);
+    }
     public static void settingFullScreen(Activity activity) {
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);

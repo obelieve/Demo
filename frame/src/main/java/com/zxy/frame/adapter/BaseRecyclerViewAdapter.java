@@ -37,6 +37,8 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     private View mFooterView;
     private boolean mEnableHeader = true;
     private boolean mEnableFooter = true;
+    private boolean mEnableLoadMore = true;
+    private volatile boolean mLockLoadMore = false;
     private LoadMoreStatus mLoadMoreState = END;
     private RecyclerView mRecyclerView;
     private RecyclerView.OnScrollListener mOnScrollListener;
@@ -78,6 +80,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         if (mOnLoadMoreListener == null)
             return;
         mLoadMoreState = LOADING;
+        mLockLoadMore = false;
         if(getDataHolder().getList().size()>0){
             //size=0，Called attach on a child which is not detached
             notifyItemChanged(getItemCount() - 1);
@@ -91,6 +94,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             @Override
             public void run() {
                 mLoadMoreState = checkIsLoadingState() ? LOADING : ERROR;
+                mLockLoadMore = false;
                 if(getDataHolder().getList().size()>0) {
                     notifyItemChanged(getItemCount() - 1);
                 }
@@ -109,6 +113,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             @Override
             public void run() {
                 mLoadMoreState = checkIsLoadingState() ? LOADING : END;
+                mLockLoadMore = false;
                 if(getDataHolder().getList().size()>0) {
                     notifyItemChanged(getItemCount() - 1);
                 }
@@ -150,6 +155,10 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
 
     public void setEnableFooter(boolean enableFooter) {
         mEnableFooter = enableFooter;
+    }
+
+    public void setEnableLoadMore(boolean enableLoadMore) {
+        mEnableLoadMore = enableLoadMore;
     }
 
     public void setItemClickCallback(OnItemClickCallback<DATA> itemClickCallback) {
@@ -292,7 +301,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         int empty = mEmptyView != null ? 1 : 0;
         int header = (mEnableHeader && mHeaderView != null) ? 1 : 0;
         int footer = (mEnableFooter && mFooterView != null) ? 1 : 0;
-        int loadMore = mOnLoadMoreListener != null ? 1 : 0;
+        int loadMore = (mEnableLoadMore && mOnLoadMoreListener != null) ? 1 : 0;
         if (size == 0) {
             if (header + footer > 0) {
                 return header + footer;
@@ -408,7 +417,8 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                                 ((StaggeredGridLayoutManager) manager).findLastVisibleItemPositions(lastPositions);
                                 lastItemPosition = findMax(lastPositions);
                             }
-                            if (lastItemPosition == (itemCount - 1) && isSlidingUpward && mLoadMoreState == LOADING) {
+                            if (mEnableLoadMore && lastItemPosition == (itemCount - 1) && isSlidingUpward && mLoadMoreState == LOADING && !mLockLoadMore) {
+                                mLockLoadMore = true;
                                 mOnLoadMoreListener.onLoadMore();
                             }
                         }

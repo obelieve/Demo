@@ -5,6 +5,7 @@
     <string name="load_loading">Loading..</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
+    <string name="Done">Done</string>
     <string name="retry">Retry</string>
     <string name="done">Done</string>
     <string name="empty_data_tips">no data</string>
