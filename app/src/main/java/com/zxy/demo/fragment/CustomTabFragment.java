@@ -23,6 +23,7 @@ import java.util.Arrays;
 
 public class CustomTabFragment extends ApiBaseFragment<FragmentTabCustomBinding> {
 
+    //TabLayout app:tabGravity="fill|center" 只影响app:tabMode="fixed"
     StringTabLayoutHelper mTab1LayoutHelper = new StringTabLayoutHelper();
     String2TabLayoutHelper mTab2LayoutHelper = new String2TabLayoutHelper();
     String[] mStrings = new String[]{"TAB1", "TAB2", "TAB3", "TAB4", "TAB5", "TAB6"};
