@@ -7,14 +7,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.news.anim.databinding.ActivityAnimationBinding;
-import com.zxy.frame.base.ApiBaseActivity;
+import com.zxy.frame.base.ApiBaseActivity2;
 import com.zxy.ui.anim.AnimationFragment;
 
 /**
  * Created by Admin
  * on 2020/6/10
  */
-public class UIActivity extends ApiBaseActivity<ActivityAnimationBinding> {
+public class UIActivity extends ApiBaseActivity2<ActivityAnimationBinding> {
 
 
     @Override
@@ -46,6 +46,11 @@ public class UIActivity extends ApiBaseActivity<ActivityAnimationBinding> {
         });
         mViewBinding.tlTab.setupWithViewPager(mViewBinding.vpContent);
         mViewBinding.vpContent.setCurrentItem(UIEnum.getCurrentIndex());
+    }
+
+    @Override
+    protected void initViewModel() {
+
     }
 
 }

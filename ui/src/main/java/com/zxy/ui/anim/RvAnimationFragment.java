@@ -19,6 +19,7 @@ import com.zxy.frame.utils.ToastUtil;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -88,7 +89,7 @@ public class RvAnimationFragment extends ApiBaseFragment<FragmentRvAnimationBind
         @Override
         public void loadViewHolder(BaseViewHolder holder, int position) {
             if (holder instanceof RvViewHolder) {
-                holder.bind(getDataHolder().getList().get(position));
+                holder.bind(getDataHolder().getList().get(position),position,getDataHolder().getList());
             }
         }
 
@@ -168,7 +169,8 @@ public class RvAnimationFragment extends ApiBaseFragment<FragmentRvAnimationBind
             }
 
             @Override
-            public void bind(String s) {
+            public void bind(String s, int position, List<String> list) {
+                super.bind(s, position, list);
                 mViewBinding.tvContent.setText(s);
             }
         }
