@@ -278,8 +278,9 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mOnLoadMoreListener != null) {
+                        if (mOnLoadMoreListener != null&&!mLockLoadMore) {
                             mLoadMoreState = LOADING;
+                            mLockLoadMore = true;
                             holder1.mFlLoading.setVisibility(View.VISIBLE);
                             holder1.mFlError.setVisibility(View.GONE);
                             holder1.mFlEnd.setVisibility(View.GONE);
