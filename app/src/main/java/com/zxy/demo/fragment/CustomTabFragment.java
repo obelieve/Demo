@@ -56,11 +56,13 @@ public class CustomTabFragment extends ApiBaseFragment<FragmentTabCustomBinding>
 
         private String mTitle;
 
-        public TabFragment() {
+        public TabFragment(String title) {
+            this();
+            mTitle = title;
         }
 
-        public TabFragment(String title) {
-            mTitle = title;
+        public TabFragment() {
+            super();
         }
 
         @Nullable
