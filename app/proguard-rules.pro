@@ -156,5 +156,8 @@
 #-keep class com.xxx.xxx.entity.** {*;}
 -keep class * implements com.zxy.frame.utils.proguard.UnProguard {*;}
 #反射类
+# ViewModel和ViewBinding反射使用
+-keep class * implements androidx.viewbinding.ViewBinding {*;}
+-keepclassmembers public class * extends androidx.lifecycle.ViewModel {public <init>(...);}
 
 
