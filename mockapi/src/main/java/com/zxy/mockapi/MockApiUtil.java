@@ -1,10 +1,11 @@
 package com.zxy.mockapi;
 
-import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,27 +16,76 @@ import java.io.UnsupportedEncodingException;
  * on 2020/7/6
  */
 public class MockApiUtil {
-    private static final String TAG = MockApiUtil.class.getSimpleName();
-    private static Context sContext;
-    private static final String FILE_SUFFIX = ".json";
-    private static StringBuilder SB = new StringBuilder();
-    private static String ALL_URL;
-    private static String sApiPrefix;
 
-    public static void init(Context context, String apiPrefix, String fileDir, String fileSuffix) {
-        sContext = context;
-        sApiPrefix = apiPrefix;
-        try {
-            String[] paths = sContext.getAssets().list(fileDir);
-            for (String path : paths) {
-                SB.append(apiPrefix + path.replace(fileSuffix, "") + ",");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(TAG, "Assets目录下，文件查找错误：" + e.getMessage());
+    private static final String TAG = MockApiUtil.class.getSimpleName();
+    private static final String FILE_SUFFIX = ".txt";
+    private static String sFileDir;
+    private static String sBaseUrl;
+    private static boolean sWriteOrRead;
+
+    public static void init(String fileDir, String baseUrl, boolean writeOrRead) {
+        sFileDir = fileDir;
+        sBaseUrl = baseUrl;
+        sWriteOrRead = writeOrRead;
+    }
+
+    public static boolean isWriteOrRead() {
+        return sWriteOrRead;
+    }
+
+    /**
+     * 是否有数据
+     *
+     * @param url
+     * @return
+     */
+    public static Boolean existData(String url) {
+        String tag = getMockApiDataTag(url);
+        if (TextUtils.isEmpty(tag)) {
+            return false;
         }
-        ALL_URL = SB.toString();
-        Log.e(TAG, "ALL_URL：" + ALL_URL);
+        return new File(sFileDir, tag).exists();
+    }
+
+
+    public static Boolean putData(String url, String data) {
+        String tag = getMockApiDataTag(url);
+        boolean isSuccess = false;
+        if (TextUtils.isEmpty(tag)) {
+            return false;
+        }
+        File file = new File(sFileDir, tag);
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            out.write(data.getBytes());
+            out.flush();
+            out.close();
+            isSuccess = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return isSuccess;
+    }
+
+    /**
+     * 获取模拟数据
+     *
+     * @param url
+     * @return
+     */
+    public static String getData(String url) {
+        String tag = getMockApiDataTag(url);
+        if (TextUtils.isEmpty(tag)) {
+            return null;
+        }
+        InputStream inputStream;
+        try {
+            inputStream = new FileInputStream(new File(sFileDir, tag));
+            return getString(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -44,32 +94,15 @@ public class MockApiUtil {
      * @param url
      * @return 不为空时，存在模拟数据。null时，不存在
      */
-    public static String getMockApiDataTag(String url) {
+    private static String getMockApiDataTag(String url) {
         if (!TextUtils.isEmpty(url)) {
-            int start = url.indexOf(sApiPrefix);
+            url = url.replace(sBaseUrl, "");
+            int start = url.indexOf("/");
             if (start != -1) {
                 String tag = url.substring(start);
-                if (MockApiUtil.ALL_URL.contains(tag)) {
-                    return tag;
-                }
+                tag = tag.replace("/", "$");
+                return tag + FILE_SUFFIX;
             }
-        }
-        return null;
-    }
-
-    /**
-     * 获取模拟数据
-     *
-     * @param name
-     * @return
-     */
-    public static String getData(String name) {
-        InputStream inputStream = null;
-        try {
-            inputStream = sContext.getAssets().open(name + FILE_SUFFIX);
-            return getString(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return null;
     }

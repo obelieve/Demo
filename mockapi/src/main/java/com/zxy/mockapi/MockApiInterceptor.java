@@ -1,6 +1,5 @@
 package com.zxy.mockapi;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,11 +20,11 @@ import okhttp3.ResponseBody;
 public class MockApiInterceptor implements Interceptor {
 
     private static final String REQUEST_FORMAT = "REQUEST: \n%s\nmethod: %s\nheaders:\n%s \nrequestBody-length = %s\nrequestBody-contentType:%s\n";
-    private static final String RESPONSE_FORMAT = "\nRESPONSE: \nprotocol: %s code: %s message: %s\nheaders:\n%s\nbody:\n%s";
+    private static final String RESPONSE_FORMAT = "\nRESPONSE: \nprotocol: %s code: %s message: %s\nheaders:\n%s\nbody:\n%s \n isMock:%s\n";
     private static final int MAX_CONTENT_LENGTH = 8 * 1024;
 
-    public MockApiInterceptor(Context context,String apiPrefix, String fileDir, String fileSuffix){
-        MockApiUtil.init(context,apiPrefix,fileDir,fileSuffix);
+    public MockApiInterceptor(String fileDir, String baseUrl, boolean writeOrRead) {
+        MockApiUtil.init(fileDir, baseUrl, writeOrRead);
     }
 
     @NotNull
@@ -35,6 +34,7 @@ public class MockApiInterceptor implements Interceptor {
         Response response = chain.proceed(request);
         RequestBody requestBody = request.body();
         ResponseBody responseBody = response.body();
+        String url = request.url().toString();
         String start = " \n\n =================================START HTTP/HTTPS==============================\n";
         String requestStr = String.format(REQUEST_FORMAT,
                 request.url().toString(),
@@ -43,37 +43,36 @@ public class MockApiInterceptor implements Interceptor {
                 requestBody != null ? requestBody.contentLength() : null,
                 requestBody != null ? requestBody.contentType() : null);
         String rBody = null;
-        String tag = MockApiUtil.getMockApiDataTag(request.url().toString());
+        boolean isMock = false;
         if (responseBody != null) {
-            if (responseBody.contentLength() < MAX_CONTENT_LENGTH) {
-                response.protocol();
-                response.code();
-                response.message();
-                if (TextUtils.isEmpty(tag)) {
-                    rBody = responseBody.string();
-                }else{
-                    rBody = MockApiUtil.getData(tag);
-                }
-                responseBody.close();
-                responseBody = ResponseBody.create(rBody, responseBody.contentType());
+            response.protocol();
+            response.code();
+            response.message();
+            if (MockApiUtil.isWriteOrRead()) {
+                rBody = responseBody.string();
+                MockApiUtil.putData(url,rBody);
             } else {
+                String body = MockApiUtil.getData(url);
+                rBody = body;
+                isMock = !TextUtils.isEmpty(body);
+            }
+            responseBody.close();
+            responseBody = ResponseBody.create(rBody, responseBody.contentType());
+            if (responseBody.contentLength() >= MAX_CONTENT_LENGTH) {
                 rBody = "body >= 8KB  contentType:" + responseBody.contentType();
             }
-        }
-        if(!TextUtils.isEmpty(tag)){
-            rBody = "\n【模拟数据】:\n"+rBody+"\n";
         }
         String responseStr = String.format(RESPONSE_FORMAT,
                 response.protocol(),
                 response.code(),
                 response.message(),
                 response.headers(),
-                rBody);
+                rBody,
+                isMock);
         String end = " \n\n ==================================END HTTP/HTTPS===============================\n";
         Log.i(MockApiInterceptor.class.getSimpleName(), start + requestStr + responseStr + end);
         return response.newBuilder().body(responseBody).build();
     }
-
 
 
 }
