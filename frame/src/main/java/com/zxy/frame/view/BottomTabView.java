@@ -59,7 +59,7 @@ public class BottomTabView extends LinearLayout implements View.OnClickListener 
 
     public void setCurrentIndex(int currentIndex) {
         if (mItemViews != null && currentIndex >= 0 && currentIndex < mItemViews.length) {
-            mSelectionManage.setCurrentItem(mItemViews[currentIndex].getId());
+            mSelectionManage.setCurrentItem(currentIndex);
         }
     }
 
