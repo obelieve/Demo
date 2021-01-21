@@ -51,9 +51,7 @@ public class FragmentManagerHelper {
         switchFragment(fragment);
     }
 
-    private Fragment getFragment(int index) {
-        if (index < 0 || index >= mFragmentArray.size())
-            return null;
+    public Fragment getFragment(int index) {
         return mFragmentArray.get(index);
     }
 

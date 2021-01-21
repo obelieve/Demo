@@ -88,13 +88,12 @@ public class GridItemDivider extends RecyclerView.ItemDecoration {
             mIsFirst = false;
         }
         GridLayoutManager lm = (GridLayoutManager) parent.getLayoutManager();
-        int spanCount = lm.getSpanCount();
         int position = parent.getChildAdapterPosition(view);
         if (mDividerLeftToTop) {
-            if (!(mLeftRightNoDivider && position % spanCount == 0)) {
+            if (!(mLeftRightNoDivider && isLeftBorder(lm, position))) {
                 outRect.left = mDividerWidth;
             }
-            if (!(mTopBottomNoDivider && position < spanCount)) {
+            if (!(mTopBottomNoDivider && isTopRow(lm, position))) {
                 outRect.top = mDividerWidth;
             }
             if (mNoDividers.size() > 0 && mNoDividers.contains(position)) {
@@ -102,14 +101,10 @@ public class GridItemDivider extends RecyclerView.ItemDecoration {
                 outRect.top = 0;
             }
         } else {
-            if (!(mLeftRightNoDivider && (position + 1) % spanCount == 0)) {
+            if (!(mLeftRightNoDivider && isRightBorder(lm, position))) {
                 outRect.right = mDividerWidth;
             }
-            int mod = parent.getAdapter().getItemCount() % spanCount;
-            int lastRowPosition = mod == 0 ?
-                    parent.getAdapter().getItemCount() - spanCount : parent.getAdapter().getItemCount() - mod;
-            if (!(mTopBottomNoDivider && parent.getAdapter() != null &&
-                    position >= lastRowPosition)) {
+            if (!(mTopBottomNoDivider && isBottomRow(parent.getAdapter().getItemCount(), lm, position))) {
                 outRect.bottom = mDividerWidth;
             }
             if (mNoDividers.size() > 0 && mNoDividers.contains(position)) {
@@ -119,13 +114,56 @@ public class GridItemDivider extends RecyclerView.ItemDecoration {
         }
     }
 
+    private boolean isLeftBorder(GridLayoutManager lm, int position) {
+        int spanCount = lm.getSpanCount();
+        return lm.getSpanSizeLookup().getSpanIndex(spanCount, position) == 0;
+    }
+
+    private boolean isRightBorder(GridLayoutManager lm, int position) {
+        int spanCount = lm.getSpanCount();
+        int spanSize = lm.getSpanSizeLookup().getSpanSize(position);
+        int spanIndex = lm.getSpanSizeLookup().getSpanIndex(position, spanCount);
+        return spanSize == spanCount || (spanCount > spanSize && spanIndex == spanCount - 1);
+    }
+
+    private boolean isTopRow(GridLayoutManager lm, int position) {
+        int spanCount = lm.getSpanCount();
+        if (position >= 0 && position < spanCount) {
+            int spanSize = 0;
+            for (int i = 0; i <= position; i++) {//获取包含当前位置的之前所有SpanSize是否大于一行所显示的
+                spanSize += lm.getSpanSizeLookup().getSpanSize(i);
+            }
+            return spanSize <= spanCount;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean isBottomRow(int itemCount, GridLayoutManager lm, int position) {
+        int spanCount = lm.getSpanCount();
+        int spanSize = lm.getSpanSizeLookup().getSpanSize(position);
+        int spanIndex = lm.getSpanSizeLookup().getSpanIndex(position, spanCount);
+        int leftSpanCount = spanCount / spanSize - (spanIndex + 1);//当前行还可以容纳多少项
+        int leftSpanCounter = 0;//当前行的当前Item位置后面项数量计数
+        int leftSpanSize = 0;//当前行的当前Item位置后面项占比SpanSize统计
+        for (int i = position; i < itemCount; i++) {
+            if (leftSpanCounter > leftSpanCount) {
+                break;
+            }
+            leftSpanSize += lm.getSpanSizeLookup().getSpanSize(i);
+            leftSpanCounter++;
+        }
+        int rowSpanSize = leftSpanSize + spanSize * (spanIndex + 1);//当前行的Item位置预期SpanSize
+        int leftItemCount = itemCount - (position + 1);//剩余多少项
+        return rowSpanSize <= spanCount && leftSpanCount >= leftItemCount;
+    }
+
     @Override
     public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.onDraw(c, parent, state);
         int childCount = parent.getChildCount();
         GridLayoutManager lm = (GridLayoutManager) parent.getLayoutManager();
         int itemCount = parent.getAdapter().getItemCount();
-        int spanCount = lm.getSpanCount();
         for (int i = 0; i < childCount; i++) {
             Paint paint = mPaint;
             View view = parent.getChildAt(i);
@@ -136,23 +174,19 @@ public class GridItemDivider extends RecyclerView.ItemDecoration {
             int bottom = view.getBottom();
             if (mDividerLeftToTop) {
                 if (!(mNoDividers.size() > 0 && mNoDividers.contains(position))) {
-                    if (!(mLeftRightNoDivider && position % spanCount == 0)) {
+                    if (!(mLeftRightNoDivider && isLeftBorder(lm, position))) {
                         c.drawRect(left - mDividerWidth, top, left, bottom, paint);
                     }
-                    if (!(mTopBottomNoDivider && position < spanCount)) {
+                    if (!(mTopBottomNoDivider && isTopRow(lm, position))) {
                         c.drawRect(left - mDividerWidth, top - mDividerWidth, right, top, paint);
                     }
                 }
             } else {
                 if (!(mNoDividers.size() > 0 && mNoDividers.contains(position))) {
-                    if (!(mLeftRightNoDivider && (position + 1) % spanCount == 0)) {
+                    if (!(mLeftRightNoDivider && isRightBorder(lm, position))) {
                         c.drawRect(right, top, right + mDividerWidth, bottom, paint);
                     }
-                    int mod = itemCount % spanCount;
-                    int lastRowPosition = mod == 0 ?
-                            itemCount - spanCount : itemCount - mod;
-                    if (!(mTopBottomNoDivider && parent.getAdapter() != null &&
-                            position >= lastRowPosition)) {
+                    if (!(mTopBottomNoDivider && isBottomRow(itemCount, lm, position))) {
                         c.drawRect(left, bottom, right + mDividerWidth, bottom + mDividerWidth, paint);
                     }
                 }

@@ -15,12 +15,12 @@ public class SelectionManage {
     private OnSelectChangeListener mOnSelectChangeListener;
 
     public void setMode(Mode mode) {
-        reset();
+        clear();
         mMode = mode;
     }
 
     public void setItems(View... views) {
-        reset();
+        clear();
         for (View view : views) {
             mViews.add(view);
             mBooleans.add(false);
@@ -29,6 +29,14 @@ public class SelectionManage {
 
     public void setOnSelectChangeListener(OnSelectChangeListener onSelectChangeListener) {
         mOnSelectChangeListener = onSelectChangeListener;
+    }
+
+    public void reset() {
+        mCurrentIndexes.clear();
+        for (int i = 0; i < mBooleans.size(); i++) {
+            mBooleans.set(i, false);
+            mViews.get(i).setSelected(false);
+        }
     }
 
     public void setCurrentItem(int index) {
@@ -109,7 +117,7 @@ public class SelectionManage {
         return list;
     }
 
-    private void reset() {
+    private void clear() {
         mCurrentIndexes.clear();
         mViews.clear();
         mBooleans.clear();

@@ -170,7 +170,7 @@ public class LeftRightRecyclerView<LData extends LeftRightRecyclerView.ILeftData
 
         public void setCurrentPosition(String tag) {
             for (int i = 0; i < getDataHolder().getList().size(); i++) {
-                if (!TextUtils.isEmpty(tag)&&
+                if (mCurPosition != i&&!TextUtils.isEmpty(tag) &&
                         tag.equals(getDataHolder().getList().get(i).LRRVTag())) {
                     if (mCurPosition >= 0 && mCurPosition < getDataHolder().getList().size()) {
                         getDataHolder().getList().get(mCurPosition).setSelected(false);

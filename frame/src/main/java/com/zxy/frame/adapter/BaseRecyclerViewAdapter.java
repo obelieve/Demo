@@ -385,11 +385,14 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             /**
              * Grid布局，有特殊类型时显示一行
              */
+            GridLayoutManager.SpanSizeLookup lookup = ((GridLayoutManager) recyclerView.getLayoutManager()).getSpanSizeLookup();
             ((GridLayoutManager) recyclerView.getLayoutManager()).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
                     int type = getItemViewType(position);
-                    return type == HEADER_TYPE | type == FOOTER_TYPE | type == LOAD_MORE_TYPE | type == EMPTY_TYPE ? ((GridLayoutManager) recyclerView.getLayoutManager()).getSpanCount() : 1;
+                    int span =  type == HEADER_TYPE | type == FOOTER_TYPE | type == LOAD_MORE_TYPE | type == EMPTY_TYPE ?
+                            ((GridLayoutManager) recyclerView.getLayoutManager()).getSpanCount() : lookup.getSpanSize(position);
+                    return span;
                 }
             });
         }

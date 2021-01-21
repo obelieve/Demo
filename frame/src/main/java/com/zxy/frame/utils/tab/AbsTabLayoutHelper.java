@@ -82,4 +82,15 @@ public abstract class AbsTabLayoutHelper<T> implements ITabStatus<T> {
             }
         }
     }
+
+    public void setTabPadding(int left, int top, int right, int bottom) {
+        if (mTabLayout != null) {
+            for (int i = 0; i < mTabLayout.getTabCount(); i++) {
+                TabLayout.Tab tab = mTabLayout.getTabAt(i);
+                if (tab != null && tab.getCustomView() != null) {
+                    tab.getCustomView().setPadding(left, top, right, bottom);
+                }
+            }
+        }
+    }
 }

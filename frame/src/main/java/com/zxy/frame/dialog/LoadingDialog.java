@@ -15,7 +15,7 @@ public class LoadingDialog extends BaseDialog {
         super(activity, R.style.LoadingDialog);
         View view = LayoutInflater.from(activity).inflate(R.layout.dialog_loading, null);
         setContentView(view);
-        setCancelable(false);
+        setCancelable(true);
         setCanceledOnTouchOutside(false);
         setGravity(Gravity.CENTER);
     }
