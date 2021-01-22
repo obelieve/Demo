@@ -62,6 +62,7 @@ public class AutoFixWidthLayoutManager extends RecyclerView.LayoutManager
                 layoutDecorated(view, l, t, r, b);
                 curWidth = r;
                 curHeight = lastViewHeight;
+                lastViewHeight = b;
             }
         }
     }
