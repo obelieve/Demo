@@ -90,35 +90,21 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     public void loadMoreError() {
         if (mOnLoadMoreListener == null)
             return;
-        mRecyclerView.post(new Runnable() {
-            @Override
-            public void run() {
-                mLoadMoreState = checkIsLoadingState() ? LOADING : ERROR;
-                mLockLoadMore = false;
-                if(getDataHolder().getList().size()>0) {
-                    notifyItemChanged(getItemCount() - 1);
-                }
-            }
-        });
+        mLoadMoreState = ERROR;
+        mLockLoadMore = false;
+        if (getDataHolder().getList().size() > 0) {
+            notifyItemChanged(getItemCount() - 1);
+        }
     }
 
     public void loadMoreEnd() {
         if (mOnLoadMoreListener == null)
             return;
-        /**
-         * RecyclerView#consumePendingUpdateOperations 布局延时刷新处理。
-         * 导致checkIsFullPage();需要在Handler#post中调用。
-         */
-        mRecyclerView.post(new Runnable() {
-            @Override
-            public void run() {
-                mLoadMoreState = checkIsLoadingState() ? LOADING : END;
-                mLockLoadMore = false;
-                if(getDataHolder().getList().size()>0) {
-                    notifyItemChanged(getItemCount() - 1);
-                }
-            }
-        });
+        mLoadMoreState = END;
+        mLockLoadMore = false;
+        if (getDataHolder().getList().size() > 0) {
+            notifyItemChanged(getItemCount() - 1);
+        }
     }
 
     public void onSetListAfter() {
