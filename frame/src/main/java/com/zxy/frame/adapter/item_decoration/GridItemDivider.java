@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * @Author zxy
+ * Notice:调用noDividerItem(leftRightNoDivider,topBottomNoDivider)在移除左右间距leftRightNoDivider=true设置时，会出现不等宽
  */
 public class GridItemDivider extends RecyclerView.ItemDecoration {
 
@@ -147,7 +148,7 @@ public class GridItemDivider extends RecyclerView.ItemDecoration {
         int leftSpanCounter = 0;//当前行的当前Item位置后面项数量计数
         int leftSpanSize = 0;//当前行的当前Item位置后面项占比SpanSize统计
         for (int i = position; i < itemCount; i++) {
-            if (leftSpanCounter > leftSpanCount) {
+            if (leftSpanCounter >= leftSpanCount) {
                 break;
             }
             leftSpanSize += lm.getSpanSizeLookup().getSpanSize(i);
