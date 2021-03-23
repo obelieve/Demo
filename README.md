@@ -2,12 +2,11 @@
 # Android Demo
 
 ## branches
-  - 1.`issue-`              遇到的问题
-  - 2.`use-`                第三方类库使用
+  - 1.`issue-`              issue Demo
+  - 2.`use-`                第三方类库使用、语言用法
   - 3.`sdk-`                第三方SDK使用
   - 4.`framework`           app项目架构
   - 5.`code-`               源码分析
-  - 6.`kotlin` `groovy`     语言方面
 
 ## app framework
 - ### RecyclerView配套组件
