@@ -1,9 +1,19 @@
 
-## Android
+# Android Demo
+
+## branches
+  - 1.`issue-`              遇到的问题
+  - 2.`uselib-`             第三方框架库使用
+  - 3.`sdk-`                第三方SDK使用
+  - 4.`framework`           app项目架构
+  - 5.`code-`               源码分析
+  - 6.`kotlin` `groovy`     语言方面
+
+## app framework
 - ### RecyclerView配套组件
-	- [BaseRecyclerViewAdapter](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/adapter/BaseRecyclerViewAdapter.java)
-	实现了上拉加载更多、空数据显示等。
-	- [GridItemDivider](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/adapter/item_decoration/GridItemDivider.java)
+    - [BaseRecyclerViewAdapter](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/adapter/BaseRecyclerViewAdapter.java)
+    实现了上拉加载更多、空数据显示等。
+    - [GridItemDivider](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/adapter/item_decoration/GridItemDivider.java)
 	实现了GridLayoutManager边距设置。
 	- [HorizontalItemDivider](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/adapter/item_decoration/HorizontalItemDivider.java)
 	实现了LinearLayoutManager 水平方向的边距设置。
@@ -35,4 +45,3 @@
 - ### 弹窗
 	- [PopupMenuUtil](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/utils/PopupMenuUtil.java)
 	实现了PopupMenu简易封装。
-
