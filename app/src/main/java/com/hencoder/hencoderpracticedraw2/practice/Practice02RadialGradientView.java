@@ -2,8 +2,13 @@ package com.hencoder.hencoderpracticedraw2.practice;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import androidx.annotation.Nullable;
+
+import android.graphics.RadialGradient;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -30,7 +35,9 @@ public class Practice02RadialGradientView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
+        paint.setShader(new RadialGradient(300,300,200,
+                Color.parseColor("#E91E63"),Color.parseColor("#2196F3"),
+                Shader.TileMode.CLAMP));
         canvas.drawCircle(300, 300, 200, paint);
     }
 }

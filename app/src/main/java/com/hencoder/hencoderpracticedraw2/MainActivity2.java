@@ -17,6 +17,16 @@ import com.zxy.demo.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 1.PorterDuff.Mode （人名-数字图像合成技术  Thomas Porter 和 Tom Duff 发表于 1984）
+ * 2.着色器Mode:
+ * {@link android.graphics.Shader.TileMode.CLAMP} //超出部分，选边缘颜色
+ * {@link android.graphics.Shader.TileMode.REPEAT} //超出部分，选重复颜色
+ * {@link android.graphics.Shader.TileMode.MIRROR} //超出部分，选镜像颜色
+ * 3.图片合成Mode: {@link android.graphics.ComposeShader} (dst-目标图像,src-源图像)
+ * {@link android.graphics.PorterDuff.Mode.SRC_OVER} //默认 src覆盖在目标上面
+ *
+ */
 public class MainActivity2 extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager pager;

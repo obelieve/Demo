@@ -39,14 +39,17 @@ public class Practice11StrokeMiterView extends View {
         canvas.save();
 
         canvas.translate(100, 100);
+        paint.setStrokeJoin(Paint.Join.MITER);
         // MITER 值：1
         canvas.drawPath(path, paint);
 
         canvas.translate(300, 0);
+        paint.setStrokeJoin(Paint.Join.MITER.);
         // MITER 值：2
         canvas.drawPath(path, paint);
 
         canvas.translate(300, 0);
+        paint.setStrokeJoin(Paint.Join.MITER);
         // MITER 值：5
         canvas.drawPath(path, paint);
 
