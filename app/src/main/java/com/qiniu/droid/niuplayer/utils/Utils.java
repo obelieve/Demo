@@ -137,6 +137,16 @@ public class Utils {
         //options.setInteger(AVOptions.KEY_PREFER_FORMAT, AVOptions.PREFER_FORMAT_MP4);//AVOptions.PREFER_FORMAT_MP4 PREFER_FORMAT_M3U8
         boolean disableLog = false;
         options.setInteger(AVOptions.KEY_LOG_LEVEL, disableLog ? 5 : 0);
+        // DNS 服务器设置
+        // 若不设置此项，则默认使用 DNSPod 的 httpdns 服务
+        // 若设置为 127.0.0.1，则会使用系统的 DNS 服务器
+        // 若设置为其他 DNS 服务器地址，则会使用设置的服务器
+        options.setString(AVOptions.KEY_DNS_SERVER, "127.0.0.1");
+        // DNS 缓存设置
+        // 若不设置此项，则每次播放未缓存的域名时都会进行 DNS 解析，并将结果缓存
+        // 参数为 String[]，包含了要缓存 DNS 结果的域名列表
+        // SDK 在初始化时会解析列表中的域名，并将结果缓存
+        //options.setStringArray(AVOptions.KEY_DOMAIN_LIST, domainList);
         return options;
     }
 }
