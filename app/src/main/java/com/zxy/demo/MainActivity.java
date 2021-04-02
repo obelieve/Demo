@@ -3,9 +3,10 @@ package com.zxy.demo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.zxy.demo.bind.Bind;
 import com.zxy.demo.bind.ViewInject;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity
         mWebView.addJavascriptInterface(new JsInvoke(this),"App");
         String url="";
         //url = "http://www.aicchain.co/wap/index.php?";
-        url = "http://www.baidu.com";
+        url = "https://sportlive.oksportserv.com/live/4dfa2a1da044f2fd.m3u8?txSecret=cf9c186dedb98283c7f1b4724cb4701e&txTime=60666db0";
         //
         mWebView.loadUrl(url);
 

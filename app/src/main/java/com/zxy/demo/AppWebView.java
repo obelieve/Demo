@@ -10,8 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
+
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -24,6 +23,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileNotFoundException;
