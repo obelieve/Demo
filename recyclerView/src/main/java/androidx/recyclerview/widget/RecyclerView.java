@@ -100,22 +100,23 @@ import java.util.List;
  *
  * <ul>
  *     <li><em>Adapter:</em> A subclass of {@link Adapter} responsible for providing views
- *     that represent items in a data set.</li>
- *     <li><em>Position:</em> The position of a data item within an <em>Adapter</em>.</li>
+ *     that represent items in a data set.(负责提供视图所代表的项的数据集合)</li>
+ *     <li><em>Position:</em> The position of a data item within an <em>Adapter</em>.(数据项在适配器中的位置)</li>
  *     <li><em>Index:</em> The index of an attached child view as used in a call to
- *     {@link ViewGroup#getChildAt}. Contrast with <em>Position.</em></li>
+ *     {@link ViewGroup#getChildAt}. Contrast with <em>Position.</em>(子视图的索引值. 对比Position)</li>
  *     <li><em>Binding:</em> The process of preparing a child view to display data corresponding
- *     to a <em>position</em> within the adapter.</li>
+ *     to a <em>position</em> within the adapter.(处理显示一个子视图的数据，对应于适配器中相应的位置)</li>
  *     <li><em>Recycle (view):</em> A view previously used to display data for a specific adapter
  *     position may be placed in a cache for later reuse to display the same type of data again
  *     later. This can drastically improve performance by skipping initial layout inflation
- *     or construction.</li>
+ *     or construction.(位于缓存中，显示适配器特定位置的一个视图。为了以后重新使用来显示相同类型的数据。它能够彻底改进性能，不需要初始化或重新构造布局)</li>
  *     <li><em>Scrap (view):</em> A child view that has entered into a temporarily detached
  *     state during layout. Scrap views may be reused without becoming fully detached
  *     from the parent RecyclerView, either unmodified if no rebinding is required or modified
- *     by the adapter if the view was considered <em>dirty</em>.</li>
+ *     by the adapter if the view was considered <em>dirty</em>.(碎片：在布局期间，一个子视图进入一个临时移除的状态。碎片视图可能被重用，
+ *     而不是完全从父RecyclerView中移除，如果子视图没有被重新绑定或修改，那么子视图是脏的数据。)</li>
  *     <li><em>Dirty (view):</em> A child view that must be rebound by the adapter before
- *     being displayed.</li>
+ *     being displayed.（子视图在显示之前，被适配器rebound）</li>
  * </ul>
  *
  * <h3>Positions in RecyclerView:</h3>
@@ -125,17 +126,20 @@ import java.util.List;
  * calculation. This saves LayoutManager from tracking adapter changes to calculate animations.
  * It also helps with performance because all view bindings happen at the same time and unnecessary
  * bindings are avoided.
+ * (RecyclerView引入一个额外的抽象层，在Adapter和LayoutManager之间，在布局期间能够检测批量数据集的变更。这节约了LayoutManager跟踪适配器更改计算动画时间。
+ * 也有助于提高性能，因为所有视图绑定同时发生，避免不必要的绑定)
  * <p>
  * For this reason, there are two types of <code>position</code> related methods in RecyclerView:
  * <ul>
  *     <li>layout position: Position of an item in the latest layout calculation. This is the
- *     position from the LayoutManager's perspective.</li>
+ *     position from the LayoutManager's perspective.（布局位置：最新布局计算项的位置。这个位置是从LayoutManger的视角来看。）</li>
  *     <li>adapter position: Position of an item in the adapter. This is the position from
- *     the Adapter's perspective.</li>
+ *     the Adapter's perspective.（适配器位置：适配器项的位置。这个是从适配器的视角来看的）</li>
  * </ul>
  * <p>
  * These two positions are the same except the time between dispatching <code>adapter.notify*
  * </code> events and calculating the updated layout.
+ * （除了是在调用adapter.notify*方法和布局更新计算的时候，这两个位置是相同的。）
  * <p>
  * Methods that return or receive <code>*LayoutPosition*</code> use position as of the latest
  * layout calculation (e.g. {@link ViewHolder#getLayoutPosition()},
@@ -144,6 +148,7 @@ import java.util.List;
  * currently seeing on the screen. For example, if you have a list of items on the screen and user
  * asks for the 5<sup>th</sup> element, you should use these methods as they'll match what user
  * is seeing.
+ * （返回布局位置的方法..。这些位置包括所有变化，直到最后布局计算。你能够依赖这些位置与当前屏幕用户所看到得保持一致。）
  * <p>
  * The other set of position related methods are in the form of
  * <code>*AdapterPosition*</code>. (e.g. {@link ViewHolder#getAbsoluteAdapterPosition()},
@@ -155,17 +160,24 @@ import java.util.List;
  * calculate adapter positions if {@link Adapter#notifyDataSetChanged()} has been called and new
  * layout has not yet been calculated. For this reasons, you should carefully handle
  * {@link #NO_POSITION} or <code>null</code> results from these methods.
+ * （当你需要使用到最新适配器位置，你需要使用这些方法。即使他们可能没有在布局中显示出来。
+ * 比如，如果在一个ViewHolder点击时，想要访问适配器的项。
+ * 注意这些方法可能不能计算适配器位置，如果适配器被调用notifyDataSetChanged()并且新的布局尚未计算完成。
+ * 因此，你应该小心处理NO_POSITION或null结果，从这些方法。）
  * <p>
  * When writing a {@link LayoutManager} you almost always want to use layout positions whereas when
  * writing an {@link Adapter}, you probably want to use adapter positions.
+ * （当编写一个LayoutManager时，你几乎想要使用布局position，当编写一个Adapter时，你可能想要使用适配器position。）
  * <p>
  * <h3>Presenting Dynamic Data</h3>
  * To display updatable data in a RecyclerView, your adapter needs to signal inserts, moves, and
  * deletions to RecyclerView. You can build this yourself by manually calling
  * {@code adapter.notify*} methods when content changes, or you can use one of the easier solutions
  * RecyclerView provides:
+ * （为了在RecyclerView中显示可更新的数据，你的Adapter需要向RecyclerView发送插入、移动和删除的信号。
+ * 当内容变更时，你能够手动调用这些adapter.notify*方法或者你能够使用RecyclerView中更容易的一个。）
  * <p>
- * <h4>List diffing with DiffUtil</h4>
+ * <h4>List diffing with DiffUtil（使用DiffUtil，展示不同的List）</h4>
  * If your RecyclerView is displaying a list that is re-fetched from scratch for each update (e.g.
  * from the network, or from a database), {@link DiffUtil} can calculate the difference between
  * versions of the list. {@code DiffUtil} takes both lists as input and computes the difference,
@@ -174,11 +186,17 @@ import java.util.List;
  * memory with immutable content, and relies on receiving updates as new instances of lists. This
  * approach is also ideal if your UI layer doesn't implement sorting, it just presents the data in
  * the order it's given.
+ * （如果你的RecyclerView正在显示一个列表，在这个列表每次更新时都会被重新获取。（例如：从网络中或者从数据库中）
+ * DiffUtil能够计算不同版本的list。DiffUtil将两个list作为输入并计算差异，你能够通过RecyclerView来触发最小动画和更新来保持
+ * 你的UI性能，并且动画是有意义的。这种方式要求每个list在内存中内容时不可变的，并且依靠新的list实例来更新。
+ * 在所给的顺序中，如果你的UI层没有实现排序，它仅仅呈现数据，实现这个方式也是理想的。）
  * <p>
  * The best part of this approach is that it extends to any arbitrary changes - item updates,
  * moves, addition and removal can all be computed and handled the same way. Though you do have
  * to keep two copies of the list in memory while diffing, and must avoid mutating them, it's
  * possible to share unmodified elements between list versions.
+ * （这种方式，最好的一点是它能够扩展任意的变更-子项的更新、移动、添加和移除都可以用相同的方式计算和处理。
+ * 虽然你要在内存中保持两份list的拷贝，并必须避免他们发生变异，可以在list版本之间共享未修改的元素。）
  * <p>
  * There are three primary ways to do this for RecyclerView. We recommend you start with
  * {@link ListAdapter}, the higher-level API that builds in {@link List} diffing on a background
@@ -186,8 +204,11 @@ import java.util.List;
  * defining an Adapter to subclass. If you want more control, {@link DiffUtil} is the lower-level
  * API you can use to compute the diffs yourself. Each approach allows you to specify how diffs
  * should be computed based on item data.
+ * （RecyclerView有3个基本的方式。我们建议你开始使用ListAdapter。List中，高层级的API在后台线程中被构建，使用最少的代码。
+ * AsyncListDiffer也提供这种行为，但没有定义一个Adapter到子类。如果你想要更多控制，DiffUtil是一个低层级API，你能够用于计算自身的不同。
+ * 每种方式允许你指定如何不同，应该计算item数据。）
  * <p>
- * <h4>List mutation with SortedList</h4>
+ * <h4>List mutation with SortedList（SortedList,List的变化）</h4>
  * If your RecyclerView receives updates incrementally, e.g. item X is inserted, or item Y is
  * removed, you can use {@link SortedList} to manage your list. You define how to order items,
  * and it will automatically trigger update signals that RecyclerView can use. SortedList works
@@ -195,6 +216,9 @@ import java.util.List;
  * need to have a single copy of the list in memory. It can also compute differences with
  * {@link SortedList#replaceAll(Object[])}, but this method is more limited than the list diffing
  * behavior above.
+ * (如果你的RecyclerView收到自增更新时，例如item X被插入或item Y被移除，你能使用SortedList来管理你的list。
+ * 你定义如何整理这些item，并且这些item将会自动触发更新信号，RecyclerView能使用。如果你仅仅需要处理插入和移除时间，那么SortedList将会工作。
+ * 它是有帮助的，你仅仅只要在内存中做一个单一拷贝。SortedList也能够使用replaceAll()方法来计算列表不同，但这个方法在不同list上有好多限制。)
  * <p>
  * <h4>Paging Library</h4>
  * The <a href="https://developer.android.com/topic/libraries/architecture/paging/">Paging
@@ -205,7 +229,8 @@ import java.util.List;
  * information about the Paging library, see the
  * <a href="https://developer.android.com/topic/libraries/architecture/paging/">library
  * documentation</a>.
- *
+ * （它提供PagedList类操作自身加载的list，提供一个资源数据 比如 一个数据、有页数的网络接口API。它提供便捷的list，支持开箱即用，例如
+ * ListAdapter、AsyncListDiffer。）
  * {@link androidx.recyclerview.R.attr#layoutManager}
  */
 public class RecyclerView extends ViewGroup implements ScrollingView,
