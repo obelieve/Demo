@@ -9,7 +9,7 @@ import java.util.Scanner;
  * 输入描述： 输入一个整数（int类型）      输出描述：这个数转换成2进制后，输出1的个数
  * 例：输入：5       输出：2
  */
-public class HJ15_2 {
+public class HJ15_2_right {
 
     //更多解法详见：https://leetcode-cn.com/problems/number-of-1-bits/solution/
     public static void main(String[] args) {

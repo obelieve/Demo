@@ -15,7 +15,7 @@ import java.util.Scanner;
  *          81               40
  *          0
  */
-public class HJ22_2 {
+public class HJ22_2_right {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);

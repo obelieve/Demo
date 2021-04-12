@@ -10,7 +10,7 @@ import java.util.Scanner;
  * 输入描述：将一个英文语句以单词为单位逆序排放。      输出描述：得到逆序的句子
  * 例：输入：I am a boy      输出描述：boy a am I
  */
-public class HJ13_2 {
+public class HJ13_2_right {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 

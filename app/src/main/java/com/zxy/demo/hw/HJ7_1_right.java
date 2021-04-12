@@ -9,7 +9,7 @@ import java.util.Scanner;
  * 输入描述：输入一个正浮点数值       输出描述：输出该数值的近似整数值
  * 例：输入：5.5         输出：6
  */
-public class HJ7_1 {
+public class HJ7_1_right {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);

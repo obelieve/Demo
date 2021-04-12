@@ -10,7 +10,7 @@ import java.util.Scanner;
  * 输入描述：输入一个int整数       输出描述：将这个整数以字符串的形式逆序输出
  * 例：输入：1516000     输出：0006151
  */
-public class HJ11_2 {
+public class HJ11_2_right {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);

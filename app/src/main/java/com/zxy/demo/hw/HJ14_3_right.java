@@ -12,7 +12,7 @@ import java.util.Scanner;
  * 例：输入：9 cap to cat card two too up boat boot
  *     输出：boat boot cap card cat to too two up
  */
-public class HJ14_3 {
+public class HJ14_3_right {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
