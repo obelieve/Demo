@@ -9,7 +9,7 @@ import java.util.Set;
  * 输入描述：输入一个int型整数      输出描述：按照从右向左的阅读顺序，返回一个不含重复数字的新的整数
  * 例：输入：9876673         输出：37689
  */
-public class HJ9_2_write {
+public class HJ9_2_right {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);

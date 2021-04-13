@@ -1,8 +1,6 @@
 package com.zxy.demo.hw;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Scanner;
 
 /**
@@ -11,7 +9,7 @@ import java.util.Scanner;
  * 输入描述：输入int型表示month     输出描述：输出兔子总数int类型
  * 例：输入：9     输出：34
  */
-public class HJ37_2_write {
+public class HJ37_2_right {
 
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);

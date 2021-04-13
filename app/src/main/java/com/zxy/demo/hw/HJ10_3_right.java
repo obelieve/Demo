@@ -10,7 +10,7 @@ import java.util.Set;
  * 输入描述：输入N个字符，字符在ACSII码范围内。        输出描述：输出范围在(0~127)字符的个数。
  * 例：输入：abc     输出：3
  */
-public class HJ10_3_write {
+public class HJ10_3_right {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         while (input.hasNext()){

@@ -19,7 +19,7 @@ import java.util.TreeSet;
  * 第二组是11个数字，分别是：10，20，40，32，67，40，20，89，300，400，15。
  * 例：输入：3 2 2 1 11 10 20 40 32 67 40 20 89 300 400 15      输出：1 2 10 15 20 32 40 67 89 300 400
  */
-public class HJ3_3_write {
+public class HJ3_3_right {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -29,11 +29,7 @@ public class HJ3_3_write {
             List<Integer> list = new ArrayList<>(hashSet);
             Collections.sort(list);
             for(int i=0;i<list.size();i++){
-                System.out.print(list.get(i));
-                System.out.print(" ");
-//                if(i!=list.size()-1){
-//
-//                }
+                System.out.println(list.get(i));
             }
         }
     }

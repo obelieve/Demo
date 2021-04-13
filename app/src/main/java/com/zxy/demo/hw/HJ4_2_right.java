@@ -9,7 +9,7 @@ import java.util.Scanner;
  *          123456789                12345678
  *                                   90000000
  */
-public class HJ4_2_write {
+public class HJ4_2_right {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);

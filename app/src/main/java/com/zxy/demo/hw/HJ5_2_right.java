@@ -9,7 +9,7 @@ import java.util.Scanner;
  * 输入描述：输入一个十六进制的数值字符串。     输出描述：输出该数值的十进制字符串。
  * 例：输入：0xA     输出：10
  */
-public class HJ5_2_write {
+public class HJ5_2_right {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
@@ -27,7 +27,7 @@ public class HJ5_2_write {
             for(int i = va.length()-1;i>=0;i--){
                 Integer num = map.get(va.charAt(i)+"");
                 if(num==null){
-                    count +=Integer.parseInt(va.charAt(i)+"") *16;
+                    count +=Integer.parseInt(va.charAt(i)+"") *mi(va.length()-1-i);
                 }else{
                     count+=num*mi(va.length()-1-i);
                 }

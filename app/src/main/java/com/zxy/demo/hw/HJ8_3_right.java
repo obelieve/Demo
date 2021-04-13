@@ -13,7 +13,7 @@ import java.util.*;
  *          1 2
  *          3 4
  */
-public class HJ8_3_write {
+public class HJ8_3_right {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         while (input.hasNextInt()){
