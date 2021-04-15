@@ -15,7 +15,7 @@ import java.util.Scanner;
  * 输出描述：删除字符串中出现次数最少的字符后的字符串。
  * 例：输入：abcdd       输出：dd
  */
-public class HJ23_3_write {
+public class HJ23_3_right {
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()){

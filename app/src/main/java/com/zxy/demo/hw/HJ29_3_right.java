@@ -12,7 +12,7 @@ import java.util.Scanner;
  * 例：输入：abcdefg                     输出：BCDEFGH
  *          BCDEFGH                          abcdefg
  */
-public class HJ29_3_write {
+public class HJ29_3_right {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean jiami = true;
@@ -29,11 +29,29 @@ public class HJ29_3_write {
                    offset = -1;
                }
                if(c>='A'&&c<='Z'){
-                   c = (char)((int)c-('A'-'a')+offset);
+                   if(offset==1&&c=='Z'){
+                       c = 'a';
+                   }else if(offset==-1&&c=='A'){
+                       c = 'z';
+                   }else{
+                       c = (char)(((int)c-('A'-'a')+offset));
+                   }
                }else if(c>='a'&&c<='z'){
-                   c = (char)((int)c+('A'-'a')+offset);
+                   if(offset==1&&c=='z'){
+                       c = 'A';
+                   }else if(offset==-1&&c=='a'){
+                       c = 'Z';
+                   }else {
+                       c = (char) ((int) c + ('A' - 'a') + offset);
+                   }
                }else if(c>='0'&&c<='9'){
-                   c = (char)((int)c+offset);
+                   if(offset==1&&c=='9'){
+                       c = '0';
+                   }else if(offset==-1&&c=='0'){
+                       c='9';
+                   }else{
+                       c = (char)((int)c+offset);
+                   }
                }
                i++;
                sb.append(c);

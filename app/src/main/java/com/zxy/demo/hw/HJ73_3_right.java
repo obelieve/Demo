@@ -16,7 +16,7 @@ import java.util.Scanner;
  * 1.闰年 被400整除的 或者 能够被4整除不能被100整除的。
  *
  */
-public class HJ73_3_write {
+public class HJ73_3_right {
     public static void main(String[] args) {
         int[] yearArray = new int[]{31,28,31,30,31,30,31,31,30,31,30,31};
         int[] yearArray366 = Arrays.copyOf(yearArray,yearArray.length);

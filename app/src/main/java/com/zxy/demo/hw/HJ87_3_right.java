@@ -1,7 +1,6 @@
 package com.zxy.demo.hw;
 
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 /**
 
@@ -17,7 +16,7 @@ import java.util.regex.Pattern;
  * 对应的输出为：VERY_SECURE, SECURE, VERY_STRONG, STRONG, AVERAGE, WEAK, VERY_WEAK,
  * 例： 输入：38$@NoNoNo     输出：VERY_SECURE
  */
-public class HJ87_3_write {
+public class HJ87_3_right {
 
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
@@ -59,10 +58,10 @@ public class HJ87_3_write {
                 symbol++;
             }
         }
-        if(abc==str.length()||ABC==str.length()){
-            count+=10;
-        }else if(abc>0&&ABC>0){
+        if(abc>0&&ABC>0){
             count+=20;
+        }else if(abc>0||ABC>0){
+            count+=10;
         }
 
         if(num>1){
