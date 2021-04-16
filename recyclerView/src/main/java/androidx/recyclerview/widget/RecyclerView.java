@@ -3679,11 +3679,13 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             defaultOnMeasure(widthSpec, heightSpec);
             return;
         }
+        //分为是否自动测量
         if (mLayout.isAutoMeasureEnabled()) {
-            final int widthMode = MeasureSpec.getMode(widthSpec);
+            final int widthMode = MeasureSpec.getMode(widthSpec);//获取32位的前两位数字
             final int heightMode = MeasureSpec.getMode(heightSpec);
 
-            /**
+            /**因为在AutoMeasure模式下，开发者实际上不会去重载onMeasure(int, int)方法，
+             * 所以默认它是调用defaultOnMeasure(widthSpec, heightSpec);。
              * This specific call should be considered deprecated and replaced with
              * {@link #defaultOnMeasure(int, int)}. It can't actually be replaced as it could
              * break existing third party code but all documentation directs developers to not
@@ -3699,7 +3701,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             if (mLastAutoMeasureSkippedDueToExact || mAdapter == null) {
                 return;
             }
-
+            //RecyclerView 状态
             if (mState.mLayoutStep == State.STEP_START) {
                 dispatchLayoutStep1();
             }
@@ -3710,6 +3712,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             dispatchLayoutStep2();
 
             // now we can get the width and height from the children.
+            //计算从子View中Rect，计算RecyclerViewView宽高
             mLayout.setMeasuredDimensionFromChildren(widthSpec, heightSpec);
 
             // if RecyclerView has non-exact width and height and if there is at least one child
@@ -4312,6 +4315,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     }
 
     /**
+     * 对子View进行测量操作
      * The second layout step where we do the actual layout of the views for the final state.
      * This step might be run multiple times if necessary (e.g. measure).
      */
