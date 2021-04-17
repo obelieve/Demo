@@ -9,7 +9,7 @@ import java.util.Scanner;
  * 输入描述：输入一个IP地址。           输出描述：返回判断的结果，YES or NO
  * 例：输入：10.138.15.1               输出：YES
  */
-public class HJ90_3_write {
+public class HJ90_3_right {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);

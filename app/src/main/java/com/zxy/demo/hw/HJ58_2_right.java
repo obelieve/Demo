@@ -1,7 +1,6 @@
 package com.zxy.demo.hw;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
@@ -13,7 +12,7 @@ import java.util.Scanner;
  * 例：输入：5 2             输出：1 2
  *          1 3 5 7 2
  */
-public class HJ58_2_write {
+public class HJ58_2_right {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         while (input.hasNextLine()){
