@@ -21,13 +21,10 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.tv)
-    TextView mTv;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.rv_list);
         ButterKnife.bind(this);
         RecyclerView rv = findViewById(R.id.rv_content);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -69,10 +66,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    @OnClick(R.id.tv)
-    public void onViewClicked() {
-
     }
 }
