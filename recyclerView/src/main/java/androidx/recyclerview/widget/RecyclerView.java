@@ -3712,7 +3712,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             dispatchLayoutStep2();
 
             // now we can get the width and height from the children.
-            //计算从子View中Rect，计算RecyclerViewView宽高
+            //计算从子View中measure，来计算RecyclerViewView宽高
             mLayout.setMeasuredDimensionFromChildren(widthSpec, heightSpec);
 
             // if RecyclerView has non-exact width and height and if there is at least one child
@@ -8107,6 +8107,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
 
         /**
+         * 计算根据子View的left、top、right、bottom，计算RecyclerView的宽高
          * Called after a layout is calculated during a measure pass when using auto-measure.
          * <p>
          * It simply traverses all children to calculate a bounding box then calls

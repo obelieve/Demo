@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 1.RecyclerView怎么根据LayoutManager把，ViewHolder加载进去?
+ * 2.怎么复用View？
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
