@@ -1,7 +1,9 @@
 plugins {
     id 'com.android.library'
 }
-
+/**
+ * RecyclerView 版本号：1.2.0-rc01，位于*\support\buildSrc\src\main\kotlin\androidx\build\LibraryVersions.kt 文件下
+ */
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
