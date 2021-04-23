@@ -523,6 +523,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
     }
 
     /**
+     * 布局子视图的方法
      * {@inheritDoc}
      */
     @Override
@@ -530,9 +531,9 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         // layout algorithm:
         // 1) by checking children and other variables, find an anchor coordinate and an anchor
         //  item position.
-        // 2) fill towards start, stacking from bottom
-        // 3) fill towards end, stacking from top
-        // 4) scroll to fulfill requirements like stack from bottom.
+        // 2) fill towards start, stacking from bottom //从底部开始，填充end->start
+        // 3) fill towards end, stacking from top //从顶部开始，填充start->end
+        // 4) scroll to fulfill requirements like stack from bottom. //（fulfill 实现/履行）
         // create layout state
         if (DEBUG) {
             Log.d(TAG, "is pre layout:" + state.isPreLayout());
@@ -631,7 +632,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
 
         onAnchorReady(recycler, state, mAnchorInfo, firstLayoutDirection);
         detachAndScrapAttachedViews(recycler);
-        mLayoutState.mInfinite = resolveIsInfinite();
+        mLayoutState.mInfinite = resolveIsInfinite(); //infinite 无限的/无穷的 View.MeasureSpec.UNSPECIFIED
         mLayoutState.mIsPreLayout = state.isPreLayout();
         // noRecycleSpace not needed: recycling doesn't happen in below's fill
         // invocations because mScrollingOffset is set to SCROLLING_OFFSET_NaN
@@ -1560,15 +1561,16 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
     }
 
     /**
+     * 子View绘制
      * The magic functions :). Fills the given layout, defined by the layoutState. This is fairly
      * independent from the rest of the {@link LinearLayoutManager}
-     * and with little change, can be made publicly available as a helper class.
+     * and with little change, can be made publicly available as a helper class. (稍作修改就可以，当做helper类使用)
      *
      * @param recycler        Current recycler that is attached to RecyclerView
      * @param layoutState     Configuration on how we should fill out the available space.
      * @param state           Context passed by the RecyclerView to control scroll steps.
      * @param stopOnFocusable If true, filling stops in the first focusable new child
-     * @return Number of pixels that it added. Useful for scroll functions.
+     * @return Number of pixels that it added. Useful for scroll functions. //返回添加后的像素，对滚动方法有用
      */
     int fill(RecyclerView.Recycler recycler, LayoutState layoutState,
             RecyclerView.State state, boolean stopOnFocusable) {
@@ -1582,13 +1584,13 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
             recycleByLayoutState(recycler, layoutState);
         }
         int remainingSpace = layoutState.mAvailable + layoutState.mExtraFillSpace;
-        LayoutChunkResult layoutChunkResult = mLayoutChunkResult;
-        while ((layoutState.mInfinite || remainingSpace > 0) && layoutState.hasMore(state)) {
+        LayoutChunkResult layoutChunkResult = mLayoutChunkResult;//chunk 大块
+        while ((layoutState.mInfinite || remainingSpace > 0) && layoutState.hasMore(state)) { //轮询布局
             layoutChunkResult.resetInternal();
             if (RecyclerView.VERBOSE_TRACING) {
                 TraceCompat.beginSection("LLM LayoutChunk");
             }
-            layoutChunk(recycler, state, layoutState, layoutChunkResult);
+            layoutChunk(recycler, state, layoutState, layoutChunkResult);//测量+布局子View
             if (RecyclerView.VERBOSE_TRACING) {
                 TraceCompat.endSection();
             }
@@ -1654,7 +1656,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
                 addDisappearingView(view, 0);
             }
         }
-        measureChildWithMargins(view, 0, 0);
+        measureChildWithMargins(view, 0, 0);//1.计算尺寸
         result.mConsumed = mOrientationHelper.getDecoratedMeasurement(view);
         int left, top, right, bottom;
         if (mOrientation == VERTICAL) {
@@ -1686,7 +1688,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         }
         // We calculate everything with View's bounding box (which includes decor and margins)
         // To calculate correct layout position, we subtract margins.
-        layoutDecoratedWithMargins(view, left, top, right, bottom);
+        layoutDecoratedWithMargins(view, left, top, right, bottom);//2.布局子View
         if (DEBUG) {
             Log.d(TAG, "laid out child at position " + getPosition(view) + ", with l:"
                     + (left + params.leftMargin) + ", t:" + (top + params.topMargin) + ", r:"

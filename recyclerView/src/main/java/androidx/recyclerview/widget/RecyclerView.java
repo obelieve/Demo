@@ -2290,8 +2290,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
      */
     void startInterceptRequestLayout() {
         mInterceptRequestLayoutDepth++;
-        if (mInterceptRequestLayoutDepth == 1 && !mLayoutSuppressed) {
-            mLayoutWasDefered = false;
+        if (mInterceptRequestLayoutDepth == 1 && !mLayoutSuppressed) { //mLayoutSuppressed 布局被抑制(suppress)
+            mLayoutWasDefered = false;//布局被推迟(defer)
         }
     }
 
@@ -3984,17 +3984,17 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 && predictiveItemAnimationsEnabled();
     }
 
-    /**
+    /**layoutChildren()的包装，增加了item动画效果
      * Wrapper around layoutChildren() that handles animating changes caused by layout.
      * Animations work on the assumption that there are five different kinds of items
      * in play:
-     * PERSISTENT: items are visible before and after layout
-     * REMOVED: items were visible before layout and were removed by the app
-     * ADDED: items did not exist before layout and were added by the app
-     * DISAPPEARING: items exist in the data set before/after, but changed from
+     * PERSISTENT: items are visible before and after layout //item布局前后都可见
+     * REMOVED: items were visible before layout and were removed by the app //item前面可见，后面移除
+     * ADDED: items did not exist before layout and were added by the app //item前面不存在，后面添加
+     * DISAPPEARING: items exist in the data set before/after, but changed from //item 前后都存在，但布局时从可见到不可见
      * visible to non-visible in the process of layout (they were moved off
      * screen as a side-effect of other changes)
-     * APPEARING: items exist in the data set before/after, but changed from
+     * APPEARING: items exist in the data set before/after, but changed from //item 前后都存在，但布局时从不可见到可见
      * non-visible to visible in the process of layout (they were moved on
      * screen as a side-effect of other changes)
      * The overall approach figures out what items exist before/after layout and
@@ -4230,11 +4230,11 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         mState.assertLayoutStep(State.STEP_START);
         fillRemainingScrollValues(mState);
         mState.mIsMeasuring = false;
-        startInterceptRequestLayout();
+        startInterceptRequestLayout();//避免重复布局，拦截布局请求计数
         mViewInfoStore.clear();
-        onEnterLayoutOrScroll();
+        onEnterLayoutOrScroll();//布局/滚动 计数器
         processAdapterUpdatesAndSetAnimationFlags();
-        saveFocusInfo();
+        saveFocusInfo();//保存焦点视图的信息
         mState.mTrackOldChangeHolders = mState.mRunSimpleAnimations && mItemsChanged;
         mItemsAddedOrRemoved = mItemsChanged = false;
         mState.mInPreLayout = mState.mRunPredictiveAnimations;
@@ -4315,7 +4315,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     }
 
     /**
-     * 对子View进行测量操作
+     * 对最终的状态，进行了实际的布局。
+     * 这个步骤根据实际需要，可能会执行多次。
      * The second layout step where we do the actual layout of the views for the final state.
      * This step might be run multiple times if necessary (e.g. measure).
      */
@@ -4334,7 +4335,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
         // Step 2: Run layout
         mState.mInPreLayout = false;
-        mLayout.onLayoutChildren(mRecycler, mState);
+        mLayout.onLayoutChildren(mRecycler, mState);//布局子View的方法
 
         mState.mStructureChanged = false;
 
@@ -12785,7 +12786,10 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         };
     }
 
-    /**
+    /**State->布局步骤有3个：STEP_START、STEP_LAYOUT、STEP_ANIMATIONS
+     * 保存当前RecyclerView的一些状态数据包括：目标滚动位置、视图焦点、资源id标识。
+     * 也为了定义了组件间通信的数据总线，RecyclerView通过统一的状态对象到组件回调，这些组件可以使用它来交换数据。
+     * 如果你自定义View，你的组件能够使用State的put/get/remove方法，无需管理他们的生命周期。
      * <p>Contains useful information about the current RecyclerView state like target scroll
      * position or view focus. State object can also keep arbitrary data, identified by resource
      * ids.</p>
@@ -12801,7 +12805,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         static final int STEP_ANIMATIONS = 1 << 2;
 
         void assertLayoutStep(int accepted) {
-            if ((accepted & mLayoutStep) == 0) {
+            if ((accepted & mLayoutStep) == 0) { //accepted & mLayoutStep 什么意思？
                 throw new IllegalStateException("Layout state should be one of "
                         + Integer.toBinaryString(accepted) + " but it is "
                         + Integer.toBinaryString(mLayoutStep));
@@ -12886,7 +12890,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         ////////////////////////////////////////////////////////////////////////////////////////////
 
         /**
-         * Prepare for a prefetch occurring on the RecyclerView in between traversals, potentially
+         * Prepare for a prefetch（预先载入） occurring on the RecyclerView in between traversals, potentially
          * prior to any layout passes.
          *
          * <p>Don't touch any state stored between layout passes, only reset per-layout state, so
@@ -12950,6 +12954,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
 
         /**
+         * 移除指定的资源id
          * Removes the mapping from the specified id, if there was any.
          *
          * @param resourceId Id of the resource you want to remove. It is suggested to use R.id.* to
@@ -12994,6 +12999,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
 
         /**
+         * 如果滚动触发某个item可见，就返回这个item在Adapter中的position
          * If scroll is triggered to make a certain item visible, this value will return the
          * adapter index of that item.
          *
@@ -13015,7 +13021,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             return mTargetPosition != RecyclerView.NO_POSITION;
         }
 
-        /**
+        /**结构化的数据集合是否有变更
          * @return true if the structure of the data set has changed since the last call to
          * onLayoutChildren, false otherwise
          */
@@ -13024,7 +13030,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
 
         /**
-         * Returns the total number of items that can be laid out. Note that this number is not
+         * //能被布局的item数量
+         * Returns the total number of items that can be laid out(布局). Note that this number is not
          * necessarily equal to the number of items in the adapter, so you should always use this
          * number for your position calculations and never access the adapter directly.
          * <p>
@@ -13032,9 +13039,13 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
          * data changes on existing Views. These calculations are used to decide which animations
          * should be run.
          * <p>
+         *（为了支持预测动画，RecyclerView可能重写或重新排序Adapter变更，来避免正确的状态来预布局）
          * To support predictive animations, RecyclerView may rewrite or reorder Adapter changes to
          * present the correct state to LayoutManager in pre-layout pass.
          * <p>
+         *（例如，一个新增的item是不被包含在预布局的item数量中的，因为预布局反映Adapter添加之前的内容。
+         * 在后台，RecyclerView的Recycler#getViewForPosition(int)调用，LayoutManager在预布局时是不知道新的item存在。
+         * 新的item在第二次布局是可用的，并且被包含在item count中。类似的移除和重新移除item也一样。）
          * For example, a newly added item is not included in pre-layout item count because
          * pre-layout reflects the contents of the adapter before the item is added. Behind the
          * scenes, RecyclerView offsets {@link Recycler#getViewForPosition(int)} calls such that
@@ -13058,7 +13069,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
          * smoothScrollTo/SmoothScroller) in pixels. Returns zero if {@link #getScrollState()} is
          * other than {@link #SCROLL_STATE_SETTLING}.
          *
-         * @return Remaining horizontal scroll distance
+         * @return Remaining horizontal scroll distance //剩余水平滚动距离
          */
         public int getRemainingScrollHorizontal() {
             return mRemainingScrollHorizontal;
@@ -13069,7 +13080,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
          * smoothScrollTo/SmoothScroller) in pixels. Returns zero if {@link #getScrollState()} is
          * other than {@link #SCROLL_STATE_SETTLING}.
          *
-         * @return Remaining vertical scroll distance
+         * @return Remaining vertical scroll distance //剩余垂直滚动距离
          */
         public int getRemainingScrollVertical() {
             return mRemainingScrollVertical;

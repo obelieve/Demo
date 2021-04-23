@@ -19,9 +19,26 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 /**
- * 1.RecyclerView怎么根据LayoutManager把，ViewHolder加载进去?
- * 2.怎么复用View？
- */
+ 1.RecyclerView怎么根据LayoutManager把，ViewHolder加载进去?
+ 2.怎么复用View？
+
+ Update RecyclerView布局流程：
+ 从->onMeasure()/onLayout()
+ ->dispatchLayout()
+  ｛
+    dispatchLayoutStep1(); //一些初始化操作，记录状态
+    dispatchLayoutStep2();
+    ｛
+        #mLayoutManager.onLayoutChildren(mRecycler, mState);
+        {
+            fill(recycler, mLayoutState, state, false);//*测量和布局
+            //有一个while轮询语句块
+        }
+     ｝
+    dispatchLayoutStep3();
+ ｝
+
+**/
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -37,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 srl.setRefreshing(false);
             }
         });
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        rv.setLayoutManager(lm);
         rv.setAdapter(new RecyclerView.Adapter() {
             List<String> list = new ArrayList<>();
 
