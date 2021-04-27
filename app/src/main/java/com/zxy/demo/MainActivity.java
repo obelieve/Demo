@@ -40,6 +40,11 @@ import butterknife.ButterKnife;
  * dispatchLayoutStep3();
  * ｝
  **/
+
+/**
+ * RecyclerView 源码分析博客
+ * 1.https://blog.csdn.net/u012165769/article/details/108987728
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
