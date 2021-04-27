@@ -235,7 +235,20 @@ import java.util.List;
  */
 public class RecyclerView extends ViewGroup implements ScrollingView,
         NestedScrollingChild2, NestedScrollingChild3 {
-
+    /**
+     * ScrollingView能够为View实现滚动相关联的API
+     * //第一组，水平滚动相关
+     * 范围=子view长度相加+总空隙长度
+     * 滑块处于顶部时，偏移量=0
+     * 滑块处于底部时，偏移量+可视区域（extent）=范围
+     * int computeHorizontalScrollRange();//整个滚动视图的总长度
+     * int computeHorizontalScrollOffset();//距离起点的距离长度
+     * int computeHorizontalScrollExtent();//可视区域的长度
+     * //第二组，垂直滚动
+     * int computeVerticalScrollRange();
+     * int computeVerticalScrollOffset();
+     * int computeVerticalScrollExtent();
+     */
     static final String TAG = "RecyclerView";
 
     static final boolean DEBUG = false;
