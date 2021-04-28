@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#Aliyun log
+-keep class com.aliyun.sls.android.producer.* { *; }
+-keep interface com.aliyun.sls.android.producer.* { *; }
