@@ -22,7 +22,7 @@ public class AliyunLog {
 
     public void init(Context context) throws LogProducerException {
         // 指定sts token 创建config，过期之前调用resetSecurityToken重置token
-//        LogProducerConfig config = new LogProducerConfig(endpoint, project, logstore, accesskeyid, accesskeysecret, securityToken);
+        //LogProducerConfig config = new LogProducerConfig(endpoint, project, logstore, accesskeyid, accesskeysecret, securityToken);
         config = new LogProducerConfig(endpoint, project, logstore, accesskeyid, accesskeysecret);
         // 设置主题
         config.setTopic("test_topic");
@@ -95,8 +95,7 @@ public class AliyunLog {
 
     public void send(Log log) {
         if (client != null) {
-            LogProducerResult res = client.addLog(log, 0);
-//            System.out.printf("%s %s%n", res, res.isLogProducerResultOk());
+            client.addLog(log, 0); //1代表立即发送，不设置时默认为0
         }
     }
 }
