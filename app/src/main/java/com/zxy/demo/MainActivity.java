@@ -24,22 +24,22 @@ import butterknife.ButterKnife;
  * 1.RecyclerView怎么根据LayoutManager把，ViewHolder加载进去?
  * 2.怎么复用View？
  * <p>
- * Update RecyclerView布局流程：
+ * RecyclerView
+ * 1.布局：
  * 从->onMeasure()/onLayout()
- * ->dispatchLayout()
- * ｛
  * dispatchLayoutStep1(); //一些初始化操作，记录状态
- * dispatchLayoutStep2();
- * ｛
- * #mLayoutManager.onLayoutChildren(mRecycler, mState);
- * {
- * fill(recycler, mLayoutState, state, false);//*测量和布局
- * //有一个while轮询语句块
- * }
- * ｝
+ * dispatchLayoutStep2(); //子View的测量和布局
  * dispatchLayoutStep3();
- * ｝
+ * 2.复用机制：
+ * RecyclerView.Recycler：
+ *  Scrap、CacheView、ViewCacheExtension、RecycledViewPool
  **/
+
+/**
+ * widthMeasureSpec/heightMeasureSpec
+ *
+ * 有时候设置wrap_content时，实际布局是match_parent。因为内部又做了处理。
+ */
 
 /**
  * RecyclerView 源码分析博客
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             List<String> list = new ArrayList<>();
 
             {
-                for (int i = 0; i < 30; i++) {
+                for (int i = 0; i < 3; i++) {
                     list.add("i=" + i);
                 }
             }

@@ -3686,9 +3686,18 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         return false;
     }
 
+    /**
+     * onMeasure(..)和onLayout(..)阶段：
+     * 后面总会去执行
+     * dispatchLayoutStep1()
+     * dispatchLayoutStep2()
+     * dispatchLayoutStep3()
+     *
+     */
+
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
-        if (mLayout == null) {
+        if (mLayout == null) {//LayoutManager为空，使用默认测量策略
             defaultOnMeasure(widthSpec, heightSpec);
             return;
         }
