@@ -3687,13 +3687,23 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     }
 
     /**
-     * onMeasure(..)和onLayout(..)阶段：
-     * 后面总会去执行
-     * dispatchLayoutStep1()
-     * dispatchLayoutStep2()
-     * dispatchLayoutStep3()
-     *
-     */
+    一、测量和布局
+    1.有一个默认的测量方案。
+    2.有子View，需要子View测量和布局来确定最终的测量。
+    - dispatchLayoutStep1() //初始化
+    - dispatchLayoutStep2() //子View大小和布局
+     ->LayoutManager#onLayoutChildren(..) //LayoutManager中处理
+    - dispatchLayoutStep3() //动画信息，清理工作
+    3.自动测量方式。
+    二、复用
+     RecyclerView.Recycler：
+     Scrap //当前页面的ViewHolder
+     CacheView //2个 刚刚移出屏幕View复用
+     ViewCacheExtension // 自定义缓存
+     RecycledViewPool //5个
+     三、滑动
+
+    */
 
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
@@ -3731,7 +3741,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             // consistency
             mLayout.setMeasureSpecs(widthSpec, heightSpec);
             mState.mIsMeasuring = true;
-            dispatchLayoutStep2();
+            dispatchLayoutStep2();//情况：根据子View的宽高确定RecyclerView宽高
 
             // now we can get the width and height from the children.
             //计算从子View中measure，来计算RecyclerViewView宽高
@@ -3756,6 +3766,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 mLayout.onMeasure(mRecycler, mState, widthSpec, heightSpec);
                 return;
             }
+            //情况：布局时发生Adapter数据更新时处理。
             // custom onMeasure
             if (mAdapterUpdateDuringMeasure) {
                 startInterceptRequestLayout();

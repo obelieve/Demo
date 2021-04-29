@@ -32,7 +32,10 @@ import butterknife.ButterKnife;
  * dispatchLayoutStep3();
  * 2.复用机制：
  * RecyclerView.Recycler：
- *  Scrap、CacheView、ViewCacheExtension、RecycledViewPool
+ *  1.Scrap
+ *  2.CacheView
+ *  3.ViewCacheExtension
+ *  4.RecycledViewPool
  **/
 
 /**
