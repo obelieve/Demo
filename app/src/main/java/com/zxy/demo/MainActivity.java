@@ -19,7 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-
+/**
+ * 源码阅读：
+ * 1.程序语言及命名惯例
+ * 2.了解全貌而非细节，采自上而下的方式，必须要加上层次感，层级间角色的关系
+ * 3.优质工具在手，读懂程序非难事 （IDE、grep、gtags可建立索引、htags的工具）
+ */
 /**
  * 1.RecyclerView怎么根据LayoutManager把，ViewHolder加载进去?
  * 2.怎么复用View？
