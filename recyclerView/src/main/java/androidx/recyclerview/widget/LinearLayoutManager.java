@@ -2336,6 +2336,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         View next(RecyclerView.Recycler recycler) {
             //TODO 从缓存中获取View
             if (mScrapList != null) {
+                //1.从ScrapList中查询
                 return nextViewFromScrapList();
             }
             final View view = recycler.getViewForPosition(mCurrentPosition);
