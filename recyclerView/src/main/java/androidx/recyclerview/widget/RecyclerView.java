@@ -6362,6 +6362,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             return tryGetViewHolderForPositionByDeadline(position, dryRun, FOREVER_NS).itemView;
         }
 
+
         /**
          * Attempts to get the ViewHolder for the given position, either from the Recycler scrap,
          * cache, the RecycledViewPool, or creating it directly.
@@ -6379,9 +6380,17 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
          *                   create/bind the holder if needed.
          * @return ViewHolder for requested position
          */
+        /**步骤：
+         * 1.先从scrap找
+         * 2.没有，再从offsetPosition scrap找
+         * 3.没有，再从ViewCacheExtension（如果有设置的话，自定义缓存）找
+         * 4.没有，再从RecycledViewPool找
+         * 5.没有，创建ViewHolder
+         */
         @Nullable
         ViewHolder tryGetViewHolderForPositionByDeadline(int position,
                 boolean dryRun, long deadlineNs) {
+            //TODO 最重要获取ViewHolder的判断方法
             if (position < 0 || position >= mState.getItemCount()) {
                 throw new IndexOutOfBoundsException("Invalid item position " + position
                         + "(" + position + "). Item count:" + mState.getItemCount()
@@ -6390,7 +6399,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             boolean fromScrapOrHiddenOrCache = false;
             ViewHolder holder = null;
             // 0) If there is a changed scrap, try to find from there
-            if (mState.isPreLayout()) {
+            if (mState.isPreLayout()) {//TODO issue RecyclerView的Pre-layout是什么？
                 holder = getChangedScrapViewForPosition(position);
                 fromScrapOrHiddenOrCache = holder != null;
             }
