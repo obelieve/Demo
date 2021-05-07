@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             List<String> list = new ArrayList<>();
 
             {
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 30; i++) {
                     list.add("i=" + i);
                 }
             }

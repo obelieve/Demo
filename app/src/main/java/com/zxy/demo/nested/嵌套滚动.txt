@@ -1,0 +1,26 @@
+dy = -(curY-lastY)
+View#canScrollVertically(-1) 向上滑动 Up
+View#canScrollVertically(1)  向下滑动 Down
+
+NestedScrollingParent
+getNestedScrollAxes()：获取当前嵌套的轴线，是横轴还是竖轴。
+onStartNestedScroll(@NonNull child: View, @NonNull target: View, axes: Int)：初始化，开始滚动
+onStopNestedScroll(@NonNull target: View)：停止嵌套滚动
+onNestedScrollAccepted(@NonNull child: View, @NonNull target: View, axes: Int)：接收一个嵌套滚动
+
+onNestedFling(@NonNull target: View, velocityX: Float, velocityY: Float, consumed: Boolean)：从嵌套滚动，请求一次fling。
+onNestedScroll(@NonNull target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int) 嵌套滚动动作。
+onNestedPreFling(@NonNull target: View, velocityX: Float, velocityY: Float)：嵌套fling之前，目标target消费它。
+onNestedPreScroll(@NonNull target: View, dx: Int, dy: Int, @NonNull consumed: IntArray)：嵌套滚动之前，目标target消费它。
+
+NestedScrollingChild
+
+dispatchNestedFling(velocityX: Float, velocityY: Float, consumed: Boolean)：分发fling到嵌套父类
+dispatchNestedPreFling(velocityX: Float, velocityY: Float)：处理这个View之前，分发fling到嵌套父类
+dispatchNestedPreScroll(dx: Int, dy: Int, @Nullable consumed: IntArray?, @Nullable offsetInWindow: IntArray?)：在这个View消费之前，分发嵌套滚动
+dispatchNestedScroll(dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, @Nullable offsetInWindow: IntArray?)：分发嵌套滚动
+hasNestedScrollingParent()：是否有嵌套滚动父类
+isNestedScrollingEnabled()：该View是否能嵌套滚动
+setNestedScrollingEnabled(enabled: Boolean)：设置该View嵌套滚动
+startNestedScroll(axes: Int):根据所给的轴线，开始嵌套滚动操作
+stopNestedScroll()：停止嵌套滚动
