@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -130,7 +131,7 @@ public class AppWebView extends WebView {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            if(mCallback!=null){
+            if (mCallback != null) {
                 mCallback.onReceivedTitle(title);
             }
         }
@@ -138,13 +139,13 @@ public class AppWebView extends WebView {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            if(mCallback!=null){
+            if (mCallback != null) {
                 mCallback.onProgressChanged(newProgress);
-                if(mCallback.getProgress()!=null){
+                if (mCallback.getProgress() != null) {
                     ProgressBar progressBar = mCallback.getProgress();
-                    if(newProgress==100){
+                    if (newProgress == 100) {
                         progressBar.setVisibility(GONE);
-                    }else{
+                    } else {
                         progressBar.setProgress(newProgress);
                         progressBar.setVisibility(VISIBLE);
                     }
@@ -171,11 +172,15 @@ public class AppWebView extends WebView {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if(mCallback!=null){
-                return mCallback.shouldOverrideUrlLoading(view,url);
-            }else{
-                return super.shouldOverrideUrlLoading(view, url);
+            return super.shouldOverrideUrlLoading(view, url);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            if (mCallback != null) {
+                return mCallback.shouldOverrideUrlLoading(view, request);
             }
+            return super.shouldOverrideUrlLoading(view, request);
         }
 
         @Override
@@ -187,7 +192,7 @@ public class AppWebView extends WebView {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             resizeImage();
-            if(mCallback!=null){
+            if (mCallback != null) {
                 mCallback.onPageFinished();
             }
         }
@@ -331,7 +336,7 @@ public class AppWebView extends WebView {
         }
     }
 
-    public void release(){
+    public void release() {
         clearHistory();
         removeAllViews();
         destroy();
@@ -356,12 +361,39 @@ public class AppWebView extends WebView {
                 "})()");
     }
 
-    public interface Callback{
-        default ProgressBar getProgress(){return null;}
-        default void onProgressChanged(int progress){}
-        default void onReceivedTitle(String title){}
-        default boolean shouldOverrideUrlLoading(WebView view, String url){return false;}
-        default void onPageFinished(){}
+    public interface Callback {
+        default ProgressBar getProgress() {
+            return null;
+        }
+
+        default void onProgressChanged(int progress) {
+        }
+
+        default void onReceivedTitle(String title) {
+        }
+
+        //在WebViewClient未设置的情况下，由WebView给URL选择合适跳转机制。如果有设置WebViewClient的话，
+        //shouldOverrideUrlLoading(..)返回false，表示WebView处理URL。如果true。表示WebView终止处理URL。
+        @SuppressLint("QueryPermissionsNeeded")
+        default boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            String url;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                url = request.getUrl().toString();
+            } else {
+                url = request.toString();
+            }
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Context context = view.getContext();
+            if (context!=null&&intent.resolveActivity(context.getPackageManager()) != null) {
+                context.startActivity(intent);
+                return true;
+            }
+            return false;
+        }
+
+        default void onPageFinished() {
+        }
     }
 
 }

@@ -3,6 +3,7 @@ package com.zxy.demo.fragment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
@@ -28,9 +29,8 @@ public class ZWebViewFragment extends ApiBaseFragment<FragmentZwebviewBinding> {
             }
 
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return false;
             }
         });
         mViewBinding.wvContent.loadUrl("https://developer.mozilla.org/zh-CN/");
