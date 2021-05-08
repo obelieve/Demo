@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -78,12 +79,6 @@ public class AppWebView extends WebView {
         mCallback = callback;
     }
 
-    public void release(){
-        clearHistory();
-        removeAllViews();
-        destroy();
-    }
-
     @SuppressLint("SetJavaScriptEnabled")
     private void initSettings(WebSettings settings) {
         File databaseDir = new File(getContext().getCacheDir().getAbsolutePath() + "/WebViewCache");
@@ -91,6 +86,11 @@ public class AppWebView extends WebView {
             databaseDir.mkdir();
         }
         //viewport 设置
+
+        // 取消webview 横向滚动条显示
+        setHorizontalScrollBarEnabled(false);
+        // 取消webview 竖向滚动条显示
+        setVerticalScrollBarEnabled(false);
         settings.setUseWideViewPort(true);//使用html viewport提供显示区域,支持使用<meta name="viewport">标签限制显示区域
         settings.setLoadWithOverviewMode(true);//默认自适应内容屏幕
         //设置缩放
@@ -118,6 +118,11 @@ public class AppWebView extends WebView {
         settings.setUserAgentString("");
         //设置js
         settings.setJavaScriptEnabled(true);
+        // 设置字体百分比
+        settings.setTextZoom(100);
+        // 设置背景透明
+        setBackgroundColor(Color.TRANSPARENT);
+        //settings.setTextZoom(100);
     }
 
     public class AppWebChromeClient extends WebChromeClient {
@@ -133,16 +138,16 @@ public class AppWebView extends WebView {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            ProgressBar progressBar=null;
             if(mCallback!=null){
-                progressBar = mCallback.getProgress();
-            }
-            if(progressBar!=null){
-                if(newProgress==100){
-                    progressBar.setVisibility(GONE);
-                }else{
-                    progressBar.setProgress(newProgress);
-                    progressBar.setVisibility(VISIBLE);
+                mCallback.onProgressChanged(newProgress);
+                if(mCallback.getProgress()!=null){
+                    ProgressBar progressBar = mCallback.getProgress();
+                    if(newProgress==100){
+                        progressBar.setVisibility(GONE);
+                    }else{
+                        progressBar.setProgress(newProgress);
+                        progressBar.setVisibility(VISIBLE);
+                    }
                 }
             }
         }
@@ -181,6 +186,10 @@ public class AppWebView extends WebView {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            resizeImage();
+            if(mCallback!=null){
+                mCallback.onPageFinished();
+            }
         }
 
     }
@@ -322,15 +331,37 @@ public class AppWebView extends WebView {
         }
     }
 
+    public void release(){
+        clearHistory();
+        removeAllViews();
+        destroy();
+    }
+
     private int screenWidth(Context context) {
         DisplayMetrics ds = context.getResources().getDisplayMetrics();
         return ds.widthPixels;
     }
 
+    /**
+     * 对图片进行重置大小，宽度就是手机屏幕宽度，高度根据宽度比便自动缩放
+     **/
+    private void resizeImage() {
+        loadUrl("javascript:(function(){" +
+                "var objs = document.getElementsByTagName('img'); " +
+                "for(var i=0;i<objs.length;i++)  " +
+                "{"
+                + "var img = objs[i];   " +
+                "    img.style.maxWidth = '100%'; img.style.height = 'auto';  " +
+                "}" +
+                "})()");
+    }
+
     public interface Callback{
-        ProgressBar getProgress();
-        void onReceivedTitle(String title);
-        boolean shouldOverrideUrlLoading(WebView view, String url);
+        default ProgressBar getProgress(){return null;}
+        default void onProgressChanged(int progress){}
+        default void onReceivedTitle(String title){}
+        default boolean shouldOverrideUrlLoading(WebView view, String url){return false;}
+        default void onPageFinished(){}
     }
 
 }

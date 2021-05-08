@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
-import static com.zxy.frame.adapter.BaseRecyclerViewAdapter.LoadMoreStatus.*;
+import static com.zxy.frame.adapter.BaseRecyclerViewAdapter.LoadMoreStatus.END;
+import static com.zxy.frame.adapter.BaseRecyclerViewAdapter.LoadMoreStatus.ERROR;
 import static com.zxy.frame.adapter.BaseRecyclerViewAdapter.LoadMoreStatus.LOADING;
 
 public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter<BaseRecyclerViewAdapter.BaseViewHolder> {
@@ -71,6 +71,11 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         return NORMAL_TYPE;
     }
 
+    /***
+     * 必须在setAdapter绑定前设置
+     * @param rv
+     * @param listener
+     */
     public void setLoadMoreListener(RecyclerView rv, OnLoadMoreListener listener) {
         mRecyclerView = rv;
         mOnLoadMoreListener = listener;
@@ -81,7 +86,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             return;
         mLoadMoreState = LOADING;
         mLockLoadMore = false;
-        if(getDataHolder().getList().size()>0){
+        if (getDataHolder().getList().size() > 0) {
             //size=0，Called attach on a child which is not detached
             notifyItemChanged(getItemCount() - 1);
         }
@@ -127,12 +132,25 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         mEmptyView = emptyView;
     }
 
+    HeaderOnBindCallback mHeaderOnBindCallback;
+    FooterOnBindCallback mFooterOnBindCallback;
+
     public void setHeaderView(View headerView) {
         mHeaderView = headerView;
     }
 
+    public void setHeaderView(View headerView,HeaderOnBindCallback callback) {
+        mHeaderView = headerView;
+        mHeaderOnBindCallback = callback;
+    }
+
     public void setFooterView(View footerView) {
         mFooterView = footerView;
+    }
+
+    public void setFooterView(View footerView,FooterOnBindCallback callback) {
+        mFooterView = footerView;
+        mFooterOnBindCallback = callback;
     }
 
     public void setEnableHeader(boolean enableHeader) {
@@ -200,13 +218,13 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                 vh = new LoadMoreViewHolder(parent, 0);
                 break;
             case EMPTY_TYPE:
-                vh = new SimpleViewHolder(mEmptyView);
+                vh = new EmptyViewHolder(mEmptyView);
                 break;
             case HEADER_TYPE:
-                vh = new SimpleViewHolder(mHeaderView);
+                vh = new HeaderViewHolder(mHeaderView);
                 break;
             case FOOTER_TYPE:
-                vh = new SimpleViewHolder(mFooterView);
+                vh = new FooterViewHolder(mFooterView);
                 break;
             default:
                 vh = getViewHolder(parent, viewType);
@@ -219,12 +237,16 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
         boolean header = mEnableHeader && mHeaderView != null;
         final int pos = header ? position - 1 : position;
-        if (!(holder instanceof SimpleViewHolder) && !(holder instanceof LoadMoreViewHolder)) {
+        if (!(holder instanceof EmptyViewHolder) && !(holder instanceof LoadMoreViewHolder)&&
+                !(holder instanceof HeaderViewHolder) &&!(holder instanceof FooterViewHolder)) {
             if (mItemClickCallback != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mItemClickCallback.onItemClick(v, getDataHolder().getList().get(pos), pos);
+                        int size = getDataHolder().getList().size();
+                        if(pos>=0&&pos<size){
+                            mItemClickCallback.onItemClick(v, getDataHolder().getList().get(pos), pos);
+                        }
                     }
                 });
             } else {
@@ -264,7 +286,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mOnLoadMoreListener != null&&!mLockLoadMore) {
+                        if (mOnLoadMoreListener != null && !mLockLoadMore) {
                             mLoadMoreState = LOADING;
                             mLockLoadMore = true;
                             holder1.mFlLoading.setVisibility(View.VISIBLE);
@@ -276,6 +298,15 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
                 });
                 holder.itemView.setOnLongClickListener(null);
             } else {
+                if(holder instanceof HeaderViewHolder){
+                    if(mHeaderOnBindCallback!=null){
+                        mHeaderOnBindCallback.onBindView();
+                    }
+                }else if(holder instanceof FooterViewHolder){
+                    if(mFooterOnBindCallback!=null){
+                        mFooterOnBindCallback.onBindView();
+                    }
+                }
                 holder.itemView.setOnClickListener(null);
                 holder.itemView.setOnLongClickListener(null);
             }
@@ -495,9 +526,23 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
         }
     }
 
-    public static class SimpleViewHolder extends BaseViewHolder {
+    public static class EmptyViewHolder extends BaseViewHolder {
 
-        public SimpleViewHolder(View view) {
+        public EmptyViewHolder(View view) {
+            super(view);
+        }
+    }
+
+    public static class HeaderViewHolder extends BaseViewHolder {
+
+        public HeaderViewHolder(View view) {
+            super(view);
+        }
+    }
+
+    public static class FooterViewHolder extends BaseViewHolder {
+
+        public FooterViewHolder(View view) {
             super(view);
         }
     }
@@ -533,7 +578,7 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
             super(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
         }
 
-        public void bind(DATA data,int position,List<DATA> list) {
+        public void bind(DATA data, int position, List<DATA> list) {
         }
 
         public VB getViewBinding() {
@@ -543,6 +588,14 @@ public abstract class BaseRecyclerViewAdapter<DATA> extends RecyclerView.Adapter
 
     public enum LoadMoreStatus {
         LOADING, END, ERROR
+    }
+
+    public interface HeaderOnBindCallback{
+        void onBindView();
+    }
+
+    public interface FooterOnBindCallback{
+        void onBindView();
     }
 
 

@@ -4,7 +4,10 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.bigkoo.pickerview.TimePickerView;
+
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,7 +25,7 @@ public class TimerPickerDialog {
         Calendar startDate = Calendar.getInstance();
         startDate.set(1900, 1, 1);//设置起始年份
         Calendar endDate = Calendar.getInstance();
-        mTimePickerView = new TimePickerView.Builder(context, new TimePickerView.OnTimeSelectListener() {
+        mTimePickerView = new TimePickerBuilder(context, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -35,7 +38,7 @@ public class TimerPickerDialog {
         }).setType(new boolean[]{true, true, true, false, false, false})//默认全部显示
                 .setCancelText("取消")//取消按钮文字
                 .setSubmitText("确定")//确认按钮文字
-                .setContentSize(15)//滚轮文字大小
+                .setSubCalSize(15)//滚轮文字大小
                 .setTitleSize(18)//标题文字大小
                 .setTitleText("请选择时间")//标题文字
                 .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示

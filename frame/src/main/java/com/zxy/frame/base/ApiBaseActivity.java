@@ -66,23 +66,31 @@ public abstract class ApiBaseActivity<T extends ViewBinding,VM extends ViewModel
             StatusBarUtil.setStatusBarTranslucentStatus(this);
         }
         StatusBarUtil.setWindowLightStatusBar(this, isLightStatusBar());
-        createLayoutView();
+        createViewBinding();
+        if (!checkExistViewBinding()) {
+            finish();
+            return;
+        }
+        setContentView(mViewBinding.getRoot());
         createViewModel();
         initCreateAfterView(savedInstanceState);
         initViewModel();
     }
 
 
-    private void createLayoutView() {
+    private void createViewBinding() {
         Type superclass = getClass().getGenericSuperclass();
         Class<?> aClass = (Class<?>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
         try {
             Method method = aClass.getDeclaredMethod("inflate", LayoutInflater.class);
             mViewBinding = (T) method.invoke(null, getLayoutInflater());
-            setContentView(mViewBinding.getRoot());
-        } catch (NoSuchMethodException | IllegalAccessException| InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean checkExistViewBinding() {
+        return mViewBinding != null;
     }
 
     private void createViewModel() {

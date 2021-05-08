@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">frame</string>
     <string name="load_error">Load Error, Retry Please</string>
-    <string name="load_no_data">No More Data</string>
+    <string name="load_no_data">No more data</string>
     <string name="load_loading">Loading..</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>

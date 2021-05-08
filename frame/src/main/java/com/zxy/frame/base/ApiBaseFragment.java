@@ -48,11 +48,14 @@ public abstract class ApiBaseFragment<T extends ViewBinding> extends Fragment im
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        createLayoutView(container);
+        createViewBinding(container);
+        if (!checkExistViewBinding()) {
+            return null;
+        }
         return mViewBinding.getRoot();
     }
 
-    private void createLayoutView(@Nullable ViewGroup container) {
+    private void createViewBinding(@Nullable ViewGroup container) {
         Type superclass = getClass().getGenericSuperclass();
         Class<?> aClass = (Class<?>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
         try {
@@ -61,6 +64,10 @@ public abstract class ApiBaseFragment<T extends ViewBinding> extends Fragment im
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean checkExistViewBinding() {
+        return mViewBinding != null;
     }
 
     @Override

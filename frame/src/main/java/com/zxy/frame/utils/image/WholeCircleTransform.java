@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.bumptech.glide.util.Util;
 
 import java.security.MessageDigest;
 
@@ -29,18 +30,18 @@ public class WholeCircleTransform extends BitmapTransformation {
     private final byte[] ID_BYTES = ID.getBytes(CHARSET);
 
     /**
-     * @param size 显示的尺寸
+     * @param size 显示的尺寸 dp
      */
     public WholeCircleTransform(Context context, int size) {
         this(context,size,Color.WHITE);
     }
     /**
-     * @param size 显示的尺寸
+     * @param size 显示的尺寸 dp
      */
     public WholeCircleTransform(Context context, int size,int bgColor) {
         mContext = context;
-        mSize = size;
-        mRadius = size / 2;
+        mSize = (int) (context.getResources().getDisplayMetrics().density*size);
+        mRadius = mSize / 2;
         mBgColor = bgColor;
     }
 
@@ -69,4 +70,20 @@ public class WholeCircleTransform extends BitmapTransformation {
     public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
         messageDigest.update(ID_BYTES);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof WholeCircleTransform) {
+            WholeCircleTransform other = (WholeCircleTransform) o;
+            return mRadius == other.mRadius;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Util.hashCode(ID.hashCode(),
+                Util.hashCode(mRadius));
+    }
+
 }

@@ -37,22 +37,16 @@ public class ApiServiceExceptionHandle {
         return ex;
     }
 
+    public static ApiServiceException preProcessException(ApiServiceException e) {
+        if (sApiExtendRespondThrowableListener != null) {
+            sApiExtendRespondThrowableListener.preProcessException(e);
+        }
+        return e;
+    }
+
     public static ApiServiceException handleApiServiceException(Activity activity, boolean needLogin, ApiServiceException e) {
-        switch (e.getCode()) {
-//            case ApiErrorCode.CODE_DUPLICATE_NICKNAME:
-//                if (e.getWindow() == 1 && activity != null && !activity.isFinishing()) {
-//                    new SimpleAlertDialog(activity)
-//                            .setSimple(true)
-//                            .setContent(e.getMessage())
-//                            .setOk(activity.getString(R.string.get_it)).show();
-//                }
-//                e.setProcessed(true);
-//                break;
-            default:
-                if (sApiExtendRespondThrowableListener != null) {
-                    sApiExtendRespondThrowableListener.defHandleException(activity, e, e.getWindow(), e.getToast());
-                }
-                break;
+        if (sApiExtendRespondThrowableListener != null) {
+            sApiExtendRespondThrowableListener.defHandleException(activity, e, e.getWindow(), e.getToast());
         }
         return e;
     }
@@ -63,6 +57,7 @@ public class ApiServiceExceptionHandle {
     }
 
     public interface ApiExtendRespondThrowableListener {
+        void preProcessException(ApiServiceException ex);
         void defHandleException(Activity activity, ApiServiceException ex, int window, int toast);
     }
 }

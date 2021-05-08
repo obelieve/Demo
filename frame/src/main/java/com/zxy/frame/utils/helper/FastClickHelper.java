@@ -10,9 +10,17 @@ import androidx.annotation.IdRes;
  */
 public class FastClickHelper {
 
-    public static final int FAST_CLICK_DURATION = 1000;
+    private int FAST_CLICK_DURATION = 1000;
 
     private SparseArray<Long> mViewClickArray = new SparseArray<>();
+
+    public FastClickHelper(){
+
+    }
+
+    public FastClickHelper(int duration){
+        FAST_CLICK_DURATION = duration;
+    }
 
     public void addClickView(@IdRes int viewId, long curTime) {
         mViewClickArray.put(viewId, curTime);

@@ -5,8 +5,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 
-import com.bigkoo.pickerview.OptionsPickerView;
-import com.bigkoo.pickerview.model.IPickerViewData;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.contrarywind.interfaces.IPickerViewData;
 import com.google.gson.Gson;
 import com.zxy.frame.utils.proguard.UnProguard;
 import com.zxy.thirdsdklib.R;
@@ -86,7 +88,7 @@ public class CityPickerDialog {
         if (!isExistData())
             return;
         if (mOptionsPickerView == null) {
-            mOptionsPickerView = new OptionsPickerView.Builder(mActivity, new OptionsPickerView.OnOptionsSelectListener() {
+            mOptionsPickerView = new OptionsPickerBuilder(mActivity, new OnOptionsSelectListener() {
                 @Override
                 public void onOptionsSelect(int options1, int options2, int options3, View v) {
                     //返回的分别是三个级别的选中位置
