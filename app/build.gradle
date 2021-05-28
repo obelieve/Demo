@@ -27,6 +27,15 @@ android {
         }
     }
 
+    signingConfigs {
+//        debug {
+//            storeFile file('keystore/**.jks')
+//            storePassword '**'
+//            keyAlias 'debug'
+//            keyPassword '**'
+//        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -44,6 +53,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.github.obelieve:Frame:1.0.0'
 
-
+    def billing_version = "3.0.0"
+    implementation "com.android.billingclient:billing-ktx:$billing_version"
 
 }
