@@ -5,18 +5,26 @@ import android.os.Bundle;
 import com.obelieve.frame.base.ApiBaseActivity2;
 import com.obelieve.frame.net.ApiBaseResponse;
 import com.obelieve.frame.utils.log.LogUtil;
+import com.obelieve.frame.utils.secure.MD5Util;
 import com.zxy.demo.databinding.ActivityMainBinding;
+import com.zxy.demo.entity.LogConfigEntity;
+import com.zxy.demo.entity.UserInfo;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Random;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Field;
+
+import static com.zxy.demo.ServiceInterface.EXTERNAL_URL;
 
 /**
 1.Retrofit 接口方法得到很多参数数据：
@@ -41,11 +49,105 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
 
     @Override
     protected void initCreateAfterView(Bundle savedInstanceState) {
+//        reqGet();
+//        postGetUserInfo();
+//        postModifyUserInfo(new Random().nextInt(1000)+"");
+        postGetLogstoreConfig();
+    }
+
+    /**
+     * 外部URL
+     */
+    private void postGetLogstoreConfig() {
+        String str = "oktestlog_6099dcfa413db" + '_' + "16" + '_'  + "f3e3a187627d7f096f70c9616a320f78c80336de";
+        String sign= MD5Util.md5(str);
+        App.getServiceInterface().getLogstoreConfig(EXTERNAL_URL,"16","oktestlog_6099dcfa413db",sign).subscribeOn(Schedulers.io()).subscribe(new Observer<ApiBaseResponse<LogConfigEntity>>() {
+            @Override
+            public void onSubscribe(@NotNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NotNull ApiBaseResponse<LogConfigEntity> response) {
+                LogUtil.e("getLogstoreConfig日志上报:"+response.getData());
+            }
+
+            @Override
+            public void onError(@NotNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    /**
+     * 带form参数的Post请求
+     * @param nickname
+     */
+    private void postModifyUserInfo(String nickname) {
+        App.getServiceInterface().modifyUserInfo("nickname","",nickname,"").subscribeOn(Schedulers.io()).subscribe(new Observer<ApiBaseResponse<String>>() {
+            @Override
+            public void onSubscribe(@NotNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NotNull ApiBaseResponse<String> response) {
+                LogUtil.e("modifyUserInfo修改用户信息:"+response.getData());
+            }
+
+            @Override
+            public void onError(@NotNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    /**
+     * post请求
+     */
+    private void postGetUserInfo() {
+        App.getServiceInterface().getUserInfo().subscribeOn(Schedulers.io()).subscribe(new Observer<ApiBaseResponse<UserInfo>>() {
+            @Override
+            public void onSubscribe(@NotNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NotNull ApiBaseResponse<UserInfo> response) {
+                LogUtil.e("getUserInfo获取用户信息:"+response.getData());
+            }
+
+            @Override
+            public void onError(@NotNull Throwable e) {
+                LogUtil.e("getUserInfo获取用户信息 e:"+e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    /**
+     * get请求
+     */
+    private void reqGet() {
         App.getServiceInterface().getBaidu("https://www.baidu.com").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    LogUtil.e("百度 "+response.body().string());
+                    LogUtil.e("reqGet百度 "+response.body().string());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -57,4 +159,6 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
             }
         });
     }
+
+
 }

@@ -1,19 +1,15 @@
 package com.zxy.demo
 
-import android.app.Activity
-
 import com.obelieve.frame.application.BaseApplication
-import com.obelieve.frame.net.ApiErrorCode
-import com.obelieve.frame.net.ApiServiceException
-import com.obelieve.frame.net.ApiServiceExceptionHandle
-import com.obelieve.frame.net.HttpUtil
 import com.obelieve.frame.net.convert.ApiCustomGsonConverterFactory
 import com.obelieve.frame.utils.ToastUtil
 import com.obelieve.frame.utils.log.LogInterceptor
 import com.zxy.demo.ServiceInterface.Companion.BASE_URL
 import io.reactivex.plugins.RxJavaPlugins
+import okhttp3.OkHttpClient
+import retrofit2.Converter
+import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 
 class App : BaseApplication() {
 
@@ -34,36 +30,16 @@ class App : BaseApplication() {
         ToastUtil.init(this)
         RxJavaPlugins.setErrorHandler {}
 
-        val httpUtil: HttpUtil = HttpUtil.build().baseUrl(BASE_URL)
-            .addInterceptor(HttpInterceptor())
-        if (BuildConfig.DEBUG) {
-            httpUtil.addInterceptor(LogInterceptor())
-        }
-
-        sServiceInterface = httpUtil
-            .addConverterFactory(ApiCustomGsonConverterFactory.create())
+        val converterFactory:Converter.Factory = ApiCustomGsonConverterFactory.create() as Converter.Factory
+        sServiceInterface = Retrofit.Builder().baseUrl(BASE_URL).client(
+            OkHttpClient.Builder().addInterceptor(
+                HttpInterceptor()
+            )
+                .addInterceptor(LogInterceptor()).build()
+        )
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .create(ServiceInterface::class.java)
-
-        ApiServiceExceptionHandle.setApiExtendRespondThrowableListener(object :
-            ApiServiceExceptionHandle.ApiExtendRespondThrowableListener {
-            fun preProcessException(ex: ApiServiceException?) {
-                if (ex?.code == ApiErrorCode.CODE_TOKEN_ERROR) {
-                    ex.toast = 1
-                } else {
-                    ex?.toast = 1
-                }
-            }
-
-            override fun defHandleException(
-                activity: Activity?,
-                ex: ApiServiceException?,
-                window: Int,
-                toast: Int
-            ) {
-            }
-
-        })
+            .addConverterFactory(converterFactory)
+            .build().create(ServiceInterface::class.java)
     }
 
 }

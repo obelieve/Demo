@@ -50,7 +50,12 @@ dependencies {
     implementation project(path: ':retrofit')
     implementation project(path: ':retrofit-adapters:rxjava2')
     implementation project(path: ':retrofit-converters:gson')
-
-
-
 }
+//configurations.all {
+//    resolutionStrategy.dependencySubstitution {
+//        // Substitute project and module dependencies
+//        substitute module("com.squareup.retrofit2:retrofit:2.6.2") with project(':retrofit')
+//        substitute module("com.squareup.retrofit2:converter-gson:2.6.2") with project(':retrofit-converters:gson')
+//        substitute module("com.squareup.retrofit2:adapter-rxjava2:2.6.2") with project(':retrofit-adapters:rxjava2')
+//    }
+//}

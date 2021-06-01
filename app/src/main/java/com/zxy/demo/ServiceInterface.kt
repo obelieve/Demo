@@ -1,6 +1,8 @@
 package com.zxy.demo
 
 import com.obelieve.frame.net.ApiBaseResponse
+import com.zxy.demo.entity.LogConfigEntity
+import com.zxy.demo.entity.UserInfo
 import io.reactivex.Observable
 
 import okhttp3.ResponseBody
@@ -14,8 +16,11 @@ import retrofit2.http.*
 interface ServiceInterface {
 
     companion object{
-        const val BASE_URL = "https://www.baidu.com"
-        const val token = ""
+        var BASE_URL = "h*t*t*p://*d*e*v*.o*k*s**p*o*r*t*s*e*r*v*.com/".replace("*","")
+        const val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9kZXYub2tzcG9ydHNlcnYuY29tXC9hcGlcL2F1dGhcL21vYmlsZWxvZ2luIiwiaWF0IjoxNjIyNTM3MjIwLCJleHAiOjE2MjMxNDIwMjAsIm5iZiI6MTYyMjUzNzIyMCwianRpIjoiNUFuZUxLZnlHM2NrcmcxdiIsInN1YiI6MTYyLCJwcnYiOiI1NDM5NTU2YWVjYTkzYzVjMmFiMjQ5ZTdjNjg3NDU0MDI0ZWRmNTNiIn0.smowM5fORBlmRY8ss_7iqhfzOLRZWUd3Jav2v0GeAnI"
+        const val API_USER_INFO = "/api/user/info"
+        const val API_MODIFY_USER_INFO = "/api/user/se*ttings"
+        var EXTERNAL_URL = "https://s**l*s*-deb*ug.gol*og*st*or*e.co*m/s*ls/c*onf*ig".replace("*","")
     }
 
     @Streaming
@@ -25,10 +30,35 @@ interface ServiceInterface {
         @Url fileUrl: String
     ): Observable<ResponseBody>
 
+    @GET
+    fun getBaidu(@Url url: String) : Call<ResponseBody>
+
+    //外部URL使用
+    //@Headers(RetrofitUrlManager.DOMAIN_NAME_HEADER +"logConfig")
+    @FormUrlEncoded
+    @POST
+    fun getLogstoreConfig(
+        @Url url: String,
+        @Field("verid") verid: String,
+        @Field("appid") appid: String,
+        @Field("sign") sign: String,
+    ) : Observable<ApiBaseResponse<LogConfigEntity>>
 
     /**
-     * 获取钻石购买页数据
+     * 修改用户信息
      */
-    @GET
-    fun getBaidu(@Url fileUrl: String) : Call<ResponseBody>
+    @POST(API_MODIFY_USER_INFO)
+    @FormUrlEncoded
+    fun modifyUserInfo(
+        @Field("opt") opt: String,
+        @Field("email") email: String,
+        @Field("nickname") nickname: String,
+        @Field("avatar") avatar: String
+    ): Observable<ApiBaseResponse<String>>
+
+    /**
+     * 获取用户信息
+     */
+    @POST(API_USER_INFO)
+    fun getUserInfo(): Observable<ApiBaseResponse<UserInfo>>
 }

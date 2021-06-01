@@ -77,25 +77,25 @@ subprojects {
         task.sourceCompatibility = JavaVersion.VERSION_1_8
         task.targetCompatibility = JavaVersion.VERSION_1_8
     }
+//    //编译时代码检测
+//    apply plugin: 'net.ltgt.errorprone'
+//
+//    dependencies {
+//        errorproneJavac 'com.google.errorprone:javac:9+181-r4173-1'
+//        errorprone 'com.google.errorprone:error_prone_core:2.4.0'
+//    }
 
-    apply plugin: 'net.ltgt.errorprone'
-
-    dependencies {
-        errorproneJavac 'com.google.errorprone:javac:9+181-r4173-1'
-        errorprone 'com.google.errorprone:error_prone_core:2.4.0'
-    }
-
-    tasks.withType(JavaCompile).configureEach { task ->
-        task.options.errorprone {
-            excludedPaths = '.*/build/generated/source/proto/.*'
-            check('MissingFail', CheckSeverity.ERROR)
-            check('MissingOverride', CheckSeverity.ERROR)
-            check('UnusedException', CheckSeverity.ERROR)
-            check('UnusedMethod', CheckSeverity.ERROR)
-            check('UnusedNestedClass', CheckSeverity.ERROR)
-            check('UnusedVariable', CheckSeverity.ERROR)
-        }
-    }
+//    tasks.withType(JavaCompile).configureEach { task ->
+//        task.options.errorprone {
+//            excludedPaths = '.*/build/generated/source/proto/.*'
+//            check('MissingFail', CheckSeverity.ERROR)
+//            check('MissingOverride', CheckSeverity.ERROR)
+//            check('UnusedException', CheckSeverity.ERROR)
+//            check('UnusedMethod', CheckSeverity.ERROR)
+//            check('UnusedNestedClass', CheckSeverity.ERROR)
+//            check('UnusedVariable', CheckSeverity.ERROR)
+//        }
+//    }
 
     plugins.withId('java-library') {
         // Animal Sniffer only works on JDK 11 or older currently.
