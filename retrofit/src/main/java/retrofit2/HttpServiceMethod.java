@@ -86,6 +86,8 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
 
     okhttp3.Call.Factory callFactory = retrofit.callFactory;
     if (!isKotlinSuspendFunction) {
+      // ZXYNOTE: 2021/6/1 根据requestFactory, callFactory, responseConverter, callAdapter，返回CallAdapted对象，
+      // ZXYNOTE: 2021/6/1 CallAdapted-> HttpServiceMethod -> ServiceMethod
       return new CallAdapted<>(requestFactory, callFactory, responseConverter, callAdapter);
     } else if (continuationWantsResponse) {
       //noinspection unchecked Kotlin compiler guarantees ReturnT to be Object.
@@ -142,6 +144,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
 
   @Override
   final @Nullable ReturnT invoke(Object[] args) {
+    // ZXYNOTE: 2021/6/1 根据requestFactory, args, callFactory, responseConverter，返回OkHttpCall,并调用 HttpServiceMethod#adapt(call, args)
     Call<ResponseT> call = new OkHttpCall<>(requestFactory, args, callFactory, responseConverter);
     return adapt(call, args);
   }
@@ -162,6 +165,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
 
     @Override
     protected ReturnT adapt(Call<ResponseT> call, Object[] args) {
+      // ZXYNOTE: 2021/6/1 23:43 CallAdapted#adapt(call,args)-> callAdapter.adapt(call)
       return callAdapter.adapt(call);
     }
   }

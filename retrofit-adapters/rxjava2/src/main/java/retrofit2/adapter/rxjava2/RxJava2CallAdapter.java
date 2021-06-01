@@ -64,6 +64,7 @@ final class RxJava2CallAdapter<R> implements CallAdapter<R, Object> {
 
   @Override
   public Object adapt(Call<R> call) {
+    // ZXYNOTE: 2021/6/1 23:45 RxJava2CallAdapter#adapt(call)调用：1.根据不同参数生成不同的Observable。
     Observable<Response<R>> responseObservable =
         isAsync ? new CallEnqueueObservable<>(call) : new CallExecuteObservable<>(call);
 

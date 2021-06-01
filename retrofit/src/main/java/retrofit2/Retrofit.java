@@ -139,6 +139,7 @@ public final class Retrofit {
   @SuppressWarnings("unchecked") // Single-interface proxy creation guarded by parameter safety.
   public <T> T create(final Class<T> service) {
     validateServiceInterface(service);
+    // ZXYNOTE: 2021/6/1 1.通过动态代理，获取调用的<Method>
     return (T)
         Proxy.newProxyInstance(
             service.getClassLoader(),
@@ -155,6 +156,7 @@ public final class Retrofit {
                   return method.invoke(this, args);
                 }
                 args = args != null ? args : emptyArgs;
+                // ZXYNOTE: 2021/6/1 2.根据Method，返回<ServiceMethod>并调用 ServiceMethod#invoke(args)。
                 return platform.isDefaultMethod(method)
                     ? platform.invokeDefaultMethod(method, service, proxy, args)
                     : loadServiceMethod(method).invoke(args);

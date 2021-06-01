@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 
 abstract class ServiceMethod<T> {
   static <T> ServiceMethod<T> parseAnnotations(Retrofit retrofit, Method method) {
+    // ZXYNOTE: 2021/6/1 2.1 解析Method，返回RequestFactory对象
     RequestFactory requestFactory = RequestFactory.parseAnnotations(retrofit, method);
 
     Type returnType = method.getGenericReturnType();
@@ -35,7 +36,7 @@ abstract class ServiceMethod<T> {
     if (returnType == void.class) {
       throw methodError(method, "Service methods cannot return void.");
     }
-
+    // ZXYNOTE: 2021/6/1 2.2 根据retrofit、method、requestFactory对象，返回 HttpServiceMethod
     return HttpServiceMethod.parseAnnotations(retrofit, method, requestFactory);
   }
 

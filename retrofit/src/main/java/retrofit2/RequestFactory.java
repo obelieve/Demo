@@ -169,6 +169,7 @@ final class RequestFactory {
     boolean isKotlinSuspendFunction;
 
     Builder(Retrofit retrofit, Method method) {
+      // ZXYNOTE: 2021/6/1 2.1.Method数据获取：1.方法注解、2.参数类型、3参数注解
       this.retrofit = retrofit;
       this.method = method;
       this.methodAnnotations = method.getAnnotations();
@@ -218,10 +219,10 @@ final class RequestFactory {
       if (isMultipart && !gotPart) {
         throw methodError(method, "Multipart method must contain at least one @Part.");
       }
-
+      // ZXYNOTE: 2021/6/1 2.2.返回 RequestFactory对象
       return new RequestFactory(this);
     }
-
+    // ZXYNOTE: 2021/6/1 2.1.1 解析方法注解
     private void parseMethodAnnotation(Annotation annotation) {
       if (annotation instanceof DELETE) {
         parseHttpMethodAndPath("DELETE", ((DELETE) annotation).value(), false);
@@ -315,7 +316,7 @@ final class RequestFactory {
       }
       return builder.build();
     }
-
+    // ZXYNOTE: 2021/6/1 2.1.2~3 解析方法参数注解和类型
     private @Nullable ParameterHandler<?> parseParameter(
         int p, Type parameterType, @Nullable Annotation[] annotations, boolean allowContinuation) {
       ParameterHandler<?> result = null;
