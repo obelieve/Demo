@@ -24,7 +24,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.Field;
 
-import static com.zxy.demo.ServiceInterface.EXTERNAL_URL;
 
 /**
 1.Retrofit 接口方法得到很多参数数据：
@@ -61,7 +60,7 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
     private void postGetLogstoreConfig() {
         String str = "oktestlog_6099dcfa413db" + '_' + "16" + '_'  + "f3e3a187627d7f096f70c9616a320f78c80336de";
         String sign= MD5Util.md5(str);
-        App.getServiceInterface().getLogstoreConfig(EXTERNAL_URL,"16","oktestlog_6099dcfa413db",sign).subscribeOn(Schedulers.io()).subscribe(new Observer<ApiBaseResponse<LogConfigEntity>>() {
+        App.getServiceInterface().getLogstoreConfig(ServiceInterface.Companion.getEXTERNAL_URL(), "16","oktestlog_6099dcfa413db",sign).subscribeOn(Schedulers.io()).subscribe(new Observer<ApiBaseResponse<LogConfigEntity>>() {
             @Override
             public void onSubscribe(@NotNull Disposable d) {
 
