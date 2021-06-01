@@ -13,6 +13,7 @@ import com.obelieve.frame.utils.log.LogInterceptor
 import com.zxy.demo.ServiceInterface.Companion.BASE_URL
 import io.reactivex.plugins.RxJavaPlugins
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 class App : BaseApplication() {
 

@@ -42,7 +42,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'com.github.obelieve:Frame:1.0.0'
+    implementation ('com.github.obelieve:Frame:1.0.0'){
+        exclude group:'com.squareup.retrofit2',module: 'retrofit'
+        exclude group:'com.squareup.retrofit2',module: 'converter-gson'
+        exclude group:'com.squareup.retrofit2',module: 'adapter-rxjava2'
+    }
+    implementation project(path: ':retrofit')
+    implementation project(path: ':retrofit-adapters:rxjava2')
+    implementation project(path: ':retrofit-converters:gson')
 
 
 
