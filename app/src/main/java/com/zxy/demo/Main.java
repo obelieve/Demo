@@ -8,16 +8,32 @@ import java.lang.annotation.Target;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import kotlin.jvm.JvmField;
-
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 public class Main {
+    private static final String PARAM = "[a-zA-Z][a-zA-Z0-9_-]*";
+    private static final Pattern PARAM_URL_REGEX = Pattern.compile("\\{(" + PARAM + ")\\}");
+    static Set<String> parsePathParameters(String path) {
+        Matcher m = PARAM_URL_REGEX.matcher(path);
+        Set<String> patterns = new LinkedHashSet<>();
+        System.out.println(m.groupCount()+" groupCount");
+        while (m.find()) {
+            patterns.add(m.group(1));
+        }
+        return patterns;
+    }
     public static void main(String[] args) {
         //对对象方法的调用都会被重定向到一个调用处理器上。
+        System.out.println("parsePathParameters="+parsePathParameters("adad={asdad##}&bbb={dsadad222##}&cc={bs}"));
+        Matcher queryParamMatcher = PARAM_URL_REGEX.matcher("adad=2331&bbb=23");
+        if (queryParamMatcher.find()) {
+            System.out.println("");
+        }
         Food food = (Food)Proxy.newProxyInstance(Food.class.getClassLoader(), new Class[]{Food.class}, new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

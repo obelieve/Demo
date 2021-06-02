@@ -228,6 +228,7 @@ final class RequestBuilder {
     requestBuilder.tag(cls, value);
   }
 
+  // ZXYNOTE: 2021/6/2 18:30 Request参数拼装的参数，返回Request.Builder
   Request.Builder get() {
     HttpUrl url;
     HttpUrl.Builder urlBuilder = this.urlBuilder;

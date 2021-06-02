@@ -93,6 +93,7 @@ final class RequestFactory {
     isKotlinSuspendFunction = builder.isKotlinSuspendFunction;
   }
 
+  // ZXYNOTE: 2021/6/2 18:10 请求参数最后拼装的地方,返回okhttp3.Request
   okhttp3.Request create(Object[] args) throws IOException {
     @SuppressWarnings("unchecked") // It is an error to invoke a method with the wrong arg types.
     ParameterHandler<Object>[] handlers = (ParameterHandler<Object>[]) parameterHandlers;
@@ -219,10 +220,10 @@ final class RequestFactory {
       if (isMultipart && !gotPart) {
         throw methodError(method, "Multipart method must contain at least one @Part.");
       }
-      // ZXYNOTE: 2021/6/1 2.2.返回 RequestFactory对象
+      // ZXYNOTE: 2021/6/2 17:33 解析Method获取相关信息，返回 RequestFactory对象
       return new RequestFactory(this);
     }
-    // ZXYNOTE: 2021/6/1 2.1.1 解析方法注解
+    // ZXYNOTE: 2021/6/1 2.1.1 解析方法注解 parseMethodAnnotation(Annotation)：解析了请求方法GET/POST等，还解析了Header、Multipart/FormUrlEncoded
     private void parseMethodAnnotation(Annotation annotation) {
       if (annotation instanceof DELETE) {
         parseHttpMethodAndPath("DELETE", ((DELETE) annotation).value(), false);
@@ -280,7 +281,8 @@ final class RequestFactory {
       if (question != -1 && question < value.length() - 1) {
         // Ensure the query string does not have any named parameters.
         String queryParams = value.substring(question + 1);
-        Matcher queryParamMatcher = PARAM_URL_REGEX.matcher(queryParams);
+        // ZXYNOTE: 2021/6/2 10:03 parseHttpMethodAndPath()解析Method的注解 获得 httpMethod、hasBody、relativeUrl、relativeUrlParamNames（{params}的参数名称）（用到正则表达式 Pattern#matcher）
+        Matcher queryParamMatcher = PARAM_URL_REGEX.matcher(queryParams);//?后面的查询参数不能使用{}
         if (queryParamMatcher.find()) {
           throw methodError(
               method,
@@ -291,9 +293,10 @@ final class RequestFactory {
       }
 
       this.relativeUrl = value;
-      this.relativeUrlParamNames = parsePathParameters(value);
+      this.relativeUrlParamNames = parsePathParameters(value);//获取路径上的查询参数名称
     }
 
+    // ZXYNOTE: 2021/6/2 10:47 parseHeaders(String[])解析请求头 （额外解析了ContentType）
     private Headers parseHeaders(String[] headers) {
       Headers.Builder builder = new Headers.Builder();
       for (String header : headers) {
@@ -316,13 +319,14 @@ final class RequestFactory {
       }
       return builder.build();
     }
-    // ZXYNOTE: 2021/6/1 2.1.2~3 解析方法参数注解和类型
+    // ZXYNOTE: 2021/6/1 2.1.2~3 解析方法的形式参数类型和注解 parseParameter(int,Type,Annotation[],allowContinuation 是否是最后一个参数)
     private @Nullable ParameterHandler<?> parseParameter(
         int p, Type parameterType, @Nullable Annotation[] annotations, boolean allowContinuation) {
       ParameterHandler<?> result = null;
       if (annotations != null) {
         for (Annotation annotation : annotations) {
           ParameterHandler<?> annotationAction =
+              // ZXYNOTE: 2021/6/2 17:19 parseParameterAnnotation(int,Type,Annotation[],Annotation) 每个参数只能允许一个Retrofit注解，但允许有其他非Retrofit注解。
               parseParameterAnnotation(p, parameterType, annotations, annotation);
 
           if (annotationAction == null) {
@@ -354,6 +358,7 @@ final class RequestFactory {
       return result;
     }
 
+    // ZXYNOTE: 2021/6/2 10:59 解析方法形式参数数据 parseParameterAnnotation(p,Type,Annotation[],Annotation)
     @Nullable
     private ParameterHandler<?> parseParameterAnnotation(
         int p, Type type, Annotation[] annotations, Annotation annotation) {

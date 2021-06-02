@@ -637,13 +637,14 @@ public final class Retrofit {
 
       // Make a defensive copy of the adapters and add the default Call adapter.
       List<CallAdapter.Factory> callAdapterFactories = new ArrayList<>(this.callAdapterFactories);
+      // ZXYNOTE: 2021/6/2 17:44 初始化Retrofit#build()时，callAdapterFactories添加了默认的CallAdapter.Factory PS:Android就是Handler.post()的Executor
       callAdapterFactories.addAll(platform.defaultCallAdapterFactories(callbackExecutor));
 
       // Make a defensive copy of the converters.
       List<Converter.Factory> converterFactories =
           new ArrayList<>(
               1 + this.converterFactories.size() + platform.defaultConverterFactoriesSize());
-
+      // ZXYNOTE: 2021/6/2 17:45 初始化Retrofit#build()时，converterFactories添加了默认的Converters
       // Add the built-in converter factory first. This prevents overriding its behavior but also
       // ensures correct behavior when using converters that consume all types.
       converterFactories.add(new BuiltInConverters());

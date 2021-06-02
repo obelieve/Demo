@@ -62,7 +62,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
     } else {
       adapterType = method.getGenericReturnType();
     }
-
+    // ZXYNOTE: 2021/6/2 17:35 解析完RequestFactory后，继续解析createCallAdapter(retrofit, method, adapterType, annotations)，返回 CallAdapter 请求响应处理
     CallAdapter<ResponseT, ReturnT> callAdapter =
         createCallAdapter(retrofit, method, adapterType, annotations);
     Type responseType = callAdapter.responseType();
@@ -80,14 +80,13 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
     if (requestFactory.httpMethod.equals("HEAD") && !Void.class.equals(responseType)) {
       throw methodError(method, "HEAD method must use Void as response type.");
     }
-
+    // ZXYNOTE: 2021/6/2 17:37 获取响应后，createResponseConverter(retrofit, method, responseType)进行转换处理，返回Converter
     Converter<ResponseBody, ResponseT> responseConverter =
         createResponseConverter(retrofit, method, responseType);
 
     okhttp3.Call.Factory callFactory = retrofit.callFactory;
     if (!isKotlinSuspendFunction) {
-      // ZXYNOTE: 2021/6/1 根据requestFactory, callFactory, responseConverter, callAdapter，返回CallAdapted对象，
-      // ZXYNOTE: 2021/6/1 CallAdapted-> HttpServiceMethod -> ServiceMethod
+      // ZXYNOTE: 2021/6/2 17:39 回调处理和响应处理器获取后，new CallAdapted<>(requestFactory, callFactory, responseConverter, callAdapter)，返回CallAdapted对象，其中CallAdapted-> HttpServiceMethod -> ServiceMethod
       return new CallAdapted<>(requestFactory, callFactory, responseConverter, callAdapter);
     } else if (continuationWantsResponse) {
       //noinspection unchecked Kotlin compiler guarantees ReturnT to be Object.
