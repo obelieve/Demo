@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import com.obelieve.frame.base.ApiBaseActivity2;
 import com.obelieve.frame.net.ApiBaseResponse;
+import com.obelieve.frame.net.convert.ApiCustomGsonConverterFactory;
+import com.obelieve.frame.utils.log.LogInterceptor;
 import com.obelieve.frame.utils.log.LogUtil;
 import com.obelieve.frame.utils.secure.MD5Util;
 import com.zxy.demo.databinding.ActivityMainBinding;
@@ -18,10 +20,13 @@ import java.util.Random;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.http.Field;
 
 
@@ -142,7 +147,14 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
      * get请求
      */
     private void reqGet() {
-        App.getServiceInterface().getBaidu("https://www.baidu.com").enqueue(new Callback<ResponseBody>() {
+        ServiceInterface in = new Retrofit.Builder().baseUrl(ServiceInterface.Companion.getBASE_URL()).client(
+                new OkHttpClient.Builder()
+                        .addInterceptor(new HttpInterceptor())
+                        .addInterceptor(new LogInterceptor()).build())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(ApiCustomGsonConverterFactory.create())
+                .build().create(ServiceInterface.class);
+        in.getBaidu("https://www.baidu.com").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
