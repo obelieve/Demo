@@ -130,6 +130,7 @@ final class RequestBuilder {
     relativeUrl = newRelativeUrl;
   }
 
+  // ZXYNOTE: 2021/6/3 16:36 涉及到字符URL编码的判断 （RFC 1738、RFC 3986）PS:https://en.wikipedia.org/wiki/Percent-encoding
   private static String canonicalizeForPath(String input, boolean alreadyEncoded) {
     int codePoint;
     for (int i = 0, limit = input.length(); i < limit; i += Character.charCount(codePoint)) {

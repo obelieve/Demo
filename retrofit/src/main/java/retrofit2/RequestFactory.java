@@ -123,7 +123,7 @@ final class RequestFactory {
       // The Continuation is the last parameter and the handlers array contains null at that index.
       argumentCount--;
     }
-
+    // ZXYNOTE: 2021/6/3 16:20  URL中的Path/{xx}解析赋值，http://xxx./{name}
     List<Object> argumentList = new ArrayList<>(argumentCount);
     for (int p = 0; p < argumentCount; p++) {
       argumentList.add(args[p]);
