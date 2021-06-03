@@ -129,7 +129,7 @@ final class RequestFactory {
       argumentList.add(args[p]);
       handlers[p].apply(requestBuilder, args[p]);
     }
-
+    // ZXYNOTE: 2021/6/3 9:46 HTTP 请求添加一个tag来附加对象数据
     return requestBuilder.get().tag(Invocation.class, new Invocation(method, argumentList)).build();
   }
 

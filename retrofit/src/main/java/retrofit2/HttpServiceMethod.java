@@ -80,7 +80,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
     if (requestFactory.httpMethod.equals("HEAD") && !Void.class.equals(responseType)) {
       throw methodError(method, "HEAD method must use Void as response type.");
     }
-    // ZXYNOTE: 2021/6/2 17:37 获取响应后，createResponseConverter(retrofit, method, responseType)进行转换处理，返回Converter
+    // ZXYNOTE: 2021/6/2 17:37 *****v3-2*****获取Converter（根据方法定义的返回类型调用createResponseConverter(retrofit, method, responseType)进行转换处理，返回Converter）
     Converter<ResponseBody, ResponseT> responseConverter =
         createResponseConverter(retrofit, method, responseType);
 
@@ -164,7 +164,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
 
     @Override
     protected ReturnT adapt(Call<ResponseT> call, Object[] args) {
-      // ZXYNOTE: 2021/6/1 23:43 CallAdapted#adapt(call,args)-> callAdapter.adapt(call)
+      // ZXYNOTE: 2021/6/3 10:46 *****v1***** 执行请求的地方，调用方法 CallAdapted#adapt(call,args)-> callAdapter.adapt(call)
       return callAdapter.adapt(call);
     }
   }

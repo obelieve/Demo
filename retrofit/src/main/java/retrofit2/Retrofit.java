@@ -311,6 +311,7 @@ public final class Retrofit {
     Objects.requireNonNull(methodAnnotations, "methodAnnotations == null");
 
     int start = converterFactories.indexOf(skipPast) + 1;
+    // ZXYNOTE: 2021/6/3 11:46 *****v0***** 对于有请求包体的请求，把对象参数转为RequestBody
     for (int i = start, count = converterFactories.size(); i < count; i++) {
       Converter.Factory factory = converterFactories.get(i);
       Converter<?, RequestBody> converter =
@@ -359,6 +360,7 @@ public final class Retrofit {
     Objects.requireNonNull(annotations, "annotations == null");
 
     int start = converterFactories.indexOf(skipPast) + 1;
+    // ZXYNOTE: 2021/6/3 11:18 *****v3-3***** 根据不同的返回类型type，返回不同的Converter，通过执行converterFactories.responseBodyConverter(Type,Annotation[],Retrofit)
     for (int i = start, count = converterFactories.size(); i < count; i++) {
       Converter<ResponseBody, ?> converter =
           converterFactories.get(i).responseBodyConverter(type, annotations, this);

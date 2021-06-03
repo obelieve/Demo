@@ -231,6 +231,7 @@ final class RequestBuilder {
   // ZXYNOTE: 2021/6/2 18:30 Request参数拼装的参数，返回Request.Builder
   Request.Builder get() {
     HttpUrl url;
+    // ZXYNOTE: 2021/6/3 9:22 对OKHTTP HttpUrl处理 (HttpUrl protocol://hostname[:port]/path/[;parameters][?query]#fragment 了解 PS:https://blog.csdn.net/mrruby/article/details/108539947)
     HttpUrl.Builder urlBuilder = this.urlBuilder;
     if (urlBuilder != null) {
       url = urlBuilder.build();
@@ -265,7 +266,7 @@ final class RequestBuilder {
         headersBuilder.add("Content-Type", contentType.toString());
       }
     }
-
+    // ZXYNOTE: 2021/6/3 9:35 根据：url、headers、method(method,body)，返回Request.Build对象
     return requestBuilder.url(url).headers(headersBuilder.build()).method(method, body);
   }
 

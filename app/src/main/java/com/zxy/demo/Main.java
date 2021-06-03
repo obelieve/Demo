@@ -8,10 +8,13 @@ import java.lang.annotation.Target;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.HttpUrl;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -28,6 +31,13 @@ public class Main {
         return patterns;
     }
     public static void main(String[] args) {
+//        HttpUrl.get("https://www.baidu.com");
+//        Class clazz = String.class;
+//        Object a = clazz.cast("asdada");
+//        System.out.println("tag="+a);
+        HttpUrl base = HttpUrl.parse("https://www.youtube.com/user/WatchTheDaily/videos");
+        HttpUrl link = base.resolve("../../watch?v=cbP2N1BQdYc");
+        System.out.println(link);
         //对对象方法的调用都会被重定向到一个调用处理器上。
         System.out.println("parsePathParameters="+parsePathParameters("adad={asdad##}&bbb={dsadad222##}&cc={bs}"));
         Matcher queryParamMatcher = PARAM_URL_REGEX.matcher("adad=2331&bbb=23");
