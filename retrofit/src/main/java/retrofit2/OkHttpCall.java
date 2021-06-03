@@ -306,7 +306,7 @@ final class OkHttpCall<T> implements Call<T> {
     private final BufferedSource delegateSource;
     @Nullable IOException thrownException;
 
-    // ZXYNOTE: 2021/6/3 11:05 *****v3-1***** ，ResponseBody数据先缓存到BufferedSource对象，通过执行new ExceptionCatchingResponseBody(ResponseBody delegate)
+    // ZXYNOTE: 2021/6/3 11:05 *****v3-1***** ，ResponseBody数据设置一个代理的ResponseBody，通过执行new ExceptionCatchingResponseBody(ResponseBody delegate)
     ExceptionCatchingResponseBody(ResponseBody delegate) {
       this.delegate = delegate;
       this.delegateSource =
