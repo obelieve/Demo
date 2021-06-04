@@ -93,7 +93,7 @@ final class RequestFactory {
     isKotlinSuspendFunction = builder.isKotlinSuspendFunction;
   }
 
-  // ZXYNOTE: 2021/6/2 18:10 请求参数最后拼装的地方,返回okhttp3.Request
+  // ZXYNOTE: 2021/6/2 18:10 *****v0*****请求参数最后拼装的地方,返回okhttp3.Request
   okhttp3.Request create(Object[] args) throws IOException {
     @SuppressWarnings("unchecked") // It is an error to invoke a method with the wrong arg types.
     ParameterHandler<Object>[] handlers = (ParameterHandler<Object>[]) parameterHandlers;
@@ -127,6 +127,7 @@ final class RequestFactory {
     List<Object> argumentList = new ArrayList<>(argumentCount);
     for (int p = 0; p < argumentCount; p++) {
       argumentList.add(args[p]);
+      // ZXYNOTE: 2021/6/4 18:10 对参数进行解析，然后加入到RequestBuilder中,parameterHandler#apply(RequestBuilder,Object)
       handlers[p].apply(requestBuilder, args[p]);
     }
     // ZXYNOTE: 2021/6/3 9:46 HTTP 请求添加一个tag来附加对象数据

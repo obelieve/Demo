@@ -345,6 +345,7 @@ final class Utils {
     return paramType;
   }
 
+  // ZXYNOTE: 2021/6/4 18:06 对类型Type进行判断，如果存在泛型和通配符类型就返回true。
   static boolean hasUnresolvableType(@Nullable Type type) {
     if (type instanceof Class<?>) {
       return false;
