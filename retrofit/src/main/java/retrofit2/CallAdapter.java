@@ -65,6 +65,7 @@ public interface CallAdapter<R, T> {
      * Returns a call adapter for interface methods that return {@code returnType}, or null if it
      * cannot be handled by this factory.
      */
+    // ZXYNOTE: 2021/6/5 23:35 ***** ***** 根据CallAdapter.Factory的get方法返回类型来判断调用获取CallAdapter<?,?>
     public abstract @Nullable CallAdapter<?, ?> get(
         Type returnType, Annotation[] annotations, Retrofit retrofit);
 
