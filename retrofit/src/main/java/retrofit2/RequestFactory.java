@@ -363,6 +363,7 @@ final class RequestFactory {
     @Nullable
     private ParameterHandler<?> parseParameterAnnotation(
         int p, Type type, Annotation[] annotations, Annotation annotation) {
+      // ZXYNOTE: 2021/6/6 21:40 ***方法参数解析.1*** @Url 解析
       if (annotation instanceof Url) {
         validateResolvableType(p, type);
         if (gotUrl) {
@@ -397,7 +398,7 @@ final class RequestFactory {
               p,
               "@Url must be okhttp3.HttpUrl, String, java.net.URI, or android.net.Uri type.");
         }
-
+      // ZXYNOTE: 2021/6/6 21:40 ***方法参数解析.2*** @Path 解析，代替相对地址中的{name}的name
       } else if (annotation instanceof Path) {
         validateResolvableType(p, type);
         if (gotQuery) {
@@ -424,7 +425,7 @@ final class RequestFactory {
 
         Converter<?, String> converter = retrofit.stringConverter(type, annotations);
         return new ParameterHandler.Path<>(method, p, name, converter, path.encoded());
-
+        // ZXYNOTE: 2021/6/6 21:42 ***方法参数解析.3*** @Query 解析 ?name=value
       } else if (annotation instanceof Query) {
         validateResolvableType(p, type);
         Query query = (Query) annotation;
@@ -456,7 +457,7 @@ final class RequestFactory {
           Converter<?, String> converter = retrofit.stringConverter(type, annotations);
           return new ParameterHandler.Query<>(name, converter, encoded);
         }
-
+        // ZXYNOTE: 2021/6/6 21:46 ***方法参数解析.4*** @QueryName 解析 ?name，没有value
       } else if (annotation instanceof QueryName) {
         validateResolvableType(p, type);
         QueryName query = (QueryName) annotation;
@@ -487,7 +488,7 @@ final class RequestFactory {
           Converter<?, String> converter = retrofit.stringConverter(type, annotations);
           return new ParameterHandler.QueryName<>(converter, encoded);
         }
-
+        // ZXYNOTE: 2021/6/6 21:50 ***方法参数解析.5*** @QueryMap 解析 ?name=value&name2=value2
       } else if (annotation instanceof QueryMap) {
         validateResolvableType(p, type);
         Class<?> rawParameterType = Utils.getRawType(type);
@@ -510,7 +511,7 @@ final class RequestFactory {
 
         return new ParameterHandler.QueryMap<>(
             method, p, valueConverter, ((QueryMap) annotation).encoded());
-
+        // ZXYNOTE: 2021/6/6 21:54 ***方法参数解析.6*** @Header 解析
       } else if (annotation instanceof Header) {
         validateResolvableType(p, type);
         Header header = (Header) annotation;
@@ -540,7 +541,7 @@ final class RequestFactory {
           Converter<?, String> converter = retrofit.stringConverter(type, annotations);
           return new ParameterHandler.Header<>(name, converter);
         }
-
+        // ZXYNOTE: 2021/6/6 21:55 ***方法参数解析.7*** @HeaderMap 解析
       } else if (annotation instanceof HeaderMap) {
         if (type == Headers.class) {
           return new ParameterHandler.Headers(method, p);
@@ -565,7 +566,7 @@ final class RequestFactory {
         Converter<?, String> valueConverter = retrofit.stringConverter(valueType, annotations);
 
         return new ParameterHandler.HeaderMap<>(method, p, valueConverter);
-
+        // ZXYNOTE: 2021/6/6 21:55 ***方法参数解析.8*** @Field 解析 表单提交键值对
       } else if (annotation instanceof Field) {
         validateResolvableType(p, type);
         if (!isFormEncoded) {
@@ -601,7 +602,7 @@ final class RequestFactory {
           Converter<?, String> converter = retrofit.stringConverter(type, annotations);
           return new ParameterHandler.Field<>(name, converter, encoded);
         }
-
+        // ZXYNOTE: 2021/6/6 21:55 ***方法参数解析.9*** @FieldMap 解析
       } else if (annotation instanceof FieldMap) {
         validateResolvableType(p, type);
         if (!isFormEncoded) {
@@ -628,7 +629,7 @@ final class RequestFactory {
         gotField = true;
         return new ParameterHandler.FieldMap<>(
             method, p, valueConverter, ((FieldMap) annotation).encoded());
-
+        // ZXYNOTE: 2021/6/6 21:56 ***方法参数解析.10*** @Part 解析 multipart/form-data  附加Content-Disposition请求头和RequestBody(数据类型会转为RequestBody)
       } else if (annotation instanceof Part) {
         validateResolvableType(p, type);
         if (!isMultipart) {
@@ -731,7 +732,7 @@ final class RequestFactory {
             return new ParameterHandler.Part<>(method, p, headers, converter);
           }
         }
-
+        // ZXYNOTE: 2021/6/6 21:59 ***方法参数解析.11*** @PartMap 解析 multipart/form-data
       } else if (annotation instanceof PartMap) {
         validateResolvableType(p, type);
         if (!isMultipart) {
@@ -769,7 +770,7 @@ final class RequestFactory {
 
         PartMap partMap = (PartMap) annotation;
         return new ParameterHandler.PartMap<>(method, p, valueConverter, partMap.encoding());
-
+        // ZXYNOTE: 2021/6/6 22:02 ***方法参数解析.12***@Body 请求包体解析，根据Converter把特定类型转为RequestBody
       } else if (annotation instanceof Body) {
         validateResolvableType(p, type);
         if (isFormEncoded || isMultipart) {
@@ -789,7 +790,7 @@ final class RequestFactory {
         }
         gotBody = true;
         return new ParameterHandler.Body<>(method, p, converter);
-
+        // ZXYNOTE: 2021/6/6 22:02 **方法参数解析.13*** @Tag解析 请求的附加信息
       } else if (annotation instanceof Tag) {
         validateResolvableType(p, type);
 
