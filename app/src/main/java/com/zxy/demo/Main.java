@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.HttpUrl;
+import retrofit2.Callback;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -35,6 +36,7 @@ public class Main {
 //        Class clazz = String.class;
 //        Object a = clazz.cast("asdada");
 //        System.out.println("tag="+a);
+
         HttpUrl base = HttpUrl.parse("https://www.youtube.com/user/WatchTheDaily/videos");
         HttpUrl link = base.resolve("../../watch?v=cbP2N1BQdYc");
         System.out.println(link);
