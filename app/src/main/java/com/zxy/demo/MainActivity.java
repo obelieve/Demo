@@ -54,7 +54,7 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
     @Override
     protected void initCreateAfterView(Bundle savedInstanceState) {
         reqGet();
-//        postGetUserInfo();
+        postGetUserInfo();
 //        postModifyUserInfo(new Random().nextInt(1000)+"");
 //        postGetLogstoreConfig();
     }
@@ -106,7 +106,7 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
 
             @Override
             public void onError(@NotNull Throwable e) {
-
+                System.out.println("修改用户信息err "+e.getMessage());
             }
 
             @Override
