@@ -50,6 +50,9 @@ dependencies {
     implementation project(path: ':retrofit')
     implementation project(path: ':retrofit-adapters:rxjava2')
     implementation project(path: ':retrofit-converters:gson')
+    testImplementation project(path: ':retrofit')
+    testImplementation project(path: ':retrofit-adapters:rxjava2')
+    testImplementation project(path: ':retrofit-converters:gson')
 }
 //configurations.all {
 //    resolutionStrategy.dependencySubstitution {

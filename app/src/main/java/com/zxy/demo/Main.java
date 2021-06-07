@@ -1,92 +1,87 @@
 package com.zxy.demo;
 
-import android.sax.Element;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.File;
+import java.io.IOException;
 
-import okhttp3.HttpUrl;
+
+
+import okhttp3.OkHttpClient;
+
+import okhttp3.ResponseBody;
+
+import okio.BufferedSink;
+
+import okio.Okio;
+
+import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 public class Main {
-    private static final String PARAM = "[a-zA-Z][a-zA-Z0-9_-]*";
-    private static final Pattern PARAM_URL_REGEX = Pattern.compile("\\{(" + PARAM + ")\\}");
-    static Set<String> parsePathParameters(String path) {
-        Matcher m = PARAM_URL_REGEX.matcher(path);
-        Set<String> patterns = new LinkedHashSet<>();
-        System.out.println(m.groupCount()+" groupCount");
-        while (m.find()) {
-            patterns.add(m.group(1));
-        }
-        return patterns;
-    }
     public static void main(String[] args) {
-//        HttpUrl.get("https://www.baidu.com");
-//        Class clazz = String.class;
-//        Object a = clazz.cast("asdada");
-//        System.out.println("tag="+a);
+        reqGet();
+        reqDownload();
+    }
 
-        HttpUrl base = HttpUrl.parse("https://www.youtube.com/user/WatchTheDaily/videos");
-        HttpUrl link = base.resolve("../../watch?v=cbP2N1BQdYc");
-        System.out.println(link);
-        //对对象方法的调用都会被重定向到一个调用处理器上。
-        System.out.println("parsePathParameters="+parsePathParameters("adad={asdad##}&bbb={dsadad222##}&cc={bs}"));
-        Matcher queryParamMatcher = PARAM_URL_REGEX.matcher("adad=2331&bbb=23");
-        if (queryParamMatcher.find()) {
-            System.out.println("");
-        }
-        Food food = (Food)Proxy.newProxyInstance(Food.class.getClassLoader(), new Class[]{Food.class}, new InvocationHandler() {
+    /**
+     * - 1.GET请求
+     * 	- 1.带参数
+     * 	- 2.字节流下载
+     * - 2.POST请求
+     * 	- 2.1 不带参数
+     * 	- 2.2 带参数
+     * 	- 2.3 多部分表格提交 multipart/form-data
+     */
+
+    private static ServiceInterface sServiceInterface = new Retrofit.Builder().baseUrl(ServiceInterface.Companion.getBASE_URL()).client(
+            new OkHttpClient.Builder().build())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build().create(ServiceInterface.class);
+
+    /**
+     * get请求
+     */
+    private static void reqGet() {
+        sServiceInterface.getBaidu("https://www.baidu.com").enqueue(new Callback<ResponseBody>() {
             @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                if (method.getDeclaringClass() == Object.class) {
-                    return method.invoke(this, args);
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    System.out.println("reqGet百度 "+response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                boolean b=method.isDefault();
-                System.out.println("动态代理:method="+method.getName()+" isDefault="+b);
-                System.out.println(method.getGenericParameterTypes());//方法形式参数 类型
-                System.out.println(method.getParameterAnnotations());//方法形式参数注解
-                System.out.println(method.getGenericReturnType());//方法返回类型
-                return method.invoke(new Fruit(),args);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable e) {
+
             }
         });
-        food.name("fruit",5);
-        food.hashCode();
     }
 
-    @Target(ElementType.PARAMETER)
-    @Retention(RUNTIME)
-    public @interface MParams{
-        String value() default "";
-    }
+    private static void reqDownload(){
+        String url = "https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2103804686,792857297&fm=26&gp=0.jpg";
+        sServiceInterface.downloadFile("Range: bytes=10-",url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    BufferedSink sink = Okio.buffer(Okio.sink(new File("C:\\Users\\Administrator\\Desktop", "testImage" + 1 + ".png")));
+                    sink.writeAll(response.body().source());
+                    sink.close();
+                    System.out.println("req图片 ");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
-    @Target(ElementType.PARAMETER)
-    @Retention(RUNTIME)
-    public @interface MM{
-        String value() default "";
-    }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable e) {
 
-    public interface Food{
-        String name(@MParams @MM String content,@MM int num);
-    }
-
-    public static class Fruit implements Food {
-
-        @Override
-        public String name(String content, int num) {
-            String name = "Fruit";
-            System.out.println(name);
-            return name;
-        }
+            }
+        });
     }
 }
