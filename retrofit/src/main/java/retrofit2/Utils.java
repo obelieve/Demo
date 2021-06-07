@@ -76,10 +76,12 @@ final class Utils {
 
       // I'm not exactly sure why getRawType() returns Type instead of Class. Neal isn't either but
       // suspects some pathological case related to nested classes exists.
+      // ZXYNOTE: 2021/6/7 22:42 *****v(-2.1.1)***** ParameterizedType.getRawType()是返回最外层的类型
       Type rawType = parameterizedType.getRawType();
       if (!(rawType instanceof Class)) throw new IllegalArgumentException();
       return (Class<?>) rawType;
     }
+    // ZXYNOTE: 2021/6/7 22:42 *****v(-2.1.2)***** type判断是否是GenericArrayType?
     if (type instanceof GenericArrayType) {
       Type componentType = ((GenericArrayType) type).getGenericComponentType();
       return Array.newInstance(getRawType(componentType), 0).getClass();

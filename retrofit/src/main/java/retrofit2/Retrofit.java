@@ -156,7 +156,7 @@ public final class Retrofit {
                   return method.invoke(this, args);
                 }
                 args = args != null ? args : emptyArgs;
-                // ZXYNOTE: 2021/6/1 2.根据Method，返回<ServiceMethod>并调用 ServiceMethod#invoke(args)。
+                // ZXYNOTE: 2021/6/1 2.*****v(-5)*****【入口】 根据Method，返回<ServiceMethod>并调用 ServiceMethod#invoke(args)。
                 return platform.isDefaultMethod(method)
                     ? platform.invokeDefaultMethod(method, service, proxy, args)
                     : loadServiceMethod(method).invoke(args);
@@ -201,6 +201,7 @@ public final class Retrofit {
     synchronized (serviceMethodCache) {
       result = serviceMethodCache.get(method);
       if (result == null) {
+        // ZXYNOTE: 2021/6/7 22:17 *****v(-4)***** 开始解析接口方法
         result = ServiceMethod.parseAnnotations(this, method);
         serviceMethodCache.put(method, result);
       }

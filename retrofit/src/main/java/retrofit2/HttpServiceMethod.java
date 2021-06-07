@@ -86,7 +86,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
 
     okhttp3.Call.Factory callFactory = retrofit.callFactory;
     if (!isKotlinSuspendFunction) {
-      // ZXYNOTE: 2021/6/2 17:39 回调处理和响应处理器获取后，new CallAdapted<>(requestFactory, callFactory, responseConverter, callAdapter)，返回CallAdapted对象，其中CallAdapted-> HttpServiceMethod -> ServiceMethod
+      // ZXYNOTE: 2021/6/2 17:39 *****v(-2)*****【中间状态】 已经把主要的：requestFactory、callAdapter、responseConverter都选择好了，返回CallAdapted->HttpServiceMethod->ServiceMethod
       return new CallAdapted<>(requestFactory, callFactory, responseConverter, callAdapter);
     } else if (continuationWantsResponse) {
       //noinspection unchecked Kotlin compiler guarantees ReturnT to be Object.
@@ -112,6 +112,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
       Retrofit retrofit, Method method, Type returnType, Annotation[] annotations) {
     try {
       //noinspection unchecked
+      // ZXYNOTE: 2021/6/7 22:38 *****v(-2.1)***** 这里对于每个CallAdapterFactory#get(..)方法涉及关于ReturnType的很多判断，尤其是getRawType(returnType)
       return (CallAdapter<ResponseT, ReturnT>) retrofit.callAdapter(returnType, annotations);
     } catch (RuntimeException e) { // Wide exception range because factories are user code.
       throw methodError(method, e, "Unable to create call adapter for %s", returnType);
@@ -143,7 +144,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
 
   @Override
   final @Nullable ReturnT invoke(Object[] args) {
-    // ZXYNOTE: 2021/6/1 根据requestFactory, args, callFactory, responseConverter，返回OkHttpCall,并调用 HttpServiceMethod#adapt(call, args)
+    // ZXYNOTE: 2021/6/1 *****v(-1)*****根据requestFactory, args, callFactory, responseConverter，返回OkHttpCall,并调用 HttpServiceMethod#adapt(call, args)
     Call<ResponseT> call = new OkHttpCall<>(requestFactory, args, callFactory, responseConverter);
     return adapt(call, args);
   }

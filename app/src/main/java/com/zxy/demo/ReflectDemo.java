@@ -3,9 +3,14 @@ package com.zxy.demo;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
@@ -34,7 +39,8 @@ public class ReflectDemo {
             }
         });
         try {
-            service.get("title","name",10);
+            List<Integer[]> lists = new ArrayList<>();
+            service.get("title","name",10,new ArrayList<>(),lists);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,7 +72,11 @@ public class ReflectDemo {
             //method.getParameterTypes() 方法形式参数类型 返回class[]
             for(int i=0;i<method.getGenericParameterTypes().length;i++){
                 print.append("\n"+"i:"+i+" ");
-                print.append(method.getGenericParameterTypes()[i]+",");
+                if(method.getGenericParameterTypes()[i] instanceof ParameterizedType){
+                    print.append("泛型 "+((ParameterizedType) method.getGenericParameterTypes()[i]).getRawType()+",");
+                }else{
+                    print.append(method.getGenericParameterTypes()[i]+",");
+                }
             }
             System.out.println(print.toString());
             return (T) print.toString();
@@ -98,7 +108,9 @@ public class ReflectDemo {
     /**接口方法**/
     public interface ServiceInterface{
         @MethodAno
-        <T,W> String get(String title,@ParameterAno("name") String name,@ParameterAno int num) throws Exception,ExceptionInInitializerError;
+        <T,W> String get(String title, @ParameterAno("name") String name, @ParameterAno int num,
+                         @ParameterAno List<String> stringList,
+                         @ParameterAno List<Integer[]> lists) throws Exception,ExceptionInInitializerError;
     }
     /********/
 
