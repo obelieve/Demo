@@ -93,6 +93,7 @@ final class Utils {
     }
     if (type instanceof WildcardType) {
       // ZXYNOTE: 2021/6/8 17:12 *****??***** 通配符类型判断需要递归？ PS:List<? extend Fruit> extends是上界只能get, List<? super Apple> super是下界，只能add （编译器判断list是Apple父类组成）
+      //? extend Fruit 和 Apple 之前用这个只是类继承时使用到
       return getRawType(((WildcardType) type).getUpperBounds()[0]);
     }
 

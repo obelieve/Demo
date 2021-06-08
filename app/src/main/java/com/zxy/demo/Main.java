@@ -10,13 +10,11 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,9 +45,35 @@ public class Main {
 //        Thread.sleep(500);
 //        reqPost("11");
 
-    A<String> a1=new A<>("aaa");
-    a1.t();
+
     }
+
+
+//    A<String> a1=new A<>("aaa");
+//    a1.t();
+//    List<? extends Fruit> list = new ArrayList<Apple>(){
+//        {
+//            add(new Apple());
+//            add(new Apple());
+//        }
+//    };
+//
+//    List<? super Apple> list2 = new ArrayList<>();
+//        list2.add(new Apple());
+//    System.out.println(list2.get(0).getClass().getSimpleName());
+//    System.out.println(list.get(0).getClass().getSimpleName());
+
+//    public static class Fruit{
+//        public void ff(){
+//
+//        }
+//    }
+//
+//    public static class Apple extends Fruit{
+//        public void aa(){
+//
+//        }
+//    }
 
     public static class A<T>{
         T[][] a;
