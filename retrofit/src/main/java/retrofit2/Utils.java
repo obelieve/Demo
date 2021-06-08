@@ -81,10 +81,10 @@ final class Utils {
       if (!(rawType instanceof Class)) throw new IllegalArgumentException();
       return (Class<?>) rawType;
     }
-    // ZXYNOTE: 2021/6/7 22:42 *****v(-2.1.2)***** type判断是否是GenericArrayType?
+    // ZXYNOTE: 2021/6/7 22:42 *****v(-2.1.2)***** type判断是否是GenericArrayType 泛型数组 PS: T[]
     if (type instanceof GenericArrayType) {
-      Type componentType = ((GenericArrayType) type).getGenericComponentType();
-      return Array.newInstance(getRawType(componentType), 0).getClass();
+      Type componentType = ((GenericArrayType) type).getGenericComponentType(); //获取泛型数组的组件类型
+      return Array.newInstance(getRawType(componentType), 0).getClass(); // ZXYNOTE: 2021/6/8 17:07  *****??***** 泛型数组类型判断需要递归？
     }
     if (type instanceof TypeVariable) {
       // We could use the variable's bounds, but that won't work if there are multiple. Having a raw
@@ -92,6 +92,7 @@ final class Utils {
       return Object.class;
     }
     if (type instanceof WildcardType) {
+      // ZXYNOTE: 2021/6/8 17:12 *****??***** 通配符类型判断需要递归？ PS:List<? extend Fruit> extends是上界只能get, List<? super Apple> super是下界，只能add （编译器判断list是Apple父类组成）
       return getRawType(((WildcardType) type).getUpperBounds()[0]);
     }
 

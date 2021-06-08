@@ -8,6 +8,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 
 import io.reactivex.Observer;
@@ -28,12 +39,84 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 
 public class Main {
+    static int[] a = new int[0];
     public static void main(String[] args) throws Exception {
 //        reqGet();
 //        reqGetDownload();
-        reqPost();
-        Thread.sleep(500);
-        reqPost("11");
+//        reqPost();
+//        Thread.sleep(500);
+//        reqPost("11");
+
+    A<String> a1=new A<>("aaa");
+    a1.t();
+    }
+
+    public static class A<T>{
+        T[][] a;
+        List<? extends String> b;
+        String c;
+        public A(T t){
+            a = (T[][]) Array.newInstance(Array.newInstance(List.class,0).getClass(),0);
+        }
+
+        public  String t(){
+            try {
+                System.out.println(A.class.getDeclaredField("c").getGenericType() instanceof WildcardType);
+                WildcardType wildcardType = (WildcardType)(((ParameterizedType)A.class.getDeclaredField("b").getGenericType()).getActualTypeArguments()[0]);
+                System.out.println(wildcardType.getUpperBounds()[0]);
+                System.out.println(A.class.getDeclaredField("a").getType());
+                System.out.println(A.class.getDeclaredField("a").getGenericType());
+                System.out.println(A.class.getDeclaredField("a").getGenericType() instanceof GenericArrayType);
+                GenericArrayType sGenericArrayType = ((GenericArrayType)A.class.getDeclaredField("a").getGenericType());
+                Type type = sGenericArrayType;
+                Class t0 = getRawType(type);
+                Class t = Array.newInstance(t0, 0).getClass();
+                System.out.println("type ="+type+" Class =t0="+t0+" t="+t);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
+
+        static Class<?> getRawType(Type type) {
+            Objects.requireNonNull(type, "type == null");
+
+            if (type instanceof Class<?>) {
+                // Type is a normal class.
+                return (Class<?>) type;
+            }
+            if (type instanceof ParameterizedType) {
+                ParameterizedType parameterizedType = (ParameterizedType) type;
+
+                // I'm not exactly sure why getRawType() returns Type instead of Class. Neal isn't either but
+                // suspects some pathological case related to nested classes exists.
+                // ZXYNOTE: 2021/6/7 22:42 *****v(-2.1.1)***** ParameterizedType.getRawType()是返回最外层的类型
+                Type rawType = parameterizedType.getRawType();
+                if (!(rawType instanceof Class)) throw new IllegalArgumentException();
+                return (Class<?>) rawType;
+            }
+            // ZXYNOTE: 2021/6/7 22:42 *****v(-2.1.2)***** type判断是否是GenericArrayType 泛型数组 PS: T[]
+            if (type instanceof GenericArrayType) {
+                Type componentType = ((GenericArrayType) type).getGenericComponentType();
+                return Array.newInstance(getRawType(componentType), 0).getClass();
+            }
+            if (type instanceof TypeVariable) {
+                // We could use the variable's bounds, but that won't work if there are multiple. Having a raw
+                // type that's more general than necessary is okay.
+                return Object.class;
+            }
+            if (type instanceof WildcardType) {
+                return getRawType(((WildcardType) type).getUpperBounds()[0]);
+            }
+
+            throw new IllegalArgumentException(
+                    "Expected a Class, ParameterizedType, or "
+                            + "GenericArrayType, but <"
+                            + type
+                            + "> is of type "
+                            + type.getClass().getName());
+        }
+
     }
 
     /**
