@@ -15,16 +15,18 @@
  */
 package retrofit2;
 
-import static retrofit2.Utils.getRawType;
-import static retrofit2.Utils.methodError;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
 import javax.annotation.Nullable;
+
 import kotlin.coroutines.Continuation;
 import okhttp3.ResponseBody;
+
+import static retrofit2.Utils.getRawType;
+import static retrofit2.Utils.methodError;
 
 /** Adapts an invocation of an interface method into an HTTP call. */
 abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<ReturnT> {
@@ -144,7 +146,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
 
   @Override
   final @Nullable ReturnT invoke(Object[] args) {
-    // ZXYNOTE: 2021/6/1 *****v(-1)*****根据requestFactory, args, callFactory, responseConverter，返回OkHttpCall,并调用 HttpServiceMethod#adapt(call, args)
+    // ZXYNOTE: 2021/6/9 0:22 =====z1.2.1===== ServiceMethod#invoke(args)方法第一步，生成OkHttpCall对象 OkHttpCall<T> implements Call<T>
     Call<ResponseT> call = new OkHttpCall<>(requestFactory, args, callFactory, responseConverter);
     return adapt(call, args);
   }
@@ -165,7 +167,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
 
     @Override
     protected ReturnT adapt(Call<ResponseT> call, Object[] args) {
-      // ZXYNOTE: 2021/6/3 10:46 *****v1***** 执行请求的地方，调用方法 CallAdapted#adapt(call,args)-> callAdapter.adapt(call)
+      // ZXYNOTE: 2021/6/9 0:24 =====z1.2.2===== ServiceMethod#invoke(args)方法第二步，CallAdapted类中，调用CallAdapter#adapt(call)，由CallAdapterFactory生成该对象
       return callAdapter.adapt(call);
     }
   }

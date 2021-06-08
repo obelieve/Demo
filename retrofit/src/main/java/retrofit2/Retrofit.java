@@ -140,6 +140,8 @@ public final class Retrofit {
   public <T> T create(final Class<T> service) {
     validateServiceInterface(service);
     //=====z[\d\.]*=====
+    //=====z[\d\.]{1,8}=====
+    //=====z[\d\.]{7,9}=====
     // ZXYNOTE: 2021/6/8 22:21 =====z1===== 通过动态代理获取Method对象
     return (T)
         Proxy.newProxyInstance(
@@ -157,7 +159,8 @@ public final class Retrofit {
                   return method.invoke(this, args);
                 }
                 args = args != null ? args : emptyArgs;
-                // ZXYNOTE: 2021/6/8 22:21 =====z1.1===== 开始进入loadServiceMethod(method)方法，做缓存ServiceMethod处理
+                // ZXYNOTE: 2021/6/8 22:21 =====z1.1===== 开始第一步，进入loadServiceMethod(method)方法，返回ServiceMethod对象
+                // ZXYNOTE: 2021/6/8 22:21 =====z1.2===== 开始第二步，传入方法参数，调用ServiceMethod#invoke(args)方法
                 return platform.isDefaultMethod(method)
                     ? platform.invokeDefaultMethod(method, service, proxy, args)
                     : loadServiceMethod(method).invoke(args);
@@ -198,11 +201,11 @@ public final class Retrofit {
   ServiceMethod<?> loadServiceMethod(Method method) {
     ServiceMethod<?> result = serviceMethodCache.get(method);
     if (result != null) return result;
-
+    // ZXYNOTE: 2021/6/8 22:23 =====z1.1.0===== 返回ServiceMethod对象第一步，做缓存ServiceMethod处理，存在ServiceMethod直接返回该对象
     synchronized (serviceMethodCache) {
       result = serviceMethodCache.get(method);
       if (result == null) {
-        // ZXYNOTE: 2021/6/8 22:23 =====z1.1.1===== 开始解析Method
+        // ZXYNOTE: 2021/6/8 22:23 =====z1.1.1===== 返回ServiceMethod对象第二步，会进入ServiceMethod类开始解析Method，并返回该对象
         result = ServiceMethod.parseAnnotations(this, method);
         serviceMethodCache.put(method, result);
       }
