@@ -23,9 +23,9 @@ import javax.annotation.Nullable;
 
 abstract class ServiceMethod<T> {
   static <T> ServiceMethod<T> parseAnnotations(Retrofit retrofit, Method method) {
-    // ZXYNOTE: 2021/6/1 2.1 解析Method，返回RequestFactory对象
+    // ZXYNOTE: 2021/6/8 22:28 =====z1.1.1.1===== 解析生成RequestFactory对象
     RequestFactory requestFactory = RequestFactory.parseAnnotations(retrofit, method);
-
+    // ZXYNOTE: 2021/6/8 22:30 =====z1.1.1.2===== 再做一个方法返回类型的校验 Method#getGenericReturnType()
     Type returnType = method.getGenericReturnType();
     if (Utils.hasUnresolvableType(returnType)) {
       throw methodError(
@@ -36,7 +36,7 @@ abstract class ServiceMethod<T> {
     if (returnType == void.class) {
       throw methodError(method, "Service methods cannot return void.");
     }
-    // ZXYNOTE: 2021/6/1 2.2 *****v(-3)*****根据retrofit、method、requestFactory对象，返回 HttpServiceMethod
+    // ZXYNOTE: 2021/6/8 22:30 =====z1.1.1.3===== 然后根据retrofit、method、requestFactory对象，返回HttpServiceMethod
     return HttpServiceMethod.parseAnnotations(retrofit, method, requestFactory);
   }
 

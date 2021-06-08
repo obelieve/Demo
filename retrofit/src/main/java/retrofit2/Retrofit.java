@@ -139,7 +139,8 @@ public final class Retrofit {
   @SuppressWarnings("unchecked") // Single-interface proxy creation guarded by parameter safety.
   public <T> T create(final Class<T> service) {
     validateServiceInterface(service);
-    // ZXYNOTE: 2021/6/1 1.通过动态代理，获取调用的<Method>
+    //=====z[\d\.]*=====
+    // ZXYNOTE: 2021/6/8 22:21 =====z1===== 通过动态代理获取Method对象
     return (T)
         Proxy.newProxyInstance(
             service.getClassLoader(),
@@ -156,7 +157,7 @@ public final class Retrofit {
                   return method.invoke(this, args);
                 }
                 args = args != null ? args : emptyArgs;
-                // ZXYNOTE: 2021/6/1 2.*****v(-5)*****【入口】 根据Method，返回<ServiceMethod>并调用 ServiceMethod#invoke(args)。
+                // ZXYNOTE: 2021/6/8 22:21 =====z1.1===== 开始进入loadServiceMethod(method)方法，做缓存ServiceMethod处理
                 return platform.isDefaultMethod(method)
                     ? platform.invokeDefaultMethod(method, service, proxy, args)
                     : loadServiceMethod(method).invoke(args);
@@ -201,7 +202,7 @@ public final class Retrofit {
     synchronized (serviceMethodCache) {
       result = serviceMethodCache.get(method);
       if (result == null) {
-        // ZXYNOTE: 2021/6/7 22:17 *****v(-4)***** 开始解析接口方法
+        // ZXYNOTE: 2021/6/8 22:23 =====z1.1.1===== 开始解析Method
         result = ServiceMethod.parseAnnotations(this, method);
         serviceMethodCache.put(method, result);
       }
@@ -253,6 +254,7 @@ public final class Retrofit {
 
     int start = callAdapterFactories.indexOf(skipPast) + 1;
     for (int i = start, count = callAdapterFactories.size(); i < count; i++) {
+      // ZXYNOTE: 2021/6/8 23:06 =====z1.1.1.3.2.1.1===== 主要根据CallAdapter.Factory#get方法，return !=null 来选择哪个
       CallAdapter<?, ?> adapter = callAdapterFactories.get(i).get(returnType, annotations, this);
       if (adapter != null) {
         return adapter;
@@ -361,8 +363,8 @@ public final class Retrofit {
     Objects.requireNonNull(annotations, "annotations == null");
 
     int start = converterFactories.indexOf(skipPast) + 1;
-    // ZXYNOTE: 2021/6/3 11:18 *****v3-3***** 根据不同的返回类型type，返回不同的Converter，通过执行converterFactories.responseBodyConverter(Type,Annotation[],Retrofit)
     for (int i = start, count = converterFactories.size(); i < count; i++) {
+      // ZXYNOTE: 2021/6/8 23:14 =====z1.1.1.3.3.1===== 主要根据Converter.Factory#responseBodyConverter(..)，return !=null，来判断使用哪个数据转换器 Converter<ResponseBody, ?>
       Converter<ResponseBody, ?> converter =
           converterFactories.get(i).responseBodyConverter(type, annotations, this);
       if (converter != null) {

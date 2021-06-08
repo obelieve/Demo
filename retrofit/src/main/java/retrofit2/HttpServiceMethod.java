@@ -38,7 +38,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
     boolean isKotlinSuspendFunction = requestFactory.isKotlinSuspendFunction;
     boolean continuationWantsResponse = false;
     boolean continuationBodyNullable = false;
-
+    // ZXYNOTE: 2021/6/8 23:01 =====z1.1.1.3.1===== 生成HttpServiceMethod第一步 获取adapterType适配器类型，为后续回调处理器提供参数
     Annotation[] annotations = method.getAnnotations();
     Type adapterType;
     if (isKotlinSuspendFunction) {
@@ -62,7 +62,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
     } else {
       adapterType = method.getGenericReturnType();
     }
-    // ZXYNOTE: 2021/6/2 17:35 解析完RequestFactory后，继续解析createCallAdapter(retrofit, method, adapterType, annotations)，返回 CallAdapter 请求响应处理
+    // ZXYNOTE: 2021/6/8 23:01 =====z1.1.1.3.2===== 生成HttpServiceMethod第二步 获取回调处理器 CallAdapter<ResponseT, ReturnT>
     CallAdapter<ResponseT, ReturnT> callAdapter =
         createCallAdapter(retrofit, method, adapterType, annotations);
     Type responseType = callAdapter.responseType();
@@ -80,13 +80,13 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
     if (requestFactory.httpMethod.equals("HEAD") && !Void.class.equals(responseType)) {
       throw methodError(method, "HEAD method must use Void as response type.");
     }
-    // ZXYNOTE: 2021/6/2 17:37 *****v3-2*****获取Converter（根据方法定义的返回类型调用createResponseConverter(retrofit, method, responseType)进行转换处理，返回Converter）
+    // ZXYNOTE: 2021/6/8 23:01 =====z1.1.1.3.3===== 生成HttpServiceMethod第三步 获取转换器，也就是响应后的数据处理Converter<ResponseBody, ResponseT>
     Converter<ResponseBody, ResponseT> responseConverter =
         createResponseConverter(retrofit, method, responseType);
 
     okhttp3.Call.Factory callFactory = retrofit.callFactory;
     if (!isKotlinSuspendFunction) {
-      // ZXYNOTE: 2021/6/2 17:39 *****v(-2)*****【中间状态】 已经把主要的：requestFactory、callAdapter、responseConverter都选择好了，返回CallAdapted->HttpServiceMethod->ServiceMethod
+      // ZXYNOTE: 2021/6/8 23:12 =====z1.1.1.3.4===== 生成HttpServiceMethod第四步 最后返回CallAdapted对象，它是继承自HttpServiceMethod->ServiceMethod
       return new CallAdapted<>(requestFactory, callFactory, responseConverter, callAdapter);
     } else if (continuationWantsResponse) {
       //noinspection unchecked Kotlin compiler guarantees ReturnT to be Object.
@@ -112,7 +112,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
       Retrofit retrofit, Method method, Type returnType, Annotation[] annotations) {
     try {
       //noinspection unchecked
-      // ZXYNOTE: 2021/6/7 22:38 *****v(-2.1)***** 这里对于每个CallAdapterFactory#get(..)方法涉及关于ReturnType的很多判断，尤其是getRawType(returnType)
+      // ZXYNOTE: 2021/6/8 23:01 =====z1.1.1.3.2.1===== 开始【生成回调处理器 CallAdapter<ResponseT, ReturnT>】，根据返回类型和方法注解
       return (CallAdapter<ResponseT, ReturnT>) retrofit.callAdapter(returnType, annotations);
     } catch (RuntimeException e) { // Wide exception range because factories are user code.
       throw methodError(method, e, "Unable to create call adapter for %s", returnType);
