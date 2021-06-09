@@ -115,7 +115,7 @@ final class OkHttpCall<T> implements Call<T> {
   @Override
   public void enqueue(final Callback<T> callback) {
     Objects.requireNonNull(callback, "callback == null");
-    // ZXYNOTE: 2021/6/9 14:22 =====z1.2.2.1===== 开始请求类型一，异步请求处理
+    // ZXYNOTE: 2021/6/9 14:22 =====z1.2.2.1===== CallAdapter#adapt(call)开始请求类型一，异步请求处理
     okhttp3.Call call;
     Throwable failure;
 
@@ -151,7 +151,7 @@ final class OkHttpCall<T> implements Call<T> {
           public void onResponse(okhttp3.Call call, okhttp3.Response rawResponse) {
             Response<T> response;
             try {
-              // ZXYNOTE: 2021/6/9 15:47 =====z1.2.2.1.3===== 异步请求第三步，解析响应okhttp3.Response，返回retrofit2.Response
+              // ZXYNOTE: 2021/6/9 15:47 =====z1.2.2.1.3===== 异步请求第三步，响应okhttp3.Response，解析转为retrofit2.Response
               response = parseResponse(rawResponse);
             } catch (Throwable e) {
               throwIfFatal(e);
@@ -191,7 +191,7 @@ final class OkHttpCall<T> implements Call<T> {
   @Override
   public Response<T> execute() throws IOException {
     okhttp3.Call call;
-    // ZXYNOTE: 2021/6/9 14:22 =====z1.2.2.2===== 开始请求类型二，同步请求处理
+    // ZXYNOTE: 2021/6/9 14:22 =====z1.2.2.2===== CallAdapter#adapt(call)开始请求类型二，同步请求处理
     synchronized (this) {
       if (executed) throw new IllegalStateException("Already executed.");
       executed = true;
@@ -202,12 +202,12 @@ final class OkHttpCall<T> implements Call<T> {
     if (canceled) {
       call.cancel();
     }
-    // ZXYNOTE: 2021/6/9 15:47 =====z1.2.2.2.2===== 同步请求第二、三步，调用okhttp3.Call#execute()并解析响应okhttp3.Response，返回retrofit2.Response
+    // ZXYNOTE: 2021/6/9 15:47 =====z1.2.2.2.2===== 同步请求第二、三步，调用okhttp3.Call#execute()，响应okhttp3.Response，解析转为retrofit2.Response
     return parseResponse(call.execute());
   }
 
   private okhttp3.Call createRawCall() throws IOException {
-    // ZXYNOTE: 2021/6/9 15:45 =====z1.2.2.1.1.1===== 获取okhttp3.Call对象步骤，1.执行RequestFactory.create(args)返回Request对象；2.获取okhttp3.Call对象，通过调用CallFactory(OKHttpClient).newCall(Request)；
+    // ZXYNOTE: 2021/6/9 15:45 =====z1.2.2.1.1.1===== 获取okhttp3.Call对象步骤，1.执行RequestFactory.create(args)返回Request对象；2.通过调用CallFactory(OKHttpClient).newCall(Request)；
     okhttp3.Call call = callFactory.newCall(requestFactory.create(args));
     if (call == null) {
       throw new NullPointerException("Call.Factory returned null.");

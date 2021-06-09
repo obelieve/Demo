@@ -146,7 +146,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
 
   @Override
   final @Nullable ReturnT invoke(Object[] args) {
-    // ZXYNOTE: 2021/6/9 0:22 =====z1.2.1===== ServiceMethod#invoke(args)方法第一步，生成OkHttpCall对象 OkHttpCall<T> implements Call<T>
+    // ZXYNOTE: 2021/6/9 0:22 =====z1.2.1===== ServiceMethod#invoke(args)方法第一步，生成OkHttpCall对象 OkHttpCall<T> implements retrofit2.Call<T>
     Call<ResponseT> call = new OkHttpCall<>(requestFactory, args, callFactory, responseConverter);
     return adapt(call, args);
   }
