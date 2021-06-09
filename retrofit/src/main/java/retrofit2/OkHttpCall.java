@@ -115,7 +115,7 @@ final class OkHttpCall<T> implements Call<T> {
   @Override
   public void enqueue(final Callback<T> callback) {
     Objects.requireNonNull(callback, "callback == null");
-
+    // ZXYNOTE: 2021/6/9 14:22 =====z1.2.2.1===== 开始请求类型一，异步请求处理
     okhttp3.Call call;
     Throwable failure;
 
@@ -150,7 +150,6 @@ final class OkHttpCall<T> implements Call<T> {
           public void onResponse(okhttp3.Call call, okhttp3.Response rawResponse) {
             Response<T> response;
             try {
-              // ZXYNOTE: 2021/6/3 10:54 *****v2***** 请求响应的地方，调用parseResponse(rawResponse)来解析okhttp3.Response
               response = parseResponse(rawResponse);
             } catch (Throwable e) {
               throwIfFatal(e);
@@ -190,7 +189,7 @@ final class OkHttpCall<T> implements Call<T> {
   @Override
   public Response<T> execute() throws IOException {
     okhttp3.Call call;
-
+    // ZXYNOTE: 2021/6/9 14:22 =====z1.2.2.2===== 开始请求类型二，同步请求处理
     synchronized (this) {
       if (executed) throw new IllegalStateException("Already executed.");
       executed = true;
@@ -206,7 +205,6 @@ final class OkHttpCall<T> implements Call<T> {
   }
 
   private okhttp3.Call createRawCall() throws IOException {
-    // ZXYNOTE: 2021/6/3 9:52 OKHTTPClient 实现了Call.Factory接口
     okhttp3.Call call = callFactory.newCall(requestFactory.create(args));
     if (call == null) {
       throw new NullPointerException("Call.Factory returned null.");
@@ -214,7 +212,6 @@ final class OkHttpCall<T> implements Call<T> {
     return call;
   }
 
-  //ZXYNOTE: 2021/6/3 10:59 *****v3***** 执行parseResponse(okhttp3.Response rawResponse)，根据不同响应码code做对应处理，然后选择调用responseConverter.convert(catchingBody)对数据进行最终处理
   Response<T> parseResponse(okhttp3.Response rawResponse) throws IOException {
     ResponseBody rawBody = rawResponse.body();
 
@@ -306,7 +303,7 @@ final class OkHttpCall<T> implements Call<T> {
     private final BufferedSource delegateSource;
     @Nullable IOException thrownException;
 
-    // ZXYNOTE: 2021/6/3 11:05 *****v3-1***** ，ResponseBody数据设置一个代理的ResponseBody，通过执行new ExceptionCatchingResponseBody(ResponseBody delegate)
+
     ExceptionCatchingResponseBody(ResponseBody delegate) {
       this.delegate = delegate;
       this.delegateSource =
