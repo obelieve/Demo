@@ -40,30 +40,12 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-//        reqGet();
+        reqGet();
 //        reqGetDownload();
 //        reqPost();
 //        Thread.sleep(500);
 //        reqPost("11");
-        System.out.println("普通类型");
-        Field field = A.class.getDeclaredField("list");
-        System.out.println(field.getGenericType() instanceof Class<?>);
-        System.out.println(field.getGenericType() instanceof TypeVariable);
-        A.printTypeInfo("field1",field);
-        System.out.println("泛型类型");
-        Field field2 = A.class.getDeclaredField("list2");
-        Type type2 = ((ParameterizedType)field2.getGenericType()).getActualTypeArguments()[0];
-        A.printTypeInfo("field2",field2);
-        System.out.println("泛型类型<? extends A<String>>");
-        System.out.println((type2 instanceof WildcardType)+" WildcardType");
-        System.out.println(((WildcardType)type2).getLowerBounds().length+" "+((WildcardType)type2).getUpperBounds().length);
-        System.out.println((((WildcardType)type2).getUpperBounds()[0]) instanceof ParameterizedType);
-        Field field3 = A.class.getDeclaredField("list3");
-        System.out.println("list2 getRawType(list3)"+(A.getRawType(field2.getGenericType())==A.getRawType(field3.getGenericType())));
-        System.out.println("list2 equals list3"+(field2.getGenericType().toString().equals(field3.getGenericType().toString())));
-        System.out.println("数组类型");
-        Field field4 = A.class.getDeclaredField("list4");
-        A.printTypeInfo("field4",field4);
+//        A.info();
     }
 
     static class A<T>{
@@ -72,8 +54,34 @@ public class Main {
         List<? extends A<String>> list3;
         List<A<T>>[] list4;
 
+        static void info(){
+            try {
+                System.out.println("普通类型");
+                Field field = A.class.getDeclaredField("list");
+                System.out.println(field.getGenericType() instanceof Class<?>);
+                System.out.println(field.getGenericType() instanceof TypeVariable);
+                A.printTypeInfo("field1", field);
+                System.out.println("泛型类型");
+                Field field2 = A.class.getDeclaredField("list2");
+                Type type2 = ((ParameterizedType) field2.getGenericType()).getActualTypeArguments()[0];
+                A.printTypeInfo("field2", field2);
+                System.out.println("泛型类型<? extends A<String>>");
+                System.out.println((type2 instanceof WildcardType) + " WildcardType");
+                System.out.println(((WildcardType) type2).getLowerBounds().length + " " + ((WildcardType) type2).getUpperBounds().length);
+                System.out.println((((WildcardType) type2).getUpperBounds()[0]) instanceof ParameterizedType);
+                Field field3 = A.class.getDeclaredField("list3");
+                System.out.println("list2 getRawType(list3)" + (A.getRawType(field2.getGenericType()) == A.getRawType(field3.getGenericType())));
+                System.out.println("list2 equals list3" + (field2.getGenericType().toString().equals(field3.getGenericType().toString())));
+                System.out.println("数组类型");
+                Field field4 = A.class.getDeclaredField("list4");
+                A.printTypeInfo("field4", field4);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
 
-        static void printTypeInfo(String tag,Field field){
+
+         static void printTypeInfo(String tag,Field field){
             System.out.println(tag+" Type ="+field.getType());
             System.out.println(tag+" GenericType ="+field.getGenericType());
             System.out.println(tag+" getRawType ="+A.getRawType(field.getGenericType()));
