@@ -64,7 +64,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
     } else {
       adapterType = method.getGenericReturnType();
     }
-    // ZXYNOTE: 2021/6/8 23:01 =====z1.1.1.3.2===== 生成HttpServiceMethod第二步 获取回调处理器 CallAdapter<ResponseT, ReturnT>
+    // ZXYNOTE: 2021/6/8 23:01 =====z1.1.1.3.2===== 生成HttpServiceMethod第二步 获取回调处理器 CallAdapter<ResponseT, ReturnT>和响应类型responseType(Type,泛型类的组件类型) PS: Observable<Response>在RxJava2解析为Response
     CallAdapter<ResponseT, ReturnT> callAdapter =
         createCallAdapter(retrofit, method, adapterType, annotations);
     Type responseType = callAdapter.responseType();
@@ -82,7 +82,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
     if (requestFactory.httpMethod.equals("HEAD") && !Void.class.equals(responseType)) {
       throw methodError(method, "HEAD method must use Void as response type.");
     }
-    // ZXYNOTE: 2021/6/8 23:01 =====z1.1.1.3.3===== 生成HttpServiceMethod第三步 获取转换器，也就是响应后的数据处理Converter<ResponseBody, ResponseT>
+    // ZXYNOTE: 2021/6/8 23:01 =====z1.1.1.3.3===== 生成HttpServiceMethod第三步 根据retrofit, method, responseType，获取转换器，也就是响应后的数据处理Converter<ResponseBody, ResponseT>
     Converter<ResponseBody, ResponseT> responseConverter =
         createResponseConverter(retrofit, method, responseType);
 
