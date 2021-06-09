@@ -11,7 +11,7 @@
 	- 2.3 多部分表格提交 multipart/form-data
 ```
 ## 2.问题
-- 1.Retrofit是怎么选择转换器和回调适配器的？
+- 1.Retrofit是怎么选择转换器和回调适配器的？ 1.Converter#requestBodyConverter(..) return !=null，CallAdapter#get(..) return !=null
 - 2.怎么配置动态BaseURL，在哪个地方可以修改这个东西，Retrofit什么时候拼接URL进行请求的？
 ## 3.前置知识
 - 1.Http协议部分
@@ -81,3 +81,6 @@
 	- 3.拼装数据生成Request对象
 - 2.选择回调适配器
 - 3.选择响应数据转换器
+## 5.疑难
+- 1.Type#getType()和Type#getGenericType()区别：
+  如果不是泛型就相同，如果是泛型的话，Type#getGenericType()会返回泛型类型。

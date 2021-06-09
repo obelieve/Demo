@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -38,14 +39,19 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 public class Main {
     static int[] a = new int[0];
+    static List<String> list = new ArrayList<>();
     public static void main(String[] args) throws Exception {
 //        reqGet();
 //        reqGetDownload();
 //        reqPost();
 //        Thread.sleep(500);
 //        reqPost("11");
+        Field field = B.class.getDeclaredField("list");
+        System.out.println("GenericType："+field.getGenericType()+" Type="+field.getType());
+    }
 
-
+    static class B<T>{
+        T list;
     }
 
 
