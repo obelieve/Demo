@@ -84,3 +84,11 @@
 ## 5.疑难
 - 1.Type#getType()和Type#getGenericType()区别：
   如果不是泛型就相同，如果是泛型的话，Type#getGenericType()会返回泛型类型。
+- 2.对于super和extends的上界下界：
+  ```
+  List<? super Food> 表示Food的超类，说明Food是?的下界
+  List<? extends Fruit> 表示Fruit的子类，说明Fruit是?的上界
+
+  class Food{}
+  class Fruit extends Food {}
+  ```

@@ -32,6 +32,9 @@ import javax.annotation.Nullable;
 import okhttp3.ResponseBody;
 import okio.Buffer;
 
+/**
+ * Correctly resolve generic types on the target type, not actual.
+ */
 final class Utils {
   static final Type[] EMPTY_TYPE_ARRAY = new Type[0];
 
