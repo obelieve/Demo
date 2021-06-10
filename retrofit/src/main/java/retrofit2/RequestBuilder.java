@@ -239,7 +239,7 @@ final class RequestBuilder {
     } else {
       // No query parameters triggered builder creation, just combine the relative URL and base URL.
       //noinspection ConstantConditions Non-null if urlBuilder is null.
-      // ZXYNOTE: 2021/6/6 15:58 @URL设置如果是绝对的直接覆盖为url
+      // ZXYNOTE: 2021/6/6 15:58 （最终url会结合baseUrl和relativeUrl解析）@URL设置如果是绝对的直接覆盖为url，会对relativeUrl进行解析 scheme://username:password@host:port/path?query#fragment
       url = baseUrl.resolve(relativeUrl);
       if (url == null) {
         throw new IllegalArgumentException(
