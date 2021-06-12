@@ -54,94 +54,8 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
     @Override
     protected void initCreateAfterView(Bundle savedInstanceState) {
         reqGet();
-        postGetUserInfo();
-//        postModifyUserInfo(new Random().nextInt(1000)+"");
-//        postGetLogstoreConfig();
     }
 
-    /**
-     * 外部URL
-     */
-    private void postGetLogstoreConfig() {
-        String str = "oktestlog_6099dcfa413db" + '_' + "16" + '_'  + "f3e3a187627d7f096f70c9616a320f78c80336de";
-        String sign= MD5Util.md5(str);
-        App.getServiceInterface().getLogstoreConfig(ServiceInterface.Companion.getEXTERNAL_URL(), "16","oktestlog_6099dcfa413db",sign).subscribeOn(Schedulers.io()).subscribe(new Observer<ApiBaseResponse<LogConfigEntity>>() {
-            @Override
-            public void onSubscribe(@NotNull Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(@NotNull ApiBaseResponse<LogConfigEntity> response) {
-                LogUtil.e("getLogstoreConfig日志上报:"+response.getData());
-            }
-
-            @Override
-            public void onError(@NotNull Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-    }
-
-    /**
-     * 带form参数的Post请求
-     * @param nickname
-     */
-    private void postModifyUserInfo(String nickname) {
-        App.getServiceInterface().modifyUserInfo("nickname","",nickname,"").subscribeOn(Schedulers.io()).subscribe(new Observer<ApiBaseResponse<String>>() {
-            @Override
-            public void onSubscribe(@NotNull Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(@NotNull ApiBaseResponse<String> response) {
-                LogUtil.e("modifyUserInfo修改用户信息:"+response.getData());
-            }
-
-            @Override
-            public void onError(@NotNull Throwable e) {
-                System.out.println("修改用户信息err "+e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-    }
-
-    /**
-     * post请求
-     */
-    private void postGetUserInfo() {
-        App.getServiceInterface().getUserInfo().subscribeOn(Schedulers.io()).subscribe(new Observer<ApiBaseResponse<UserInfo>>() {
-            @Override
-            public void onSubscribe(@NotNull Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(@NotNull ApiBaseResponse<UserInfo> response) {
-                LogUtil.e("getUserInfo获取用户信息:"+response.getData());
-            }
-
-            @Override
-            public void onError(@NotNull Throwable e) {
-                LogUtil.e("getUserInfo获取用户信息 e:"+e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-    }
 
     /**
      * get请求
@@ -149,12 +63,11 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
     private void reqGet() {
         ServiceInterface in = new Retrofit.Builder().baseUrl(ServiceInterface.Companion.getBASE_URL()).client(
                 new OkHttpClient.Builder()
-                        .addInterceptor(new HttpInterceptor())
                         .addInterceptor(new LogInterceptor()).build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(ApiCustomGsonConverterFactory.create())
                 .build().create(ServiceInterface.class);
-        in.getBaidu("https://www.baidu.com").enqueue(new Callback<ResponseBody>() {
+        in.getUrl("https://www.baidu.com").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

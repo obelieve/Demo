@@ -1,9 +1,5 @@
 package com.zxy.demo
 
-import com.obelieve.frame.net.ApiBaseResponse
-import com.zxy.demo.entity.LogConfigEntity
-import com.zxy.demo.entity.UserInfo
-import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -14,12 +10,8 @@ import retrofit2.http.*
  */
 interface ServiceInterface {
 
-    companion object{
-        var BASE_URL = "h*t*t*p://*d*e*v*.o*k*s**p*o*r*t*s*e*r*v*.com/".replace("*","")
-        const val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9kZXYub2tzcG9ydHNlcnYuY29tXC9hcGlcL2F1dGhcL21vYmlsZWxvZ2luIiwiaWF0IjoxNjIyNTM3MjIwLCJleHAiOjE2MjMxNDIwMjAsIm5iZiI6MTYyMjUzNzIyMCwianRpIjoiNUFuZUxLZnlHM2NrcmcxdiIsInN1YiI6MTYyLCJwcnYiOiI1NDM5NTU2YWVjYTkzYzVjMmFiMjQ5ZTdjNjg3NDU0MDI0ZWRmNTNiIn0.smowM5fORBlmRY8ss_7iqhfzOLRZWUd3Jav2v0GeAnI"
-        const val API_USER_INFO = "/api/user/info"
-        const val API_MODIFY_USER_INFO = "/api/user/settings"
-        var EXTERNAL_URL = "https://s**l*s*-deb*ug.gol*og*st*or*e.co*m/s*ls/c*onf*ig".replace("*","")
+    companion object {
+        var BASE_URL = "http://www.httpbin.org/"
     }
 
     @Streaming
@@ -30,34 +22,19 @@ interface ServiceInterface {
     ): Call<ResponseBody>
 
     @GET
-    fun getBaidu(@Url url: String) : Call<ResponseBody>
+    fun getUrl(@Url url: String): Call<ResponseBody>
 
-    //外部URL使用
-    //@Headers(RetrofitUrlManager.DOMAIN_NAME_HEADER +"logConfig")
+    @GET("/get")
+    fun get(): Call<ResponseBody>
+
+    @POST("/post")
     @FormUrlEncoded
-    @POST
-    fun getLogstoreConfig(
-        @Url url: String,
-        @Field("verid") verid: String,
-        @Field("appid") appid: String,
-        @Field("sign") sign: String,
-    ) : Observable<ApiBaseResponse<LogConfigEntity>>
+    fun post(@Field("name") name:String,@Field("content") content:String): Call<ResponseBody>
 
-    /**
-     * 修改用户信息
-     */
-    @POST(API_MODIFY_USER_INFO)
+    @PATCH("/patch")
     @FormUrlEncoded
-    fun modifyUserInfo(
-        @Field("opt") opt: String,
-        @Field("email") email: String,
-        @Field("nickname") nickname: String,
-        @Field("avatar") avatar: String
-    ): Observable<ApiBaseResponse<String>>
+    fun patch(@Field("name") name:String,@Field("content") content:String): Call<ResponseBody>
 
-    /**
-     * 获取用户信息
-     */
-    @POST(API_USER_INFO)
-    fun getUserInfo(): Observable<ApiBaseResponse<UserInfo>>
+    @DELETE("/delete")
+    fun delete(): Call<ResponseBody>
 }

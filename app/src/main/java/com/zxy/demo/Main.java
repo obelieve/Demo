@@ -180,7 +180,7 @@ public class Main {
      */
 
     private static ServiceInterface sServiceInterface = new Retrofit.Builder().baseUrl(ServiceInterface.Companion.getBASE_URL()).client(
-            new OkHttpClient.Builder().addInterceptor(new HttpInterceptor()).build())
+            new OkHttpClient.Builder().build())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(ApiConverterFactory.Companion.create())
             .build().create(ServiceInterface.class);
@@ -226,61 +226,6 @@ public class Main {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable e) {
-
-            }
-        });
-    }
-
-    /**
-     * Post请求
-     */
-    private static void reqPost(){
-        sServiceInterface.getUserInfo().subscribe(new Observer<ApiBaseResponse<UserInfo>>() {
-            @Override
-            public void onSubscribe(@NotNull Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(@NotNull ApiBaseResponse<UserInfo> response) {
-                System.out.println("获取用户信息"+response.getData());
-            }
-
-            @Override
-            public void onError(@NotNull Throwable e) {
-                System.out.println("获取用户信息err "+e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-    }
-
-    /**
-     * Post请求带参数
-     * @param nickname
-     */
-    private static void reqPost(String nickname){
-        sServiceInterface.modifyUserInfo("nickname","",nickname,"").subscribe(new Observer<ApiBaseResponse<String>>() {
-            @Override
-            public void onSubscribe(@NotNull Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(@NotNull ApiBaseResponse<String> response) {
-                System.out.println("修改用户信息:"+response.getData());
-            }
-
-            @Override
-            public void onError(@NotNull Throwable e) {
-                System.out.println("修改用户信息err "+e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
 
             }
         });
