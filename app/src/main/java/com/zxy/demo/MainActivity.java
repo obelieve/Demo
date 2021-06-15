@@ -3,31 +3,17 @@ package com.zxy.demo;
 import android.os.Bundle;
 
 import com.obelieve.frame.base.ApiBaseActivity2;
-import com.obelieve.frame.net.ApiBaseResponse;
-import com.obelieve.frame.net.convert.ApiCustomGsonConverterFactory;
-import com.obelieve.frame.utils.log.LogInterceptor;
 import com.obelieve.frame.utils.log.LogUtil;
-import com.obelieve.frame.utils.secure.MD5Util;
 import com.zxy.demo.databinding.ActivityMainBinding;
-import com.zxy.demo.entity.LogConfigEntity;
-import com.zxy.demo.entity.UserInfo;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.Random;
+import java.util.HashMap;
+import java.util.Map;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.http.Field;
 
 
 /**
@@ -53,7 +39,13 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
 
     @Override
     protected void initCreateAfterView(Bundle savedInstanceState) {
-        reqGet();
+//        reqGet();
+//        reqGet("name","file");
+//        reqGet("ho");
+//        reqPost();
+//        reqPost("obelieve","内容");
+//        reqPatch("obelieve","内容");
+//        reqDelete();
     }
 
 
@@ -61,13 +53,7 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
      * get请求
      */
     private void reqGet() {
-        ServiceInterface in = new Retrofit.Builder().baseUrl(ServiceInterface.Companion.getBASE_URL()).client(
-                new OkHttpClient.Builder()
-                        .addInterceptor(new LogInterceptor()).build())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(ApiCustomGsonConverterFactory.create())
-                .build().create(ServiceInterface.class);
-        in.getUrl("https://www.baidu.com").enqueue(new Callback<ResponseBody>() {
+        App.getServiceInterface().getUrl("https://www.baidu.com").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -84,5 +70,120 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
         });
     }
 
+    private void reqGet(String name,String value){
+        Map<String,String> map = new HashMap<>();
+        map.put(name,value);
+        App.getServiceInterface().get(map).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String s = response.body().string();
+                    LogUtil.e("请求="+call.request().url().toString()+" 响应数据:"+s);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void reqGet(String name){
+        App.getServiceInterface().get(name).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String s = response.body().string();
+                    LogUtil.e("请求="+call.request().url().toString()+" 响应数据:"+s);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void reqPost(){
+        App.getServiceInterface().post().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String s = response.body().string();
+                    LogUtil.e("请求="+call.request().url().toString()+" 响应数据:"+s);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void reqPost(String name,String content){
+        App.getServiceInterface().post(name,content).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String s = response.body().string();
+                    LogUtil.e("请求="+call.request().url().toString()+" 响应数据:"+s);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void reqPatch(String name,String content){
+        App.getServiceInterface().patch(name,content).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String s = response.body().string();
+                    LogUtil.e("请求="+call.request().url().toString()+" "+call.request().method()+" 响应数据:"+s);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void reqDelete(){
+        App.getServiceInterface().delete().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String s = response.body().string();
+                    LogUtil.e("请求="+call.request().url().toString()+" "+call.request().method()+" 响应数据:"+s);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
 
 }

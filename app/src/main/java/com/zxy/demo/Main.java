@@ -1,10 +1,7 @@
 package com.zxy.demo;
 
 
-import com.obelieve.frame.net.ApiBaseResponse;
-import com.zxy.demo.entity.UserInfo;
-
-import org.jetbrains.annotations.NotNull;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,21 +12,17 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
-import java.util.ArrayList;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Objects;
 
-
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-
+import okio.Buffer;
 import okio.BufferedSink;
-
 import okio.Okio;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,12 +33,32 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        reqGet();
+//        reqGet();
 //        reqGetDownload();
 //        reqPost();
 //        Thread.sleep(500);
 //        reqPost("11");
 //        A.info();
+        RequestBody aa = RequestBody.create("name=22&value=11", MediaType.parse("text/plain"));
+        sServiceInterface.post(aa,new File("C:\\Users\\Administrator\\Desktop\\1.png"),new File("C:\\Users\\Administrator\\Desktop\\2.png")).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String s = response.body().string();
+                    System.out.println("reqPost File  "+s);
+                    ResponseData responseData = new Gson().fromJson(s,ResponseData.class);
+                    String name = responseData.getForm().get("name");
+                    Okio.sink(new File("C:\\Users\\Administrator\\Desktop\\3.png")).write(new Buffer().write(name.getBytes(Charset.forName("utf-8"))),name.getBytes().length);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable e) {
+
+            }
+        });
     }
 
     static class A<T>{
@@ -182,14 +195,14 @@ public class Main {
     private static ServiceInterface sServiceInterface = new Retrofit.Builder().baseUrl(ServiceInterface.Companion.getBASE_URL()).client(
             new OkHttpClient.Builder().build())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(ApiConverterFactory.Companion.create())
+            .addConverterFactory(ApiConverterFactory.create())
             .build().create(ServiceInterface.class);
 
     /**
      * Get请求
      */
     private static void reqGet() {
-        sServiceInterface.getBaidu("https://www.baidu.com").enqueue(new Callback<ResponseBody>() {
+        sServiceInterface.getUrl("https://www.baidu.com").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
