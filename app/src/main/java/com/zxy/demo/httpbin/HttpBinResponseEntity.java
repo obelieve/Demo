@@ -1,11 +1,11 @@
-package com.zxy.demo;
+package com.zxy.demo.httpbin;
 
 import java.util.Map;
 
-public class ResponseData {
+public class HttpBinResponseEntity {
     private Object args;
     private String data;
-    private Object files;
+    private Map<String,String> files;
     private Map<String,String> form;
     private Map<String,String> headers;
     private String json;
@@ -28,11 +28,11 @@ public class ResponseData {
         this.data = data;
     }
 
-    public Object getFile() {
+    public Map<String,String> getFile() {
         return files;
     }
 
-    public void setFile(Object file) {
+    public void setFile(Map<String,String> file) {
         files = file;
     }
 

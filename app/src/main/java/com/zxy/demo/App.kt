@@ -3,7 +3,8 @@ package com.zxy.demo
 import com.obelieve.frame.application.BaseApplication
 import com.obelieve.frame.utils.ToastUtil
 import com.obelieve.frame.utils.log.LogInterceptor
-import com.zxy.demo.ServiceInterface.Companion.BASE_URL
+import com.zxy.demo.httpbin.ServiceInterface
+import com.zxy.demo.httpbin.ServiceInterface.Companion.BASE_URL
 import io.reactivex.plugins.RxJavaPlugins
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

@@ -1,4 +1,4 @@
-package com.zxy.demo
+package com.zxy.demo.httpbin
 
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -23,14 +23,11 @@ interface ServiceInterface {
         @Url fileUrl: String
     ): Call<ResponseBody>
 
-    @GET
-    fun getUrl(@Url url: String): Call<ResponseBody>
-
     @GET("/get")
     fun get(): Call<ResponseBody>
 
     @GET("/get")
-    fun get(@QueryMap map: Map<String,String>): Call<ResponseBody>
+    fun get(@Query("name")name:String,@Query("content")content: String): Call<ResponseBody>
 
     @GET("/get")
     fun get(@QueryName name:String): Call<ResponseBody>
@@ -44,11 +41,15 @@ interface ServiceInterface {
 
     @POST("/post")
     @Multipart
-    fun post(@Part("va") va:RequestBody,@Part("name")name: File, @Part("name2")name2: File): Call<ResponseBody>
+    fun post(@Part("va") va:RequestBody,@Part("name\"; filename=\"name.png")name: File, @Part("name2\"; filename=\"name2.png")name2: File): Call<ResponseBody>
 
     @PATCH("/patch")
     @FormUrlEncoded
     fun patch(@Field("name") name:String,@Field("content") content:String): Call<ResponseBody>
+
+    @PUT("/put")
+    @FormUrlEncoded
+    fun put(@Field("name") name:String,@Field("content") content:String): Call<ResponseBody>
 
     @DELETE("/delete")
     fun delete(): Call<ResponseBody>

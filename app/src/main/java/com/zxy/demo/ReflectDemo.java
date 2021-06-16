@@ -3,14 +3,19 @@ package com.zxy.demo;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
@@ -44,7 +49,129 @@ public class ReflectDemo {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        A.info();
     }
+
+    static class A<T>{
+        T list;
+        List<? extends A<String>> list2;
+        List<? extends A<String>> list3;
+        List<A<T>>[] list4;
+
+        static void info(){
+            try {
+                System.out.println("普通类型");
+                Field field = A.class.getDeclaredField("list");
+                System.out.println(field.getGenericType() instanceof Class<?>);
+                System.out.println(field.getGenericType() instanceof TypeVariable);
+                A.printTypeInfo("field1", field);
+                System.out.println("泛型类型");
+                Field field2 = A.class.getDeclaredField("list2");
+                Type type2 = ((ParameterizedType) field2.getGenericType()).getActualTypeArguments()[0];
+                A.printTypeInfo("field2", field2);
+                System.out.println("泛型类型<? extends A<String>>");
+                System.out.println((type2 instanceof WildcardType) + " WildcardType");
+                System.out.println(((WildcardType) type2).getLowerBounds().length + " " + ((WildcardType) type2).getUpperBounds().length);
+                System.out.println((((WildcardType) type2).getUpperBounds()[0]) instanceof ParameterizedType);
+                Field field3 = A.class.getDeclaredField("list3");
+                System.out.println("list2 getRawType(list3)" + (A.getRawType(field2.getGenericType()) == A.getRawType(field3.getGenericType())));
+                System.out.println("list2 equals list3" + (field2.getGenericType().toString().equals(field3.getGenericType().toString())));
+                System.out.println("数组类型");
+                Field field4 = A.class.getDeclaredField("list4");
+                A.printTypeInfo("field4", field4);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+
+        static void printTypeInfo(String tag, Field field){
+            System.out.println(tag+" Type ="+field.getType());
+            System.out.println(tag+" GenericType ="+field.getGenericType());
+            System.out.println(tag+" getRawType ="+A.getRawType(field.getGenericType()));
+        }
+
+        /**
+         * Retrofit 用来判断返回类型的
+         * @param type
+         * @return
+         */
+        public static Class<?> getRawType(Type type) {
+            Objects.requireNonNull(type, "type == null");
+
+            if (type instanceof Class<?>) {
+                // Type is a normal class.
+                return (Class<?>) type;
+            }
+            if (type instanceof ParameterizedType) {
+                ParameterizedType parameterizedType = (ParameterizedType) type;
+
+                // I'm not exactly sure why getRawType() returns Type instead of Class. Neal isn't either but
+                // suspects some pathological case related to nested classes exists.
+                // ZXYNOTE: 2021/6/7 22:42 *****v(-2.1.1)***** ParameterizedType.getRawType()是返回最外层的类型
+                Type rawType = parameterizedType.getRawType();
+                if (!(rawType instanceof Class)) throw new IllegalArgumentException();
+                return (Class<?>) rawType;
+            }
+            // ZXYNOTE: 2021/6/7 22:42 *****v(-2.1.2)***** type判断是否是GenericArrayType 泛型数组 PS: T[]
+            if (type instanceof GenericArrayType) {
+                Type componentType = ((GenericArrayType) type).getGenericComponentType(); //获取泛型数组的组件类型
+                return Array.newInstance(getRawType(componentType), 0).getClass(); // ZXYNOTE: 2021/6/8 17:07  *****??***** 泛型数组类型判断需要递归？
+            }
+            if (type instanceof TypeVariable) {
+                // We could use the variable's bounds, but that won't work if there are multiple. Having a raw
+                // type that's more general than necessary is okay.
+                return Object.class;
+            }
+            if (type instanceof WildcardType) {
+                // ZXYNOTE: 2021/6/8 17:12 *****??***** 通配符类型判断需要递归？ PS:List<? extend Fruit> extends是上界只能get, List<? super Apple> super是下界，只能add （编译器判断list是Apple父类组成）
+                //? extend Fruit 和 Apple 之前用这个只是类继承时使用到
+                return getRawType(((WildcardType) type).getUpperBounds()[0]);
+            }
+
+            throw new IllegalArgumentException(
+                    "Expected a Class, ParameterizedType, or "
+                            + "GenericArrayType, but <"
+                            + type
+                            + "> is of type "
+                            + type.getClass().getName());
+        }
+    }
+
+    static class Food{
+
+    }
+
+    static class Fruit extends Food{
+
+    }
+
+
+//    A<String> a1=new A<>("aaa");
+//    a1.t();
+//    List<? extends Fruit> list = new ArrayList<Apple>(){
+//        {
+//            add(new Apple());
+//            add(new Apple());
+//        }
+//    };
+//
+//    List<? super Apple> list2 = new ArrayList<>();
+//        list2.add(new Apple());
+//    System.out.println(list2.get(0).getClass().getSimpleName());
+//    System.out.println(list.get(0).getClass().getSimpleName());
+
+//    public static class Fruit{
+//        public void ff(){
+//
+//        }
+//    }
+//
+//    public static class Apple extends Fruit{
+//        public void aa(){
+//
+//        }
+//    }
 
 
     public static class MethodProcessor<T>{

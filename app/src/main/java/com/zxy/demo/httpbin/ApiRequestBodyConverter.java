@@ -1,4 +1,4 @@
-package com.zxy.demo;
+package com.zxy.demo.httpbin;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -13,7 +13,10 @@ public class ApiRequestBodyConverter implements Converter<File, RequestBody> {
     @Nullable
     @Override
     public RequestBody convert(File value) throws IOException {
-        RequestBody bodyParams = RequestBody.create(value,MediaType.parse("image/png"));
-        return bodyParams;
+        if(value.getAbsolutePath().contains(".png")){
+            RequestBody bodyParams = RequestBody.create(value,MediaType.parse("image/png"));
+            return bodyParams;
+        }
+        return null;
     }
 }

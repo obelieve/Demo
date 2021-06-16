@@ -1,4 +1,4 @@
-package com.zxy.demo;
+package com.zxy.demo.httpbin;
 
 import org.jetbrains.annotations.Nullable;
 
