@@ -127,7 +127,7 @@ final class OkHttpCall<T> implements Call<T> {
       failure = creationFailure;
       if (call == null && failure == null) {
         try {
-          // ZXYNOTE: 2021/6/9 15:47 =====z1.2.2.1.1===== 异步请求第一步，获取okhttp3.Call对象
+          // ZXYNOTE: 2021/6/9 15:47 =====z1.2.2.1.1===== 异步请求第一步，生成okhttp3.Call对象
           call = rawCall = createRawCall();
         } catch (Throwable t) {
           throwIfFatal(t);
@@ -195,7 +195,7 @@ final class OkHttpCall<T> implements Call<T> {
     synchronized (this) {
       if (executed) throw new IllegalStateException("Already executed.");
       executed = true;
-    // ZXYNOTE: 2021/6/9 15:47 =====z1.2.2.2.1===== 同步请求第一步，获取okhttp3.Call对象
+    // ZXYNOTE: 2021/6/9 15:47 =====z1.2.2.2.1===== 同步请求第一步，生成okhttp3.Call对象
       call = getRawCall();
     }
 
@@ -207,7 +207,7 @@ final class OkHttpCall<T> implements Call<T> {
   }
 
   private okhttp3.Call createRawCall() throws IOException {
-    // ZXYNOTE: 2021/6/9 15:45 =====z1.2.2.1.1.1===== 获取okhttp3.Call对象步骤，1.执行RequestFactory.create(args)返回Request对象；2.通过调用CallFactory(OKHttpClient).newCall(Request)；
+    // ZXYNOTE: 2021/6/9 15:45 =====z1.2.2.1.1.1===== 获取okhttp3.Call对象步骤，1.调用requestFactory.create(args)返回Request对象；2.调用callFactory(OKHttpClient).newCall(Request)；
     okhttp3.Call call = callFactory.newCall(requestFactory.create(args));
     if (call == null) {
       throw new NullPointerException("Call.Factory returned null.");

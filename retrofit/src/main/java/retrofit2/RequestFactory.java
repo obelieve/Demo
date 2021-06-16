@@ -401,7 +401,7 @@ final class RequestFactory {
               p,
               "@Url must be okhttp3.HttpUrl, String, java.net.URI, or android.net.Uri type.");
         }
-      // ZXYNOTE: 2021/6/6 21:40 =====z1.1.1.1.2.1.2===== 方法参数解析.2 @Path 解析，代替相对地址中的{name}的name
+      // ZXYNOTE: 2021/6/6 21:40 =====z1.1.1.1.2.1.2===== 方法参数解析.2 @Path 解析，代替相对地址中的{name}的name值
       } else if (annotation instanceof Path) {
         validateResolvableType(p, type);
         if (gotQuery) {
