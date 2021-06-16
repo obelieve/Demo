@@ -3,6 +3,7 @@ package com.zxy.demo.httpbin;
 
 import com.google.gson.Gson;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.io.File;
@@ -10,8 +11,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okio.BufferedSink;
@@ -35,7 +39,26 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 public class Main {
 
     private static ServiceInterface sServiceInterface = new Retrofit.Builder().baseUrl(ServiceInterface.Companion.getBASE_URL()).client(
-            new OkHttpClient.Builder().build())
+            new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+
+                private volatile String host;//="www.baidu.com"
+
+                public void setHost(String host) {
+                    this.host = host;
+                }
+
+                @NotNull
+                @Override
+                public okhttp3.Response intercept(@NotNull Chain chain) throws IOException {
+                        Request request = chain.request();
+                    String host = this.host;
+                    if (host != null) {
+                        HttpUrl newUrl = request.url().newBuilder().host(host).build();
+                        request = request.newBuilder().url(newUrl).build();
+                    }
+                    return chain.proceed(request);
+                }
+            }).build())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(ApiConverterFactory.create())
             .build().create(ServiceInterface.class);
@@ -48,6 +71,21 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
+    }
+
+    /**
+     * Get请求,
+     */
+    @Test
+    public void testGet(){
+        String s = null;
+        try {
+            Response<ResponseBody> response = sServiceInterface.get().execute();
+            s = response.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(s);
     }
 
     /**

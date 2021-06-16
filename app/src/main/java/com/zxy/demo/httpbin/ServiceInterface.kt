@@ -23,6 +23,9 @@ interface ServiceInterface {
         @Url fileUrl: String
     ): Call<ResponseBody>
 
+    @GET("/")
+    fun get(): Call<ResponseBody>
+
     @GET("/get")
     fun get(@Query("name")name:String,@Query("content")content: String): Call<HttpBinResponse>
 
