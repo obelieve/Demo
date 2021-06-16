@@ -24,10 +24,7 @@ interface ServiceInterface {
     ): Call<ResponseBody>
 
     @GET("/get")
-    fun get(): Call<ResponseBody>
-
-    @GET("/get")
-    fun get(@Query("name")name:String,@Query("content")content: String): Call<ResponseBody>
+    fun get(@Query("name")name:String,@Query("content")content: String): Call<HttpBinResponse>
 
     @GET("/get")
     fun get(@QueryName name:String): Call<ResponseBody>

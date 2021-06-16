@@ -16,8 +16,6 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okio.BufferedSink;
 import okio.Okio;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -92,12 +90,12 @@ public class Main {
     public void testGetQuery(){
         String s = null;
         try {
-            Response<ResponseBody> response = sServiceInterface.get("名字","内容").execute();
-            s = response.body().string();
+            Response<HttpBinResponse> response = sServiceInterface.get("名字","内容").execute();
+            s = response.body().getData();
+            System.out.println("url="+new Gson().fromJson(s,HttpBinResponse.Entity.class).getUrl()+" \n"+s);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(s);
     }
 
     /**
@@ -140,8 +138,8 @@ public class Main {
             Response<ResponseBody> response = sServiceInterface.post(aa,new File("C:\\Users\\Administrator\\Desktop\\1.png"),new File("C:\\Users\\Administrator\\Desktop\\2.png")).execute();
             String s = response.body().string();
             System.out.println(s);
-            HttpBinResponseEntity httpbinResponseEntity = new Gson().fromJson(s, HttpBinResponseEntity.class);
-            String name = httpbinResponseEntity.getFile().get("name").replace("data:image/png;base64,","");
+            HttpBinResponse.Entity entity = new Gson().fromJson(s, HttpBinResponse.Entity.class);
+            String name = entity.getFile().get("name").replace("data:image/png;base64,","");
             File file = new File("C:\\Users\\Administrator\\Desktop\\multipart.png");
             FileOutputStream out = new FileOutputStream(file);
             out.write(Base64.getDecoder().decode(name));
