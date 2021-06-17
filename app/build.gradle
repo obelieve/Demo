@@ -44,6 +44,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.github.obelieve:Frame:1.0.0'
 
-
+    implementation 'com.google.android.gms:play-services-ads:20.1.0'
+    implementation "com.android.support.constraint:constraint-layout:1.1.3"
 
 }
