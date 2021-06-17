@@ -13,11 +13,16 @@ import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.obelieve.frame.base.ApiBaseActivity2;
+import com.obelieve.frame.utils.ToastUtil;
 import com.obelieve.frame.utils.log.LogUtil;
 import com.zxy.demo.databinding.ActivityMainBinding;
 import com.zxy.demo.nativead.NativeTemplateStyle;
@@ -29,6 +34,7 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
 
     @Override
     protected void initCreateAfterView(Bundle savedInstanceState) {
+        ToastUtil.init(mActivity);
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(@NonNull @NotNull InitializationStatus initializationStatus) {
@@ -127,6 +133,30 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,UnifiedNativeAdActivity.class));
+            }
+        });
+        mViewBinding.btnReward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull @NotNull RewardedAd rewardedAd) {
+
+                        ToastUtil.show("加载激励广告成功");
+                        rewardedAd.show(mActivity, new OnUserEarnedRewardListener() {
+                            @Override
+                            public void onUserEarnedReward(@NonNull @NotNull RewardItem rewardItem) {
+                                // User earned reward.
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull @NotNull LoadAdError loadAdError) {
+                        ToastUtil.show("加载激励广告失败："+loadAdError.getMessage()+" "+loadAdError.getCode());
+                    }
+                };
+                RewardedAd.load(mActivity,"ca-app-pub-3940256099942544/5224354917",new AdRequest.Builder().build(), adLoadCallback);
             }
         });
     }
