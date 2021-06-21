@@ -23,6 +23,9 @@ interface ServiceInterface {
         @Url fileUrl: String
     ): Call<ResponseBody>
 
+    @GET("/get")
+    suspend fun coroutinesGet(): ResponseBody
+
     @GET("/")
     fun get(): Call<ResponseBody>
 

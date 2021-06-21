@@ -15,9 +15,6 @@
  */
 package retrofit2;
 
-import static retrofit2.Utils.methodError;
-import static retrofit2.Utils.parameterError;
-
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -31,7 +28,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.annotation.Nullable;
+
 import kotlin.coroutines.Continuation;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -61,6 +60,9 @@ import retrofit2.http.QueryMap;
 import retrofit2.http.QueryName;
 import retrofit2.http.Tag;
 import retrofit2.http.Url;
+
+import static retrofit2.Utils.methodError;
+import static retrofit2.Utils.parameterError;
 
 final class RequestFactory {
   static RequestFactory parseAnnotations(Retrofit retrofit, Method method) {
@@ -347,6 +349,7 @@ final class RequestFactory {
       }
 
       if (result == null) {
+        // ZXYNOTE: 2021/6/21 17:02 =====z2.1===== 【Retrofit协程】 1.标记为协程方式，当使用suspend关键字标识方法时，参数类型会有个kotlin.coroutines.Continuation<? super 返回类型>类型，并且是最后一个参数类型 isKotlinSuspendFunction=true
         if (allowContinuation) {
           try {
             if (Utils.getRawType(parameterType) == Continuation.class) {

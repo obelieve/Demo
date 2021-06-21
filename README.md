@@ -224,6 +224,16 @@ HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<ReturnT>
 3.执行`execute()`，最后就是执行了okhttp3.Call.execute()。
 ---
 
+## 4.其他
+- 1.对于super和extends的上界下界：
+  ```
+  List<? super Food> 表示Food的超类，说明Food是?的下界 （只能add，不能get）
+  List<? extends Fruit> 表示Fruit的子类，说明Fruit是?的上界 （只能get，不能add）
+
+  class Food{}
+  class Fruit extends Food {}
+  ```
+
 `【2】用法源码部分`
 ```kotlin
 interface ServiceInterface {

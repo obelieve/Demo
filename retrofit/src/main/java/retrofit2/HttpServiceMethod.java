@@ -44,6 +44,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
     Annotation[] annotations = method.getAnnotations();
     Type adapterType;
     if (isKotlinSuspendFunction) {
+      // ZXYNOTE: 2021/6/21 17:02 =====z2.2===== 【Retrofit协程】 2.根据参数类型 kotlin.coroutines.Continuation<? super 返回类型>，解析responseType 返回类型
       Type[] parameterTypes = method.getGenericParameterTypes();
       Type responseType =
           Utils.getParameterLowerBound(
@@ -92,6 +93,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
       return new CallAdapted<>(requestFactory, callFactory, responseConverter, callAdapter);
     } else if (continuationWantsResponse) {
       //noinspection unchecked Kotlin compiler guarantees ReturnT to be Object.
+      // ZXYNOTE: 2021/6/21 17:02 =====z2.3.1===== 【Retrofit协程】 3<Response>.当解析返回类型是Response<?>这种时， 返回 SuspendForResponse->HttpServiceMethod
       return (HttpServiceMethod<ResponseT, ReturnT>)
           new SuspendForResponse<>(
               requestFactory,
@@ -100,6 +102,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
               (CallAdapter<ResponseT, Call<ResponseT>>) callAdapter);
     } else {
       //noinspection unchecked Kotlin compiler guarantees ReturnT to be Object.
+      // ZXYNOTE: 2021/6/21 17:02 =====z2.3.2===== 【Retrofit协程】 3.返回类型非Response<?>时，返回 SuspendForBody->HttpServiceMethod
       return (HttpServiceMethod<ResponseT, ReturnT>)
           new SuspendForBody<>(
               requestFactory,
@@ -219,7 +222,7 @@ abstract class HttpServiceMethod<ResponseT, ReturnT> extends ServiceMethod<Retur
     @Override
     protected Object adapt(Call<ResponseT> call, Object[] args) {
       call = callAdapter.adapt(call);
-
+      // ZXYNOTE: 2021/6/21 17:02 =====z2.3.2.1===== 【Retrofit协程】 4.直接调用HttpServiceMethod#adapt(call,args)
       //noinspection unchecked Checked by reflection inside RequestFactory.
       Continuation<ResponseT> continuation = (Continuation<ResponseT>) args[args.length - 1];
 

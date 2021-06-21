@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:JvmName("KotlinExtensions")
+@file:JvmName("KotlinExtensions")  //实现类名调用方法 KotlinExtensions.awaitResponse(*,*)
 
 package retrofit2
 
@@ -29,6 +29,7 @@ import kotlin.coroutines.resumeWithException
 inline fun <reified T> Retrofit.create(): T = create(T::class.java)
 
 suspend fun <T : Any> Call<T>.await(): T {
+  // ZXYNOTE: 2021/6/21 17:02 =====z2.3.2.1===== 【Retrofit协程】 5.通过suspendCancellableCoroutine包装回调，协程返回结束
   return suspendCancellableCoroutine { continuation ->
     continuation.invokeOnCancellation {
       cancel()
