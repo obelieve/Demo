@@ -16,6 +16,9 @@ class MainDialog(activity: Activity?) : BaseDialog(activity) {
         var view: View = mBinding.root
         setContentView(view)
         setWidth(SystemInfoUtil.screenWidth(mActivity))
+//        mDialog.window?.attributes = mDialog.window?.getAttributes()
+//        mDialog.window?.attributes?.width = WindowManager.LayoutParams.MATCH_PARENT
+//        mDialog.window?.attributes = mDialog.window?.attributes
         mBinding.btnDismiss.setOnClickListener {
             dismiss()
         }

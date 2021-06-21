@@ -13,10 +13,12 @@ import kotlinx.coroutines.*
 class SplashActivity : ApiBaseActivity2<ActivitySplashBinding>() {
 
     override fun initCreateAfterView(savedInstanceState: Bundle?) {
+        LogUtil.e(TAG,"SplashActivity#initCreateAfterView ${time(System.currentTimeMillis())}")
         GlobalScope.launch(Dispatchers.Main) {
             withTimeoutOrNull(2000) {
                 delay(1000)
             }
+            LogUtil.e(TAG,"协程中执行开始startMain() ${time(System.currentTimeMillis())}")
             startMain()
         }
     }
@@ -28,22 +30,22 @@ class SplashActivity : ApiBaseActivity2<ActivitySplashBinding>() {
             .build(AppPageRouter.MAIN).withString("jump", jumpExtra)
             .navigation(this, object : NavCallback() {
                 override fun onFound(postcard: Postcard) {
-                    LogUtil.e("MAIN onFound")
+                    LogUtil.e(TAG,"ARouter跳转MAIN #onFound ${time(System.currentTimeMillis())}")
                 }
 
                 override fun onLost(postcard: Postcard) {
-                    LogUtil.e("MAIN onLost")
+                    LogUtil.e(TAG,"ARouter跳转MAIN #onLost ${time(System.currentTimeMillis())}")
                 }
 
                 override fun onArrival(postcard: Postcard) {
-                    LogUtil.e("MAIN onArrival 跳转广告页")
+                    LogUtil.e(TAG,"ARouter跳转MAIN #onArrival，调用跳转SPLASH_AD ${time(System.currentTimeMillis())}")
                     ARouter.getInstance()
                         .build(AppPageRouter.SPLASH_AD)
                         .navigation()
                 }
 
                 override fun onInterrupt(postcard: Postcard) {
-                    LogUtil.e("MAIN onInterrupt 跳转广告页")
+                    LogUtil.e(TAG,"ARouter跳转MAIN #onInterrupt ${time(System.currentTimeMillis())}")
                 }
             })
     }
