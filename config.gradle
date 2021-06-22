@@ -1,10 +1,6 @@
 ext {
-    android = [
-            compileSdkVersion: 30,
-            buildToolsVersion: "30.0.2",
-            minSdkVersion    : 21,
-            targetSdkVersion : 30,
-            versionCode      : 1,
-            versionName      : '1.0.0'
+    libpath = [
+            tooljar: "C:/Program Files/Java/jdk1.8.0_281/lib/tools.jar",
+            rtjar: "C:/Program Files/Java/jre1.8.0_281/lib/rt.jar"
     ]
 }
