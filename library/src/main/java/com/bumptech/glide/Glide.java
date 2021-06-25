@@ -763,6 +763,7 @@ public class Glide implements ComponentCallbacks2 {
    */
   @NonNull
   public static RequestManager with(@NonNull FragmentActivity activity) {
+    // ZXYNOTE: 2021/6/25 11:47 =====【Glide#with#load#into】1.1 #with，返回 RequestManager =====
     return getRetriever(activity).get(activity);
   }
 

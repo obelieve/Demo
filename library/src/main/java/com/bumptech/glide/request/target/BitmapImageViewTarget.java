@@ -30,6 +30,7 @@ public class BitmapImageViewTarget extends ImageViewTarget<Bitmap> {
    */
   @Override
   protected void setResource(Bitmap resource) {
+    // ZXYNOTE: 2021/6/25 16:38 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4.1.1.2.1.1.1.1===== 进入BitmapImageViewTarget#setResource(resource)，调用view.setImageBitmap(resource) *****结束
     view.setImageBitmap(resource);
   }
 }

@@ -464,6 +464,7 @@ public class RequestManager
   @CheckResult
   @Override
   public RequestBuilder<Drawable> load(@Nullable String string) {
+    // ZXYNOTE: 2021/6/25 11:47 =====【Glide#with#load#into】1.2 #load，返回 RequestBuilder=====
     return asDrawable().load(string);
   }
 
@@ -673,7 +674,9 @@ public class RequestManager
   }
 
   synchronized void track(@NonNull Target<?> target, @NonNull Request request) {
+    // ZXYNOTE: 2021/6/25 14:11 =====【Glide#with#load#into】1.3.2.4.1 进入requestManager.track(target,request)处理请求 第一步 调用 targetTracker.track(target) 将Target加入到一个列表和Fragment生命周期有关联  =====
     targetTracker.track(target);
+    // ZXYNOTE: 2021/6/25 14:11 =====【Glide#with#load#into】1.3.2.4.2 进入requestManager.track(target,request)处理请求 第二步 调用 requestTracker.runRequest(request) =====
     requestTracker.runRequest(request);
   }
 

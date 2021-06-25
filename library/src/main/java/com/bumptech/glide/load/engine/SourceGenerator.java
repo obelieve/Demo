@@ -41,6 +41,7 @@ class SourceGenerator
 
   @Override
   public boolean startNext() {
+    // ZXYNOTE: 2021/6/25 15:37 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.1===== 进入SourceGenerator.startNext() ** 第1步 判断缓存数据
     if (dataToCache != null) {
       Object data = dataToCache;
       dataToCache = null;
@@ -60,6 +61,7 @@ class SourceGenerator
           && (helper.getDiskCacheStrategy().isDataCacheable(loadData.fetcher.getDataSource())
               || helper.hasLoadPath(loadData.fetcher.getDataClass()))) {
         started = true;
+        // ZXYNOTE: 2021/6/25 15:37 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2===== 进入SourceGenerator.startNext() 第2步 调用DataFetcher#loadData(..)
         loadData.fetcher.loadData(helper.getPriority(), this);
       }
     }
@@ -116,6 +118,7 @@ class SourceGenerator
       // reschedule to get back onto Glide's thread.
       cb.reschedule();
     } else {
+      // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1===== 进入 SourceGenerator.onDataReady(InputStream)，调用 SourceGenerator#onDataFetcherReady(..)
       cb.onDataFetcherReady(
           loadData.sourceKey,
           data,
@@ -143,6 +146,7 @@ class SourceGenerator
       Key sourceKey, Object data, DataFetcher<?> fetcher, DataSource dataSource, Key attemptedKey) {
     // This data fetcher will be loading from a File and provide the wrong data source, so override
     // with the data source of the original fetcher
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1===== 进入 SourceGenerator#onDataFetcherReady(..)，调用 DecodeJob#onDataFetcherReady(..)
     cb.onDataFetcherReady(sourceKey, data, fetcher, loadData.fetcher.getDataSource(), sourceKey);
   }
 

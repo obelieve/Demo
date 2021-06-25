@@ -142,6 +142,7 @@ final class DecodeHelper<Transcode> {
   }
 
   <Data> LoadPath<Data, ?, Transcode> getLoadPath(Class<Data> dataClass) {
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.1.1===== 进入decodeHelper.getLoadPath(..)，调用Registry#getLoadPath(dataClass, resourceClass, transcodeClass)
     return glideContext.getRegistry().getLoadPath(dataClass, resourceClass, transcodeClass);
   }
 

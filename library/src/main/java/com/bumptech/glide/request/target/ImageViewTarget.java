@@ -97,9 +97,11 @@ public abstract class ImageViewTarget<Z> extends ViewTarget<ImageView, Z>
 
   @Override
   public void onResourceReady(@NonNull Z resource, @Nullable Transition<? super Z> transition) {
+    // ZXYNOTE: 2021/6/25 16:38 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4.1.1.2.1.1===== 进入ImageViewTarget#onResourceReady(result, animation)，第1步，调用 setResourceInternal(resource)
     if (transition == null || !transition.transition(resource, this)) {
       setResourceInternal(resource);
     } else {
+      // ZXYNOTE: 2021/6/25 16:38 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4.1.1.2.1.2===== 进入ImageViewTarget#onResourceReady(result, animation)，第2步，调用 maybeUpdateAnimatable(resource)
       maybeUpdateAnimatable(resource);
     }
   }
@@ -121,7 +123,9 @@ public abstract class ImageViewTarget<Z> extends ViewTarget<ImageView, Z>
   private void setResourceInternal(@Nullable Z resource) {
     // Order matters here. Set the resource first to make sure that the Drawable has a valid and
     // non-null Callback before starting it.
+    // ZXYNOTE: 2021/6/25 16:38 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4.1.1.2.1.1.1===== 进入ImageViewTarget#setResourceInternal(resource),第1步，调用 setResource(resource)
     setResource(resource);
+    // ZXYNOTE: 2021/6/25 16:38 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4.1.1.2.1.1.1===== 进入ImageViewTarget#setResourceInternal(resource),第2步，调用 maybeUpdateAnimatable(resource)
     maybeUpdateAnimatable(resource);
   }
 

@@ -53,7 +53,9 @@ public class HttpUrlFetcher implements DataFetcher<InputStream> {
       @NonNull Priority priority, @NonNull DataCallback<? super InputStream> callback) {
     long startTime = LogTime.getLogTime();
     try {
+      // ZXYNOTE: 2021/6/25 15:37 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.1===== 进入DataFetcher#loadData(..) 第1步 调用loadDataWithRedirects(..)，获取网络图片InputStream
       InputStream result = loadDataWithRedirects(glideUrl.toURL(), 0, null, glideUrl.getHeaders());
+      // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2===== 进入DataFetcher#loadData(..) 第2步 调用callback.onDataReady(InputStream)
       callback.onDataReady(result);
     } catch (IOException e) {
       if (Log.isLoggable(TAG, Log.DEBUG)) {
@@ -82,7 +84,7 @@ public class HttpUrlFetcher implements DataFetcher<InputStream> {
         // Do nothing, this is best effort.
       }
     }
-
+    // ZXYNOTE: 2021/6/25 15:37 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.1.1===== 进入HttpUrlFetcher#loadDataWithRedirects(..) 第1步 请求Http
     urlConnection = connectionFactory.build(url);
     for (Map.Entry<String, String> headerEntry : headers.entrySet()) {
       urlConnection.addRequestProperty(headerEntry.getKey(), headerEntry.getValue());
@@ -105,6 +107,7 @@ public class HttpUrlFetcher implements DataFetcher<InputStream> {
     }
     final int statusCode = urlConnection.getResponseCode();
     if (isHttpOk(statusCode)) {
+      // ZXYNOTE: 2021/6/25 15:37 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.1.2===== 进入HttpUrlFetcher#loadDataWithRedirects(..) 第2步 响应码2xx，调用HttpUrlFetcher#getStreamForSuccessfulRequest(urlConnection)
       return getStreamForSuccessfulRequest(urlConnection);
     } else if (isHttpRedirect(statusCode)) {
       String redirectUrlString = urlConnection.getHeaderField("Location");
@@ -135,6 +138,7 @@ public class HttpUrlFetcher implements DataFetcher<InputStream> {
 
   private InputStream getStreamForSuccessfulRequest(HttpURLConnection urlConnection)
       throws IOException {
+    // ZXYNOTE: 2021/6/25 15:37 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.1.2.1===== 进入HttpUrlFetcher#getStreamForSuccessfulRequest(urlConnection) 返回 InputStream
     if (TextUtils.isEmpty(urlConnection.getContentEncoding())) {
       int contentLength = urlConnection.getContentLength();
       stream = ContentLengthInputStream.obtain(urlConnection.getInputStream(), contentLength);

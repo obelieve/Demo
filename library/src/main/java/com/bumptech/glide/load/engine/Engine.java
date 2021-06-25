@@ -173,7 +173,7 @@ public class Engine
       ResourceCallback cb,
       Executor callbackExecutor) {
     long startTime = VERBOSE_IS_LOGGABLE ? LogTime.getLogTime() : 0;
-
+    // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.1=====  进入engine.load(..) 第1步 构建EngineKey
     EngineKey key =
         keyFactory.buildKey(
             model,
@@ -187,9 +187,11 @@ public class Engine
 
     EngineResource<?> memoryResource;
     synchronized (this) {
+      // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.2===== 进入engine.load(..) 第2步 根据key从缓存中取出EngineResource<?>对象
       memoryResource = loadFromMemory(key, isMemoryCacheable, startTime);
 
       if (memoryResource == null) {
+        // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3===== 进入engine.load(..) 第3步 不存在缓存对象时， 调用engine.waitForExistingOrStartNewJob(..)
         return waitForExistingOrStartNewJob(
             glideContext,
             model,
@@ -217,6 +219,7 @@ public class Engine
 
     // Avoid calling back while holding the engine lock, doing so makes it easier for callers to
     // deadlock.
+    // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.4===== 进入engine.load(..) 第4步 存在缓存对象时，调用SingleRequest#onResourceReady(..)
     cb.onResourceReady(memoryResource, DataSource.MEMORY_CACHE);
     return null;
   }
@@ -243,7 +246,7 @@ public class Engine
       Executor callbackExecutor,
       EngineKey key,
       long startTime) {
-
+    // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.1===== 进入engine.waitForExistingOrStartNewJob(..) 第1步 查找Engine#jobs中存在EngineJob时，直接返回LoadStatus对象
     EngineJob<?> current = jobs.get(key, onlyRetrieveFromCache);
     if (current != null) {
       current.addCallback(cb, callbackExecutor);
@@ -252,7 +255,7 @@ public class Engine
       }
       return new LoadStatus(cb, current);
     }
-
+    // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.2===== 进入engine.waitForExistingOrStartNewJob(..) 第2步 构建 EngineJob 对象
     EngineJob<R> engineJob =
         engineJobFactory.build(
             key,
@@ -260,7 +263,7 @@ public class Engine
             useUnlimitedSourceExecutorPool,
             useAnimationPool,
             onlyRetrieveFromCache);
-
+    // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.3===== 进入engine.waitForExistingOrStartNewJob(..) 第3步 构建 DecodeJob 对象
     DecodeJob<R> decodeJob =
         decodeJobFactory.build(
             glideContext,
@@ -279,15 +282,17 @@ public class Engine
             onlyRetrieveFromCache,
             options,
             engineJob);
-
+    // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.4===== 进入engine.waitForExistingOrStartNewJob(..) 第4步 将engineJob加入到 Engine#jobs中
     jobs.put(key, engineJob);
-
+    // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.5===== 进入engine.waitForExistingOrStartNewJob(..) 第5步 调用engineJob.addCallback(SingleRequest,callbackExecutor)
     engineJob.addCallback(cb, callbackExecutor);
+    // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6===== 进入engine.waitForExistingOrStartNewJob(..) 第6步 调用engineJob.start(decodeJob)
     engineJob.start(decodeJob);
 
     if (VERBOSE_IS_LOGGABLE) {
       logWithTimeAndKey("Started new load", startTime, key);
     }
+    // ZXYNOTE: 2021/6/25 14:53 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.7===== 进入engine.waitForExistingOrStartNewJob(..) 第7步 返回LoadStatus对象
     return new LoadStatus(cb, engineJob);
   }
 

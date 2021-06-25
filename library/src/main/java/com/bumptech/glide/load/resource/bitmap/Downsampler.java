@@ -697,6 +697,7 @@ public final class Downsampler {
       DecodeCallbacks callbacks,
       BitmapPool bitmapPool)
       throws IOException {
+    // ZXYNOTE: 2021/6/25 11:37 =====解码输入流转为 Bitmap ======
     if (options.inJustDecodeBounds) {
       is.mark(MARK_POSITION);
     } else {

@@ -54,8 +54,10 @@ public class LoadPath<Data, ResourceType, Transcode> {
       throws GlideException {
     List<Throwable> throwables = Preconditions.checkNotNull(listPool.acquire());
     try {
+      // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2.3.1===== 进入LoadPath#load(..)，第1步，调用LoadPath#loadWithExceptionList(..)
       return loadWithExceptionList(rewinder, options, width, height, decodeCallback, throwables);
     } finally {
+      // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2.3.2===== 进入LoadPath#load(..)，第2步，调用listPool.release(throwables)
       listPool.release(throwables);
     }
   }
@@ -73,6 +75,7 @@ public class LoadPath<Data, ResourceType, Transcode> {
     for (int i = 0, size = decodePaths.size(); i < size; i++) {
       DecodePath<Data, ResourceType, Transcode> path = decodePaths.get(i);
       try {
+        // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2.3.1.1===== 进入LoadPath#loadWithExceptionList(..)，调用 DecodePath#decode(..)获取Resource对象
         result = path.decode(rewinder, width, height, options, decodeCallback);
       } catch (GlideException e) {
         exceptions.add(e);

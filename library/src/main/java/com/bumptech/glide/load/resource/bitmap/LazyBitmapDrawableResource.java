@@ -50,6 +50,7 @@ public final class LazyBitmapDrawableResource implements Resource<BitmapDrawable
     if (bitmapResource == null) {
       return null;
     }
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2.3.1.1.3.1.1===== 进入LazyBitmapDrawableResource.obtain(..)，返回LazyBitmapDrawableResource对象
     return new LazyBitmapDrawableResource(resources, bitmapResource);
   }
 

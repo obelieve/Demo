@@ -2,8 +2,10 @@ package com.bumptech.glide.load.engine;
 
 import android.os.Build;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.core.util.Pools;
+
 import com.bumptech.glide.GlideContext;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.Registry;
@@ -22,6 +24,7 @@ import com.bumptech.glide.util.Synthetic;
 import com.bumptech.glide.util.pool.FactoryPools.Poolable;
 import com.bumptech.glide.util.pool.GlideTrace;
 import com.bumptech.glide.util.pool.StateVerifier;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -227,10 +230,12 @@ class DecodeJob<R>
     // ensure that the fetcher is cleaned up either way.
     DataFetcher<?> localFetcher = currentFetcher;
     try {
+      // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.1===== 进入decodeJob#run() 第1步 判断isCancelled是，调用onLoadFailed(..)结束
       if (isCancelled) {
         notifyFailed();
         return;
       }
+      // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2===== 进入decodeJob#run() 第2步 执行 runWrapped()
       runWrapped();
     } catch (CallbackException e) {
       // If a callback not controlled by Glide throws an exception, we should avoid the Glide
@@ -271,14 +276,19 @@ class DecodeJob<R>
   private void runWrapped() {
     switch (runReason) {
       case INITIALIZE:
+        // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.1===== 进入DecodeJob#runWrapped() Stage.INITIALIZE-第1步， 执行 getNextStage(Stage.INITIALIZE)
         stage = getNextStage(Stage.INITIALIZE);
+        // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.2===== 进入DecodeJob#runWrapped() Stage.INITIALIZE-第2步， 执行 getNextGenerator()
         currentGenerator = getNextGenerator();
+        // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3===== 进入DecodeJob#runWrapped() Stage.INITIALIZE-第3步， 执行 runGenerators()
         runGenerators();
         break;
       case SWITCH_TO_SOURCE_SERVICE:
+        // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.4===== 进入DecodeJob#runWrapped() Stage.SWITCH_TO_SOURCE_SERVICE，第1步 执行 runGenerators()
         runGenerators();
         break;
       case DECODE_DATA:
+        // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.5===== 进入DecodeJob#runWrapped() Stage.DECODE_DATA，第1步 执行 decodeFromRetrievedData()
         decodeFromRetrievedData();
         break;
       default:
@@ -305,6 +315,7 @@ class DecodeJob<R>
     currentThread = Thread.currentThread();
     startFetchTime = LogTime.getLogTime();
     boolean isStarted = false;
+    // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1===== 进入DecodeJob#runGenerators() 第1步 调用currentGenerator.startNext()
     while (!isCancelled
         && currentGenerator != null
         && !(isStarted = currentGenerator.startNext())) {
@@ -334,6 +345,7 @@ class DecodeJob<R>
 
   private void notifyComplete(Resource<R> resource, DataSource dataSource) {
     setNotifiedOrThrow();
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1===== 进入DecodeJob#notifyComplete(..)，调用callback.onResourceReady(resource, dataSource)
     callback.onResourceReady(resource, dataSource);
   }
 
@@ -387,6 +399,7 @@ class DecodeJob<R>
     } else {
       GlideTrace.beginSection("DecodeJob.decodeFromRetrievedData");
       try {
+        // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1===== 进入DecodeJob#onDataFetcherReady(..) 调用 decodeFromRetrievedData()
         decodeFromRetrievedData();
       } finally {
         GlideTrace.endSection();
@@ -423,11 +436,13 @@ class DecodeJob<R>
     }
     Resource<R> resource = null;
     try {
+      // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1===== 进入decodeFromRetrievedData()，第1步，调用DecodeJob#decodeFromData(..)获取Resource对象
       resource = decodeFromData(currentFetcher, currentData, currentDataSource);
     } catch (GlideException e) {
       e.setLoggingDetails(currentAttemptingKey, currentDataSource);
       throwables.add(e);
     }
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2===== 进入decodeFromRetrievedData()，第2步，调用notifyEncodeAndRelease(resource, currentDataSource)
     if (resource != null) {
       notifyEncodeAndRelease(resource, currentDataSource);
     } else {
@@ -446,7 +461,7 @@ class DecodeJob<R>
       lockedResource = LockedResource.obtain(resource);
       result = lockedResource;
     }
-
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1===== 进入DecodeJob#notifyEncodeAndRelease(LazyBitmapDrawableResource,..)，调用DecodeJob#notifyComplete(..)
     notifyComplete(result, dataSource);
 
     stage = Stage.ENCODE;
@@ -471,6 +486,7 @@ class DecodeJob<R>
         return null;
       }
       long startTime = LogTime.getLogTime();
+      // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1===== 进入DecodeJob#decodeFromData(..)，调用decodeFromFetcher(data, dataSource)
       Resource<R> result = decodeFromFetcher(data, dataSource);
       if (Log.isLoggable(TAG, Log.VERBOSE)) {
         logWithTimeAndKey("Decoded result " + result, startTime);
@@ -484,7 +500,9 @@ class DecodeJob<R>
   @SuppressWarnings("unchecked")
   private <Data> Resource<R> decodeFromFetcher(Data data, DataSource dataSource)
       throws GlideException {
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.1===== 进入DecodeJob#decodeFromFetcher(data, dataSource) 第1步，调用 decodeHelper.getLoadPath(..)获取LoadPath<Data, ?, R>
     LoadPath<Data, ?, R> path = decodeHelper.getLoadPath((Class<Data>) data.getClass());
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2===== 进入DecodeJob#decodeFromFetcher(data, dataSource) 第2步，调用 DecodeJob#runLoadPath(data, dataSource, path)
     return runLoadPath(data, dataSource, path);
   }
 
@@ -517,13 +535,17 @@ class DecodeJob<R>
   private <Data, ResourceType> Resource<R> runLoadPath(
       Data data, DataSource dataSource, LoadPath<Data, ResourceType, R> path)
       throws GlideException {
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2.1===== 进入DecodeJob#runLoadPath(data, dataSource, path)，第1步 调用DecodeJob#getOptionsWithHardwareConfig(..),获取Options对象
     Options options = getOptionsWithHardwareConfig(dataSource);
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2.2===== 进入DecodeJob#runLoadPath(data, dataSource, path)，第2步 调用Registry#getRewinder(data)获取，DataRewinder对象
     DataRewinder<Data> rewinder = glideContext.getRegistry().getRewinder(data);
     try {
       // ResourceType in DecodeCallback below is required for compilation to work with gradle.
+      // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2.3===== 进入DecodeJob#runLoadPath(data, dataSource, path)，第3步 调用path.load(..)返回Resource对象
       return path.load(
           rewinder, options, width, height, new DecodeCallback<ResourceType>(dataSource));
     } finally {
+      // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2.4===== 进入DecodeJob#runLoadPath(data, dataSource, path)，第4步 调用DataRewinder#cleanup()
       rewinder.cleanup();
     }
   }

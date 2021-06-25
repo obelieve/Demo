@@ -126,8 +126,10 @@ class EngineJob<R> implements DecodeJob.Callback<R>, Poolable {
 
   public synchronized void start(DecodeJob<R> decodeJob) {
     this.decodeJob = decodeJob;
+    // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.1===== 进入engineJob.start(decodeJob) 第1步，判断是否从缓存中解码，来返回不同的GlideExecutor
     GlideExecutor executor =
         decodeJob.willDecodeFromCache() ? diskCacheExecutor : getActiveSourceExecutor();
+    // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2===== 进入engineJob.start(decodeJob) 第2步，调用GlideExecutor#execute(decodeJob)
     executor.execute(decodeJob);
   }
 
@@ -155,6 +157,7 @@ class EngineJob<R> implements DecodeJob.Callback<R>, Poolable {
       // This is overly broad, some Glide code is actually called here, but it's much
       // simpler to encapsulate here than to do so at the actual call point in the
       // Request implementation.
+      // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4.1.1===== 进入EngineJob#callCallbackOnResourceReady(cb)，调用SingleRequest#onResourceReady(..)
       cb.onResourceReady(engineResource, dataSource);
     } catch (Throwable t) {
       throw new CallbackException(t);
@@ -242,6 +245,7 @@ class EngineJob<R> implements DecodeJob.Callback<R>, Poolable {
       } else if (hasResource) {
         throw new IllegalStateException("Already have resource");
       }
+      // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.1===== 进入Engine#notifyCallbacksOfResult() 第1步，调用engineResourceFactory.build(..)
       engineResource = engineResourceFactory.build(resource, isCacheable, key, resourceListener);
       // Hold on to resource for duration of our callbacks below so we don't recycle it in the
       // middle of notifying if it synchronously released by one of the callbacks. Acquire it under
@@ -249,17 +253,21 @@ class EngineJob<R> implements DecodeJob.Callback<R>, Poolable {
       // below can't recycle the resource before we call the callbacks.
       hasResource = true;
       copy = cbs.copy();
+      // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.2===== 进入Engine#notifyCallbacksOfResult() 第2步，调用incrementPendingCallbacks(..)
       incrementPendingCallbacks(copy.size() + 1);
 
       localKey = key;
       localResource = engineResource;
     }
 
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.3===== 进入Engine#notifyCallbacksOfResult() 第3步，调用engineJobListener.onEngineJobComplete(..)
     engineJobListener.onEngineJobComplete(this, localKey, localResource);
 
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4===== 进入Engine#notifyCallbacksOfResult() 第4步，轮询调用CallResourceReady#run()
     for (final ResourceCallbackAndExecutor entry : copy) {
       entry.executor.execute(new CallResourceReady(entry.cb));
     }
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.5===== 进入Engine#notifyCallbacksOfResult() 第5步，调用EngineJob#decrementPendingCallbacks()
     decrementPendingCallbacks();
   }
 
@@ -317,6 +325,7 @@ class EngineJob<R> implements DecodeJob.Callback<R>, Poolable {
       this.resource = resource;
       this.dataSource = dataSource;
     }
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1===== 进入 Engine#onResourceReady(resource, dataSource)，调用Engine#notifyCallbacksOfResult()
     notifyCallbacksOfResult();
   }
 
@@ -421,7 +430,9 @@ class EngineJob<R> implements DecodeJob.Callback<R>, Poolable {
           if (cbs.contains(cb)) {
             // Acquire for this particular callback.
             engineResource.acquire();
+            // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4.1===== 进入(EngineJob)CallResourceReady#run(), 第1步，调用 EngineJob#callCallbackOnResourceReady(cb)
             callCallbackOnResourceReady(cb);
+            // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4.2===== 进入(EngineJob)CallResourceReady#run(), 第2步，调用 EngineJob#removeCallback(cb)
             removeCallback(cb);
           }
           decrementPendingCallbacks();

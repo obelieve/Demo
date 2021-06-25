@@ -40,6 +40,7 @@ public class BitmapDrawableTranscoder implements ResourceTranscoder<Bitmap, Bitm
   @Override
   public Resource<BitmapDrawable> transcode(
       @NonNull Resource<Bitmap> toTranscode, @NonNull Options options) {
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2.3.1.1.3.1===== 进入BitmapDrawableTranscoder.transcode(transformed, options)，调用LazyBitmapDrawableResource.obtain(..)
     return LazyBitmapDrawableResource.obtain(resources, toTranscode);
   }
 }

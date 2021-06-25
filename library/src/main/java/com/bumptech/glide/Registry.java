@@ -467,11 +467,13 @@ public class Registry {
       @NonNull Class<Data> dataClass,
       @NonNull Class<TResource> resourceClass,
       @NonNull Class<Transcode> transcodeClass) {
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.1.1.1===== 进入Registry#getLoadPath(dataClass, resourceClass, transcodeClass)，第1步从loadPathCache获取LoadPath
     LoadPath<Data, TResource, Transcode> result =
         loadPathCache.get(dataClass, resourceClass, transcodeClass);
     if (loadPathCache.isEmptyLoadPath(result)) {
       return null;
     } else if (result == null) {
+      // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.1.1.2===== 进入Registry#getLoadPath(dataClass, resourceClass, transcodeClass)，第2步 cache的LoadPath为空，调用getDecodePaths(..)
       List<DecodePath<Data, TResource, Transcode>> decodePaths =
           getDecodePaths(dataClass, resourceClass, transcodeClass);
       // It's possible there is no way to decode or transcode to the desired types from a given
@@ -479,6 +481,7 @@ public class Registry {
       if (decodePaths.isEmpty()) {
         result = null;
       } else {
+        // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.1.1.3===== 进入Registry#getLoadPath(dataClass, resourceClass, transcodeClass)，第3步 getDecodePaths(..)为空，直接new LoadPath并加到 loadPathCache
         result =
             new LoadPath<>(
                 dataClass, resourceClass, transcodeClass, decodePaths, throwableListPool);
@@ -493,6 +496,7 @@ public class Registry {
       @NonNull Class<Data> dataClass,
       @NonNull Class<TResource> resourceClass,
       @NonNull Class<Transcode> transcodeClass) {
+    // ZXYNOTE: 2021/6/25 11:27 =====获取 输入流解码路径列表=====
     List<DecodePath<Data, TResource, Transcode>> decodePaths = new ArrayList<>();
     List<Class<TResource>> registeredResourceClasses =
         decoderRegistry.getResourceClasses(dataClass, resourceClass);

@@ -147,6 +147,7 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
       Engine engine,
       TransitionFactory<? super R> animationFactory,
       Executor callbackExecutor) {
+    // ZXYNOTE: 2021/6/25 14:06 =====【Glide#with#load#into】1.3.2.1.1.2.3.1.1 返回SingleRequest对象 =====
     return new SingleRequest<>(
         context,
         glideContext,
@@ -214,6 +215,7 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
       assertNotCallingCallbacks();
       stateVerifier.throwIfRecycled();
       startTime = LogTime.getLogTime();
+      // ZXYNOTE: 2021/6/25 14:16 =====【Glide#with#load#into】1.3.2.4.2.2.1 进入SingleRequest#begin() 第1步 判断model==null时，直接调用onLoadFailed(..)结束 =====
       if (model == null) {
         if (Util.isValidDimensions(overrideWidth, overrideHeight)) {
           width = overrideWidth;
@@ -236,6 +238,7 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
       // a new load etc. This does mean that users who want to restart a load because they expect
       // that the view size has changed will need to explicitly clear the View or Target before
       // starting the new load.
+      // ZXYNOTE: 2021/6/25 14:16 =====【Glide#with#load#into】1.3.2.4.2.2.2 进入SingleRequest#begin() 第2步 判断status == Status.COMPLETE 时，直接调用 onResourceReady(..)结束 =====
       if (status == Status.COMPLETE) {
         onResourceReady(resource, DataSource.MEMORY_CACHE);
         return;
@@ -245,14 +248,17 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
       // and can run again from the beginning.
 
       status = Status.WAITING_FOR_SIZE;
+      // ZXYNOTE: 2021/6/25 14:16 =====【Glide#with#load#into】1.3.2.4.2.2.3 进入SingleRequest#begin() 第3步 判断overrideWidth, overrideHeight时，有效时调用 onSizeReady(overrideWidth, overrideHeight) =====
       if (Util.isValidDimensions(overrideWidth, overrideHeight)) {
         onSizeReady(overrideWidth, overrideHeight);
       } else {
+        // ZXYNOTE: 2021/6/25 14:16 =====【Glide#with#load#into】1.3.2.4.2.2.4 进入SingleRequest#begin() 第4步 判断overrideWidth, overrideHeight时，无效时调用 target.getSize(this)，最后也会调用onSizeReady(..) =====
         target.getSize(this);
       }
 
       if ((status == Status.RUNNING || status == Status.WAITING_FOR_SIZE)
           && canNotifyStatusChanged()) {
+        // ZXYNOTE: 2021/6/25 14:16 =====【Glide#with#load#into】1.3.2.4.2.2.5 进入SingleRequest#begin() 第5步 判断status == Status.RUNNING || status == Status.WAITING_FOR_SIZE时，调用 target.onLoadStarted(getPlaceholderDrawable()) =====
         target.onLoadStarted(getPlaceholderDrawable());
       }
       if (IS_VERBOSE_LOGGABLE) {
@@ -430,7 +436,7 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
         return;
       }
       status = Status.RUNNING;
-
+      // ZXYNOTE: 2021/6/25 14:16 =====【Glide#with#load#into】1.3.2.4.2.2.3.1 进入onSizeReady(width, height) 第1步 width和height 根据sizeMultiplier做相关处理 =====
       float sizeMultiplier = requestOptions.getSizeMultiplier();
       this.width = maybeApplySizeMultiplier(width, sizeMultiplier);
       this.height = maybeApplySizeMultiplier(height, sizeMultiplier);
@@ -438,6 +444,7 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
       if (IS_VERBOSE_LOGGABLE) {
         logV("finished setup for calling load in " + LogTime.getElapsedMillis(startTime));
       }
+      // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2 进入onSizeReady(width, height) 第2步 调用engine.load(..) =====
       loadStatus =
           engine.load(
               glideContext,
@@ -531,6 +538,7 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
         }
 
         Object received = resource.get();
+        // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4.1.1.1===== 进入调用SingleRequest#onResourceReady(..) 第1步，resource.get()是null时，调用onLoadFailed(..)
         if (received == null || !transcodeClass.isAssignableFrom(received.getClass())) {
           toRelease = resource;
           this.resource = null;
@@ -564,11 +572,12 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
           status = Status.COMPLETE;
           return;
         }
-
+        // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4.1.1.2===== 进入调用SingleRequest#onResourceReady(..) 第2步，调用 SingleRequest#onResourceReady(..)
         onResourceReady((Resource<R>) resource, (R) received, dataSource);
       }
     } finally {
       if (toRelease != null) {
+        // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4.1.1.3===== 进入调用SingleRequest#onResourceReady(..) 第3步，调用 Engine.release(toRelease)
         engine.release(toRelease);
       }
     }
@@ -618,7 +627,7 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
       anyListenerHandledUpdatingTarget |=
           targetListener != null
               && targetListener.onResourceReady(result, model, target, dataSource, isFirstResource);
-
+      // ZXYNOTE: 2021/6/25 16:38 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.2.1.1.1.4.1.1.2.1===== 进入SingleRequest#onResourceReady(..)，调用 ImageViewTarget#onResourceReady(result, animation)
       if (!anyListenerHandledUpdatingTarget) {
         Transition<? super R> animation = animationFactory.build(dataSource, isFirstResource);
         target.onResourceReady(result, animation);

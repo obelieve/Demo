@@ -38,10 +38,13 @@ public class RequestTracker {
 
   /** Starts tracking the given request. */
   public void runRequest(@NonNull Request request) {
+    // ZXYNOTE: 2021/6/25 14:16 =====【Glide#with#load#into】1.3.2.4.2.1 进入requestTracker.runRequest(request) 第一步 添加request到列表中 =====
     requests.add(request);
     if (!isPaused) {
+      // ZXYNOTE: 2021/6/25 14:16 =====【Glide#with#load#into】1.3.2.4.2.2 进入requestTracker.runRequest(request) 第二步 未暂停时，调用request.begin() =====
       request.begin();
     } else {
+      // ZXYNOTE: 2021/6/25 14:16 =====【Glide#with#load#into】1.3.2.4.2.3. 进入requestTracker.runRequest(request) 第三步 暂停时，调用request.clear() 并添加到 pendingRequests列表中 =====
       request.clear();
       if (Log.isLoggable(TAG, Log.VERBOSE)) {
         Log.v(TAG, "Paused, delaying request");

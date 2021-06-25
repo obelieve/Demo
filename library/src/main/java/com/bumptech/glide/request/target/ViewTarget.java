@@ -215,6 +215,7 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
   @CallSuper
   @Override
   public void getSize(@NonNull SizeReadyCallback cb) {
+    // ZXYNOTE: 2021/6/25 14:16 =====【Glide#with#load#into】1.3.2.4.2.2.4.1 进入ViewTarget#getSize(【SingleRequest】) 第一步 调用 sizeDeterminer.getSize(SizeReadyCallback) SingleRequest->SizeReadyCallback=====
     sizeDeterminer.getSize(cb);
   }
 
@@ -370,6 +371,7 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
     }
 
     void getSize(@NonNull SizeReadyCallback cb) {
+      // ZXYNOTE: 2021/6/25 14:16 =====【Glide#with#load#into】1.3.2.4.2.2.4.1.1 进入sizeDeterminer.getSize(SingleRequest) 第一步 判断getTargetWidth()和getTargetHeight()是否有效，调用 SingleRequest#onSizeReady(currentWidth, currentHeight) =====
       int currentWidth = getTargetWidth();
       int currentHeight = getTargetHeight();
       if (isViewStateAndSizeValid(currentWidth, currentHeight)) {
@@ -382,6 +384,7 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
       if (!cbs.contains(cb)) {
         cbs.add(cb);
       }
+      // ZXYNOTE: 2021/6/25 14:16 =====【Glide#with#load#into】1.3.2.4.2.2.4.1.1 进入sizeDeterminer.getSize(SingleRequest) 第一步 判断getTargetWidth()和getTargetHeight()无效，调用View#ViewTreeObserver#addOnPreDrawListener监听，有结果时通知SingleRequest#onSizeReady(..)=====
       if (layoutListener == null) {
         ViewTreeObserver observer = view.getViewTreeObserver();
         layoutListener = new SizeDeterminerLayoutListener(this);

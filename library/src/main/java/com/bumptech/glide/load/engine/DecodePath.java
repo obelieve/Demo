@@ -56,8 +56,11 @@ public class DecodePath<DataType, ResourceType, Transcode> {
       @NonNull Options options,
       DecodeCallback<ResourceType> callback)
       throws GlideException {
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2.3.1.1.1===== 进入DecodePath#decode(..),第1步调用 decodeResource(..) 返回 decoded（Resource）
     Resource<ResourceType> decoded = decodeResource(rewinder, width, height, options);
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2.3.1.1.2===== 进入DecodePath#decode(..),第2步调用 callback.onResourceDecoded(decoded) 返回 transformed（Resource）
     Resource<ResourceType> transformed = callback.onResourceDecoded(decoded);
+    // ZXYNOTE: 2021/6/25 15:46 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1.2.3.1.2.2.1.1.1.1.1.2.3.1.1.3===== 进入DecodePath#decode(..),第3步调用 transcoder.transcode(transformed, options)
     return transcoder.transcode(transformed, options);
   }
 

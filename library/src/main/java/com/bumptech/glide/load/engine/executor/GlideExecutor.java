@@ -255,6 +255,7 @@ public final class GlideExecutor implements ExecutorService {
 
   @Override
   public void execute(@NonNull Runnable command) {
+    // ZXYNOTE: 2021/6/25 14:41 =====【Glide#with#load#into】1.3.2.4.2.2.3.2.3.6.2.1===== 进入GlideExecutor#execute(decodeJob) 第1步 调用ExecutorService#execute(decodeJob)
     delegate.execute(command);
   }
 

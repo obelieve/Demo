@@ -1,20 +1,18 @@
 package com.bumptech.glide;
 
-import static com.bumptech.glide.request.RequestOptions.diskCacheStrategyOf;
-import static com.bumptech.glide.request.RequestOptions.signatureOf;
-import static com.bumptech.glide.request.RequestOptions.skipMemoryCacheOf;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.widget.ImageView;
+
 import androidx.annotation.CheckResult;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
+
 import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.BaseRequestOptions;
@@ -35,11 +33,16 @@ import com.bumptech.glide.util.Executors;
 import com.bumptech.glide.util.Preconditions;
 import com.bumptech.glide.util.Synthetic;
 import com.bumptech.glide.util.Util;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
+
+import static com.bumptech.glide.request.RequestOptions.diskCacheStrategyOf;
+import static com.bumptech.glide.request.RequestOptions.signatureOf;
+import static com.bumptech.glide.request.RequestOptions.skipMemoryCacheOf;
 
 /**
  * A generic class that can handle setting options and staring loads for generic resource types.
@@ -617,7 +620,7 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
     if (!isModelSet) {
       throw new IllegalArgumentException("You must call #load() before calling #into()");
     }
-
+    // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2.1 进入#into多态方法 第一步 获取Request对象 ，会返回SingleRequest对象 =====
     Request request = buildRequest(target, targetListener, options, callbackExecutor);
 
     Request previous = target.getRequest();
@@ -635,9 +638,11 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
       }
       return target;
     }
-
+    // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2.2 进入#into多态方法 第二步 调用requestManager.clear(target) 清除之前Target持有的Request对象 =====
     requestManager.clear(target);
+    // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2.3 进入#into多态方法 第三步 调用target.setRequest(request) 设置Target当前Request对象 =====
     target.setRequest(request);
+    // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2.4 进入#into多态方法 第四步 调用requestManager.track(target,request) 处理这个请求 =====
     requestManager.track(target, request);
 
     return target;
@@ -667,7 +672,7 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
   public ViewTarget<ImageView, TranscodeType> into(@NonNull ImageView view) {
     Util.assertMainThread();
     Preconditions.checkNotNull(view);
-
+    // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3 调用#into，RequestOptions添加配置，ImageView#getScaleType() =====
     BaseRequestOptions<?> requestOptions = this;
     if (!requestOptions.isTransformationSet()
         && requestOptions.isTransformationAllowed()
@@ -696,7 +701,7 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
           // Do nothing.
       }
     }
-
+    // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2 调用#into，第二步 进入#into多态方法 =====
     return into(
         glideContext.buildImageViewTarget(view, transcodeClass),
         /*targetListener=*/ null,
@@ -847,6 +852,7 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
       @Nullable RequestListener<TranscodeType> targetListener,
       BaseRequestOptions<?> requestOptions,
       Executor callbackExecutor) {
+    // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2.1.1 获取Request对象 第一步，间接调用buildRequestRecursive(..) =====
     return buildRequestRecursive(
         /*requestLock=*/ new Object(),
         target,
@@ -871,14 +877,14 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
       int overrideHeight,
       BaseRequestOptions<?> requestOptions,
       Executor callbackExecutor) {
-
+    // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2.1.1.1 调用buildRequestRecursive(..) 第一步 有调用#error(..)时，会创建 ErrorRequestCoordinator对象=====
     // Build the ErrorRequestCoordinator first if necessary so we can update parentCoordinator.
     ErrorRequestCoordinator errorRequestCoordinator = null;
     if (errorBuilder != null) {
       errorRequestCoordinator = new ErrorRequestCoordinator(requestLock, parentCoordinator);
       parentCoordinator = errorRequestCoordinator;
     }
-
+  // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2.1.1.2 调用buildRequestRecursive(..) 第二步 调用buildThumbnailRequestRecursive(..)返回Request对象，errorBuilder == null时，直接返回 =====
     Request mainRequest =
         buildThumbnailRequestRecursive(
             requestLock,
@@ -891,7 +897,6 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
             overrideHeight,
             requestOptions,
             callbackExecutor);
-
     if (errorRequestCoordinator == null) {
       return mainRequest;
     }
@@ -902,7 +907,7 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
       errorOverrideWidth = requestOptions.getOverrideWidth();
       errorOverrideHeight = requestOptions.getOverrideHeight();
     }
-
+   // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2.1.1.3 调用buildRequestRecursive(..) 第三步 调用buildRequestRecursive(..)返回Request对象=====
     Request errorRequest =
         errorBuilder.buildRequestRecursive(
             requestLock,
@@ -931,6 +936,7 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
       BaseRequestOptions<?> requestOptions,
       Executor callbackExecutor) {
     if (thumbnailBuilder != null) {
+      // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2.1.1.2.1 调用buildThumbnailRequestRecursive(..) 第一步 有调用#thumbnail(..)时执行 =====
       // Recursive case: contains a potentially recursive thumbnail request builder.
       if (isThumbnailBuilt) {
         throw new IllegalStateException(
@@ -992,6 +998,7 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
       coordinator.setRequests(fullRequest, thumbRequest);
       return coordinator;
     } else if (thumbSizeMultiplier != null) {
+      // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2.1.1.2.2 调用buildThumbnailRequestRecursive(..) 第二步 thumbSizeMultiplier!=null 有调用#thumbnail(..)时执行 =====
       // Base case: thumbnail multiplier generates a thumbnail request, but cannot recurse.
       ThumbnailRequestCoordinator coordinator =
           new ThumbnailRequestCoordinator(requestLock, parentCoordinator);
@@ -1026,6 +1033,7 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
       coordinator.setRequests(fullRequest, thumbnailRequest);
       return coordinator;
     } else {
+      // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2.1.1.2.3 调用obtainRequest(..) =====
       // Base case: no thumbnail.
       return obtainRequest(
           requestLock,
@@ -1052,6 +1060,7 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
       int overrideWidth,
       int overrideHeight,
       Executor callbackExecutor) {
+    // ZXYNOTE: 2021/6/25 11:49 =====【Glide#with#load#into】1.3.2.1.1.2.3.1 调用SingleRequest.obtain(..) =====
     return SingleRequest.obtain(
         context,
         glideContext,
