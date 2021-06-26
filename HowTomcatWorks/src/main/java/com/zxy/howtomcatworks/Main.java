@@ -31,7 +31,7 @@ public class Main {
 
                         while ((line = reader.readLine()) != null) {
                             sb.append(line+"\n");
-                            if(sb.toString().contains("Connection: Close")){
+                            if(sb.toString().contains("\n\n")){
                                 break;
                             }
                         }
@@ -40,7 +40,10 @@ public class Main {
 
                         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:sss");
+                        writer.write("HTTP/1.1 200 OK \r\n");
+                        writer.write("\r\n");
                         writer.write("当前服务器时间：" + format.format(new Date()) + " 随机数：" + new Random().nextInt(10000));
+                        writer.write("\r\n");
                         writer.close();
                         socket.close();
                     } catch (Exception e) {
