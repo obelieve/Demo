@@ -30,7 +30,10 @@ public class Main {
                         StringBuilder sb = new StringBuilder();
 
                         while ((line = reader.readLine()) != null) {
-                            sb.append(line);
+                            sb.append(line+"\n");
+                            if(sb.toString().contains("Connection: Close")){
+                                break;
+                            }
                         }
 
                         System.out.println("请求内容：" + sb.toString());

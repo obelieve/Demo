@@ -8,8 +8,10 @@ import com.obelieve.frame.base.ApiBaseActivity2;
 import com.zxy.demo.databinding.ActivityMainBinding;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,10 +31,17 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
                         try {
                             Socket socket = new Socket("192.168.2.102",1090);
                             socket.setSoTimeout(10000);
-                            OutputStream stream = socket.getOutputStream();
-                            String s = "客户端 "+System.currentTimeMillis();
-                            stream.write(s.getBytes());
-                            socket.shutdownOutput();
+                            OutputStream outputStream = socket.getOutputStream();
+                            boolean autoflush = true;
+                            PrintWriter out = new PrintWriter(socket.getOutputStream(),autoflush);
+                            out.println("GET /index.html HTTP/1.1");
+                            out.println("Host: 192.168.2.102:1090");
+                            out.println("Connection: Close");
+                            out.println();
+//                            OutputStream stream = socket.getOutputStream();
+//                            String s = "客户端 "+System.currentTimeMillis();
+//                            stream.write(s.getBytes());
+//                            socket.shutdownOutput();
                             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                             String line = null;
                             StringBuilder sb = new StringBuilder();
@@ -46,7 +55,7 @@ public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
                                 }
                             });
                             System.out.println("响应内容："+sb.toString());
-                            reader.close();
+                            socket.close();
                         }catch (Exception e){
                             e.printStackTrace();
                         }
