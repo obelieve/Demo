@@ -1,5 +1,6 @@
 ext {
     android = [
+            applicationId: "com.zxy.demo.howbuildapk",
             compileSdkVersion: 30,
             buildToolsVersion: "30.0.2",
             minSdkVersion    : 21,

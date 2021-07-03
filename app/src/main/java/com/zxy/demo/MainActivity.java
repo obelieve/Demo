@@ -1,14 +1,16 @@
 package com.zxy.demo;
 
+import android.app.Activity;
 import android.os.Bundle;
 
-import com.obelieve.frame.base.ApiBaseActivity2;
-import com.zxy.demo.databinding.ActivityMainBinding;
+import androidx.annotation.Nullable;
 
 
-public class MainActivity extends ApiBaseActivity2<ActivityMainBinding> {
+public class MainActivity extends Activity {
 
     @Override
-    protected void initCreateAfterView(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
     }
 }
