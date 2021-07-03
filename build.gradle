@@ -1,12 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply from: "config.gradle"
-
+//defaultTasks 'clean','assembleDebug'  //如果设置在这个，在命令行使用gradlew时会默认执行 clean、assembleDebug命令
 buildscript {
     ext.kotlin_version = '1.4.20'
-    repositories {
-        maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/repository/jcenter' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+    repositories {//构建脚本中使用依赖库的地址
         google()
         mavenCentral()
     }
@@ -20,7 +17,7 @@ buildscript {
     }
 }
 
-allprojects {
+allprojects {//声明所有模块都会用到的属性，例如：Task也可以
     repositories {
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }

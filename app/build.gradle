@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    compileSdkVersion rootProject.ext.android.compileSdkVersion //编译版本 可以使用对应API版本开发
     buildToolsVersion rootProject.ext.android.buildToolsVersion
 
-    defaultConfig {
+    defaultConfig {//覆盖 AndroidManifest.xml对应条目
         applicationId "com.zxy.demo"
-        minSdkVersion rootProject.ext.android.minSdkVersion
-        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        minSdkVersion rootProject.ext.android.minSdkVersion //APP 最小使用版本
+        targetSdkVersion rootProject.ext.android.targetSdkVersion //APP 向前兼容的方式
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
 
@@ -21,6 +21,10 @@ android {
     }
 
     buildTypes {
+        debug{
+            buildConfigField "String","API_URL","\"https://www.github.com\""
+            resValue "string", "aa", "Example Debug"
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
