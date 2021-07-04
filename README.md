@@ -32,3 +32,17 @@ buildTypes{
     buildConfigField "String","API_URL","\"https://www.github.com\"" //在BuildConfig中
 }
 ```
+### 3.依赖管理
+- 远程依赖
+- 本地依赖
+- 本地libs目录下，*.jar依赖
+- 本地"com.android.library"依赖模块、打包成*aar，进行依赖
+- 依赖库命名：group:name:version 
+    - version：major.minor.patch   major不兼容API变化，minor向后兼容方式添加功能，patch修复Bug
+- 编译拉取最新依赖库：group:name:version.+
+- 依赖关键字：
+    - apk 依赖库只打包到apk，不保存在本地
+    - provided 依赖库只保存在本地，不打包到apk
+    - implementation 依赖库打包到apk，并保存在本地
+    - testImplementation、DebugImplementation 打包到特定类型apk
+    

@@ -9,7 +9,7 @@ android {
     defaultConfig {//覆盖 AndroidManifest.xml对应条目
         applicationId "com.zxy.demo"
         minSdkVersion rootProject.ext.android.minSdkVersion //APP 最小使用版本
-        targetSdkVersion rootProject.ext.android.targetSdkVersion //APP 向前兼容的方式
+        targetSdkVersion rootProject.ext.android.targetSdkVersion //APP 告诉操作系统向前兼容API版本的方式
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
 
@@ -42,7 +42,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
     implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar']) //依赖libs文件夹下，所有的*.jar文件
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
