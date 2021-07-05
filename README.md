@@ -45,4 +45,23 @@ buildTypes{
     - provided 依赖库只保存在本地，不打包到apk
     - implementation 依赖库打包到apk，并保存在本地
     - testImplementation、DebugImplementation 打包到特定类型apk
-    
+### 4.创建构建variant
+- variant 由`buildType`和`productFlavors`共同决定
+    - buildType 构建类型
+    - productFlavors 
+- 不同类型的覆盖规则
+    - 源集：variant不同类型有一个存放资源和代码的目录 默认有个main源集 
+    - 1.代码方面：variant和main中存放的源代码位置只能选其一
+    - 2.对于资源和manifest.xml文件按照优先级：buildTypes -> productFlavors -> main -> dependencies(依赖库)
+- 忽略某个variant类型，那就不能使用gradlew、IDE中variant窗口没有这个variant类型
+```groovy
+        android.variantFilter { variant ->
+            if (variant.buildType.name.equals('release')) {
+                variant.getFlavors().each() { flavor ->
+                    if (flavor.name.equals('blue')) {
+                        variant.setIgnore(true);
+                    }
+                }
+            }
+        }
+```

@@ -23,11 +23,43 @@ android {
     buildTypes {
         debug{
             buildConfigField "String","API_URL","\"https://www.github.com\""
-            resValue "string", "aa", "Example Debug"
+          //  resValue "string", "AppType", "Debug"
         }
         release {
+            //resValue "string", "AppType", "Release"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "color","price"
+
+    productFlavors {
+        blue{
+            resValue "string", "AppType", "Blue"
+            flavorDimensions "color"
+        }
+        yellow{
+            resValue "string", "AppType", "Yellow"
+            flavorDimensions "color"
+        }
+        red{
+            resValue "string", "AppType", "Red"
+            flavorDimensions "price"
+        }
+        gray{
+            resValue "string", "AppType", "Gray"
+            flavorDimensions "price"
+        }
+
+        android.variantFilter { variant ->
+            if (variant.buildType.name.equals('release')) {
+                variant.getFlavors().each() { flavor ->
+                    if (flavor.name.equals('blue')) {
+                        variant.setIgnore(true);
+                    }
+                }
+            }
         }
     }
 
