@@ -65,3 +65,46 @@ buildTypes{
             }
         }
 ```
+### 5.管理多模块构建
+- 1.构建子目录下的多模块
+```groovy
+//依赖子目录library下的library1模块，PS: compile project(':library:library1')
+root
+--build.gradle
+--settings.gradle
+--app
+    --build.gradle
+--library
+    --library1
+        --build.gradle
+    --library2
+        --build.gradle
+```
+- 2.不同模块插件
+    - 1.java模块：`apply plugin: 'java'`
+    - 2.android模块:包括代码和资源文件 `apply plugin: 'com.android.library'`
+- 3.依赖Android Wear模块：`wearApp project('wear')`
+- 4.执行模块任务时：
+    - 1.如果多个模块都有相同任务，都会处理。PS：如果有个app和app2模块 `gradlew assemableDebug`，不同模块会生成不同的Debug包
+    - 2.使用`gradlew :app2:assembleDebug`只会生成app2模块的Debug包
+- 5.加速构建
+    - 1.`gradle.properties`中配置parallel属性`org.gradle.parallel=true`会根据CPU核心数并行执行构建模块。
+    - 2.如果模块之间有互相访问对方的任务或属性，就是模块之间耦合，那并行构建会失效。
+    
+ ### 7.创建任务和插件
+ - [!Groovy官网](http://groovy-lang.org/download.html)
+ - 语法
+   - 1.类、方法默认 共有`public`
+   - 2.方法调用，有参数情况下省略`()`
+   - 3.方法调用，省略`;`
+   - 4.变量定义`def`
+   - 5.字符串处理：单引号`''`和双引号`""`，单引号只能是字符串常量，双引号中可以使用`$`来调用`表达式`和`变量`
+   - 6.闭包(Cloure)：匿名的方法块，可以传递参数、返回值，可以当作变量使用。
+```groovy
+dependencies{ //Project#dependencies(Closure configureClosure)
+            // 这闭包通过DependencyHandler的代理对象，就是说闭包是调用DependencyHandler中的#add()方法，
+            // 里面应该也有一些对add调用省略处理这些七七八八。
+    implementation 'xxx'
+    implementation "xxx"
+}
+```

@@ -83,3 +83,34 @@ dependencies {
 
 
 }
+
+class A{
+    def b = {
+        println("Cloure this:"+this) //this 即闭包定义所在的类。
+        println("Cloure owner:"+owner) //owner 即闭包定义所在的对象或闭包
+        println("Cloure delegate:"+delegate) //delegate 即闭包中引用的第三方对象
+        bb("11")
+        bb("22")
+        cc()
+    }
+
+    static String run(Closure closure, Object delegate){
+        Closure c = (Closure) closure.clone()
+        c.delegate = delegate
+        c.call()
+    }
+}
+class B{
+    String bb(String arg){
+        println arg
+        println "B="+this
+    }
+    void cc(){
+        println "cc"
+    }
+}
+task a{
+    new B().bb "aaa"
+    new B().cc() //new B().cc 编译错误，需要加()
+    A.run(new A().b,new B())
+}
