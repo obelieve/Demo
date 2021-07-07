@@ -100,6 +100,21 @@ root
    - 4.变量定义`def`
    - 5.字符串处理：单引号`''`和双引号`""`，单引号只能是字符串常量，双引号中可以使用`$`来调用`表达式`和`变量`
    - 6.闭包(Cloure)：匿名的方法块，可以传递参数、返回值，可以当作变量使用。
+        ```
+            Closure c = {...};
+            c.delegate = ..;//设置代理类
+            c.call();//调用
+            c.setResolveStrategy(Closure.OWNER_FIRST);//设置代理策略
+        ```
+        - this `定义该闭包所在的类`
+        - owner `定义该闭包所在的类或闭包`，就是说如果闭包定义在类中那么this==owner
+        - delegate `和owner一样，或者自己设置delegate类` 闭包可以访问代理类(delegate)的方法和变量
+        - 闭包中对于同名调用的处理策略（比如：代理类和闭包定义的类中存在相同的方法）
+            - Closure.OWNER_FIRST 默认策略，优先在owner中找，再去delegate中找
+            - Closure.DELEGATE_FIRST 优先在delegate中找，再去owner中找
+            - Closure.OWNER_ONLY 只在owner中找
+            - Closure.DELEGATE_ONLY 只在delegate中找
+            - Closure.TO_SELF 自定义部分
 ```groovy
 dependencies{ //Project#dependencies(Closure configureClosure)
             // 这闭包通过DependencyHandler的代理对象，就是说闭包是调用DependencyHandler中的#add()方法，

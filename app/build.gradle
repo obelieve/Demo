@@ -85,13 +85,27 @@ dependencies {
 }
 
 class A{
-    def b = {
-        println("Cloure this:"+this) //this 即闭包定义所在的类。
-        println("Cloure owner:"+owner) //owner 即闭包定义所在的对象或闭包
-        println("Cloure delegate:"+delegate) //delegate 即闭包中引用的第三方对象
-        bb("11")
-        bb("22")
-        cc()
+   private def a = "A变量a"
+
+    void aa(String arg){
+        println a
+        println "aa() $arg"
+    }
+}
+
+class B{
+
+    String bb(String arg){
+        println "执行 B类中的bb方法=$arg"
+    }
+}
+class C{
+    def v={
+        bb("C类-闭包调用bb()")
+    }
+
+    void bb(String arg){
+        println "执行 C类中的bb方法=$arg"
     }
 
     static String run(Closure closure, Object delegate){
@@ -100,17 +114,10 @@ class A{
         c.call()
     }
 }
-class B{
-    String bb(String arg){
-        println arg
-        println "B="+this
-    }
-    void cc(){
-        println "cc"
-    }
-}
 task a{
-    new B().bb "aaa"
-    new B().cc() //new B().cc 编译错误，需要加()
-    A.run(new A().b,new B())
+    new A().aa("^^")
+    //设置代理策略优先delegate
+    Closure closure = new C().v
+    closure.setResolveStrategy(Closure.DELEGATE_FIRST)
+    C.run(closure,new B())
 }
