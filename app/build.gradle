@@ -121,3 +121,19 @@ task a{
     closure.setResolveStrategy(Closure.DELEGATE_FIRST)
     C.run(closure,new B())
 }
+task hello  {
+    //<< Could not find method leftShift() for arguments  << 在Gradle 4.x中被弃用，Gradle 5.0被移除
+    println 'Hello'
+    doFirst {
+        println 'Hello'
+    }
+    doFirst {
+        println 'Hello2'
+    }
+    doLast {
+        println 'Last'
+    }
+    doLast {
+        println 'Last2'
+    }
+}

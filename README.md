@@ -123,3 +123,39 @@ dependencies{ //Project#dependencies(Closure configureClosure)
     implementation "xxx"
 }
 ```
+   - 7.Gradle构建的过程
+        - 1.从Task初始化->配置->执行过程
+        - 2. doFirst、doLast执行阶段，其中doFirst添加越靠前执行，doLast添加越靠后执行
+   - 8.Hook Android插件
+        - 1. #TheTask.dependOn "xxxTask" :表示在`TheTask`之前执行`xxxTask` 
+            (利用自定义task，把签名密钥不提交到git上，任务执行时，加入密钥)
+        - 2. `applicationVariants`一些构建处理：比如改生成的包名等
+        - 3. 需要实现Plugin接口创建插件
+```groovy
+task hello {
+    println "hello"
+}
+task hello  {
+    //<< Could not find method leftShift() for arguments  << 在Gradle 4.x中被弃用，Gradle 5.0被移除
+    println 'Hello'
+    doFirst {
+        println 'Hello'
+    }
+    doFirst {
+        println 'Hello2'
+    }
+    doLast {
+        println 'Last'
+    }
+    doLast {
+        println 'Last2'
+    }
+}
+/**输出
+> Task :app:hello
+Hello2
+Hello
+Last
+Last2
+**/
+```
