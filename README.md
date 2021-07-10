@@ -114,7 +114,7 @@ dependencies{ //Project#dependencies(Closure configureClosure)
     implementation "xxx"
 }
 ```    
- ### 7.创建任务和插件
+ ### 7.创建任务和插件 *
  - [!Groovy官网](http://groovy-lang.org/download.html)
  - 语法
    - 1.类、方法默认 共有`public`
@@ -167,3 +167,14 @@ Last
 Last2
 **/
 ```
+ ### 8.持续集成(CI Continuous Integration )
+- 自动化构建验证：一些CI软件：Jenkins、TeamCity、Travis CI
+### 9.高级自定义构建
+ - 1.减少包大小
+    - `shrinkResources = true`时，需要保留某些资源文件（PS:反射动态使用资源）需要保留，在`res/raw`下，叫做`keep.xml`定义保留的资源。
+    - `defaultConfig { resConfigs "en","xxhdpi" }`：配置只想保留的资源，其它会被移除。
+ - 2.加快构建
+    - `org.gradle.parallel=true` `org.gradle.daemon=true`
+    - `JVM参数设置 org.gradle.jvmargs=-Xms256m -Xms1024m`
+    - `org.gradle.configureondemand`：忽略正在执行的task不需要的模块
+    - `--profile 显示构建耗时`
