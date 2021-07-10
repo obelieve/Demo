@@ -113,8 +113,9 @@ dependencies{ //Project#dependencies(Closure configureClosure)
     implementation 'xxx'
     implementation "xxx"
 }
-```    
- ### 7.创建任务和插件 *
+```
+### 6.单元测试    
+### 7.创建任务和插件 *
  - [!Groovy官网](http://groovy-lang.org/download.html)
  - 语法
    - 1.类、方法默认 共有`public`
