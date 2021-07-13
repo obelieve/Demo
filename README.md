@@ -1,46 +1,23 @@
 
-# Android Demo
+# Dagger2
+- 1.初始化
+```groovy
+apply plugin: 'kotlin-kapt'
 
-## branches
-  - 1.`issue-`              issue Demo
-  - 2.`use-`                第三方类库使用、语言用法
-  - 3.`sdk-`                第三方SDK使用
-  - 4.`framework`           app项目架构
-  - 5.`code-`               源码分析
+dependencies {
+    implementation 'com.google.dagger:dagger:2.x'
+    kapt 'com.google.dagger:dagger-compiler:2.x'
+}
+```
+- 1.获取实例
+    - `@Binds`通知Dagger接口，采用何种实现
+    - 1.通过`@Inject`进行构造函数注入
+    - 2.使用带有`@Module`注释的类，其中`@Providers`通知Dagger提供项目中不具备的类
+    
+- 2.`@Component`告知某个类需要依赖注入,`方法声明`传入需要的类对象参数 PS：使用Module提供类实例时需要`@Component(modules = [UserModule::class])`
 
-## app framework
-- ### RecyclerView配套组件
-    - [BaseRecyclerViewAdapter](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/adapter/BaseRecyclerViewAdapter.java)
-    实现了上拉加载更多、空数据显示等。
-    - [GridItemDivider](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/adapter/item_decoration/GridItemDivider.java)
-	实现了GridLayoutManager边距设置。
-	- [HorizontalItemDivider](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/adapter/item_decoration/HorizontalItemDivider.java)
-	实现了LinearLayoutManager 水平方向的边距设置。
-	- [VerticalItemDivider](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/adapter/item_decoration/VerticalItemDivider.java)
-	实现了LinearLayoutManager 垂直方向的边距设置。
-	- [AutoFixWidthLayoutManager](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/adapter/layout_manager/AutoFixWidthLayoutManager.java)
-	实现了自适应宽度的控件进行按行排序布局。
-- ### 选择器
-	- [SelectionManage](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/utils/SelectionManage.java)
-	实现了选择器抽象的数据模型。
-	- [ThreeLayerSelectView](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/view/select/ThreeLayerSelectView.java)
-	实现了三级菜单选择器。
-	- [ListSelectView](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/view/select/ListSelectView.java)
-	实现了列表选择器。
-	- [LeftRightRecyclerView](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/view/LeftRightRecyclerView.java)
-	实现了左右联动选择器。
-- ### View
-	- [SplashView](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/view/SplashView.java)
-	实现了欢迎页封装。
-	- [BottomTabView](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/view/BottomTabView.java)
-	实现了底部导航栏Tab切换的封装。
-	- [PageStatusView](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/view/PageStatusView.java)
-	实现了页面View不同状态的显示。
-- ### TabLayout
-	- [AbsTabLayoutHelper](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/utils/tab/AbsTabLayoutHelper.java)
-	实现任意样式Tab的选中和非选中状态的抽象封装。
-	- [StringTabLayoutHelper](https://github.com/obelieve/Demo/blob/framework/app/src/main/java/com/zxy/demo/utils/StringTabLayoutHelper.java)
-	实现String数据类型，样式Tab的选中和非选中状态的抽象封装例子。
-- ### 弹窗
-	- [PopupMenuUtil](https://github.com/obelieve/Demo/blob/framework/frame/src/main/java/com/zxy/frame/utils/PopupMenuUtil.java)
-	实现了PopupMenu简易封装。
+
+- 3.作用域注解：
+    - `@ApplicationScope`
+    - `@LoggedUserScope`
+    - `@ActivityScope`
